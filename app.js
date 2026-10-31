@@ -1,12 +1,10 @@
 /**
- * المنصة الرقمية الرسمية - المحامي سعد أميل (Saad Amil)
- * محرك حجز الاستشارات والدفع عبر تطبيق سوبر وإرسال الواتساب
+ * المكتب القضائي - سعد أميل (Saad Amil)
+ * محرك معالجة الاستشارات التنفيذية وسداد تطبيق سوبر
  */
 
-// Lawyer's WhatsApp Number (Can be customized)
-const LAWYER_WHATSAPP = "9647700000000"; // Replace with lawyer's actual number
+const LAWYER_WHATSAPP = "9647700000000"; // رقم الواتساب المعتمد للمحامي
 
-// State
 const bookingState = {
     clientName: "",
     clientPhone: "",
@@ -14,21 +12,22 @@ const bookingState = {
     caseType: "",
     caseDetails: "",
     planPrice: 25000,
-    planTitle: "استشارة إجرائية مكتوبة ومفصلة",
+    planTitle: "استشارة إجرائية مكتوبة",
     receiptUploaded: false
 };
 
-// Select Pricing Plan
+// Selection of Consultation Tier
 function selectPricing(element, price, title) {
-    document.querySelectorAll('.pricing-card').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tier-card').forEach(el => el.classList.remove('active'));
     element.classList.add('active');
-    element.querySelector('input[type="radio"]').checked = true;
+    const radio = element.querySelector('input[type="radio"]');
+    if (radio) radio.checked = true;
 
     bookingState.planPrice = price;
     bookingState.planTitle = title;
 }
 
-// Handle Form Submit -> Open Super App Payment Modal
+// Form Submit -> Modal
 function handleConsultationSubmit(e) {
     e.preventDefault();
 
@@ -38,31 +37,28 @@ function handleConsultationSubmit(e) {
     bookingState.caseType = document.getElementById('caseType').value;
     bookingState.caseDetails = document.getElementById('caseDetails').value.trim();
 
-    // Populate modal
     document.getElementById('summaryClientName').innerText = bookingState.clientName;
     document.getElementById('summaryPlanName').innerText = bookingState.planTitle;
     document.getElementById('summaryAmount').innerText = bookingState.planPrice.toLocaleString('ar-IQ') + " د.ع";
 
-    // Show modal
     document.getElementById('superModal').classList.add('active');
 }
 
-// Close Modal
 function closeSuperModal() {
     document.getElementById('superModal').classList.remove('active');
 }
 
-// Copy Super Account Number
+// Copy Super ID
 function copySuperAccount() {
     const acc = document.getElementById('superAccNumber').innerText;
     navigator.clipboard.writeText(acc).then(() => {
-        showToast("تم نسخ رقم حساب سوبر بنجاح! 📋");
+        showToast("تم نسخ معرف سوبر بنجاح");
     }).catch(() => {
-        showToast("يرجى نسخ الرقم يدوياً: " + acc);
+        showToast("المعرف: " + acc);
     });
 }
 
-// Handle Receipt Selected
+// Receipt Upload Preview
 function handleReceiptSelected(event) {
     const file = event.target.files[0];
     if (file) {
@@ -72,41 +68,41 @@ function handleReceiptSelected(event) {
             const preview = document.getElementById('receiptPreview');
             preview.src = e.target.result;
             preview.style.display = 'block';
-            document.getElementById('uploadText').innerText = `تم اختيار الوصل: ${file.name}`;
+            document.getElementById('uploadText').innerText = `المستند المرفق: ${file.name}`;
         };
         reader.readAsDataURL(file);
-        showToast("تم إرفاق إشعار التحويل بنجاح ✓");
+        showToast("تم إرفاق إشعار التحويل");
     }
 }
 
-// Finish & Redirect to WhatsApp
+// Dispatch to WhatsApp
 function finishAndSendWhatsApp() {
-    const textMsg = `*طلب استشارة قانونية فورية* ⚖️
-*المحامي سعد أميل (Saad Amil)*
+    const textMsg = `طلب استشارة قضائية
+المحامي سعد أميل (Saad Amil)
 -----------------------------------
-*المستشير:* ${bookingState.clientName}
-*رقم الهاتف:* ${bookingState.clientPhone}
-*المحافظة / المحكمة:* ${bookingState.clientLocation || 'غير محدد'}
-*نوع القضية:* ${bookingState.caseType}
-*نوع الاستشارة:* ${bookingState.planTitle} (${bookingState.planPrice.toLocaleString('ar-IQ')} د.ع)
+المستشير: ${bookingState.clientName}
+رقم الهاتف: ${bookingState.clientPhone}
+المحافظة / المحكمة: ${bookingState.clientLocation || 'غير محدد'}
+نوع النزاع: ${bookingState.caseType}
+نوع الاستشارة: ${bookingState.planTitle} (${bookingState.planPrice.toLocaleString('ar-IQ')} د.ع)
 -----------------------------------
-*موجز الوقائع والاستفسار:*
+موجز الوقائع:
 ${bookingState.caseDetails}
 -----------------------------------
-💳 *حالة الدفع:* تم تحويل المبلغ عبر تطبيق سوبر (Super App)، ومرفق صورة إشعار التحويل هنا.`;
+حالة السداد: تم التحويل عبر تطبيق سوبر (Super App)، ومرفق إشعار التحويل.`;
 
     const encodedText = encodeURIComponent(textMsg);
     const waUrl = `https://wa.me/${LAWYER_WHATSAPP}?text=${encodedText}`;
 
-    showToast("جاري توجيهك إلى واتساب المحامي سعد أميل... 🚀");
+    showToast("جاري توجيهك إلى واتساب المحامي سعد أميل...");
     
     setTimeout(() => {
         window.open(waUrl, '_blank');
         closeSuperModal();
-    }, 1200);
+    }, 1000);
 }
 
-// Toast helper
+// Toast
 function showToast(msg) {
     let toast = document.getElementById('toast');
     if (!toast) return;
@@ -114,5 +110,5 @@ function showToast(msg) {
     toast.style.display = 'block';
     setTimeout(() => {
         toast.style.display = 'none';
-    }, 3000);
+    }, 2800);
 }
