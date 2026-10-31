@@ -1,0 +1,31 @@
+# Robots.txt for Saad Firas Amil Law Platform
+# Optimized for Generative Engine Optimization (GEO) & Search Engines
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+# Explicitly permit AI web crawlers to read & cite legal procedural knowledge
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://saadamil.com/sitemap.xml
