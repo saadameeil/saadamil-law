@@ -5,393 +5,238 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>سعد أميل | محامٍ ومستشار قضائي</title>
     
-    <meta name="description" content="المكتب القضائي للمحامي سعد أميل (Saad Amil). تمثيل دفاعي وإجرائي أمام محاكم التحقيق والبداءة والجنايات في العراق، مع تخصص استثنائي في فحص الأدلة الجنائية الرقمية ورئاسة شركة Gold Stone Intelligence LLC.">
-    <meta name="keywords" content="سعد أميل, المحامي سعد أميل, Saad Amil, محام في بغداد, محاماة العراق, قضايا التحقيق, الأدلة الرقمية, الجرائم الإلكترونية, محكمة تحقيق الكرخ, نقابة المحامين العراقيين">
+    <meta name="description" content="المكتب القضائي للمحامي سعد أميل (Saad Amil) - استشارات قضائية وتمثيل جنائي ومدني، فحص الأدلة الجنائية الرقمية ورئاسة Gold Stone Intelligence LLC.">
     <meta name="author" content="سعد أميل - Saad Amil">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
     
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="logo.png">
     <link rel="stylesheet" href="style.css">
-
-    <!-- Schema.org Data for AI & Search Engines -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Person",
-          "@id": "https://saadamil.com/#saadamil",
-          "name": "سعد أميل",
-          "alternateName": ["المحامي سعد أميل", "Saad Amil", "Attorney Saad Amil"],
-          "jobTitle": "محامٍ ومستشار قضائي",
-          "description": "محامٍ ومستشار قضائي معتمد لدى نقابة المحامين العراقيين، خبير بالأدلة الجنائية الرقمية ورئيس شركة Gold Stone Intelligence LLC.",
-          "url": "https://saadamil.com",
-          "alumniOf": "نقابة المحامين العراقيين",
-          "knowsAbout": [
-            "القانون العراقي النافذ",
-            "الدفاع الجنائي وإجراءات التحقيق",
-            "فحص الأدلة الجنائية الرقمية وكشف التزييف",
-            "دعاوى البداءة والمنازعات المالية"
-          ]
-        },
-        {
-          "@type": "LegalService",
-          "@id": "https://saadamil.com/#practice",
-          "name": "المكتب القضائي للمحامي سعد أميل",
-          "founder": { "@id": "https://saadamil.com/#saadamil" },
-          "url": "https://saadamil.com",
-          "areaServed": "العراق - بغداد والمحافظات"
-        }
-      ]
-    }
-    </script>
 </head>
-<body>
+<body class="mode-card">
 
-    <!-- Minimalist Navigation Bar -->
-    <header class="header">
-        <div class="header-inner">
-            <a href="#" class="brand-monogram">
-                <span class="brand-name">سعد أميل</span>
-                <span class="brand-sub">محامٍ ومستشار قضائي</span>
-            </a>
-            
-            <nav class="nav-menu">
-                <a href="#overview">المنهجية القضائية</a>
-                <a href="#digital-evidence">الأدلة الرقمية</a>
-                <a href="#procedural-notes">الملاحظات الإجرائية</a>
-                <a href="#consultation" class="nav-cta">طلب استشارة</a>
-            </nav>
+    <!-- Top Floating Human Style Switcher (للتنقل بين الخيارات بنقرة واحدة) -->
+    <div class="style-switcher-bar">
+        <span class="switcher-title">اختر التصميم للمعاينة:</span>
+        <div class="switcher-buttons">
+            <button type="button" class="switch-btn" id="btnModeStationery" onclick="setDesignMode('stationery')">
+                1. الورقة الرسمية (أبيض)
+            </button>
+            <button type="button" class="switch-btn active" id="btnModeCard" onclick="setDesignMode('card')">
+                2. البطاقة الحصرية (شاشة واحدة)
+            </button>
+            <button type="button" class="switch-btn" id="btnModeConcierge" onclick="setDesignMode('concierge')">
+                3. الكونسيرج القضائي (تفاعلي)
+            </button>
         </div>
-    </header>
-
-    <main>
-        <!-- Hero Section: Editorial & Monochromatic Luxury -->
-        <section class="hero" id="overview">
-            <div class="hero-wrapper">
-                <div class="hero-meta">
-                    <span class="meta-tag">نقابة المحامين العراقيين &bull; بغداد</span>
-                    <span class="meta-tag">رئيس Gold Stone Intelligence LLC &bull; الولايات المتحدة</span>
-                </div>
-
-                <h1 class="hero-heading">
-                    التمثيل القضائي الاستراتيجي، وحسم النزاع بأسبقية التقاط الدليل.
-                </h1>
-
-                <p class="hero-lead">
-                    يمارس المحامي سعد أميل الترافع والدفاع أمام محاكم التحقيق، البداءة، والجنايات في جمهورية العراق، مستنداً إلى تدقيق إجرائي صارم لنصوص القانون النافذ، ومقترناً بخبرة حصرية في فحص وتحريز الأدلة الجنائية الرقمية وكشف تزييف الوسائط المتعددة.
-                </p>
-
-                <div class="hero-actions">
-                    <a href="#consultation" class="btn btn-primary">
-                        حجز استشارة قضائية
-                    </a>
-                    <a href="#procedural-notes" class="btn btn-outline">
-                        الملاحظات الإجرائية للخصوم
-                    </a>
-                </div>
-
-                <!-- Three Core Pillars (No emojis, typography driven) -->
-                <div class="pillars-grid">
-                    <div class="pillar-item">
-                        <span class="pillar-index">I</span>
-                        <h3>الدفاع الجنائي الإجرائي</h3>
-                        <p>تفكيك محاضر الضبط والشهادات أمام قضاة التحقيق، والطعن الفوري بالثغرات الشكلية التي تقرر بطلان الإجراءات.</p>
-                    </div>
-                    <div class="pillar-item">
-                        <span class="pillar-index">II</span>
-                        <h3>فحص الأدلة الرقمية</h3>
-                        <p>تفنيد المحادثات والتسجيلات الصوتية وفيديوهات التزييف العميق بموجب المعايير الفنية المعتمدة لسلسلة الحيازة القضائية.</p>
-                    </div>
-                    <div class="pillar-item">
-                        <span class="pillar-index">III</span>
-                        <h3>المنازعات المالية والبداءة</h3>
-                        <p>إدارة دعاوى الديون والعقود بما يمنع الخصم من النكول أو استغلال اليمين الحاسمة، وحصر النزاع في الوثائق غير القابلة للإنكار.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Digital Forensics & High Stakes Division -->
-        <section class="forensics-section" id="digital-evidence">
-            <div class="section-frame">
-                <div class="split-row">
-                    <div class="split-col-text">
-                        <span class="section-label">الاختصاص الرقمي الاستثنائي</span>
-                        <h2 class="split-title">التحقيق الجنائي الرقمي كأداة حاسمة في الدعوى المعاصرة</h2>
-                        <p class="split-desc">
-                            في ظل شيوع قضايا الابتزاز وتلفيق التسجيلات وحسابات التواصل الاجتماعي، بات فحص البصمة الرقمية ركيزة لا غنى عنها للدفاع. بصفتنا رئيساً لشركة <strong>Gold Stone Intelligence LLC</strong> المسجلة في الولايات المتحدة:
-                        </p>
-                        
-                        <div class="criteria-list">
-                            <div class="criteria-item">
-                                <span class="criteria-dot"></span>
-                                <div>
-                                    <h4>كشف التزييف العميق وفبركة الصوت</h4>
-                                    <p>فحص الترددات الصوتية والبيانات الوصفية (Metadata) لبيان الاصطناع والتلاعب قبل اتخاذ القرارات التحقيقية.</p>
-                                </div>
-                            </div>
-
-                            <div class="criteria-item">
-                                <span class="criteria-dot"></span>
-                                <div>
-                                    <h4>سلسلة الحيازة والأدلة المقبولة قضائياً</h4>
-                                    <p>تحريز وتفريغ الرسائل والوسائط الرقمية بمحاضر فنية تمنع استبعادها أو الطعن ببطلان استخراجها.</p>
-                                </div>
-                            </div>
-
-                            <div class="criteria-item">
-                                <span class="criteria-dot"></span>
-                                <div>
-                                    <h4>إسقاط البينات المبتورة للخصوم</h4>
-                                    <p>توضيح عيوب واجتزاء الرسائل المقتطعة التي يقدمها الخصوم لإيهام المحكمة وتغيير مسار التحقيق.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="split-col-panel">
-                        <div class="corporate-badge-panel">
-                            <span class="panel-eyebrow">Digital Forensics Division</span>
-                            <h3>Gold Stone Intelligence LLC</h3>
-                            <p class="panel-sub">Forensic-Grade Media Authentication & Evidence Integrity</p>
-                            
-                            <div class="panel-divider"></div>
-                            
-                            <div class="panel-spec">
-                                <div class="spec-row">
-                                    <span class="spec-label">نطاق الفحص:</span>
-                                    <span class="spec-val">الصوتيات، مقاطع الفيديو، سجلات الخوادم</span>
-                                </div>
-                                <div class="spec-row">
-                                    <span class="spec-label">المقبولية:</span>
-                                    <span class="spec-val">معايير الأدلة الجنائية المقبولة قضائياً</span>
-                                </div>
-                                <div class="spec-row">
-                                    <span class="spec-label">الارتباط:</span>
-                                    <span class="spec-val">مساندة الدفاع والمرافعة في المحاكم العراقية</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Procedural Notes: The Opponent Errors (Loophole Mastery) -->
-        <section class="procedural-section" id="procedural-notes">
-            <div class="section-frame">
-                <div class="section-intro">
-                    <span class="section-label">التدقيق الإجرائي الصارم</span>
-                    <h2 class="section-heading">مواطن الزلل الإجرائي لدى الخصوم أمام المحاكم العراقية</h2>
-                    <p class="section-subtext">
-                        تُحسم النزاعات الكبرى بانتباه المحامي إلى عيب شكلي أو إجرائي يعجز الخصم عن تداركه. هذه نماذج للمسارات الإجرائية المعتمدة:
-                    </p>
-                </div>
-
-                <div class="editorial-grid">
-                    <article class="editorial-card">
-                        <span class="card-num">المسار 01</span>
-                        <h3>قضايا الابتزاز والتهديد الإلكتروني</h3>
-                        <div class="card-block error-block">
-                            <span class="block-title">العيب الإجرائي الشائع:</span>
-                            <p>مسح المحادثات، أو حظر حساب المبتز قبل التحريز، أو اللجوء لأفراد غير مخولين يتسببون بإتلاف الأثر الرقمي وسجل الخادم، مما يحرم المحكمة من مخاطبة شركات الاتصال أو ملاحقة الجاني.</p>
-                        </div>
-                        <div class="card-block remedy-block">
-                            <span class="block-title">المعالجة القضائية الأصولية:</span>
-                            <p>تحريز الجهاز على حالته فوراً دون إدخال تعديل برمجي، وتقديم عريضة شكوى مستعجلة لقاضي التحقيق لربط محضر الضبط وتوجيه المفارز المختصة بمكافحة الجريمة المنظمة والمعلوماتية قبل زوال الدليل.</p>
-                        </div>
-                    </article>
-
-                    <article class="editorial-card">
-                        <span class="card-num">المسار 02</span>
-                        <h3>المنازعات المالية وعقود المداينة</h3>
-                        <div class="card-block error-block">
-                            <span class="block-title">العيب الإجرائي الشائع:</span>
-                            <p>رفع دعوى المطالبة بصيغة إنشائية فضفاضة تعتمد على البينة الشفوية في تصرفات استوجب فيها القانون العراقي دليلاً كتابياً، مما يمنح المدعى عليه فرصة سلب اليمين الحاسمة أو الدفع بسقوط الادعاء.</p>
-                        </div>
-                        <div class="card-block remedy-block">
-                            <span class="block-title">المعالجة القضائية الأصولية:</span>
-                            <p>تدقيق الالتزامات والمحررات غير المباشرة والإقرارات المكتوبة وحصرها بدقة قبل توجيه الإنذار المسير أو إقامة الدعوى أمام محكمة البداءة المختصة، مع سد كافة منافذ التحايل الإجرائي.</p>
-                        </div>
-                    </article>
-
-                    <article class="editorial-card">
-                        <span class="card-num">المسار 03</span>
-                        <h3>محاضر التحقيق وتدوين الأقوال</h3>
-                        <div class="card-block error-block">
-                            <span class="block-title">العيب الإجرائي الشائع:</span>
-                            <p>التسرع بالإدلاء ببيانات عشوائية أو غير مترابطة أمام جهات التحقيق الأولى، أو إجراء تنازل غير مشروط ومبكر قبل تثبيت الحقوق بسند عدلي ضامن ونافذ.</p>
-                        </div>
-                        <div class="card-block remedy-block">
-                            <span class="block-title">المعالجة القضائية الأصولية:</span>
-                            <p>حضور المحامي في المحاضر الأولى، ضبط صياغة أقوال الموكل بما يتطابق مع الوقائع الثابتة، طلب تدقيق قرائن الشهود، والطعن بالقرارات التحقيقية غير الأصولية أمام المحاكم المختصة تمييزاً.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- Executive Consultation Intake & Super App Gateway -->
-        <section class="consultation-section" id="consultation">
-            <div class="section-frame">
-                <div class="consultation-layout">
-                    
-                    <!-- Left Column: Intake Desk -->
-                    <div class="intake-form-container">
-                        <div class="form-header">
-                            <span class="section-label">بوابة الاستشارة الرسمية</span>
-                            <h2 class="form-title">طلب استشارة قضائية مباشرة</h2>
-                            <p class="form-desc">أدخل ملخص الوقائع ومحل النزاع لتحديد المركز القانوني وخطة المعالجة الإجرائية بدقة.</p>
-                        </div>
-
-                        <form id="consultForm" onsubmit="handleConsultationSubmit(event)" class="executive-form">
-                            <div class="field-group">
-                                <label class="field-label">الاسم الكامل للمستشير</label>
-                                <input type="text" id="clientName" class="field-input" placeholder="الاسم الثلاثي أو اللقب" required>
-                            </div>
-
-                            <div class="field-row">
-                                <div class="field-group">
-                                    <label class="field-label">رقم الهاتف (واتساب للتواصل)</label>
-                                    <input type="tel" id="clientPhone" class="field-input" placeholder="0770xxxxxxx" required>
-                                </div>
-                                <div class="field-group">
-                                    <label class="field-label">المحافظة / المحكمة المختصة</label>
-                                    <input type="text" id="clientLocation" class="field-input" placeholder="مثال: بغداد - الكرخ">
-                                </div>
-                            </div>
-
-                            <div class="field-group">
-                                <label class="field-label">اختصاص النزاع</label>
-                                <select id="caseType" class="field-select" required>
-                                    <option value="" disabled selected>تحديد تصنيف القضية...</option>
-                                    <option value="جرائم إلكترونية وابتزاز">جرائم معلوماتية، ابتزاز، وفحص أدلة رقمية</option>
-                                    <option value="قضايا جزائية وتحقيق">قضايا جزائية، محاكم تحقيق، كفالات وتوقيف</option>
-                                    <option value="دعاوى بداءة ومنازعات مالية">دعاوى بداءة، ديون، تعويضات، ومنازعات عقود</option>
-                                    <option value="عقارات وإخلاء مأجور">نزاعات عقارية، تثبيت ملكية، إخلاء مأجور</option>
-                                    <option value="أحوال شخصية وتركات">أحوال شخصية، حجج شرعية، حصر إرث وتصفية تركات</option>
-                                    <option value="شركات وعقود تجارية">عقود تجارية، تأسيس شركات، نزاعات شركاء</option>
-                                </select>
-                            </div>
-
-                            <div class="field-group">
-                                <label class="field-label">موجز الوقائع والاستفسار القانوني</label>
-                                <textarea id="caseDetails" class="field-textarea" rows="4" placeholder="سرد موجز للواقعة: ما هو النزاع؟ ما الإجراءات القضائية التي اتخذت حتى الآن؟ وما هو الهدف المطلوب؟" required></textarea>
-                            </div>
-
-                            <!-- Pricing Selection -->
-                            <div class="tier-selection">
-                                <label class="tier-card active" onclick="selectPricing(this, 25000, 'استشارة إجرائية مكتوبة')">
-                                    <input type="radio" name="plan" value="25000" checked>
-                                    <div class="tier-meta">
-                                        <span class="tier-name">استشارة إجرائية مكتوبة</span>
-                                        <span class="tier-sub">تحليل قانوني مدقق للموقف، كشف ثغرات الخصم، وتحديد الخطوة القضائية القادمة</span>
-                                    </div>
-                                    <div class="tier-rate">25,000 د.ع</div>
-                                </label>
-
-                                <label class="tier-card" onclick="selectPricing(this, 50000, 'استشارة هاتفية مباشرة مع سعد أميل')">
-                                    <input type="radio" name="plan" value="50000">
-                                    <div class="tier-meta">
-                                        <span class="tier-name">استشارة هاتفية مباشرة</span>
-                                        <span class="tier-sub">اتصال هاتفي مباشر مع المحامي سعد أميل لمراجعة أوراق الدعوى ومناقشة الدفوع</span>
-                                    </div>
-                                    <div class="tier-rate">50,000 د.ع</div>
-                                </label>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary btn-block">
-                                الانتقال لسداد الأتعاب عبر تطبيق سوبر وتأكيد الطلب
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Right Column: Protocol & Super App Info -->
-                    <div class="intake-sidebar">
-                        <div class="protocol-card">
-                            <span class="sidebar-eyebrow">آلية الدفع المعتمدة</span>
-                            <h3>السداد المباشر عبر تطبيق سوبر (Super)</h3>
-                            <p class="sidebar-text">
-                                تُسدد أتعاب الاستشارات الرمزية عبر تطبيق سوبر (Super App - Qi) لضمان جدية المراجعة وتخصيص الوقت الكافي لتدقيق ملف القضية:
-                            </p>
-
-                            <ol class="protocol-steps">
-                                <li>
-                                    <strong>إرسال تفاصيل القضية:</strong> تعبئة ملخص الوقائع في الاستمارة المقابلة.
-                                </li>
-                                <li>
-                                    <strong>التحويل عبر تطبيق سوبر:</strong> مسح رمز الباركود الرسمي أو إدخال رقم المعرف المخصص وتحويل المبلغ.
-                                </li>
-                                <li>
-                                    <strong>إرفاق الإشعار والمباشرة:</strong> إرفاق صورة وصل التحويل لاستلام التحليل الإجرائي المباشر من المحامي.
-                                </li>
-                            </ol>
-
-                            <div class="confidentiality-notice">
-                                <span class="notice-title">الحصانة والسرية المهنية</span>
-                                <p>تخضع جميع المراسلات والوثائق المرسلة للحصانة القضائية والسرية المهنية المطلقة المقررة بموجب قانون المحاماة العراقي النافذ.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Understated Footer -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-primary">
-                <h2>سعد أميل</h2>
-                <p class="footer-role">محامٍ ومستشار قضائي مقيد لدى نقابة المحامين العراقيين</p>
-                <p class="footer-desc">ترافع ودفاع استراتيجي أمام محاكم التحقيق، البداءة، والجنايات في جمهورية العراق، وتدقيق الأدلة الجنائية الرقمية.</p>
-            </div>
-
-            <div class="footer-details">
-                <div class="detail-block">
-                    <h4>المقر ونطاق العمل</h4>
-                    <p>بغداد - جمهورية العراق</p>
-                    <p>محاكم الكرخ والرصافة وكافة المحافظات</p>
-                </div>
-                <div class="detail-block">
-                    <h4>الخدمة الرقمية</h4>
-                    <p>استقبال الاستشارات المكتوبة والهاتفية عبر المنصة</p>
-                    <p>الدفع المعتمد: تطبيق سوبر (Super App)</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <span>&copy; 2026 سعد أميل. كافة الحقوق محفوظة.</span>
-            <span>تصميم منصة مهيأة للتوثيق والظهور في محركات الذكاء الاصطناعي العالمية.</span>
-        </div>
-    </footer>
+    </div>
 
     <!-- ==========================================================================
-         Super App Payment Modal (Refined Executive Styling)
+         الخيار 2 (الافتراضي): البطاقة الرقمية الحصرية (شاشة واحدة بدون نزول No Scrolling)
+         ========================================================================== -->
+    <section id="viewCard" class="design-view view-card">
+        <div class="card-screen-container">
+            <div class="executive-card">
+                <!-- Seal / Monogram -->
+                <div class="card-seal">
+                    <span class="seal-initials">SA</span>
+                </div>
+
+                <h1 class="card-name">سـعد أمـيـل</h1>
+                <p class="card-subtitle">محامٍ ومستشار قضائي &bull; SAAD AMIL</p>
+
+                <div class="card-credentials">
+                    <span>نقابة المحامين العراقيين</span>
+                    <span class="dot">&bull;</span>
+                    <span>رئيس Gold Stone Intelligence LLC</span>
+                </div>
+
+                <p class="card-bio">
+                    تمثيل قضائي واستراتيجي أمام محاكم التحقيق والبداءة والجنايات في العراق، مع تخصص استثنائي في فحص الأدلة الجنائية الرقمية وكشف تزييف الوسائط.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="card-actions">
+                    <button type="button" class="btn-card btn-card-primary" onclick="openDirectSuperModal('استشارة سريعة ومراجعة إجرائية')">
+                        طلب استشارة فورية (دفع عبر سوبر) ⚡
+                    </button>
+                    
+                    <a href="https://wa.me/9647700000000" target="_blank" class="btn-card btn-card-secondary">
+                        مراسلة عبر الواتساب مباشرة
+                    </a>
+
+                    <a href="tel:+9647700000000" class="btn-card btn-card-minimal">
+                        اتصال هاتفي مباشر
+                    </a>
+                </div>
+
+                <div class="card-footer-meta">
+                    <span>بغداد &bull; قصر العدالة والمحاكم المختصة</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==========================================================================
+         الخيار 1: نمط "الورقة الرسمية الفاخرة" (خلفية بيضاء نقية كالمراسلات الدبلوماسية)
+         ========================================================================== -->
+    <section id="viewStationery" class="design-view view-stationery" style="display:none;">
+        <div class="stationery-wrapper">
+            <!-- Letterhead Top -->
+            <header class="stationery-header">
+                <div class="stationery-brand">
+                    <h1 class="st-name">سـعد أمـيـل</h1>
+                    <p class="st-title">محامٍ ومستشار قضائي &bull; بغداد، العراق</p>
+                    <p class="st-affiliation">عضو نقابة المحامين العراقيين &bull; رئيس Gold Stone Intelligence LLC للأدلة الرقمية</p>
+                </div>
+                <div class="st-date" id="liveDateDisplay">2026</div>
+            </header>
+
+            <div class="stationery-rule"></div>
+
+            <!-- Content -->
+            <article class="stationery-body">
+                <h2 class="st-statement">
+                    التمثيل القضائي الرصين، والدفاع المستند إلى حسم الدليل وتدقيق سلامة الإجراءات.
+                </h2>
+                
+                <p class="st-paragraph">
+                    يتولى المكتب الترافع وإدارة الخصومات أمام محاكم التحقيق، البداءة، والجنايات في جمهورية العراق، مع التركيز على تدقيق العيوب الشكلية والإجرائية التي تشوب محاضر الخصوم، وتطبيق المعايير الفنية الجنائية في فحص وتحريز الأدلة الرقمية (المحادثات، التسجيلات الصوتية، ومقاطع الفيديو).
+                </p>
+
+                <!-- 3 Columns of Practice -->
+                <div class="st-practice-grid">
+                    <div class="st-col">
+                        <h3>أولاً: الدفاع الجنائي والتحقيق</h3>
+                        <p>تفكيك محاضر الاستجواب، كفالات التوقيف، ضبط الدفوع الشكلية، والطعن بالقرارات غير الأصولية أمام المحاكم التمييزية المختصة.</p>
+                    </div>
+                    <div class="st-col">
+                        <h3>ثانياً: الأدلة الجنائية الرقمية</h3>
+                        <p>كشف التزييف العميق، فحص بصمات الصوت والتسجيلات، وإثبات أو تفنيد حجية الأدلة الإلكترونية أمام القضاء العراقي.</p>
+                    </div>
+                    <div class="st-col">
+                        <h3>ثالثاً: منازعات البداءة والديون</h3>
+                        <p>إدارة دعاوى التعويض والمطالبات المالية، وإحكام الدفوع بما يحصن حق الموكل ويمنع الخصم من التهرب الإجرائي.</p>
+                    </div>
+                </div>
+
+                <div class="stationery-rule"></div>
+
+                <!-- Consultation Desk -->
+                <section class="st-consult-section">
+                    <h3 class="st-section-title">طلب استشارة قضائية</h3>
+                    <p class="st-section-note">تُسدد أتعاب الاستشارة الرمزية (25,000 د.ع) مباشرة عبر تطبيق سوبر (Super App) لبدء دراسة القضية:</p>
+
+                    <form onsubmit="handleStationerySubmit(event)" class="st-form">
+                        <div class="st-row">
+                            <input type="text" id="stName" placeholder="الاسم الكامل" class="st-input" required>
+                            <input type="tel" id="stPhone" placeholder="رقم الهاتف (واتساب)" class="st-input" required>
+                            <input type="text" id="stCourt" placeholder="المحكمة أو المحافظة" class="st-input">
+                        </div>
+                        <textarea id="stDetails" rows="3" placeholder="موجز واقعة النزاع والاستفسار القانوني المطلوب..." class="st-textarea" required></textarea>
+                        
+                        <div class="st-submit-row">
+                            <button type="submit" class="btn-st-submit">
+                                الانتقال للسداد عبر تطبيق سوبر وتأكيد المراجعة &larr;
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </article>
+
+            <footer class="stationery-footer">
+                <p>المكتب القضائي للمحامي سعد أميل &bull; بغداد، العراق &bull; سرية مهنية مطلقة بموجب قانون المحاماة النافذ.</p>
+            </footer>
+        </div>
+    </section>
+
+
+    <!-- ==========================================================================
+         الخيار 3: نمط "الكونسيرج القضائي التفاعلي" (تطبيق تفاعلي سريع ومباشر 3 خطوات)
+         ========================================================================== -->
+    <section id="viewConcierge" class="design-view view-concierge" style="display:none;">
+        <div class="concierge-wrapper">
+            <div class="concierge-box">
+                <header class="concierge-head">
+                    <span class="concierge-tag">المكتب الرقمي &bull; سعد أميل</span>
+                    <h2>كيف يمكننا مساندتك قضائياً اليوم؟</h2>
+                    <p>حدد مسار قضيتك في 3 خطوات سريعة لتلقي التوجيه الإجرائي المباشر:</p>
+                </header>
+
+                <div class="concierge-wizard">
+                    <!-- Step 1: Case Type Selection -->
+                    <div class="wizard-step" id="wStep1">
+                        <span class="step-label">الخطوة 1: حدد تصنيف النزاع</span>
+                        <div class="case-chips-grid">
+                            <button type="button" class="chip-choice active" onclick="selectConciergeType(this, 'جرائم إلكترونية وابتزاز')">
+                                ابتزاز وجرائم معلوماتية وفحص أدلة
+                            </button>
+                            <button type="button" class="chip-choice" onclick="selectConciergeType(this, 'قضايا جزائية وتحقيق')">
+                                شكوى جزائية / تحقيق وكفالات
+                            </button>
+                            <button type="button" class="chip-choice" onclick="selectConciergeType(this, 'دعاوى بداءة وديون')">
+                                دعوى بداءة ومطالبات مالية
+                            </button>
+                            <button type="button" class="chip-choice" onclick="selectConciergeType(this, 'عقارات ونزاعات عقود')">
+                                نزاع عقاري وتخلية مأجور
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Details -->
+                    <div class="wizard-step" id="wStep2">
+                        <span class="step-label">الخطوة 2: معلومات المستشير والوقائع</span>
+                        <div class="concierge-inputs">
+                            <div class="c-row">
+                                <input type="text" id="cName" class="c-input" placeholder="اسمك الكريم" required>
+                                <input type="tel" id="cPhone" class="c-input" placeholder="رقم الواتساب" required>
+                            </div>
+                            <textarea id="cText" class="c-textarea" rows="3" placeholder="اشرح المشكلة باختصار: ما الذي حدث؟ وما هو هدفك؟"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Trigger -->
+                    <div class="wizard-step" id="wStep3">
+                        <span class="step-label">الخطوة 3: السداد وتأكيد الاستشارة</span>
+                        <div class="c-summary-bar">
+                            <span>الأتعاب المعتمدة للاستشارة الإجرائية: <strong>25,000 د.ع</strong></span>
+                            <span>السداد عبر: <strong>تطبيق سوبر (Super)</strong></span>
+                        </div>
+                        <button type="button" class="btn-concierge-go" onclick="submitConcierge()">
+                            متابعة الدفع عبر تطبيق سوبر وتحويل القضية &larr;
+                        </button>
+                    </div>
+                </div>
+
+                <div class="concierge-foot">
+                    <span>إشراف مباشر: المحامي سعد أميل &bull; رئيس Gold Stone Intelligence LLC</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==========================================================================
+         نافذة الدفع المشتركة عبر تطبيق سوبر (Super App Payment Modal)
          ========================================================================== -->
     <div id="superModal" class="modal-backdrop">
         <div class="modal-window">
             <div class="modal-top">
                 <div>
-                    <h3 class="modal-heading">التحويل عبر تطبيق سوبر (Super)</h3>
-                    <p class="modal-sub">إتمام سداد أتعاب الاستشارة لحساب المحامي سعد أميل</p>
+                    <h3 class="modal-heading">التحويل عبر تطبيق سوبر (Super App)</h3>
+                    <p class="modal-sub">المستفيد: المحامي سعد أميل</p>
                 </div>
                 <button class="modal-exit" onclick="closeSuperModal()">&times;</button>
             </div>
 
             <div class="modal-content">
-                <!-- Summary -->
                 <div class="invoice-summary">
                     <div class="invoice-row">
-                        <span>نوع الاستشارة:</span>
-                        <span id="summaryPlanName" class="invoice-val">استشارة إجرائية مكتوبة</span>
+                        <span>الخدمة:</span>
+                        <span id="summaryPlanName" class="invoice-val">استشارة إجرائية فورية</span>
                     </div>
                     <div class="invoice-row">
-                        <span>اسم المستشير:</span>
+                        <span>المستشير:</span>
                         <span id="summaryClientName" class="invoice-val">-</span>
                     </div>
                     <div class="invoice-row invoice-total">
@@ -400,7 +245,6 @@
                     </div>
                 </div>
 
-                <!-- Transfer Card -->
                 <div class="transfer-box">
                     <div class="qr-wrapper">
                         <img src="super_qr_mock.png" alt="Super QR Code" class="qr-image">
@@ -411,35 +255,32 @@
                         <span class="acc-title">رقم المعرف في تطبيق سوبر (Super ID):</span>
                         <div class="acc-pill">
                             <span id="superAccNumber" class="acc-code">SUPER-IQ-77098231</span>
-                            <button type="button" class="btn-copy-code" onclick="copySuperAccount()">
-                                نسخ الرقم
-                            </button>
+                            <button type="button" class="btn-copy-code" onclick="copySuperAccount()">نسخ الرقم</button>
                         </div>
 
-                        <span class="acc-title" style="margin-top: 14px;">المستفيد:</span>
+                        <span class="acc-title" style="margin-top: 10px;">صاحب الحساب:</span>
                         <div class="acc-owner">المحامي سعد أميل</div>
 
                         <p class="transfer-notice">
-                            افتح تطبيق سوبر &larr; تحويل أموال &larr; أدخل المعرف أعلاه أو امسح الباركود، وحوّل المبلغ، ثم أرفق صورة الوصل أدناه.
+                            افتح تطبيق سوبر &larr; تحويل أموال &larr; أدخل المعرف أو امسح الباركود، ثم أرفق صورة الوصل أدناه.
                         </p>
                     </div>
                 </div>
 
-                <!-- Upload -->
                 <div class="upload-area">
-                    <label class="field-label">إرفاق إشعار التحويل (وصل السداد)</label>
+                    <label class="field-label">إرفاق إشعار التحويل (الوصل):</label>
                     <div class="drop-target" onclick="document.getElementById('receiptInput').click()">
                         <input type="file" id="receiptInput" accept="image/*" style="display:none;" onchange="handleReceiptSelected(event)">
-                        <span id="uploadText" class="drop-text">اضغط هنا لإرفاق صورة الوصل أو لقطة الشاشة</span>
+                        <span id="uploadText" class="drop-text">اضغط هنا لرفع صورة الوصل أو لقطة الشاشة</span>
                         <img id="receiptPreview" class="receipt-thumb" style="display:none;" alt="معاينة الوصل">
                     </div>
                 </div>
             </div>
 
             <div class="modal-bottom">
-                <button type="button" class="btn btn-outline" onclick="closeSuperModal()">تعديل</button>
-                <button type="button" class="btn btn-primary" onclick="finishAndSendWhatsApp()">
-                    تأكيد وإرسال الملف عبر الواتساب
+                <button type="button" class="btn-cancel" onclick="closeSuperModal()">إغلاق</button>
+                <button type="button" class="btn-confirm-action" onclick="finishAndSendWhatsApp()">
+                    تأكيد وإرسال الملف عبر الواتساب &larr;
                 </button>
             </div>
         </div>
