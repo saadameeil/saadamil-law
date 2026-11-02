@@ -27,7 +27,7 @@ User-agent: CCBot
 Allow: /
 
 # Sitemaps & LLM Context Endpoints
-Sitemap: https://mizan-law-office-1031.saadsaad0-ql.chatgpt.site/sitemap.xml
+Sitemap: https://saadamil.com/sitemap.xml
 # LLM Knowledge Index
-# https://mizan-law-office-1031.saadsaad0-ql.chatgpt.site/llms.txt
-# https://mizan-law-office-1031.saadsaad0-ql.chatgpt.site/llms-full.txt
+# https://saadamil.com/llms.txt
+# https://saadamil.com/llms-full.txt

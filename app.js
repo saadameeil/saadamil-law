@@ -718,3 +718,57 @@ document.addEventListener('click', e => {
     }
   });
 })();
+
+
+// Forensic Evidence Hasher (Client-side SHA-256 for Evidence Chain of Custody)
+(function() {
+  const triggerBtn = document.getElementById('forensic-upload-trigger');
+  const fileInput = document.getElementById('forensic-file-input');
+  const resultBox = document.getElementById('forensic-result');
+  const hashValEl = document.getElementById('forensic-hash-val');
+  const metaEl = document.getElementById('forensic-file-meta');
+  const copyBtn = document.getElementById('copy-hash-btn');
+
+  if (!triggerBtn || !fileInput) return;
+
+  triggerBtn.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    triggerBtn.textContent = 'جاري الفحص الجنائي واستخراج البصمة...';
+    triggerBtn.disabled = true;
+
+    try {
+      const buffer = await file.arrayBuffer();
+      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      hashValEl.textContent = hashHex;
+      const sizeKb = (file.size / 1024).toFixed(1);
+      const dateStr = new Date().toLocaleString('ar-IQ');
+      metaEl.textContent = `الملف: ${file.name} (${sizeKb} KB) • تاريخ الفحص: ${dateStr}`;
+      resultBox.style.display = 'block';
+      triggerBtn.textContent = 'اختيار ملف آخر للفحص الجنائي 🔍';
+      triggerBtn.disabled = false;
+    } catch (err) {
+      alert('تعذر استخراج البصمة للملف: ' + err.message);
+      triggerBtn.textContent = 'اختيار ملف للفحص الجنائي 🔍';
+      triggerBtn.disabled = false;
+    }
+  });
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const hash = hashValEl.textContent;
+      if (hash) {
+        navigator.clipboard.writeText(hash).then(() => {
+          copyBtn.textContent = 'تم النسخ بنجاح ✓';
+          setTimeout(() => copyBtn.textContent = 'نسخ البصمة الجنائية', 2500);
+        });
+      }
+    });
+  }
+})();
