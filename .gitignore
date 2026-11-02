@@ -1,0 +1,8 @@
+# Temporary files and test screenshots
+screenshot_*.png
+asym_*.png
+celebrity_*.png
+test_phone.png
+*.log
+.DS_Store
+Thumbs.db
