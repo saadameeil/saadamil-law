@@ -1,7 +1,7 @@
 {
   "specVersion": "1.0",
   "host": {
-    "displayName": "مكتب المحامي سعد فراس أميل | المنصة القانونية الرقمية",
+    "displayName": "مكتب المحامي سعد فراس أميل | Saad Firas Amil Law Practice",
     "identifier": "did:web:saadamil.com"
   },
   "entries": [
@@ -12,7 +12,9 @@
       "url": "https://saadamil.com/.well-known/mcp/server-card.json",
       "representativeQueries": [
         "التحقق من قيد المحامي سعد فراس أميل",
-        "استشارة قانونية في تأسيس الشركات في العراق"
+        "استشارة قانونية في تأسيس الشركات في العراق",
+        "Verify Iraqi attorney credentials",
+        "Corporate legal representation in Baghdad"
       ]
     },
     {
@@ -22,14 +24,27 @@
       "url": "https://saadamil.com/openapi.json",
       "representativeQueries": [
         "حجز استشارة قضائية مع محامٍ عراقي",
-        "البحث في مقالات القانون العراقي"
+        "البحث في مقالات القانون العراقي",
+        "Schedule legal consultation with Iraqi counsel"
       ]
     },
     {
       "identifier": "urn:air:saadamil.com:doc:llms-txt",
-      "displayName": "Saad Amil LLMs Index",
+      "displayName": "Saad Amil Arabic LLMs Index",
       "type": "text/plain",
       "url": "https://saadamil.com/llms.txt"
+    },
+    {
+      "identifier": "urn:air:saadamil.com:doc:llms-en-txt",
+      "displayName": "Saad Amil English LLMs Index",
+      "type": "text/plain",
+      "url": "https://saadamil.com/llms-en.txt"
+    },
+    {
+      "identifier": "urn:air:saadamil.com:doc:en-markdown",
+      "displayName": "Saad Amil English Markdown Portal",
+      "type": "text/markdown",
+      "url": "https://saadamil.com/en.md"
     },
     {
       "identifier": "urn:air:saadamil.com:doc:agents-md",

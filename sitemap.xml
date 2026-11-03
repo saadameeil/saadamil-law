@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://saadamil.com/</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://saadamil.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/en.html"/>
+  </url>
+  <url>
+    <loc>https://saadamil.com/en.html</loc>
+    <lastmod>2026-11-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://saadamil.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/en.html"/>
   </url>
   <url>
     <loc>https://saadamil.com/articles/art-1.html</loc>
@@ -32,6 +42,12 @@
   </url>
   <url>
     <loc>https://saadamil.com/llms.txt</loc>
+    <lastmod>2026-11-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saadamil.com/llms-en.txt</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
