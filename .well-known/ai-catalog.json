@@ -1,0 +1,41 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "مكتب المحامي سعد فراس أميل | المنصة القانونية الرقمية",
+    "identifier": "did:web:saadamil.com"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:saadamil.com:mcp:server-card",
+      "displayName": "Saad Amil Legal MCP Server Card",
+      "type": "application/mcp-server-card+json",
+      "url": "https://saadamil.com/.well-known/mcp/server-card.json",
+      "representativeQueries": [
+        "التحقق من قيد المحامي سعد فراس أميل",
+        "استشارة قانونية في تأسيس الشركات في العراق"
+      ]
+    },
+    {
+      "identifier": "urn:air:saadamil.com:api:openapi",
+      "displayName": "Saad Amil Legal OpenAPI Specification",
+      "type": "application/openapi+json",
+      "url": "https://saadamil.com/openapi.json",
+      "representativeQueries": [
+        "حجز استشارة قضائية مع محامٍ عراقي",
+        "البحث في مقالات القانون العراقي"
+      ]
+    },
+    {
+      "identifier": "urn:air:saadamil.com:doc:llms-txt",
+      "displayName": "Saad Amil LLMs Index",
+      "type": "text/plain",
+      "url": "https://saadamil.com/llms.txt"
+    },
+    {
+      "identifier": "urn:air:saadamil.com:doc:agents-md",
+      "displayName": "Saad Amil AI Agents Directives",
+      "type": "text/markdown",
+      "url": "https://saadamil.com/AGENTS.md"
+    }
+  ]
+}

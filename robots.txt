@@ -3,37 +3,48 @@ Disallow: /admin.html
 Disallow: /api/
 Disallow: /data/
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 # Explicit Authorization for Generative AI & Search Engine Agents
 User-agent: GPTBot
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: ChatGPT-User
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: OAI-SearchBot
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: ClaudeBot
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: PerplexityBot
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: Googlebot
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: Google-Extended
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: Applebot-Extended
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: Bingbot
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: CCBot
 Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 # Canonical Sitemaps & Knowledge Feeds
 Sitemap: https://saadamil.com/sitemap.xml

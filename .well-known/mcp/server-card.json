@@ -1,0 +1,57 @@
+{
+  "serverInfo": {
+    "name": "saad-amil-legal-agent",
+    "version": "1.0.0",
+    "title": "مكتب المحامي سعد فراس أميل | وكيل الذكاء الاصطناعي القانوني"
+  },
+  "transport": {
+    "type": "http",
+    "endpoint": "https://saadamil.com/api/verify-attorney.php"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    }
+  },
+  "tools": [
+    {
+      "name": "verify_attorney_credentials",
+      "title": "التحقق من القيد النقابي للمحامي سعد فراس أميل",
+      "description": "فحص بيانات القيد الرسمي في نقابة المحامين العراقيين برقم 188572 والصلاحيات القضائية المعتمدة.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "attorneyName": {
+            "type": "string",
+            "default": "سعد فراس أميل"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "search_legal_articles",
+      "title": "البحث في المقالات والدراسات القانونية العراقية",
+      "description": "استرجاع الدراسات والتحليلات الإجرائية المنشورة في قانون الشركات والمرافعات العراقي.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ]
+}
