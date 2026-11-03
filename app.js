@@ -781,3 +781,125 @@ document.addEventListener('click', e => {
     });
   }
 })();
+
+
+// Dynamic Legal Articles Loader & Modal Handler
+(function initArticlesModule() {
+  const container = document.getElementById('live-articles-grid');
+  const readerModal = document.getElementById('article-reader-modal');
+  const closeBtn = document.getElementById('close-art-reader-modal');
+  const consultBtn = document.getElementById('art-reader-consult-btn');
+  const titleEl = document.getElementById('art-reader-title');
+  const catEl = document.getElementById('art-reader-cat');
+  const metaEl = document.getElementById('art-reader-meta');
+  const contentEl = document.getElementById('art-reader-content');
+
+  if (!container) return;
+
+  let currentTopicForConsult = '';
+
+  async function loadArticles() {
+    let articles = [];
+    try {
+      const resp = await fetch('api/articles.php');
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.status === 'success' && data.articles) articles = data.articles;
+      }
+    } catch (e) {}
+
+    if (!articles.length) {
+      try {
+        const resp2 = await fetch('data/articles.json');
+        if (resp2.ok) articles = await resp2.json();
+      } catch (e) {}
+    }
+
+    if (!articles.length) {
+      articles = [
+        {
+          id: 'art-1',
+          title: 'الدليل الإجرائي لدعوى إزالة الشيوع وفرز الحصص العقارية في المحاكم العراقية',
+          category: 'العقارات والتركات',
+          date: '2026-11-03',
+          excerpt: 'خطوات إقامة دعوى إزالة الشيوع أمام محكمة البداءة المختصة، وكيفية حماية حصة الشريك أو الوريث من البيع ببخس الثمن بالمزاد العلني.',
+          content: 'دعوى إزالة الشيوع في القانون المدني العراقي رقم 40 لسنة 1951 تُعد من أهم الدعاوى العقارية لحسم النزاعات بين الشركاء والورثة.\n\nتُقام الدعوى أمام محكمة البداءة المختصة موقعياً بمحل العقار. يتم ندب خبير قضائي لتقدير إمكانية القسمة العينية؛ فإذا تعذرت القسمة، تصدر المحكمة قراراً ببيع العقار بالمزاد العلني وتوزيع بدلات البيع على الشركاء كلٌّ بحسب حصته الشرعية أو التعاقدية.\n\nينصح المحامي سعد فراس أميل دائماً بوضع إشارة عدم التصرف في دائرة التسجيل العقاري فور قيد الدعوى لمنع تهريب الحصص أو التلاعب بالملكية.',
+          views: 184
+        },
+        {
+          id: 'art-2',
+          title: 'درع الحماية القانونية لعقارات المغتربين العراقيين في أمريكا وأوروبا',
+          category: 'شؤون المغتربين',
+          date: '2026-11-01',
+          excerpt: 'الإجراءات الأصولية لتصديق الوكالات القنصلية وحسم صحة الصدور الإلكترونية وحماية أراضي وعقارات المهاجرين من تزوير مكاتب الدلالية.',
+          content: 'يواجه العراقيون المقيمون في الولايات المتحدة، كندا، بريطانيا، والدول الأوروبية تحديات جسيمة في إدارة أملاكهم ومتابعة تركاتهم في بغداد والمحافظات.\n\nالخطوة الأولى تبدأ من صياغة وكالة عامة أو خاصة لدى القنصلية العراقية في بلد الإقامة، تليها مطابقة صحة الصدور الإلكترونية عبر وزارة الخارجية في بغداد.\n\nيوفر مكتبنا تمثيلاً قضائياً رفيع المستوى بإشراف شخصي وتقارير مصورة موثقة لجميع مراحل الدعوى دون حاجة المغترب للسفر، مع إمكانية سداد أتعاب الاستشارة لحساب بنكي أمريكي رسمي (Zelle / ACH).',
+          views: 329
+        },
+        {
+          id: 'art-3',
+          title: 'إثبات الأدلة الرقمية وسلسلة الحيازة في قضايا الابتزاز الإلكتروني',
+          category: 'الجرائم المعلوماتية',
+          date: '2026-10-29',
+          excerpt: 'كيفية توثيق بصمة التشفير الجنائية (SHA-256) للتسجيلات الصوتية ومحادثات الابتزاز لقبولها كدليل قطعي أمام قاضي التحقيق.',
+          content: 'مع تطور أدوات التزييف العميق واستنساخ الأصوات بالذكاء الاصطناعي، باتت المحاكم الجنائية ومحاكم التحقيق في العراق تتطلب تدقيقاً علمياً صارماً للأدلة الرقمية.\n\nوفقاً لقانون أصول المحاكمات الجزائية رقم 23 لسنة 1971 وقانون الإثبات العراقي رقم 107 لسنة 1979 المعدل، لا يُقبل الدليل الإلكتروني إلا إذا حوفظ على سلسلة حيازته (Chain of Custody) من لحظة استخراجه.\n\nيوفر مكتبنا بالتعاون مع خبرتنا في Gold Stone Intelligence فحصاً جنائياً محلياً للتسجيلات واستخراج بصمات التجزئة المشفرة لقطع الطريق على الخصم في ادعاء الفبركة.',
+          views: 412
+        }
+      ];
+    }
+
+    renderArticles(articles);
+  }
+
+  function renderArticles(list) {
+    container.innerHTML = '';
+    list.forEach(art => {
+      const card = document.createElement('article');
+      card.className = 'article-pub-card';
+      card.innerHTML = `
+        <div>
+          <span class="art-cat">${art.category}</span>
+          <h3>${art.title}</h3>
+          <p>${art.excerpt}</p>
+        </div>
+        <div class="article-pub-footer">
+          <span>📅 ${art.date}</span>
+          <button class="article-read-btn" data-art-id="${art.id}">قراءة التحليل الكامل ←</button>
+        </div>
+      `;
+      const btn = card.querySelector('.article-read-btn');
+      btn.addEventListener('click', () => openArticle(art));
+      container.appendChild(card);
+    });
+  }
+
+  function openArticle(art) {
+    if (!readerModal) return;
+    titleEl.textContent = art.title;
+    catEl.textContent = art.category;
+    metaEl.textContent = `بقلم المحامي سعد فراس أميل • تاريخ النشر: ${art.date} • قيد نقابة: 188572`;
+    contentEl.textContent = art.content;
+    currentTopicForConsult = art.title;
+    readerModal.showModal();
+  }
+
+  if (closeBtn && readerModal) {
+    closeBtn.addEventListener('click', () => readerModal.close());
+    readerModal.addEventListener('click', (e) => {
+      if (e.target === readerModal) readerModal.close();
+    });
+  }
+
+  if (consultBtn && readerModal) {
+    consultBtn.addEventListener('click', () => {
+      readerModal.close();
+      const consultSection = document.getElementById('consult');
+      if (consultSection) {
+        consultSection.scrollIntoView({ behavior: 'smooth' });
+        const topicInput = document.getElementById('consult-topic') || document.querySelector('input[name="topic"]');
+        if (topicInput) topicInput.value = 'استشارة بخصوص: ' + currentTopicForConsult;
+      }
+    });
+  }
+
+  loadArticles();
+})();
