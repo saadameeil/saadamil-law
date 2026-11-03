@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الإدارة القضائية والمكتب الرقمي — المحامي سعد فراس أميل</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070a12;
+      --surface: #0f172a;
+      --surface-border: rgba(212, 175, 55, 0.25);
+      --surface-hover: #162036;
+      --gold: #d4af37;
+      --gold-light: #f59e0b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --purple: #a855f7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Cairo', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Auth Overlay */
+    #auth-screen {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 10, 18, 0.96);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .auth-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+    }
+
+    .auth-logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 1.25rem;
+      border-radius: 50%;
+      background: #000;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .auth-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+    .auth-title { font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 0.25rem; }
+    .auth-subtitle { font-size: 0.85rem; color: var(--gold); margin-bottom: 1.5rem; }
+
+    .auth-input-group { margin-bottom: 1.25rem; text-align: right; }
+    .auth-input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .auth-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: #070a12;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      font-family: inherit;
+      text-align: center;
+      letter-spacing: 2px;
+      transition: all 0.2s;
+    }
+    .auth-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px rgba(212,175,55,0.2); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      font-family: inherit;
+      text-decoration: none;
+    }
+    .btn-gold { background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; width: 100%; }
+    .btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-secondary { background: #1e293b; color: #f1f5f9; border: 1px solid #334155; }
+    .btn-secondary:hover { background: #334155; }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.78rem; border-radius: 6px; }
+    .btn-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .btn-danger:hover { background: rgba(239, 68, 68, 0.3); }
+
+    /* App Header */
+    header {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--surface-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand-wrap { display: flex; align-items: center; gap: 0.85rem; }
+    .brand-badge { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--gold); overflow: hidden; background: #000; }
+    .brand-badge img { width: 100%; height: 100%; object-fit: contain; }
+    .brand-text h1 { font-size: 1.05rem; font-weight: 800; color: #fff; }
+    .brand-text p { font-size: 0.75rem; color: var(--gold); }
+
+    .header-nav { display: flex; align-items: center; gap: 0.75rem; }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 0.2s;
+    }
+    .kpi-card:hover { border-color: var(--surface-border); }
+    .kpi-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+    .kpi-val { font-size: 1.75rem; font-weight: 900; color: #fff; font-family: monospace; }
+    .kpi-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      background: var(--surface);
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .search-box {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.2rem;
+      background: #070a12;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.88rem;
+      font-family: inherit;
+    }
+    .search-input:focus { outline: none; border-color: var(--gold); }
+
+    .filter-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .filter-tab {
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: #070a12;
+      color: var(--text-muted);
+      border: 1px solid #334155;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-tab.active {
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    /* Dockets Grid */
+    .dockets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1.25rem;
+    }
+    @media (max-width: 480px) {
+      .dockets-grid { grid-template-columns: 1fr; }
+    }
+
+    .docket-card {
+      background: var(--surface);
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .docket-card:hover { border-color: rgba(212, 175, 55, 0.4); transform: translateY(-2px); }
+
+    .docket-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 0.75rem;
+    }
+    .docket-id {
+      font-family: monospace;
+      font-weight: 800;
+      color: var(--gold);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+    }
+    .docket-date { font-size: 0.75rem; color: var(--text-dim); }
+
+    .client-info { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
+    .client-name { font-size: 1.05rem; font-weight: 800; color: #fff; }
+    .client-loc { font-size: 0.78rem; color: var(--text-muted); }
+
+    .phone-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+    }
+    .btn-phone {
+      flex: 1;
+      padding: 0.45rem 0.75rem;
+      background: #1e293b;
+      border-radius: 6px;
+      color: #38bdf8;
+      font-size: 0.8rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      border: 1px solid #334155;
+      font-weight: 600;
+    }
+    .btn-phone:hover { background: #334155; }
+    .btn-wa { color: #4ade80; border-color: rgba(74, 222, 128, 0.3); background: rgba(74, 222, 128, 0.08); }
+    .btn-wa:hover { background: rgba(74, 222, 128, 0.18); }
+
+    .docket-topic {
+      background: #070a12;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      border-right: 3px solid var(--gold);
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    .opponent-box {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.02);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+    }
+    .opponent-box strong { color: #f87171; }
+
+    .case-summary {
+      font-size: 0.83rem;
+      color: #cbd5e1;
+      background: #070a12;
+      padding: 0.75rem;
+      border-radius: 8px;
+      max-height: 120px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .receipt-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0.75rem;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+    .receipt-strip.intl {
+      background: rgba(168, 85, 247, 0.08);
+      border-color: rgba(168, 85, 247, 0.25);
+    }
+    .receipt-view-btn {
+      color: var(--gold);
+      background: none;
+      border: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .docket-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      border-top: 1px solid #1e293b;
+      padding-top: 0.75rem;
+      margin-top: auto;
+    }
+
+    .status-select {
+      background: #070a12;
+      border: 1px solid #334155;
+      color: #fff;
+      font-size: 0.78rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .status-select:focus { outline: none; border-color: var(--gold); }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal.active { display: flex; }
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.75rem;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: #1e293b;
+      border: none;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    /* Print Docket Styles */
+    @media print {
+      body { background: #fff !important; color: #000 !important; }
+      #auth-screen, header, .controls-bar, .kpi-grid, .btn-no-print { display: none !important; }
+      .dockets-grid { display: block !important; }
+      .docket-card {
+        border: 2px solid #000 !important;
+        page-break-inside: avoid;
+        margin-bottom: 2rem;
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .docket-topic, .case-summary, .opponent-box {
+        background: #f8fafc !important;
+        color: #000 !important;
+        border-color: #000 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Auth Overlay -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="iraqi-bar-logo.png" alt="نقابة المحامين العراقيين">
+      </div>
+      <h2 class="auth-title">لوحة الإدارة والمكتب الرقمي</h2>
+      <p class="auth-subtitle">المحامي سعد فراس أميل — قيد نقابة: 188572</p>
+
+      <form id="auth-form">
+        <div class="auth-input-group">
+          <label for="pin-input">أدخل الرمز السري للمحامي أو كلمة المرور:</label>
+          <input type="password" id="pin-input" class="auth-input" placeholder="••••••" autofocus required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-gold">تسجيل الدخول إلى النظام 🔒</button>
+        <p id="auth-err" style="color: var(--danger); font-size: 0.8rem; margin-top: 0.75rem; display: none;">الرمز غير صحيح، يرجى المحاولة مجدداً.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="brand-wrap">
+        <div class="brand-badge">
+          <img src="iraqi-bar-logo.png" alt="شعار النقابة">
+        </div>
+        <div class="brand-text">
+          <h1>المحامي سعد فراس أميل</h1>
+          <p>لوحة التحكم القضائي • هوية نقابة: 188572</p>
+        </div>
+      </div>
+
+      <div class="header-nav">
+        <span id="current-clock" style="font-family: monospace; font-size: 0.8rem; color: var(--gold); background: #070a12; padding: 4px 10px; border-radius: 6px; border: 1px solid #1e293b;"></span>
+        <a href="https://mail.hostinger.com" target="_blank" class="btn btn-secondary btn-sm">📧 البريد الرسمي</a>
+        <a href="https://saadamil.com" target="_blank" class="btn btn-secondary btn-sm">🌐 الموقع الحي</a>
+        <button id="logout-btn" class="btn btn-danger btn-sm">خروج ⏻</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- KPIs -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">إجمالي القضايا والإضبارات</div>
+          <div class="kpi-val" id="kpi-total">0</div>
+        </div>
+        <div class="kpi-icon" style="color: var(--gold);">📜</div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">استشارات جديدة للمراجعة</div>
+          <div class="kpi-val" id="kpi-new" style="color: var(--gold-light);">0</div>
+        </div>
+        <div class="kpi-icon" style="color: var(--gold-light);">⏳</div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">استشارات مسددة الرسوم</div>
+          <div class="kpi-val" id="kpi-paid" style="color: var(--success);">0</div>
+        </div>
+        <div class="kpi-icon" style="color: var(--success);">✅</div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">قضايا المغتربين (US & EU)</div>
+          <div class="kpi-val" id="kpi-diaspora" style="color: var(--purple);">0</div>
+        </div>
+        <div class="kpi-icon" style="color: var(--purple);">🌍</div>
+      </div>
+    </section>
+
+    <!-- Controls -->
+    <section class="controls-bar btn-no-print">
+      <div class="search-box">
+        <input type="text" id="search-input" class="search-input" placeholder="🔍 بحث بالاسم، الهاتف، رقم الإضبارة، أو الخصم...">
+      </div>
+
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">الكل</button>
+        <button class="filter-tab" data-filter="جديدة">الجديدة 🟡</button>
+        <button class="filter-tab" data-filter="قيد التواصل">قيد التواصل 🔵</button>
+        <button class="filter-tab" data-filter="تم التوكيل">تم التوكيل 🟢</button>
+        <button class="filter-tab" data-filter="منتهية">منتهية ⚪</button>
+        <button class="filter-tab" data-filter="diaspora">المغتربين 🌍</button>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem;">
+        <button id="add-manual-btn" class="btn btn-secondary btn-sm">إضافة قضية +</button>
+        <button id="export-excel-btn" class="btn btn-secondary btn-sm">تصدير Excel 📊</button>
+        <button id="refresh-btn" class="btn btn-secondary btn-sm">تحديث 🔄</button>
+      </div>
+    </section>
+
+    <!-- Dockets Container -->
+    <section id="dockets-container" class="dockets-grid">
+      <!-- Injected via JavaScript -->
+    </section>
+  </main>
+
+  <!-- Receipt Viewer Modal -->
+  <div id="receipt-modal" class="modal">
+    <div class="modal-box" style="text-align: center;">
+      <button class="modal-close" onclick="closeModal('receipt-modal')">✕</button>
+      <h3 style="color: var(--gold); margin-bottom: 1rem; font-size: 1.1rem;">إشعار / وصل التحويل المالي</h3>
+      <div id="receipt-modal-body" style="max-height: 70vh; overflow: auto; border-radius: 8px; border: 1px solid #334155;">
+        <img id="receipt-modal-img" src="" alt="وصل التحويل" style="width: 100%; height: auto; display: block;">
+      </div>
+      <div style="margin-top: 1rem;">
+        <a id="receipt-download-btn" href="#" download="receipt.jpg" class="btn btn-gold btn-sm">تحميل الصورة 💾</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manual Add Modal -->
+  <div id="manual-modal" class="modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('manual-modal')">✕</button>
+      <h3 style="color: var(--gold); margin-bottom: 1rem; font-size: 1.15rem;">إضافة ملف قضية / استشارة مكتبية</h3>
+      
+      <form id="manual-form" style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <div style="display: flex; gap: 0.5rem;">
+          <select id="man-prefix" class="auth-input" style="width: 90px; text-align: right;">
+            <option value="السيد">السيد</option>
+            <option value="السيدة">السيدة</option>
+            <option value="شركة">شركة</option>
+          </select>
+          <input type="text" id="man-name" class="auth-input" style="flex: 1; text-align: right;" placeholder="اسم الموكل الكامل *" required>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <input type="tel" id="man-phone" class="auth-input" style="flex: 1; text-align: right;" placeholder="رقم الهاتف (0780...) *" required>
+          <input type="text" id="man-loc" class="auth-input" style="flex: 1; text-align: right;" placeholder="المحافظة / المنطقة">
+        </div>
+
+        <input type="text" id="man-topic" class="auth-input" style="text-align: right;" placeholder="موضوع الدعوى (مثال: إزالة شيوع عقار المنصور) *" required>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <input type="text" id="man-opp-name" class="auth-input" style="flex: 1; text-align: right;" placeholder="اسم الخصم / المدعى عليه">
+          <input type="tel" id="man-opp-phone" class="auth-input" style="flex: 1; text-align: right;" placeholder="هاتف الخصم">
+        </div>
+
+        <textarea id="man-summary" class="auth-input" style="text-align: right; min-height: 80px;" placeholder="ملخص وقائع الدعوى وطلبات الموكل..."></textarea>
+        <textarea id="man-notes" class="auth-input" style="text-align: right; min-height: 60px;" placeholder="ملاحظات المحامي سعد أميل الخاصة..."></textarea>
+
+        <button type="submit" class="btn btn-gold">حفظ في الأرشيف القضائي 💾</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const MASTER_PIN = '188572';
+    const MASTER_PASS = 'SaadLawyer@2026';
+    let currentPin = '';
+    let allDockets = [];
+
+    // Clock
+    setInterval(() => {
+      const now = new Date();
+      const el = document.getElementById('current-clock');
+      if (el) el.textContent = now.toLocaleDateString('ar-IQ') + ' • ' + now.toLocaleTimeString('ar-IQ');
+    }, 1000);
+
+    // Auth Handling
+    const authScreen = document.getElementById('auth-screen');
+    const authForm = document.getElementById('auth-form');
+    const pinInput = document.getElementById('pin-input');
+    const authErr = document.getElementById('auth-err');
+
+    function checkAuth() {
+      const saved = sessionStorage.getItem('saad_admin_token') || localStorage.getItem('saad_admin_token');
+      if (saved === MASTER_PIN || saved === MASTER_PASS) {
+        currentPin = saved;
+        authScreen.style.display = 'none';
+        loadDockets();
+      } else {
+        authScreen.style.display = 'flex';
+      }
+    }
+
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = pinInput.value.trim();
+      if (val === MASTER_PIN || val === MASTER_PASS) {
+        sessionStorage.setItem('saad_admin_token', val);
+        localStorage.setItem('saad_admin_token', val);
+        currentPin = val;
+        authScreen.style.display = 'none';
+        authErr.style.display = 'none';
+        loadDockets();
+      } else {
+        authErr.style.display = 'block';
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      sessionStorage.removeItem('saad_admin_token');
+      localStorage.removeItem('saad_admin_token');
+      location.reload();
+    });
+
+    // Load Dockets from Server & Local Storage
+    async function loadDockets() {
+      let serverDockets = [];
+      try {
+        const resp = await fetch('api/dockets.php?pin=' + encodeURIComponent(currentPin));
+        if (resp.ok) {
+          const res = await resp.json();
+          if (res.status === 'success') {
+            serverDockets = res.dockets || [];
+          }
+        }
+      } catch (err) {
+        console.log('Server fetch note:', err);
+      }
+
+      // Merge with localStorage
+      const localDockets = JSON.parse(localStorage.getItem('saad_amil_consultations') || '[]');
+      
+      const docketMap = new Map();
+      serverDockets.forEach(d => docketMap.set(d.docketId, d));
+      localDockets.forEach(d => {
+        if (!docketMap.has(d.docketId)) docketMap.set(d.docketId, d);
+      });
+
+      allDockets = Array.from(docketMap.values());
+      updateKPIs();
+      renderDockets();
+    }
+
+    function updateKPIs() {
+      document.getElementById('kpi-total').textContent = allDockets.length;
+      document.getElementById('kpi-new').textContent = allDockets.filter(d => !d.status || d.status === 'جديدة').length;
+      document.getElementById('kpi-paid').textContent = allDockets.filter(d => d.receiptBase64 || d.paymentMethod === 'intl_bank' || d.paymentMethod === 'qi_super').length;
+      document.getElementById('kpi-diaspora').textContent = allDockets.filter(d => d.paymentMethod === 'intl_bank' || (d.location && /أمريكا|أوروبا|كندا|بريطانيا|السويد|ألمانيا|USA|UK|Europe/i.test(d.location))).length;
+    }
+
+    // Render
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function renderDockets() {
+      const container = document.getElementById('dockets-container');
+      container.innerHTML = '';
+
+      let list = allDockets.filter(d => {
+        // Filter
+        if (currentFilter === 'diaspora') {
+          if (!(d.paymentMethod === 'intl_bank' || (d.location && /أمريكا|أوروبا|كندا|بريطانيا|السويد|ألمانيا|USA|UK|Europe/i.test(d.location)))) return false;
+        } else if (currentFilter !== 'all') {
+          if ((d.status || 'جديدة') !== currentFilter) return false;
+        }
+
+        // Search
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          const matchName = (d.name || '').toLowerCase().includes(q);
+          const matchPhone = (d.phone || '').includes(q);
+          const matchTopic = (d.topic || '').toLowerCase().includes(q);
+          const matchId = (d.docketId || '').toLowerCase().includes(q);
+          const matchOpp = (d.opponentName || '').toLowerCase().includes(q);
+          if (!matchName && !matchPhone && !matchTopic && !matchId && !matchOpp) return false;
+        }
+
+        return true;
+      });
+
+      if (list.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; padding: 3rem; text-align: center; color: var(--text-muted); background: var(--surface); border-radius: 12px; border: 1px dashed #334155;">لا توجد قضايا مطابقة لمعايير البحث الحالية.</div>';
+        return;
+      }
+
+      list.forEach(d => {
+        const card = document.createElement('article');
+        card.className = 'docket-card';
+
+        const isIntl = d.paymentMethod === 'intl_bank' || (d.location && /أمريكا|أوروبا|كندا|بريطانيا|السويد|ألمانيا|USA|UK|Europe/i.test(d.location));
+        const status = d.status || 'جديدة';
+
+        card.innerHTML = `
+          <div class="docket-header">
+            <span class="docket-id">${d.docketId}</span>
+            <span class="docket-date">${d.date || ''}</span>
+          </div>
+
+          <div class="client-info">
+            <div>
+              <div class="client-name">${d.titlePrefix || 'السيد'} ${d.name}</div>
+              <div class="client-loc">📍 ${d.location || 'بغداد'} ${isIntl ? '• <span style="color:var(--purple);font-weight:700;">🌍 عميل مهجر</span>' : ''}</div>
+            </div>
+            <span style="font-size:0.75rem; padding:2px 8px; border-radius:4px; font-weight:700; ${getStatusBadgeStyle(status)}">${status}</span>
+          </div>
+
+          <div class="phone-actions">
+            <a href="tel:${d.phone}" class="btn-phone">📞 اتصال (${d.phone})</a>
+            <a href="https://wa.me/${cleanPhone(d.phone)}?text=${encodeURIComponent('السلام عليكم ' + (d.titlePrefix || 'السيد') + ' ' + d.name + '، معك مكتب المحامي سعد فراس أميل بخصوص استشارتك القانونية رقم ' + d.docketId)}" target="_blank" class="btn-phone btn-wa">💬 واتساب</a>
+          </div>
+
+          <div class="docket-topic">
+            ⚖️ ${d.topic}
+          </div>
+
+          ${d.opponentName ? `
+            <div class="opponent-box">
+              الخصم: <strong>${d.opponentName}</strong> ${d.opponentPhone ? '(' + d.opponentPhone + ')' : ''}
+            </div>
+          ` : ''}
+
+          <div class="case-summary">${d.summary || 'لا يوجد ملخص مكتوب.'}</div>
+
+          ${d.receiptBase64 ? `
+            <div class="receipt-strip ${isIntl ? 'intl' : ''}">
+              <span>✅ إشعار السداد متوفر (${isIntl ? 'US Bank / Stripe' : 'Super ID 75k'})</span>
+              <button class="receipt-view-btn" onclick="viewReceipt('${d.docketId}')">معاينة الوصل 👁️</button>
+            </div>
+          ` : `
+            <div class="receipt-strip" style="background:rgba(239,68,68,0.06); border-color:rgba(239,68,68,0.2); color:#fca5a5;">
+              <span>⚠️ استشارة قيد التدقيق المالي</span>
+            </div>
+          `}
+
+          <div class="docket-footer">
+            <select class="status-select" onchange="updateStatus('${d.docketId}', this.value)">
+              <option value="جديدة" ${status === 'جديدة' ? 'selected' : ''}>🟡 جديدة</option>
+              <option value="قيد التواصل" ${status === 'قيد التواصل' ? 'selected' : ''}>🔵 قيد التواصل</option>
+              <option value="تم التوكيل" ${status === 'تم التوكيل' ? 'selected' : ''}>🟢 تم استلام الوكالة</option>
+              <option value="منتهية" ${status === 'منتهية' ? 'selected' : ''}>⚪ منتهية / مؤرشفة</option>
+            </select>
+
+            <div style="display:flex; gap:0.4rem;">
+              <button onclick="printDocket('${d.docketId}')" class="btn btn-secondary btn-sm" title="طباعة غلاف الإضبارة الورقية">🖨️ طباعة</button>
+              <button onclick="deleteDocket('${d.docketId}')" class="btn btn-danger btn-sm" title="حذف الإضبارة">🗑️</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function getStatusBadgeStyle(status) {
+      if (status === 'تم التوكيل') return 'background:rgba(16,185,129,0.15); color:#34d399; border:1px solid #059669;';
+      if (status === 'قيد التواصل') return 'background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid #2563eb;';
+      if (status === 'منتهية') return 'background:rgba(148,163,184,0.15); color:#cbd5e1; border:1px solid #475569;';
+      return 'background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid #d97706;';
+    }
+
+    function cleanPhone(p) {
+      p = String(p || '').replace(/\D/g, '');
+      if (p.startsWith('07')) return '964' + p.substring(1);
+      if (p.startsWith('7')) return '964' + p;
+      return p;
+    }
+
+    // Filter & Search events
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        renderDockets();
+      });
+    });
+
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      searchQuery = e.target.value.trim();
+      renderDockets();
+    });
+
+    document.getElementById('refresh-btn').addEventListener('click', loadDockets);
+
+    // Update Status
+    async function updateStatus(docketId, newStatus) {
+      const d = allDockets.find(x => x.docketId === docketId);
+      if (d) d.status = newStatus;
+      updateKPIs();
+
+      // Update in server
+      try {
+        await fetch('api/dockets.php?pin=' + encodeURIComponent(currentPin), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'update_status', docketId, status: newStatus })
+        });
+      } catch (err) {}
+
+      // Update in localStorage
+      localStorage.setItem('saad_amil_consultations', JSON.stringify(allDockets));
+    }
+
+    // Delete Docket
+    async function deleteDocket(docketId) {
+      if (!confirm('هل أنت متأكد من حذف هذه الإضبارة نهائياً؟')) return;
+      allDockets = allDockets.filter(x => x.docketId !== docketId);
+      updateKPIs();
+      renderDockets();
+
+      try {
+        await fetch('api/dockets.php?pin=' + encodeURIComponent(currentPin), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'delete', docketId })
+        });
+      } catch (err) {}
+
+      localStorage.setItem('saad_amil_consultations', JSON.stringify(allDockets));
+    }
+
+    // View Receipt
+    function viewReceipt(docketId) {
+      const d = allDockets.find(x => x.docketId === docketId);
+      if (!d || !d.receiptBase64) return;
+      document.getElementById('receipt-modal-img').src = d.receiptBase64;
+      document.getElementById('receipt-download-btn').href = d.receiptBase64;
+      document.getElementById('receipt-download-btn').download = `${docketId}-receipt.jpg`;
+      document.getElementById('receipt-modal').classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Export Excel (CSV)
+    document.getElementById('export-excel-btn').addEventListener('click', () => {
+      if (allDockets.length === 0) {
+        alert('لا توجد قضايا للتصدير.');
+        return;
+      }
+      let csv = '\uFEFFرقم الإضبارة,التاريخ,الموكل,الهاتف,المحافظة,نوع الدعوى,الخصم,هاتف الخصم,طريقة الدفع,الحالة,الملخص\n';
+      allDockets.forEach(d => {
+        const row = [
+          `"${d.docketId}"`,
+          `"${d.date}"`,
+          `"${(d.titlePrefix || '') + ' ' + (d.name || '')}"`,
+          `"${d.phone || ''}"`,
+          `"${d.location || ''}"`,
+          `"${(d.topic || '').replace(/"/g, '""')}"`,
+          `"${(d.opponentName || '').replace(/"/g, '""')}"`,
+          `"${d.opponentPhone || ''}"`,
+          `"${d.paymentMethod || ''}"`,
+          `"${d.status || 'جديدة'}"`,
+          `"${(d.summary || '').replace(/"/g, '""')}"`
+        ];
+        csv += row.join(',') + '\n';
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `saadamil-law-dockets-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+    });
+
+    // Print Docket
+    function printDocket(docketId) {
+      const d = allDockets.find(x => x.docketId === docketId);
+      if (!d) return;
+
+      const printWin = window.open('', '', 'width=800,height=900');
+      printWin.document.write(`
+        <html lang="ar" dir="rtl">
+        <head>
+          <title>إضبارة قضائية - ${d.docketId}</title>
+          <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+          <style>
+            body { font-family: 'Cairo', sans-serif; padding: 2.5rem; color: #000; line-height: 1.6; }
+            .header { border-bottom: 3px double #000; padding-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+            .header h1 { font-size: 1.4rem; margin: 0; }
+            .header p { font-size: 0.9rem; margin: 0; }
+            .docket-box { border: 2px solid #000; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+            .row { display: flex; margin-bottom: 0.75rem; border-bottom: 1px dotted #ccc; padding-bottom: 0.35rem; }
+            .label { font-weight: 700; width: 140px; }
+            .val { flex: 1; }
+            .summary-box { background: #f8fafc; border: 1px solid #ccc; padding: 1rem; border-radius: 6px; min-height: 120px; }
+            .footer-sig { margin-top: 3rem; display: flex; justify-content: space-between; text-align: center; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div>
+              <h1>المحامي سعد فراس أميل</h1>
+              <p>للمحاماة والاستشارات القانونية • بغداد، العراق</p>
+              <p>هوية نقابة المحامين العراقيين: 188572 • هاتف: 0780 122 2119</p>
+            </div>
+            <div style="text-align: left;">
+              <h2 style="font-family: monospace; font-size: 1.3rem; margin: 0;">${d.docketId}</h2>
+              <p style="font-size: 0.85rem;">تاريخ التسجيل: ${d.date}</p>
+            </div>
+          </div>
+
+          <div class="docket-box">
+            <h3 style="border-bottom: 1px solid #000; padding-bottom: 0.4rem; margin-bottom: 1rem;">بيانات الإضبارة وأطراف الدعوى</h3>
+            <div class="row"><div class="label">الموكل / المستشير:</div><div class="val">${d.titlePrefix || 'السيد'} ${d.name} (${d.phone}) - ${d.location || 'بغداد'}</div></div>
+            <div class="row"><div class="label">نوع الدعوى:</div><div class="val"><strong>${d.topic}</strong></div></div>
+            ${d.opponentName ? `<div class="row"><div class="label">الخصم / المدعى عليه:</div><div class="val">${d.opponentName} ${d.opponentPhone ? '(' + d.opponentPhone + ')' : ''}</div></div>` : ''}
+            <div class="row"><div class="label">حالة الرسم القضائي:</div><div class="val">مسدد أصولياً (${d.paymentMethod === 'intl_bank' ? 'حساب بنكي أمريكي Zelle' : 'Super ID 75,000 د.ع'})</div></div>
+          </div>
+
+          <h3>وقائع القضية والموجز القانوني:</h3>
+          <div class="summary-box">${d.summary || 'تم تسجيل الاستشارة أصولياً.'}</div>
+
+          <div class="footer-sig">
+            <div>
+              <p>توقيع وختم الموكل</p>
+              <p style="margin-top: 40px;">.........................................</p>
+            </div>
+            <div>
+              <p>المحامي سعد فراس أميل</p>
+              <p style="font-size: 0.8rem; color: #555;">المشرف العام على الملف</p>
+              <p style="margin-top: 25px;">.........................................</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `);
+      printWin.document.close();
+      printWin.focus();
+      setTimeout(() => printWin.print(), 500);
+    }
+
+    // Manual Add Modal
+    document.getElementById('add-manual-btn').addEventListener('click', () => {
+      document.getElementById('manual-modal').classList.add('active');
+    });
+
+    document.getElementById('manual-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        docketId: 'IQ-' + new Date().getFullYear() + '-MANUAL-' + Math.floor(100 + Math.random() * 900),
+        date: new Date().toLocaleDateString('ar-IQ') + ' ' + new Date().toLocaleTimeString('ar-IQ'),
+        timestamp: new Date().toISOString(),
+        titlePrefix: document.getElementById('man-prefix').value,
+        name: document.getElementById('man-name').value.trim(),
+        phone: document.getElementById('man-phone').value.trim(),
+        location: document.getElementById('man-loc').value.trim() || 'بغداد',
+        topic: document.getElementById('man-topic').value.trim(),
+        opponentName: document.getElementById('man-opp-name').value.trim(),
+        opponentPhone: document.getElementById('man-opp-phone').value.trim(),
+        summary: document.getElementById('man-summary').value.trim(),
+        notes: document.getElementById('man-notes').value.trim(),
+        status: 'تم التوكيل',
+        paymentMethod: 'مكتبي',
+        receiptBase64: ''
+      };
+
+      // 1. Save immediately
+      allDockets.unshift(payload);
+      localStorage.setItem('saad_amil_consultations', JSON.stringify(allDockets));
+
+      // 2. Background sync to server
+      try {
+        fetch('api/dockets.php?pin=' + encodeURIComponent(currentPin), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'add_manual', ...payload })
+        }).catch(() => {});
+      } catch (err) {}
+
+      closeModal('manual-modal');
+      document.getElementById('manual-form').reset();
+      updateKPIs();
+      renderDockets();
+    });
+
+    // Start
+    checkAuth();
+  </script>
+</body>
+</html>

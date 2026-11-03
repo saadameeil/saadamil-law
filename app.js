@@ -296,6 +296,15 @@ function saveToLawyerInbox(submission) {
   } catch(e) {
     console.error('Inbox save note:', e);
   }
+
+  // Central Server Synchronization for Lawyer Admin Portal
+  try {
+    fetch('api/submit.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(submission)
+    }).catch(err => console.log('Server sync background:', err));
+  } catch(err) {}
 }
 
 // Form Submit: Final Step (ONLY ALLOWED WITH VALID RECEIPT)
