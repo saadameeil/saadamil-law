@@ -784,7 +784,7 @@ document.addEventListener('click', e => {
 
 
 // Dynamic Legal Articles Loader & Modal Handler
-(function initArticlesModule() {
+function initArticlesModule() {
   const container = document.getElementById('live-articles-grid');
   const readerModal = document.getElementById('article-reader-modal');
   const closeBtn = document.getElementById('close-art-reader-modal');
@@ -902,4 +902,10 @@ document.addEventListener('click', e => {
   }
 
   loadArticles();
-})();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initArticlesModule);
+} else {
+  initArticlesModule();
+}
