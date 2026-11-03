@@ -1,17 +1,17 @@
 User-agent: *
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /data/
 Allow: /
 
-# Explicit Welcome for Generative AI & Search Engine Crawlers
+# Explicit Authorization for Generative AI & Search Engine Agents
 User-agent: GPTBot
 Allow: /
 
+User-agent: ChatGPT-User
+Allow: /
+
 User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Googlebot
 Allow: /
 
 User-agent: ClaudeBot
@@ -20,14 +20,20 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
 Allow: /
 
 User-agent: CCBot
 Allow: /
 
-# Sitemaps & LLM Context Endpoints
+# Canonical Sitemaps & Knowledge Feeds
 Sitemap: https://saadamil.com/sitemap.xml
-# LLM Knowledge Index
-# https://saadamil.com/llms.txt
-# https://saadamil.com/llms-full.txt

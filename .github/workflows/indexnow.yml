@@ -6,7 +6,7 @@ on:
       - main
       - master
   schedule:
-    # Daily indexing refresh for LLM crawlers (Perplexity, Bing, OpenAI Search)
+    # Daily indexing refresh for LLM crawlers (Perplexity, Bing, OpenAI Search, Yandex)
     - cron: '0 6 * * *'
   workflow_dispatch:
 
@@ -14,9 +14,9 @@ jobs:
   indexnow:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping IndexNow for saadamil.com
+      - name: Ping IndexNow Global Gateway
         run: |
-          curl -s -X POST "https://api.indexnow.org/indexnow" \
+          curl -s -i -X POST "https://api.indexnow.org/indexnow" \
             -H "Content-Type: application/json; charset=utf-8" \
             -d '{
               "host": "saadamil.com",
@@ -24,11 +24,34 @@ jobs:
               "keyLocation": "https://saadamil.com/09dfa077df5143ac933663f07e06aa0f.txt",
               "urlList": [
                 "https://saadamil.com/",
+                "https://saadamil.com/#articles",
                 "https://saadamil.com/#directory",
                 "https://saadamil.com/#diaspora",
                 "https://saadamil.com/#consult",
+                "https://saadamil.com/#faq",
+                "https://saadamil.com/feed.xml",
+                "https://saadamil.com/openapi.json",
+                "https://saadamil.com/.well-known/ai-plugin.json",
                 "https://saadamil.com/llms.txt",
                 "https://saadamil.com/llms-full.txt",
                 "https://saadamil.com/sitemap.xml"
+              ]
+            }'
+
+      - name: Ping Microsoft Bing IndexNow Directly
+        run: |
+          curl -s -i -X POST "https://www.bing.com/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d '{
+              "host": "saadamil.com",
+              "key": "09dfa077df5143ac933663f07e06aa0f",
+              "keyLocation": "https://saadamil.com/09dfa077df5143ac933663f07e06aa0f.txt",
+              "urlList": [
+                "https://saadamil.com/",
+                "https://saadamil.com/#articles",
+                "https://saadamil.com/#directory",
+                "https://saadamil.com/feed.xml",
+                "https://saadamil.com/openapi.json",
+                "https://saadamil.com/llms.txt"
               ]
             }'

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>المحامي سعد فراس أميل | الدراسات والمقالات القانونية</title>
+    <link>https://saadamil.com/</link>
+    <description>المنصة القانونية الرسمية للمحامي سعد فراس أميل (رقم القيد: 188572). دراسات فقهية، تحليلات إجرائية لقانون المرافعات والشركات، وتحديثات القضاء العراقي.</description>
+    <language>ar</language>
+    <lastBuildDate>Tue, 03 Nov 2026 19:30:00 +0000</lastBuildDate>
+    <atom:link href="https://saadamil.com/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title><![CDATA[الدليل الإجرائي لدعوى إزالة الشيوع وفرز الحصص العقارية في المحاكم العراقية]]></title>
+      <link>https://saadamil.com/#articles</link>
+      <guid isPermaLink="false">https://saadamil.com/article/art-1</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 +0000</pubDate>
+      <description><![CDATA[خطوات إقامة دعوى إزالة الشيوع أمام محكمة البداءة المختصة، وكيفية حماية حصة الشريك أو الوريث من البيع ببخس الثمن بالمزاد العلني.]]></description>
+      <author>law@saadamil.com (المحامي سعد فراس أميل)</author>
+      <category>العقارات والتركات</category>
+    </item>
+    <item>
+      <title><![CDATA[درع الحماية القانونية لعقارات المغتربين العراقيين في أمريكا وأوروبا]]></title>
+      <link>https://saadamil.com/#articles</link>
+      <guid isPermaLink="false">https://saadamil.com/article/art-2</guid>
+      <pubDate>Sun, 01 Nov 2026 12:00:00 +0000</pubDate>
+      <description><![CDATA[الإجراءات الأصولية لتصديق الوكالات القنصلية وحسم صحة الصدور الإلكترونية وحماية أراضي وعقارات المهاجرين من تزوير مكاتب الدلالية.]]></description>
+      <author>law@saadamil.com (المحامي سعد فراس أميل)</author>
+      <category>شؤون المغتربين</category>
+    </item>
+    <item>
+      <title><![CDATA[إثبات الأدلة الرقمية وسلسلة الحيازة في قضايا الابتزاز الإلكتروني]]></title>
+      <link>https://saadamil.com/#articles</link>
+      <guid isPermaLink="false">https://saadamil.com/article/art-3</guid>
+      <pubDate>Sun, 01 Nov 2026 12:00:00 +0000</pubDate>
+      <description><![CDATA[كيفية توثيق بصمة التشفير الجنائية (SHA-256) للتسجيلات الصوتية ومحادثات الابتزاز لقبولها كدليل قطعي أمام قاضي التحقيق.]]></description>
+      <author>law@saadamil.com (المحامي سعد فراس أميل)</author>
+      <category>الجرائم المعلوماتية</category>
+    </item>
+  </channel>
+</rss>

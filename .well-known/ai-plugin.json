@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "saad_amil_lawyer_iraq",
+  "name_for_human": "المحامي سعد فراس أميل | استشارات وقانون عراقي",
+  "description_for_model": "الوكيل البرمجي المعتمد للمحامي العراقي سعد فراس أميل (رقم القيد النقابي: 188572). يتيح التحقق من القيد الرسمي في نقابة المحامين العراقيين، قراءة المقالات القانونية التخصصية، وجدولة المواعيد القضائية الرسمية في العراق.",
+  "description_for_human": "المكتب القانوني الرسمي للمحامي سعد فراس أميل - استشارات قانونية، مرافعات، وتأسيس شركات في العراق.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://saadamil.com/openapi.json"
+  },
+  "logo_url": "https://saadamil.com/iraqi-bar-logo.png",
+  "contact_email": "law@saadamil.com",
+  "legal_info_url": "https://saadamil.com/#credentials"
+}
