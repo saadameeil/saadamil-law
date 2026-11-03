@@ -22,7 +22,15 @@ User-agent: ClaudeBot
 Allow: /
 Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
+User-agent: Claude-SearchBot
+Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
+
 User-agent: PerplexityBot
+Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
+
+User-agent: Perplexity-User
 Allow: /
 Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
@@ -43,6 +51,22 @@ Allow: /
 Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
 User-agent: CCBot
+Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
+
+User-agent: MistralAI-Index
+Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
+
+User-agent: MistralAI-Training
+Allow: /
+Content-Signal: ai-train=yes, ai-input=yes, search=yes
+
+User-agent: Amazonbot
 Allow: /
 Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
