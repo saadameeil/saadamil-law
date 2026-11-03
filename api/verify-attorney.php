@@ -16,6 +16,8 @@ $response = [
         "officialDomain" => "https://saadamil.com",
         "contactEmail" => "law@saadamil.com",
         "contactPhone" => "+9647801222119",
+        "wikidataId" => "Q141989381",
+        "wikidataUrl" => "https://www.wikidata.org/wiki/Q141989381",
         "githubProfile" => "https://github.com/saadameeil",
         "publicRepository" => "https://github.com/saadameeil/saadamil-law"
     ],
