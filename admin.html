@@ -1476,8 +1476,11 @@
             <button class="receipt-view-btn" onclick="viewReceipt('${d.docketId}')">معاينة الوصل 👁️</button>
           </div>
         ` : `
-          <div class="receipt-strip" style="background:rgba(239,68,68,0.06); border-color:rgba(239,68,68,0.2); color:#fca5a5;">
-            <span>⚠️ استشارة قيد التدقيق المالي</span>
+          <div class="receipt-strip" style="background:rgba(239,68,68,0.08); border-color:rgba(239,68,68,0.28); color:#fca5a5; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <span style="font-weight:600;">⚠️ لم يتم إرفاق إشعار السداد (معلّق)</span>
+            <button onclick="sendReceiptReminder('${d.docketId}')" style="background:#25D366; color:#0b1120; border:none; padding:0.35rem 0.75rem; border-radius:6px; font-weight:800; font-size:0.82rem; cursor:pointer; display:inline-flex; align-items:center; gap:0.35rem; box-shadow:0 2px 8px rgba(37,211,102,0.25);" title="إرسال رسالة تذكير ومطالبة بالوصل ورابط الدفع عبر واتساب">
+              💬 مطالبة بالوصل والسداد عبر واتساب
+            </button>
           </div>
         `}
 
@@ -1550,6 +1553,46 @@
     }
 
     // View Receipt Modal
+    
+    // Send Receipt & Payment Reminder via WhatsApp
+    function sendReceiptReminder(docketId) {
+      const d = allDockets.find(x => x.docketId === docketId);
+      if (!d) return;
+      if (!d.phone) {
+        alert('لا يوجد رقم هاتف مسجل لهذه الإضبارة.');
+        return;
+      }
+
+      const clientName = (d.titlePrefix || 'الأستاذ/ة') + ' ' + (d.name || '');
+      const isIntl = d.paymentMethod === 'intl_bank' || (d.location && /أمريكا|أوروبا|كندا|بريطانيا|السويد|ألمانيا|USA|UK|Europe/i.test(d.location));
+      const topic = d.topic || 'الاستشارة القانونية';
+
+      let msg = `السلام عليكم ورحمة الله، ${clientName} المحترم،\n\n`;
+      msg += `تحية طيبة من مكتب المحامي سعد فراس أميل للاستشارات والتمثيل القضائي في بغداد.\n\n`;
+      msg += `نود إعلامكم بتسجيل وقيد طلب استشارتكم في جدول أعمال المكتب برقم إضبارة:\n`;
+      msg += `📌 رقم الإضبارة: ${d.docketId}\n`;
+      msg += `⚖️ موضوع القضية: ${topic}\n\n`;
+      msg += `نحيطكم علماً بأن ملف الاستشارة قيد الانتظار لتأكيد الإجراء المالي وتفعيل الجلسة الاستشارية المباشرة مع الأستاذ سعد أميل:\n\n`;
+      msg += `1️⃣ في حال قمتم بالتحويل وسداد أتعاب الاستشارة مسبقاً:\n`;
+      msg += `👈 يرجى التفضل بإرسال صورة وصل التحويل (الإشعار) هنا مباشرة في هذه المحادثة لاعتماد وتفعيل الإضبارة فوراً.\n\n`;
+      msg += `2️⃣ في حال لم يتم السداد حتى الآن، يرجى إتمام التحويل لتفعيل الملف:\n`;
+      if (isIntl) {
+        msg += `🌐 للمغتربين والعملاء الدوليين (Zelle / ACH / Wire):\n`;
+        msg += `رابط تفاصيل الحساب والسداد الدولي:\nhttps://saadamil.com/en.html\n`;
+      } else {
+        msg += `💳 زين كاش / كي كارد (رسم الاستشارة: 75,000 دينار عراقي):\n`;
+        msg += `رابط معلومات وطرق السداد المباشر:\nhttps://saadamil.com/#consult\n`;
+      }
+      msg += `\nبمجرد إرسال صورة الوصل، سيتم تأكيد الموعد ومباشرة الإجراءات القانونية فوراً.\n\n`;
+      msg += `مع خالص التقدير والاحترام،\n`;
+      msg += `مكتب المحامي سعد فراس أميل — بغداد\n`;
+      msg += `📞 هاتف المكتب المباشر: 07801222119`;
+
+      const targetPhone = cleanPhone(d.phone);
+      const url = `https://wa.me/${targetPhone}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
+
     function viewReceipt(docketId) {
       const d = allDockets.find(x => x.docketId === docketId);
       if (!d || !d.receiptBase64) return;
