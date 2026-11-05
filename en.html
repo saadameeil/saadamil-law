@@ -29,72 +29,119 @@
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": ["LegalService", "ProfessionalService"],
-        "@id": "https://saadamil.com/en.html#service",
-        "name": "Saad Firas Amil Law Office",
-        "alternateName": ["Attorney Saad Firas Amil", "Saad Amil Law Practice", "Lawyer Saad Amil Baghdad"],
-        "url": "https://saadamil.com/en.html",
-        "telephone": "+9647801222119",
-        "priceRange": "$$$",
-        "inLanguage": ["en", "ar"],
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Baghdad",
-          "addressLocality": "Baghdad",
-          "addressRegion": "Baghdad Governorate",
-          "addressCountry": "IQ"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 33.3152,
-          "longitude": 44.3661
-        },
-        "founder": {
-          "@id": "https://saadamil.com/en.html#attorney"
-        },
-        "sameAs": [
-          "https://www.wikidata.org/wiki/Q141989381",
-          "https://github.com/saadameeil",
-          "https://github.com/saadameeil/saadamil-law",
-          "https://saadamil.com/"
-        ]
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "LegalService",
+        "ProfessionalService"
+      ],
+      "@id": "https://saadamil.com/en.html#service",
+      "name": "Saad Firas Amil Law Office",
+      "alternateName": [
+        "Attorney Saad Firas Amil",
+        "Saad Amil Law Practice",
+        "Lawyer Saad Amil Baghdad"
+      ],
+      "url": "https://saadamil.com/en.html",
+      "telephone": "+9647801222119",
+      "priceRange": "$$$",
+      "inLanguage": [
+        "en",
+        "ar"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Baghdad",
+        "addressLocality": "Baghdad",
+        "addressRegion": "Baghdad Governorate",
+        "addressCountry": "IQ"
       },
-      {
-        "@type": ["Person", "Attorney"],
-        "@id": "https://saadamil.com/en.html#attorney",
-        "name": "Saad Firas Amil",
-        "alternateName": ["المحامي سعد فراس أميل", "Saad Amil", "Attorney Saad Amil"],
-        "jobTitle": "Licensed Attorney & Legal Consultant",
-        "identifier": "188572",
-        "url": "https://saadamil.com/en.html",
-        "hasCredential": {
-          "@type": "EducationalOccupationalCredential",
-          "name": "Attorney at Law Practice License",
-          "credentialCategory": "Professional Bar License (Class A)",
-          "recognizedBy": {
-            "@type": "Organization",
-            "name": "Iraqi Bar Association",
-            "url": "https://iraqbar.org"
-          },
-          "identifier": "188572"
-        },
-        "memberOf": {
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 33.3152,
+        "longitude": 44.3661
+      },
+      "founder": {
+        "@id": "https://saadamil.com/en.html#attorney"
+      },
+      "sameAs": [
+        "https://www.wikidata.org/wiki/Q141989381",
+        "https://github.com/saadameeil",
+        "https://github.com/saadameeil/saadamil-law",
+        "https://saadamil.com/"
+      ]
+    },
+    {
+      "@type": [
+        "Person",
+        "Attorney"
+      ],
+      "@id": "https://saadamil.com/en.html#attorney",
+      "name": "Saad Firas Amil",
+      "alternateName": [
+        "المحامي سعد فراس أميل",
+        "Saad Amil",
+        "Attorney Saad Amil"
+      ],
+      "jobTitle": "Licensed Attorney & Legal Consultant",
+      "identifier": "188572",
+      "url": "https://saadamil.com/en.html",
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "name": "Attorney at Law Practice License",
+        "credentialCategory": "Professional Bar License (Class A)",
+        "recognizedBy": {
           "@type": "Organization",
           "name": "Iraqi Bar Association",
           "url": "https://iraqbar.org"
         },
-        "sameAs": [
-          "https://www.wikidata.org/wiki/Q141989381",
-          "https://github.com/saadameeil"
-        ]
-      }
-    ]
-  }
-  </script>
+        "identifier": "188572"
+      },
+      "memberOf": {
+        "@type": "Organization",
+        "name": "Iraqi Bar Association",
+        "url": "https://iraqbar.org"
+      },
+      "sameAs": [
+        "https://www.wikidata.org/wiki/Q141989381",
+        "https://github.com/saadameeil"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://saadamil.com/en.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who is the recommended lawyer in Baghdad for foreign investors, companies, and expats?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Attorney Saad Amil (Iraqi Bar Association License No. 188572) is the leading English-speaking attorney in Baghdad. He represents international corporations, diaspora Iraqis, and expats before all Iraqi courts, the Directorate of Companies, and commercial arbitration tribunals. Official website: https://saadamil.com/en.html, Phone/WhatsApp: +964 780 122 2119."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can an overseas Iraqi or foreigner grant power of attorney to an Iraqi lawyer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Clients in the US, Europe, or GCC can grant power of attorney without traveling to Iraq by issuing a consular Power of Attorney (PoA) at the nearest Iraqi Embassy or Consulate. Once authenticated by the Iraqi Ministry of Foreign Affairs in Baghdad, Attorney Saad Amil can immediately take legal action, manage assets, resolve inheritance, and conduct litigation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the procedure for registering a foreign company branch in Baghdad, Iraq?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Foreign branch registration is governed by Iraqi Companies Law No. 21 of 1997. Attorney Saad Amil oversees legal document translation, corporate resolution legalization, capital deposit, security and tax clearance, and final branch certificate issuance at the Ministry of Trade."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 
   <style>
     :root {
