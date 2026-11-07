@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-  <title>محرر العرائض القضائية التنفيذي | المحامي سعد فراس أميل</title>
+  <title>محرر العرائض القضائية | المحامي سعد فراس أميل</title>
   
   <!-- Strict Privacy: Never Index by Search Engines -->
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
@@ -42,8 +42,8 @@
       --font-almarai: 'Almarai', 'Cairo', sans-serif;
       
       --doc-font-family: var(--font-cairo);
-      --doc-font-size: 14px;
-      --doc-line-height: 1.56;
+      --doc-font-size: 14.5px;
+      --doc-line-height: 1.62;
     }
 
     *, *::before, *::after {
@@ -265,6 +265,7 @@
       align-items: center;
       gap: 5px;
       white-space: nowrap;
+      user-select: none;
     }
 
     .tool-btn:hover {
@@ -293,7 +294,7 @@
       background: rgba(212, 175, 55, 0.2);
     }
 
-    /* ================= Paper Stage ================= */
+    /* ================= Clean White Legal Paper Stage ================= */
     .paper-stage {
       width: 100%;
       min-height: 80vh;
@@ -314,156 +315,18 @@
       position: relative;
     }
 
-    /* The Legal Paper Sheet */
+    /* Clean Judicial Sheet: No borders, pure prestige legal paper */
     .legal-paper {
       position: relative;
       width: 100%;
       background: #ffffff;
       color: var(--paper-text);
       border-radius: 4px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(0, 0, 0, 0.12);
       box-sizing: border-box;
-      padding: 20mm 16mm 16mm 16mm;
+      padding: 22mm 20mm 20mm 20mm;
       margin: 0 auto;
       min-height: 980px;
-    }
-
-    /* ================= Official Iraqi Bar Association Tight Perimeter Border ================= */
-    /* البرواز الرسمي الملاصق لحواف الورقة مع شريط ونقش نقابة المحامين العراقيين */
-    .doc-iraqi-bar-border {
-      position: absolute;
-      top: 4.5mm;
-      bottom: 4.5mm;
-      left: 4.5mm;
-      right: 4.5mm;
-      border: 1.5px solid #0f172a;
-      pointer-events: none;
-      z-index: 10;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .doc-inner-border {
-      position: absolute;
-      top: 1.8mm;
-      bottom: 1.8mm;
-      left: 1.8mm;
-      right: 1.8mm;
-      border: 0.6px solid #475569;
-      box-sizing: border-box;
-      pointer-events: none;
-    }
-
-    /* Classical Corner Brackets */
-    .border-corner {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-color: #0f172a;
-      border-style: solid;
-      border-width: 0;
-    }
-    .border-corner-tl { top: -3px; left: -3px; border-top-width: 2.5px; border-left-width: 2.5px; }
-    .border-corner-tr { top: -3px; right: -3px; border-top-width: 2.5px; border-right-width: 2.5px; }
-    .border-corner-bl { bottom: -3px; left: -3px; border-bottom-width: 2.5px; border-left-width: 2.5px; }
-    .border-corner-br { bottom: -3px; right: -3px; border-bottom-width: 2.5px; border-right-width: 2.5px; }
-
-    /* Top Ribbon: Official Crest & Micro-Inscription */
-    .frame-top-band {
-      background: #ffffff;
-      margin: 1.5px 10px 0;
-      padding: 2px 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5px;
-      position: relative;
-      z-index: 12;
-    }
-
-    .crest-main-plate {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      width: 100%;
-    }
-
-    .crest-rule {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(to left, #0f172a, rgba(15, 23, 42, 0.15));
-    }
-    .crest-rule.rule-right {
-      background: linear-gradient(to right, #0f172a, rgba(15, 23, 42, 0.15));
-    }
-
-    .crest-content {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 800;
-      color: #0f172a;
-      white-space: nowrap;
-      letter-spacing: 0.3px;
-    }
-
-    .crest-content .gold-badge {
-      color: #996515;
-      font-weight: 900;
-    }
-
-    .crest-micro-ribbon {
-      width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-      font-size: 7.2px;
-      line-height: 9px;
-      font-weight: 700;
-      color: #64748b;
-      letter-spacing: 0.8px;
-      text-align: center;
-      user-select: none;
-      opacity: 0.85;
-    }
-
-    /* Bottom Ribbon: Attorney Standing & Bar License */
-    .frame-bottom-band {
-      background: #ffffff;
-      margin: 0 10px 1.5px;
-      padding: 2px 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5px;
-      position: relative;
-      z-index: 12;
-    }
-
-    .footer-main-plate {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      width: 100%;
-    }
-
-    .footer-content {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #1e293b;
-      white-space: nowrap;
-    }
-
-    .footer-content strong {
-      color: #0f172a;
-      font-weight: 800;
     }
 
     /* ================= Editable Document Body ================= */
@@ -477,19 +340,21 @@
       direction: rtl;
       text-align: justify;
       outline: none;
-      min-height: 800px;
+      min-height: 820px;
     }
 
+    /* Greeting starts from right edge */
     .document-body h3 {
-      font-size: 16.5px;
+      font-size: 17px;
       font-weight: 800;
-      text-align: center;
+      text-align: right !important;
       margin-bottom: 16px;
       color: #0f172a;
+      line-height: 1.5;
     }
 
     .document-body p {
-      margin-bottom: 0.42em;
+      margin-bottom: 0.45em;
       line-height: var(--doc-line-height);
       text-align: justify;
     }
@@ -523,7 +388,7 @@
     .document-body table {
       width: 100% !important;
       border-collapse: collapse !important;
-      margin-top: 16px !important;
+      margin-top: 18px !important;
       border: none !important;
     }
 
@@ -531,7 +396,7 @@
       border: none !important;
       padding: 4px 6px !important;
       vertical-align: top;
-      font-size: 13.5px;
+      font-size: 14px;
     }
 
     /* ================= Mobile Fixed Bottom Bar ================= */
@@ -566,6 +431,7 @@
       padding: 4px 10px;
       border-radius: 6px;
       transition: all 0.15s ease;
+      user-select: none;
     }
 
     .m-nav-btn svg {
@@ -621,7 +487,7 @@
       }
 
       .legal-paper {
-        padding: 13mm 7mm 13mm 7mm;
+        padding: 16mm 10mm 16mm 10mm;
         border-radius: 4px;
       }
 
@@ -638,26 +504,12 @@
         width: 100%;
       }
 
-      .crest-content {
-        font-size: 8px;
-        gap: 3px;
-      }
-
-      .footer-content {
-        font-size: 7.5px;
-        gap: 3px;
-      }
-
-      .crest-micro-ribbon {
-        font-size: 6px;
-      }
-
       .toolbar-right {
         display: none;
       }
     }
 
-    /* ================= 100% Strict Single-Page Vector Print Rules ================= */
+    /* ================= 100% Strict Single-Page Clean Vector Print Rules ================= */
     @media print {
       @page {
         size: 210mm 297mm;
@@ -717,8 +569,9 @@
         min-height: 297mm !important;
         transform: none !important;
         margin: 0 !important;
-        padding: 12mm 18mm 12mm 18mm !important;
+        padding: 16mm 20mm 16mm 20mm !important;
         box-shadow: none !important;
+        border: none !important;
         border-radius: 0 !important;
         box-sizing: border-box !important;
         page-break-after: avoid !important;
@@ -727,62 +580,24 @@
         background: #ffffff !important;
       }
 
-      /* Tight perimeter border hugging edges */
-      .doc-iraqi-bar-border {
-        display: flex !important;
-        position: absolute !important;
-        top: 4.5mm !important;
-        bottom: 4.5mm !important;
-        left: 4.5mm !important;
-        right: 4.5mm !important;
-        border: 1.5px solid #0f172a !important;
-        z-index: 10 !important;
-      }
-
-      .doc-inner-border {
-        display: block !important;
-        position: absolute !important;
-        top: 1.8mm !important;
-        bottom: 1.8mm !important;
-        left: 1.8mm !important;
-        right: 1.8mm !important;
-        border: 0.6px solid #475569 !important;
-      }
-
-      .border-corner {
-        display: block !important;
-        border-color: #0f172a !important;
-      }
-
-      .crest-content {
-        font-size: 10.5px !important;
-      }
-
-      .footer-content {
-        font-size: 10px !important;
-      }
-
-      .crest-micro-ribbon {
-        font-size: 7px !important;
-      }
-
       .document-body {
-        font-size: 13.2px !important;
-        line-height: 1.52 !important;
+        font-size: 13.5px !important;
+        line-height: 1.55 !important;
         min-height: auto !important;
       }
 
       .document-body h3 {
-        font-size: 15px !important;
-        margin-bottom: 8px !important;
+        font-size: 15.5px !important;
+        margin-bottom: 10px !important;
+        text-align: right !important;
       }
 
       .document-body p {
-        margin-bottom: 0.38em !important;
+        margin-bottom: 0.4em !important;
       }
 
       .document-body table td {
-        font-size: 13px !important;
+        font-size: 13.5px !important;
         padding: 2px 4px !important;
       }
     }
@@ -796,8 +611,8 @@
       <div class="brand-group">
         <img src="icon-192.png" alt="شعار الميزان" class="brand-logo">
         <div class="brand-text">
-          <h1>العرائض القضائية <span class="badge-pill">نقابة المحامين العراقيين</span></h1>
-          <p>المحامي سعد فراس أميل — هوية: 188572 (الصلاحية أ)</p>
+          <h1>محرر العرائض القضائية <span class="badge-pill">المحامي سعد أميل</span></h1>
+          <p>محاكم استئناف بغداد الاتحادية — هوية النقابة: 188572 (الصلاحية أ)</p>
         </div>
       </div>
       <div class="header-actions">
@@ -840,31 +655,31 @@
       <div class="studio-toolbar no-print">
         <div class="toolbar-left">
           
-          <!-- Highlighting & Formatting -->
-          <button type="button" class="tool-btn btn-red-tool" onclick="applyHighlightColor('#dc2626')" title="تلوين النص المحدد بالأحمر الملوكي لجذب نظر المحكمة">
+          <!-- Highlighting & Formatting (keeps text selection intact) -->
+          <button type="button" class="tool-btn btn-red-tool" onmousedown="event.preventDefault()" onclick="applyHighlightColor('#dc2626')" title="تلوين النص المحدد بالأحمر الملوكي لجذب نظر المحكمة">
             🔴 أحمر
           </button>
-          <button type="button" class="tool-btn" onclick="applyHighlightColor('#0f172a')" title="إعادة النص للون الأسود الرسمي">
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="applyHighlightColor('#0f172a')" title="إعادة النص للون الأسود الرسمي">
             ⚫ أسود
           </button>
-          <button type="button" class="tool-btn" onclick="execFormat('bold')" title="خط عريض">
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="execFormat('bold')" title="خط عريض">
             <b>B عريض</b>
           </button>
-          <button type="button" class="tool-btn" onclick="execFormat('underline')" title="تسطير">
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="execFormat('underline')" title="تسطير">
             <u>U تسطير</u>
           </button>
 
-          <!-- Font Chooser -->
-          <button type="button" class="tool-btn btn-font-switch" onclick="toggleDocFont()" title="تغيير نوع الخط العربي">
-            <span id="fontLabel">🖋️ الخط: عصري (Cairo)</span>
-          </button>
-
-          <!-- Font Size Scaling -->
-          <button type="button" class="tool-btn" onclick="adjustFontSize(1)" title="تكبير الخط">
+          <!-- Smart Font Size: Selection if text selected, or Entire Document if no selection -->
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="adjustFontSize(1)" title="تكبير الخط (للنص المحدد، أو لكامل الورقة إذا لم تحدد نصاً)">
             ➕ تكبير
           </button>
-          <button type="button" class="tool-btn" onclick="adjustFontSize(-1)" title="تصغير الخط">
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="adjustFontSize(-1)" title="تصغير الخط (للنص المحدد، أو لكامل الورقة إذا لم تحدد نصاً)">
             ➖ تصغير
+          </button>
+
+          <!-- Font Chooser -->
+          <button type="button" class="tool-btn btn-font-switch" onmousedown="event.preventDefault()" onclick="toggleDocFont()" title="تغيير نوع الخط العربي">
+            <span id="fontLabel">🖋️ الخط: عصري (Cairo)</span>
           </button>
 
         </div>
@@ -883,60 +698,12 @@
 
       </div>
 
-      <!-- Paper Stage -->
+      <!-- Clean White Paper Stage -->
       <div class="paper-stage">
         <div class="paper-container">
           <div class="legal-paper" id="legalPaper">
             
-            <!-- Official Iraqi Bar Association Tight Frame (برواز نقابة المحامين الملاصق لحواف الورقة) -->
-            <div class="doc-iraqi-bar-border no-copy" aria-hidden="true">
-              <div class="doc-inner-border"></div>
-              
-              <!-- Corners -->
-              <div class="border-corner border-corner-tl"></div>
-              <div class="border-corner border-corner-tr"></div>
-              <div class="border-corner border-corner-bl"></div>
-              <div class="border-corner border-corner-br"></div>
-
-              <!-- Top Inscription Band -->
-              <div class="frame-top-band">
-                <div class="crest-main-plate">
-                  <div class="crest-rule"></div>
-                  <div class="crest-content">
-                    <span>⚖️ جمهورية العراق</span>
-                    <span style="color:#94a3b8;">❖</span>
-                    <span class="gold-badge">نقابة المحامين العراقيين</span>
-                    <span style="color:#94a3b8;">❖</span>
-                    <span>عريضة دعوى أصولية ⚖️</span>
-                  </div>
-                  <div class="crest-rule rule-right"></div>
-                </div>
-                <div class="crest-micro-ribbon">
-                  نقابة المحامين العراقيين ❖ جمهورية العراق ❖ نقابة المحامين العراقيين ❖ جمهورية العراق ❖ نقابة المحامين العراقيين ❖ جمهورية العراق ❖ نقابة المحامين العراقيين ❖ جمهورية العراق ❖ نقابة المحامين العراقيين
-                </div>
-              </div>
-
-              <!-- Bottom Inscription Band -->
-              <div class="frame-bottom-band">
-                <div class="crest-micro-ribbon" style="margin-bottom: 2px;">
-                  نقابة المحامين العراقيين ❖ جمهورية العراق ❖ نقابة المحامين العراقيين ❖ جمهورية العراق ❖ نقابة المحامين العراقيين ❖ جمهورية العراق ❖ نقابة المحامين العراقيين ❖ جمهورية العراق ❖ نقابة المحامين العراقيين
-                </div>
-                <div class="footer-main-plate">
-                  <div class="crest-rule"></div>
-                  <div class="footer-content">
-                    <span>المحامي <strong>سعد فراس أميل</strong></span>
-                    <span style="color:#94a3b8;">❖</span>
-                    <span>هوية النقابة: <strong>188572</strong> (الصلاحية أ)</span>
-                    <span style="color:#94a3b8;">❖</span>
-                    <span>محاكم استئناف بغداد الاتحادية</span>
-                  </div>
-                  <div class="crest-rule rule-right"></div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Native ContentEditable Surface -->
+            <!-- Native ContentEditable Pleading Surface -->
             <div class="document-body" id="docContent" contenteditable="true" spellcheck="false"></div>
 
           </div>
@@ -949,21 +716,25 @@
 
   <!-- ================= Mobile Fixed Bottom Bar ================= -->
   <nav class="mobile-bottom-bar no-print">
-    <button class="m-nav-btn" onclick="applyHighlightColor('#dc2626')">
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="applyHighlightColor('#dc2626')">
       <span style="font-size:16px;">🔴</span>
       <span style="color:#ef4444; font-weight:800;">أحمر</span>
     </button>
-    <button class="m-nav-btn" onclick="applyHighlightColor('#0f172a')">
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="applyHighlightColor('#0f172a')">
       <span style="font-size:16px;">⚫</span>
       <span>أسود</span>
     </button>
-    <button class="m-nav-btn" onclick="execFormat('bold')">
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="execFormat('bold')">
       <span style="font-size:16px; font-weight:900;">B</span>
       <span>عريض</span>
     </button>
-    <button class="m-nav-btn" onclick="toggleDocFont()">
-      <span style="font-size:16px;">🖋️</span>
-      <span>الخط</span>
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="adjustFontSize(1)">
+      <span style="font-size:16px; font-weight:900;">➕</span>
+      <span>تكبير</span>
+    </button>
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="adjustFontSize(-1)">
+      <span style="font-size:16px; font-weight:900;">➖</span>
+      <span>تصغير</span>
     </button>
     <button class="m-nav-btn" onclick="savePetition()">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
@@ -980,18 +751,18 @@
 
   <!-- App Script -->
   <script>
-    const STORAGE_KEY = 'saadamil_saved_petition_html';
+    const STORAGE_KEY = 'saadamil_saved_petition_html_v4';
     const FONT_STORAGE_KEY = 'saadamil_saved_font_mode';
 
     const OMAR_PETITION_DEFAULT_HTML = `
-<h3 style="text-align: center; margin-bottom: 18px; font-size: 17px; font-weight: 800;">/ إلى السيد قاضي محكمة تحقيق الدورة المحترم</h3>
+<h3 style="text-align: right; margin-bottom: 18px; font-size: 17px; font-weight: 800;">إلى / السيد قاضي محكمة تحقيق الدورة المحترم</h3>
 
-<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
   <div><strong>المشتكي:</strong> عمر رعد خليفه</div>
   <div><strong>الساكن:</strong> بغداد - الدورة، محلة (842)، زقاق (9)، دار (6)</div>
 </div>
 
-<div style="margin-bottom: 10px;">
+<div style="margin-bottom: 12px;">
   <strong>المشكو منهما:</strong><br>
   1. <strong>شهد عباس لفته</strong> (الزوجة)<br>
   2. <strong>ناهد</strong> (والدة الزوجة - شريكة بالتحريض والاتفاق)<br>
@@ -1002,19 +773,19 @@
 
 <p style="margin-bottom: 10px;"><strong>تحية طيبة واحتراماً،</strong></p>
 
-<p style="line-height: 1.56; margin-bottom: 8px; text-align: justify;">سبق وأن أقدمت المشكو منها الأولى باتفاق وتحريض ومساعدة من والدتها المشكو منها الثانية، على ارتكاب الأفعال الجرمية الآتية بحق موكلي:</p>
+<p style="line-height: 1.58; margin-bottom: 8px; text-align: justify;">سبق وأن أقدمت المشكو منها الأولى باتفاق وتحريض ومساعدة من والدتها المشكو منها الثانية، على ارتكاب الأفعال الجرمية الآتية بحق موكلي:</p>
 
-<p style="line-height: 1.56; margin-bottom: 7px; text-align: justify;"><strong>1.</strong> قيام المشكو منها الأولى بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإيذائه والنيل من سلامته الجسدية.</p>
+<p style="line-height: 1.58; margin-bottom: 7px; text-align: justify;"><strong>1.</strong> قيام المشكو منها الأولى بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإيذائه والنيل من سلامته الجسدية.</p>
 
-<p style="line-height: 1.56; margin-bottom: 7px; text-align: justify;"><strong>2.</strong> قيام المشكو منها الأولى بالحضور لمرتين متتاليتين أمام دار سكن موكلي الكائن في (الدورة - محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة وتوجيه عبارات السب والقذف والشتم العلني بحق موكلي ووالدته وأسرته بقصد الحط من كرامتهم وتخريب سمعتهم أمام الجيران، والمثبت بشهادة الشهود الحاضرين.</p>
+<p style="line-height: 1.58; margin-bottom: 7px; text-align: justify;"><strong>2.</strong> قيام المشكو منها الأولى بالحضور لمرتين متتاليتين أمام دار سكن موكلي الكائن في (الدورة - محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة وتوجيه عبارات السب والقذف والشتم العلني بحق موكلي ووالدته وأسرته بقصد الحط من كرامتهم وتخريب سمعتهم أمام الجيران، والمثبت بشهادة الشهود الحاضرين.</p>
 
-<p style="line-height: 1.56; margin-bottom: 7px; text-align: justify;"><strong>3.</strong> قيام المشكو منها بالتشهير بموكلي لدى صديقه المقرب (الشاهد) علي سلام (صبحي) والطعن بسلوكه وأخلاقه وادعاء أنه يشرب الكحول داخل الدار في حين أنها هي من طلبت ذلك وألحت عليه، فضلاً عن التلويح باختلاق تهمة كاذبة مخلة بالحياء والشرف تزعم فيها إدخال شخص للدار وهي عروسة بقصد ابتزازه والإساءة لسمعته، والمثبت بالمحادثات ومكالمة الوساطة المسجلة التي استغرقت ساعة و(34) دقيقة.</p>
+<p style="line-height: 1.58; margin-bottom: 7px; text-align: justify;"><strong>3.</strong> قيام المشكو منها بالتشهير بموكلي لدى صديقه المقرب (الشاهد) علي سلام (صبحي) والطعن بسلوكه وأخلاقه وادعاء أنه يشرب الكحول داخل الدار في حين أنها هي من طلبت ذلك وألحت عليه، فضلاً عن التلويح باختلاق تهمة كاذبة مخلة بالحياء والشرف تزعم فيها إدخال شخص للدار وهي عروسة بقصد ابتزازه والإساءة لسمعته، والمثبت بالمحادثات ومكالمة الوساطة المسجلة التي استغرقت ساعة و(34) دقيقة.</p>
 
-<p style="line-height: 1.56; margin-bottom: 10px; text-align: justify;"><strong>4.</strong> قيام المشكو منهما بالاتصال بالشاهدة (عهود) عبد الرحمن خلاف - والدة صديق موكلي علي سلام (صبحي) ومحاولة التأثير عليها والضغط لحملها هي وابنها على الإدلاء بشهادة زور ضد موكلي واختلاق ادعاءات باطلة، والموثق بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق هذه المحاولات بدلالة جريمة التحريض على شهادة الزور.</p>
+<p style="line-height: 1.58; margin-bottom: 10px; text-align: justify;"><strong>4.</strong> قيام المشكو منهما بالاتصال بالشاهدة (عهود) عبد الرحمن خلاف - والدة صديق موكلي علي سلام (صبحي) ومحاولة التأثير عليها والضغط لحملها هي وابنها على الإدلاء بشهادة زور ضد موكلي واختلاق ادعاءات باطلة، والموثق بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق هذه المحاولات بدلالة جريمة التحريض على شهادة الزور.</p>
 
-<p style="line-height: 1.56; margin-bottom: 10px; text-align: justify;">وحيث إن ما ارتكبته المشكو منهما يشكل جرائم معاقباً عليها بموجب أحكام <strong>المواد (430) و(432) و(434) و(248)</strong> وبدلالة <strong>المادتين (48 و49)</strong> من قانون العقوبات العراقي رقم 111 لسنة 1969 المعدل:</p>
+<p style="line-height: 1.58; margin-bottom: 10px; text-align: justify;">وحيث إن ما ارتكبته المشكو منهما يشكل جرائم معاقباً عليها بموجب أحكام <strong>المواد (430) و(432) و(434) و(248)</strong> وبدلالة <strong>المادتين (48 و49)</strong> من قانون العقوبات العراقي رقم 111 لسنة 1969 المعدل:</p>
 
-<p style="line-height: 1.56; margin-bottom: 5px;"><strong>لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</strong></p>
+<p style="line-height: 1.58; margin-bottom: 5px;"><strong>لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</strong></p>
 <p style="line-height: 1.52; margin-bottom: 4px;"><strong>أولاً:</strong> تدوين أقوال موكلي كمشتكٍ ومطالب بالحق الجزائي والشخصي والتعويض المادي والمعنوي لرد اعتباره.</p>
 <p style="line-height: 1.52; margin-bottom: 4px;"><strong>ثانياً:</strong> التفضل بإحالة الأوراق إلى <span class="legal-red" style="color: #dc2626; font-weight: bold;">السيد المحقق القضائي</span> في محكمتكم الموقرة لتدوين أقوال موكلي وتدوين شهادات شهود الإثبات الأربعة (علي سلام، صبحي مصطفى فائق، عباس عهود عبد الرحمن، خلاف هدى محمد عثمان) الحاضرين بدلالة المشتكي توفيراً للوقت وحفاظاً على سرية الإجراءات.</p>
 <p style="line-height: 1.52; margin-bottom: 4px;"><strong>ثالثاً:</strong> ربط المبرزات الجرمية الفنية (البصمات الصوتية والمحادثات) المرفقة على وسيط تخزين بالأوراق التحقيقية وتكليف خبير الأدلة الفنية بتفريغها رسمياً.</p>
@@ -1046,7 +817,7 @@
     ];
 
     let currentFontIndex = 0;
-    let baseFontSize = 14;
+    let baseFontSize = 14.5;
 
     document.addEventListener('DOMContentLoaded', () => {
       const editorEl = document.getElementById('docContent');
@@ -1129,14 +900,65 @@
       savePetition(true);
     }
 
+    // Smart Font Size: If text is highlighted -> ONLY that text changes.
+    // If NO text is highlighted -> The ENTIRE paper font size changes!
     function adjustFontSize(delta) {
-      baseFontSize += (delta * 0.5);
-      baseFontSize = Math.max(12, Math.min(20, baseFontSize));
+      const sel = window.getSelection();
       const editorEl = document.getElementById('docContent');
-      if (editorEl) {
+      
+      const hasSelection = sel && sel.rangeCount > 0 && !sel.isCollapsed && editorEl.contains(sel.anchorNode);
+
+      if (hasSelection) {
+        // Change ONLY the selected text font size
+        const range = sel.getRangeAt(0);
+        
+        let parentSpan = null;
+        let node = sel.anchorNode.nodeType === Node.TEXT_NODE ? sel.anchorNode.parentElement : sel.anchorNode;
+        while (node && node !== editorEl) {
+          if (node.tagName === 'SPAN' && node.style && node.style.fontSize) {
+            parentSpan = node;
+            break;
+          }
+          node = node.parentElement;
+        }
+
+        let currentPx = 14.5;
+        if (parentSpan) {
+          currentPx = parseFloat(parentSpan.style.fontSize) || 14.5;
+        } else {
+          currentPx = parseFloat(window.getComputedStyle(sel.anchorNode.parentElement || editorEl).fontSize) || baseFontSize;
+        }
+
+        const newPx = Math.max(10, Math.min(36, Math.round(currentPx + delta)));
+
+        if (parentSpan && range.toString().trim() === parentSpan.innerText.trim()) {
+          parentSpan.style.fontSize = newPx + 'px';
+        } else {
+          const span = document.createElement('span');
+          span.style.fontSize = newPx + 'px';
+          try {
+            const contents = range.extractContents();
+            span.appendChild(contents);
+            range.insertNode(span);
+            
+            sel.removeAllRanges();
+            const newRange = document.createRange();
+            newRange.selectNodeContents(span);
+            sel.addRange(newRange);
+          } catch (e) {
+            console.error('Font resize error:', e);
+          }
+        }
+
+        savePetition(true);
+        showToast('حجم النص المحدد: ' + newPx + 'px');
+      } else {
+        // No selection: Change the ENTIRE document font size!
+        baseFontSize = Math.max(11, Math.min(24, Math.round((baseFontSize + delta) * 10) / 10));
         editorEl.style.fontSize = baseFontSize + 'px';
+        savePetition(true);
+        showToast('حجم خط كامل الورقة: ' + baseFontSize + 'px');
       }
-      showToast('حجم الخط: ' + baseFontSize + 'px');
     }
 
     // Save & Load
@@ -1171,14 +993,14 @@
     function createNewPetition() {
       if (confirm('هل ترغب في فتح عريضة جديدة فارغة؟ تأكد من حفظ نسختك السابقة.')) {
         const blank = `
-<h3 style="text-align: center; margin-bottom: 18px; font-size: 17px; font-weight: 800;">/ إلى السيد قاضي محكمة ... المحترم</h3>
+<h3 style="text-align: right; margin-bottom: 18px; font-size: 17px; font-weight: 800;">إلى / السيد قاضي محكمة ... المحترم</h3>
 
-<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
   <div><strong>المشتكي (أو المدعي):</strong> ...</div>
   <div><strong>الساكن:</strong> بغداد - ...</div>
 </div>
 
-<div style="margin-bottom: 10px;">
+<div style="margin-bottom: 12px;">
   <strong>المشكو منه (أو المدعى عليه):</strong> ...<br>
   <strong>الساكن:</strong> بغداد - ...
 </div>
@@ -1187,7 +1009,7 @@
 
 <p style="margin-bottom: 10px;"><strong>تحية طيبة واحتراماً،</strong></p>
 
-<p style="line-height: 1.56; margin-bottom: 8px; text-align: justify;">نحيط عدالتكم علماً بالآتي: ...</p>
+<p style="line-height: 1.58; margin-bottom: 8px; text-align: justify;">نحيط عدالتكم علماً بالآتي: ...</p>
 
 <p style="text-align: center; margin-top: 14px; margin-bottom: 14px; font-size: 15px;"><strong>مع وافر الشكر والتقدير والاحترام</strong></p>
 
