@@ -2,88 +2,70 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-  <title>محرر وأرشيف العرائض القضائية | المحامي سعد فراس أميل</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>استوديو العرائض والطباعة القضائية A4 — المحامي سعد فراس أميل</title>
   
-  <!-- Strict Privacy: Never Index by Search Engines -->
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-  <meta name="googlebot" content="noindex, nofollow">
-
-  <!-- Apple iOS PWA Meta Tags -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="العرائض القضائية">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <meta name="theme-color" content="#0b1120">
-
-  <!-- Modern Clean Arabic Typography (Cairo, Almarai, Noto Naskh) -->
+  <!-- Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Cairo:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Modern Document Engines (Docx & FileSaver) -->
+  <script src="https://unpkg.com/docx@9/dist/index.iife.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
   <style>
     :root {
-      --bg-dark: #0b1120;
-      --surface-dark: #0f172a;
-      --card-dark: #1e293b;
-      --border-dark: #334155;
       --gold-primary: #d4af37;
       --gold-hover: #b8860b;
-      --judicial-red: #dc2626;
-      --whatsapp-green: #10b981;
-      --text-white: #f8fafc;
+      --bg-dark: #090e1a;
+      --bg-card: #0f172a;
+      --bg-input: #1e293b;
+      --border-color: rgba(212, 175, 55, 0.3);
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --paper-bg: #ffffff;
-      --paper-text: #0f172a;
-      
-      /* Modern Crisp Legal Typography */
-      --font-cairo: 'Cairo', system-ui, -apple-system, sans-serif;
-      --font-noto: 'Noto Naskh Arabic', 'Cairo', serif;
-      --font-almarai: 'Almarai', 'Cairo', sans-serif;
-      
-      --doc-font-family: var(--font-cairo);
-      --doc-font-size: 14px;
-      --doc-line-height: 1.58;
+      --accent-red: #ef4444;
+      --accent-green: #10b981;
+      --accent-blue: #3b82f6;
     }
 
-    *, *::before, *::after {
+    * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
-      background-color: var(--bg-dark);
-      color: var(--text-white);
-      font-family: var(--font-cairo);
-      direction: rtl;
-      text-align: right;
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      direction: rtl;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
     }
 
-    /* ================= Header ================= */
+    /* ================= Top Sticky App Header ================= */
     .app-header {
       background: rgba(15, 23, 42, 0.98);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      border-bottom: 1px solid var(--border-color);
       position: sticky;
       top: 0;
-      z-index: 60;
+      z-index: 100;
       padding: 10px 16px;
     }
 
     .header-content {
-      max-width: 1100px;
+      max-width: 1400px;
       margin: 0 auto;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     .brand-group {
@@ -93,236 +75,170 @@
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 8px;
       border: 1px solid var(--gold-primary);
-      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
       flex-shrink: 0;
     }
 
     .brand-text h1 {
-      font-size: 16px;
-      font-weight: 800;
-      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--gold-primary);
       display: flex;
       align-items: center;
       gap: 6px;
-      letter-spacing: -0.2px;
-    }
-
-    .brand-text .badge-pill {
-      background: linear-gradient(135deg, #d4af37, #996515);
-      color: #0b1120;
-      font-size: 10.5px;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 4px;
     }
 
     .brand-text p {
-      font-size: 11.5px;
-      color: var(--gold-primary);
+      font-size: 11px;
+      color: var(--text-muted);
       font-weight: 600;
     }
 
-    .header-tools {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .badge-pill {
+      background: linear-gradient(135deg, #d4af37, #996515);
+      color: #0b1120;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 2px 6px;
+      border-radius: 4px;
     }
 
-    .btn-app-refresh {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(212, 175, 55, 0.28));
-      border: 1px solid rgba(212, 175, 55, 0.55);
-      border-radius: 8px;
-      color: #fde68a;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      flex-shrink: 0;
-    }
-
-    .btn-app-refresh:hover {
-      background: rgba(212, 175, 55, 0.38);
-      border-color: #fcd34d;
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-    }
-
-    .btn-app-refresh:active {
-      transform: scale(0.94);
-    }
-
-    .refresh-spinner {
-      display: inline-block;
-      font-size: 15px;
-      line-height: 1;
-      transition: transform 0.6s ease;
-    }
-
-    .btn-app-refresh.spinning .refresh-spinner {
-      animation: spinRefresh 0.7s linear infinite;
-    }
-
-    @keyframes spinRefresh {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
+    /* Header Actions */
     .header-actions {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
-    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 700;
+      padding: 7px 13px;
+      font-size: 12.5px;
+      font-weight: 800;
       font-family: inherit;
-      border-radius: 7px;
-      border: 1px solid transparent;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.15s ease;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
       text-decoration: none;
+      border: 1px solid transparent;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
     }
 
     .btn-gold {
       background: linear-gradient(135deg, #d4af37, #b8860b);
       color: #0b1120;
       border-color: #fcd34d;
-      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);
-    }
-
-    .btn-gold:hover {
-      background: linear-gradient(135deg, #fcd34d, #d4af37);
-      transform: translateY(-1px);
     }
 
     .btn-green {
       background: linear-gradient(135deg, #10b981, #059669);
       color: #ffffff;
       border-color: #34d399;
-      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
-    }
-
-    .btn-green:hover {
-      background: linear-gradient(135deg, #34d399, #10b981);
-      transform: translateY(-1px);
     }
 
     .btn-blue {
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: #ffffff;
       border-color: #60a5fa;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
-    }
-
-    .btn-blue:hover {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      transform: translateY(-1px);
     }
 
     .btn-dark {
       background: #1e293b;
-      color: #e2e8f0;
+      color: #f1f5f9;
       border-color: #334155;
     }
 
-    .btn-dark:hover {
-      background: #334155;
-      color: #ffffff;
+    .btn-refresh {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: rgba(212, 175, 55, 0.4);
+      color: #fde68a;
     }
 
-    /* ================= Studio Workspace ================= */
-    .studio-wrapper {
-      max-width: 1060px;
-      margin: 0 auto;
-      padding: 14px 12px 90px;
-    }
-
-    /* Templates & Archive Bar */
-    .cases-bar {
+    /* ================= View Modes Bar (Tabs) ================= */
+    .tabs-bar {
+      background: #0b1329;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 14px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 4px 2px 12px;
-      -webkit-overflow-scrolling: touch;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .case-pill {
+    .tab-group {
       display: flex;
-      align-items: center;
       gap: 6px;
-      padding: 7px 15px;
+    }
+
+    .tab-btn {
       background: #1e293b;
       border: 1px solid #334155;
-      border-radius: 8px;
       color: #cbd5e1;
+      padding: 6px 14px;
+      border-radius: 7px;
       font-size: 12.5px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.15s ease;
     }
 
-    .case-pill.active, .case-pill:hover {
-      background: rgba(212, 175, 55, 0.18);
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(212, 175, 55, 0.1));
       border-color: var(--gold-primary);
       color: #fde68a;
     }
 
-    .case-pill.pill-archive {
+    .page-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
       background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.4);
-      color: #6ee7b7;
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
     }
 
-    .case-pill.pill-archive:hover {
-      background: rgba(16, 185, 129, 0.25);
-      color: #ffffff;
+    /* ================= Workspace Layout ================= */
+    .studio-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    /* Document Studio Card */
-    .studio-card {
-      background: #090e1a;
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.65);
-    }
-
-    /* ================= Practical Legal Toolbar ================= */
-    .studio-toolbar {
+    /* Editor Toolbar */
+    .editor-toolbar {
       background: #0f172a;
-      border-bottom: 1px solid #1e293b;
-      padding: 10px 14px;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
       gap: 8px;
-    }
-
-    .toolbar-left, .toolbar-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
       flex-wrap: wrap;
     }
 
@@ -330,626 +246,277 @@
       background: #1e293b;
       border: 1px solid #334155;
       color: #f8fafc;
-      padding: 7px 12px;
+      padding: 6px 11px;
       border-radius: 6px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.12s ease;
-      font-family: inherit;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      white-space: nowrap;
-      user-select: none;
+      gap: 4px;
+      touch-action: manipulation;
     }
 
     .tool-btn:hover {
       background: #334155;
-      border-color: #94a3b8;
     }
 
-    .btn-red-tool {
+    .tool-red {
       color: #ef4444;
-      border-color: rgba(239, 68, 68, 0.5);
+      border-color: rgba(239, 68, 68, 0.4);
       background: rgba(239, 68, 68, 0.1);
     }
 
-    .btn-red-tool:hover {
-      background: rgba(239, 68, 68, 0.22);
-      border-color: #ef4444;
-    }
-
-    .btn-font-switch {
-      background: rgba(212, 175, 55, 0.1);
-      border-color: rgba(212, 175, 55, 0.4);
+    .tool-gold {
       color: #fde68a;
+      border-color: rgba(212, 175, 55, 0.4);
+      background: rgba(212, 175, 55, 0.1);
     }
 
-    .btn-font-switch:hover {
-      background: rgba(212, 175, 55, 0.2);
-    }
-
-    /* ================= Clean White Legal Paper Stage ================= */
-    .paper-stage {
-      width: 100%;
-      min-height: 80vh;
-      background: #090e1a;
-      padding: 24px 12px 60px;
+    /* ================= A4 Physical Sheet Viewport ================= */
+    .stage-wrapper {
+      background: #050811;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 30px 10px;
+      overflow-x: auto;
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      overflow-x: hidden;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      min-height: 80vh;
     }
 
-    .paper-container {
-      width: 100%;
-      max-width: 820px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    /* Clean Judicial Sheet: No borders, pure prestige legal paper */
-    .legal-paper {
-      position: relative;
-      width: 100%;
+    /* The Real A4 Sheet (210mm x 297mm) */
+    .a4-physical-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      height: 297mm;
       background: #ffffff;
-      color: var(--paper-text);
-      border-radius: 4px;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(0, 0, 0, 0.12);
-      box-sizing: border-box;
-      padding: 20mm 18mm 18mm 18mm;
-      margin: 0 auto;
-      min-height: 980px;
-    }
-
-    /* ================= Editable Document Body ================= */
-    .document-body {
-      position: relative;
-      z-index: 5;
-      font-family: var(--doc-font-family);
-      font-size: var(--doc-font-size);
-      line-height: var(--doc-line-height);
       color: #0f172a;
+      padding: 12mm 15mm 12mm 15mm;
+      box-sizing: border-box;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.15);
+      border-radius: 2px;
       direction: rtl;
       text-align: justify;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Cairo', 'Noto Naskh Arabic', sans-serif;
+      font-size: 13.5px;
+      line-height: 1.52;
+      transition: all 0.2s ease;
+    }
+
+    .a4-sheet-editable {
       outline: none;
-      min-height: 820px;
+      min-height: 100%;
     }
 
-    /* Greeting starts from right edge */
-    .document-body h3 {
-      font-size: 16.5px;
-      font-weight: 800;
-      text-align: right !important;
-      margin-bottom: 14px;
+    /* Typography & Document Styles */
+    .court-header {
+      text-align: right;
+      font-size: 17.5px;
+      font-weight: 900;
       color: #0f172a;
-      line-height: 1.45;
+      margin-bottom: 8px;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 4px;
     }
 
-    .document-body p {
-      margin-bottom: 0.42em;
-      line-height: var(--doc-line-height);
-      text-align: justify;
+    .parties-block {
+      margin-bottom: 6px;
+      font-size: 13.5px;
+      line-height: 1.52;
     }
 
-    .document-body strong, .document-body b {
-      font-weight: 700;
+    .parties-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2px;
     }
 
-    .document-body u {
+    .subject-box {
+      text-align: center;
+      margin: 8px 0;
+      font-size: 15.5px;
+      font-weight: 900;
+    }
+
+    .subject-box u {
+      text-decoration: underline;
       text-underline-offset: 3px;
     }
 
-    /* Royal Red Highlight */
-    .legal-red, 
-    span[style*="color:#dc2626"], 
-    span[style*="color: #dc2626"], 
-    span[style*="rgb(220, 38, 38)"],
-    font[color="#dc2626"],
-    font[color="red"] {
+    .salutation {
+      font-size: 13.5px;
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+
+    .intro-text {
+      font-size: 13.5px;
+      line-height: 1.52;
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+
+    .crime-item {
+      font-size: 13.1px;
+      line-height: 1.48;
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+
+    .crime-title {
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .legal-red {
       color: #dc2626 !important;
       font-weight: 800 !important;
     }
 
-    span[style*="color:#dc2626"] *, 
-    span[style*="color: #dc2626"] *, 
-    .legal-red * {
-      color: #dc2626 !important;
+    .witness-box {
+      margin: 6px 0;
+      font-size: 13.2px;
+      line-height: 1.50;
+      border: none !important;
+      padding: 2px 0;
     }
 
-    /* Signature table */
-    .document-body table {
-      width: 100% !important;
-      border-collapse: collapse !important;
-      margin-top: 14px !important;
-      border: none !important;
+    .witness-header {
+      font-weight: 800;
+      margin-bottom: 3px;
     }
 
-    .document-body table td {
-      border: none !important;
-      padding: 4px 6px !important;
-      vertical-align: top;
+    .witness-grid {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .requests-header {
       font-size: 13.5px;
+      font-weight: 800;
+      margin-top: 6px;
+      margin-bottom: 3px;
     }
 
-    /* ================= Mobile Fixed Bottom Bar ================= */
-    .mobile-bottom-bar {
+    .req-item {
+      font-size: 13.0px;
+      line-height: 1.47;
+      margin-bottom: 2px;
+      text-align: justify;
+    }
+
+    .closing-text {
+      text-align: center;
+      font-size: 14.5px;
+      font-weight: 800;
+      margin: 9px 0 6px 0;
+    }
+
+    .footer-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      border: none !important;
+    }
+
+    .footer-table td {
+      border: none !important;
+      padding: 0;
+      vertical-align: bottom;
+    }
+
+    /* ================= Mobile Floating Action Bar ================= */
+    .mobile-float-bar {
       display: none;
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: #0f172a;
-      border-top: 1px solid rgba(212, 175, 55, 0.3);
-      padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
-      z-index: 60;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border-color);
+      padding: 8px 6px;
+      z-index: 150;
       justify-content: space-around;
       align-items: center;
     }
 
-    .m-nav-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: 10.5px;
-      font-weight: 700;
+    .m-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 3px;
-      cursor: pointer;
-      padding: 4px 6px;
-      border-radius: 6px;
-      transition: all 0.15s ease;
-      user-select: none;
-    }
-
-    .m-nav-btn svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    /* ================= Modals (Archive & Kiosk Share) ================= */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(3, 7, 18, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 200;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    .modal-box {
-      background: #0f172a;
-      border: 1px solid rgba(212, 175, 55, 0.35);
-      border-radius: 14px;
-      width: 100%;
-      max-width: 580px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      position: relative;
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #1e293b;
-      padding-bottom: 12px;
-    }
-
-    .modal-header h3 {
-      font-size: 16px;
-      font-weight: 800;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .modal-close-btn {
       background: transparent;
       border: none;
-      color: #94a3b8;
-      font-size: 22px;
-      cursor: pointer;
-      padding: 4px 8px;
-      line-height: 1;
-    }
-
-    .modal-close-btn:hover {
-      color: #ffffff;
-    }
-
-    /* Archive Item Cards */
-    .archive-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 52vh;
-      overflow-y: auto;
-      padding: 2px;
-    }
-
-    .archive-card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: all 0.15s ease;
-    }
-
-    .archive-card:hover {
-      border-color: var(--gold-primary);
-      background: rgba(30, 41, 59, 0.9);
-    }
-
-    .archive-card-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .archive-title {
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #f8fafc;
-      line-height: 1.4;
-    }
-
-    .archive-meta {
-      font-size: 11px;
-      color: var(--gold-primary);
-      font-weight: 600;
-      margin-top: 2px;
-    }
-
-    .archive-card-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 4px;
-      flex-wrap: wrap;
-    }
-
-    .btn-sm {
-      padding: 5px 10px;
-      font-size: 11.5px;
-      border-radius: 6px;
-      font-weight: 700;
-      cursor: pointer;
-      border: 1px solid transparent;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      text-decoration: none;
-      font-family: inherit;
-    }
-
-    .btn-sm-open {
-      background: #2563eb;
-      color: #ffffff;
-    }
-    .btn-sm-share {
-      background: #059669;
-      color: #ffffff;
-    }
-    .btn-sm-del {
-      background: rgba(239, 68, 68, 0.15);
-      color: #ef4444;
-      border-color: rgba(239, 68, 68, 0.3);
-    }
-
-    /* Kiosk Share Options */
-    .kiosk-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .kiosk-opt-card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      padding: 12px 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: all 0.15s ease;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .kiosk-opt-card:hover {
-      border-color: var(--gold-primary);
-      transform: translateY(-1px);
-    }
-
-    .kiosk-opt-primary {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(5, 150, 105, 0.12));
-      border-color: rgba(52, 211, 153, 0.5);
-    }
-
-    .kiosk-opt-primary:hover {
-      border-color: #10b981;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.28), rgba(5, 150, 105, 0.22));
-    }
-
-    .kiosk-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
-    }
-
-    .kiosk-text h4 {
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #f8fafc;
-      margin-bottom: 2px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .kiosk-text p {
-      font-size: 11.5px;
       color: var(--text-muted);
-      line-height: 1.35;
+      font-size: 11px;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      touch-action: manipulation;
     }
 
-    .badge-star {
-      background: #10b981;
-      color: #0b1120;
-      font-size: 9.5px;
-      font-weight: 900;
-      padding: 2px 6px;
-      border-radius: 4px;
+    .m-btn.highlight {
+      color: #fde68a;
+    }
+    .m-btn.green {
+      color: #34d399;
     }
 
-    /* Toast */
+    /* Toast Notification */
     .toast-msg {
       position: fixed;
-      bottom: 74px;
+      bottom: 75px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
       background: #0f172a;
       color: #f8fafc;
       border: 1px solid var(--gold-primary);
-      padding: 10px 20px;
+      padding: 9px 18px;
       border-radius: 8px;
       font-size: 13px;
       font-weight: 700;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
-      z-index: 300;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.8);
       opacity: 0;
-      visibility: hidden;
-      transition: all 0.25s ease;
       pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 9999;
       text-align: center;
-      max-width: 90%;
+      white-space: nowrap;
     }
-
     .toast-msg.show {
       opacity: 1;
-      visibility: visible;
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ================= True A4 Printed Page Preview Modal ================= */
-    .preview-modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(3, 7, 18, 0.96);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 250;
-      flex-direction: column;
-      box-sizing: border-box;
-    }
-
-    .preview-modal-backdrop.open {
-      display: flex;
-    }
-
-    .preview-top-bar {
-      background: #0f172a;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.35);
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      z-index: 10;
-    }
-
-    .preview-title-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .preview-title-group h3 {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 800;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .badge-page-fit {
-      font-size: 11px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 6px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .fit-perfect {
-      background: rgba(16, 185, 129, 0.2);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.4);
-    }
-
-    .fit-overflow {
-      background: rgba(239, 68, 68, 0.2);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.4);
-    }
-
-    .preview-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .preview-stage-viewport {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 20px 10px 40px;
-      box-sizing: border-box;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .preview-scale-wrapper {
-      width: 794px;
-      transform-origin: top center;
-      display: flex;
-      justify-content: center;
-      transition: transform 0.2s ease;
-    }
-
-    .preview-a4-sheet {
-      width: 794px;
-      min-height: 1123px;
-      max-height: 1123px;
-      background: #ffffff;
-      color: #0f172a;
-      padding: 45px 60px;
-      box-sizing: border-box;
-      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.85);
-      border-radius: 2px;
-      direction: rtl;
-      text-align: justify;
-      position: relative;
-      font-size: 12.5px;
-      line-height: 1.48;
-      overflow: hidden;
-    }
-
-    .preview-a4-sheet h3 {
-      font-size: 15px;
-      margin-bottom: 8px;
-      text-align: right;
-    }
-
-    .preview-a4-sheet p {
-      margin-bottom: 0.35em;
-    }
-
-    .preview-a4-sheet table td {
-      font-size: 12px;
-      padding: 2px 4px;
-    }
-
-    /* Mobile Responsive Optimizations */
-    @media (max-width: 1023px) {
-      .mobile-bottom-bar {
+    /* ================= Responsive Layout for Mobile ================= */
+    @media (max-width: 860px) {
+      .mobile-float-bar {
         display: flex;
       }
-
+      .studio-container {
+        padding: 8px 6px 75px;
+      }
+      .stage-wrapper {
+        padding: 14px 4px 60px;
+        border-radius: 8px;
+      }
+      .a4-physical-sheet {
+        transform-origin: top center;
+        margin: 0 auto;
+      }
       .header-actions {
         display: none;
       }
-
-      .brand-text h1 {
-        font-size: 14px;
-        gap: 4px;
-      }
-
-      .brand-text p {
-        font-size: 10.5px;
-      }
-
-      .btn-app-refresh {
-        padding: 5px 9px;
-        font-size: 12px;
-      }
-
-      .studio-wrapper {
-        padding: 6px 4px 85px;
-      }
-
-      .paper-stage {
-        padding: 8px 4px 75px;
-      }
-
-      .legal-paper {
-        padding: 14mm 8mm 14mm 8mm;
-        border-radius: 4px;
-      }
-
-      .studio-toolbar {
-        padding: 8px 10px;
-        overflow-x: auto;
-        white-space: nowrap;
-        flex-wrap: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .toolbar-left {
-        flex-wrap: nowrap;
-        width: 100%;
-      }
-
-      .toolbar-right {
-        display: none;
-      }
     }
 
-        /* ================= 100% Strict Single-Page Clean Vector Print Rules ================= */
+    /* ================= 100% Strict Pure W3C Print Rules ================= */
     @media print {
       @page {
         size: A4 portrait;
@@ -959,88 +526,54 @@
       *, *::before, *::after {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+        box-shadow: none !important;
       }
 
       html, body {
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        height: auto !important;
         background: #ffffff !important;
         color: #0f172a !important;
-        overflow: visible !important;
-      }
-
-      /* Hide ALL main site chrome */
-      body > *:not(#printPreviewModal) {
-        display: none !important;
-      }
-
-      /* Show ONLY preview modal contents cleanly */
-      body > #printPreviewModal {
-        display: block !important;
-        position: static !important;
-        background: #ffffff !important;
-        padding: 0 !important;
         margin: 0 !important;
+        padding: 0 !important;
         width: 100% !important;
         height: auto !important;
         overflow: visible !important;
       }
 
-      #printPreviewModal .preview-top-bar,
-      #printPreviewModal .preview-actions,
-      #printPreviewModal .badge-page-fit {
+      .app-header,
+      .tabs-bar,
+      .editor-toolbar,
+      .mobile-float-bar,
+      .toast-msg,
+      .no-print {
         display: none !important;
       }
 
-      #printPreviewModal .preview-stage-viewport {
-        display: block !important;
+      .studio-container {
         padding: 0 !important;
         margin: 0 !important;
-        overflow: visible !important;
+        max-width: 100% !important;
+      }
+
+      .stage-wrapper {
         background: #ffffff !important;
-        height: auto !important;
-      }
-
-      #printPreviewModal .preview-scale-wrapper {
-        width: 100% !important;
-        height: auto !important;
-        transform: none !important;
+        border: none !important;
+        padding: 0 !important;
         margin: 0 !important;
-        position: static !important;
       }
 
-      #printPreviewModal .preview-a4-sheet {
+      .a4-physical-sheet {
         width: 100% !important;
         max-width: 100% !important;
+        height: auto !important;
         min-height: auto !important;
-        max-height: none !important;
-        transform: none !important;
-        position: static !important;
         box-shadow: none !important;
         border: none !important;
-        outline: none !important;
         padding: 0 !important;
         margin: 0 !important;
-        background: #ffffff !important;
-        font-size: 13.6px !important;
-        line-height: 1.54 !important;
-      }
-
-      .court-header {
-        border-bottom: 2px solid #0f172a !important;
+        transform: none !important;
+        page-break-inside: avoid !important;
       }
     }
-  
-    /* Touch optimization for instant mobile taps */
-    button, .btn, .tool-btn, .m-nav-btn, .kiosk-opt-card, .doc-type-pill {
-      cursor: pointer !important;
-      touch-action: manipulation !important;
-      -webkit-tap-highlight-color: rgba(212, 175, 55, 0.25) !important;
-      user-select: none !important;
-    }
-
   </style>
 </head>
 <body>
@@ -1049,129 +582,93 @@
   <header class="app-header no-print">
     <div class="header-content">
       <div class="brand-group">
-        <img src="icon-192.png" alt="شعار الميزان" class="brand-logo">
+        <img src="icon-192.png" alt="المحامي سعد فراس أميل" class="brand-logo">
         <div class="brand-text">
-          <h1>محرر العرائض القضائية <span class="badge-pill">المحامي سعد أميل</span></h1>
-          <p>محاكم استئناف بغداد الاتحادية — هوية: 188572 (الصلاحية أ)</p>
+          <h1>استوديو العرائض القضائية الذكي <span class="badge-pill">محاكم بغداد</span></h1>
+          <p>المحامي سعد فراس أميل — هوية: 188572 (الصلاحية أ)</p>
         </div>
       </div>
-      <div class="header-tools">
-        <!-- Always visible refresh button for PWA / Mobile / Desktop -->
-        <button type="button" class="btn-app-refresh" id="btnAppRefresh" onclick="refreshAppPage()" title="تحديث الصفحة وجلب أحدث تعديل">
-          <span class="refresh-spinner" id="refreshSpinner">🔄</span>
-          <span class="refresh-label">تحديث</span>
-        </button>
 
-        <!-- Desktop Action Buttons -->
-        <div class="header-actions">
-          <button type="button" class="btn btn-green" onclick="downloadPristinePdf()" title="تنزيل عريضة A4 الرسمية المعتمدة فوراً">
-            <span>📥 تنزيل PDF جاهز</span>
-          </button>
-          <button class="btn btn-gold" onclick="openPrintPreviewModal()">
-            <span>👁️ معاينة الطباعة (A4)</span>
-          </button>
-          <button class="btn btn-green" onclick="openKioskModal()">
-            <span>📤 إرسال وطباعة</span>
-          </button>
-          <button class="btn btn-dark" onclick="openArchiveModal()">
-            <span>📁 الأرشيف (<span id="archiveCountBadge">0</span>)</span>
-          </button>
-        </div>
+      <!-- Desktop Essential Action Buttons -->
+      <div class="header-actions">
+        <button type="button" class="btn btn-green" onclick="downloadPristinePdf()" title="تنزيل عريضة A4 الرسمية الأصلية المعتمدة فوراً">
+          📥 تنزيل PDF جاهز
+        </button>
+        <button type="button" class="btn btn-green" onclick="shareLivePetitionToWhatsApp()" title="إرسال ملف الـ PDF الأصلي لواتساب كشك الاستنساخ">
+          🟢 إرسال لواتساب الكشك
+        </button>
+        <button type="button" class="btn btn-blue" onclick="downloadLiveWordDoc()" title="توليد وتنزيل ملف Word (.docx) أصلي بمقاسات A4">
+          📄 ملف Word (.docx)
+        </button>
+        <button type="button" class="btn btn-dark" onclick="triggerCleanPrint()" title="طباعة الورقة فوراً">
+          🖨️ طباعة فورية
+        </button>
+        <button type="button" class="btn btn-refresh" onclick="forceAppRefresh()" title="تحديث وسحب أحدث نسخة">
+          🔄 تحديث
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- ================= Main Studio Workspace ================= -->
-  <main class="studio-wrapper">
-    
-    <!-- Quick Actions Bar -->
-    <div class="cases-bar no-print">
-      <div class="case-pill active" id="chipOmar" onclick="loadAuditedOmarPetition()" style="background: rgba(220, 38, 38, 0.18); border-color: rgba(220, 38, 38, 0.55); color: #fca5a5;" title="تحميل وتحديث عريضة الموكل عمر الجبوري بأحدث تنسيق وألوان">
-        <span>⚡</span>
-        <span>عريضة عمر الجبوري (النسخة الرسمية بالألوان)</span>
-        <span id="saveStatusDot" style="color:#34d399; font-size:10px; margin-right:4px;">● نشطة</span>
-      </div>
-      <div class="case-pill" onclick="refreshAppPage()" style="background: rgba(56, 189, 248, 0.16); border-color: rgba(56, 189, 248, 0.45); color: #7dd3fc;">
-        <span>🔄</span>
-        <span>تحديث الصفحة وجلب آخر نسخة</span>
-      </div>
-      <div class="case-pill pill-archive" onclick="openPrintPreviewModal()" style="background: rgba(212, 175, 55, 0.18); border-color: rgba(212, 175, 55, 0.5); color: #fde68a;">
-        <span>👁️</span>
-        <span>معاينة الورقة المطبوعة (A4) ⭐</span>
-      </div>
-      <div class="case-pill" onclick="beautifyPetitionDocument()">
-        <span>✨</span>
-        <span>ترتيب وتنسيق تلقائي للفقرات</span>
-      </div>
-      <div class="case-pill" onclick="openArchiveModal()">
-        <span>📁</span>
-        <span>أرشيف العرائض (<span id="archiveCountBadge2">0</span>)</span>
-      </div>
-      <div class="case-pill" onclick="resetToOmarDefaultTemplate()" style="opacity: 0.8;">
-        <span>🔄</span>
-        <span>استرجاع الصياغة الأصلية</span>
-      </div>
+  <!-- ================= View Modes Bar ================= -->
+  <div class="tabs-bar no-print">
+    <div class="tab-group">
+      <button class="tab-btn active" id="tabSheetBtn" onclick="switchViewMode('sheet')">
+        📄 الورقة الرسمية المطبوعة (A4)
+      </button>
+      <button class="tab-btn" id="tabEditorBtn" onclick="switchViewMode('editor')">
+        ✍️ تعديل المحتوى والنصوص
+      </button>
     </div>
 
-    <!-- Document Card -->
-    <div class="studio-card">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span class="page-status-badge" id="pageStatusBadge">
+        ✅ صفحة A4 واحدة كاملة ومثالية
+      </span>
+      <button class="tool-btn" onclick="adjustDocFontSize(0.5)" title="تكبير الخط">
+        ➕ تكبير
+      </button>
+      <button class="tool-btn" onclick="adjustDocFontSize(-0.5)" title="تصغير الخط">
+        ➖ تصغير
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= Workspace Layout ================= -->
+  <main class="studio-container">
+
+    <!-- Secondary Formatting Toolbar (Visible in Edit Mode) -->
+    <div class="editor-toolbar no-print" id="editorToolbar" style="display: none;">
+      <button class="tool-btn tool-red" onclick="applyHighlightColor('#dc2626')">
+        🔴 تلوين أحمر
+      </button>
+      <button class="tool-btn" onclick="applyHighlightColor('#0f172a')">
+        ⚫ إعادة للأسود
+      </button>
+      <button class="tool-btn" onclick="execFormat('bold')">
+        <b>B عريض</b>
+      </button>
+      <button class="tool-btn" onclick="execFormat('underline')">
+        <u>U تسطير</u>
+      </button>
+      <button class="tool-btn tool-gold" onclick="cycleFontFamily()">
+        🖋️ <span id="fontFamilyLabel">الخط: Cairo</span>
+      </button>
+      <button class="tool-btn" onclick="loadAuditedOmarPetition()" title="استعادة النسخة القضائية المدققة (الموصى بها)">
+        ⚖️ النسخة المدققة قانونياً
+      </button>
+      <button class="tool-btn" onclick="loadOriginalDraftOmarPetition()" title="استعادة النسخة الأصلية الأولى">
+        📋 النسخة الأولى
+      </button>
+    </div>
+
+    <!-- The Stage: Holding Physical A4 Sheet -->
+    <div class="stage-wrapper" id="stageWrapper">
       
-      <!-- Sleek Practical Toolbar -->
-      <div class="studio-toolbar no-print">
-        <div class="toolbar-left">
-          
-          <!-- Highlighting & Formatting (keeps text selection intact) -->
-          <button type="button" class="tool-btn btn-red-tool" onclick="applyHighlightColor('#dc2626')" title="تلوين النص المحدد أو الفقرة بالأحمر">
-            🔴 أحمر
-          </button>
-          <button type="button" class="tool-btn" onclick="applyHighlightColor('#0f172a')" title="إعادة النص أو الفقرة للون الأسود">
-            ⚫ أسود
-          </button>
-          <button type="button" class="tool-btn" onclick="execFormat('bold')" title="خط عريض">
-            <b>B عريض</b>
-          </button>
-          <button type="button" class="tool-btn" onclick="execFormat('underline')" title="تسطير">
-            <u>U تسطير</u>
-          </button>
-
-          <!-- Smart Font Size: Selection if text selected, or Entire Document if no selection -->
-          <button type="button" class="tool-btn" onclick="adjustFontSize(1)" title="تكبير الخط">
-            ➕ تكبير
-          </button>
-          <button type="button" class="tool-btn" onclick="adjustFontSize(-1)" title="تصغير الخط">
-            ➖ تصغير
-          </button>
-
-          <!-- Font Chooser -->
-          <button type="button" class="tool-btn btn-font-switch" onclick="toggleDocFont()" title="تغيير نوع الخط العربي">
-            <span id="fontLabel">🖋️ الخط: عصري (Cairo)</span>
-          </button>
-
-        </div>
-
-        <div class="toolbar-right">
-          <button type="button" class="tool-btn" onclick="openPrintPreviewModal()" style="background:#d4af37; color:#0b1120; border-color:#fcd34d; font-weight:800;">
-            👁️ معاينة الطباعة (A4)
-          </button>
-          <button type="button" class="tool-btn" onclick="openKioskModal()" style="background:#059669; color:#fff; border-color:#10b981; font-weight:800;">
-            📤 إرسال وطباعة
-          </button>
-          <button type="button" class="tool-btn" onclick="beautifyPetitionDocument()" style="background:#1e293b; color:#cbd5e1; border-color:#475569;">
-            ✨ ترتيب الورقة
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Clean White Paper Stage -->
-      <div class="paper-stage">
-        <div class="paper-container">
-          <div class="legal-paper" id="legalPaper">
-            
-            <!-- Native ContentEditable Pleading Surface -->
-            <div class="document-body" id="docContent" contenteditable="true" spellcheck="false"></div>
-
-          </div>
+      <!-- Page 1 (Physical A4 Sheet) -->
+      <div class="a4-physical-sheet" id="a4SheetPage1">
+        <div class="a4-sheet-editable" id="docContent" contenteditable="true" spellcheck="false">
+          <!-- Live Verified Content Injected Here -->
         </div>
       </div>
 
@@ -1179,199 +676,130 @@
 
   </main>
 
-  <!-- ================= Mobile Fixed Bottom Bar (Clean 5 Essential Actions) ================= -->
-  <nav class="mobile-bottom-bar no-print">
-    <button class="m-nav-btn" onclick="applyHighlightColor('#dc2626')">
-      <span style="font-size:18px;">🔴</span>
-      <span style="color:#ef4444; font-weight:800;">تلوين أحمر</span>
+  <!-- ================= Mobile Floating Action Bar ================= -->
+  <nav class="mobile-float-bar no-print">
+    <button class="m-btn green" onclick="downloadPristinePdf()">
+      <span style="font-size:18px;">📥</span>
+      <span>تنزيل PDF</span>
     </button>
-    <button class="m-nav-btn" onclick="adjustFontSize(1)">
-      <span style="font-size:18px; font-weight:900;">➕</span>
-      <span>تكبير الخط</span>
+    <button class="m-btn green" onclick="shareLivePetitionToWhatsApp()">
+      <span style="font-size:18px;">🟢</span>
+      <span>واتساب الكشك</span>
     </button>
-    <button class="m-nav-btn" onclick="adjustFontSize(-1)">
-      <span style="font-size:18px; font-weight:900;">➖</span>
-      <span>تصغير الخط</span>
+    <button class="m-btn highlight" onclick="triggerCleanPrint()">
+      <span style="font-size:18px;">🖨️</span>
+      <span>طباعة الآن</span>
     </button>
-    <button class="m-nav-btn" onclick="openPrintPreviewModal()" style="color:#fde68a;">
-      <span style="font-size:18px;">👁️</span>
-      <span style="font-weight:900; color:#fcd34d;">معاينة A4 ⭐</span>
+    <button class="m-btn" onclick="downloadLiveWordDoc()">
+      <span style="font-size:18px;">📄</span>
+      <span>ملف Word</span>
     </button>
-    <button class="m-nav-btn" onclick="openKioskModal()" style="color:#34d399;">
-      <span style="font-size:18px;">📤</span>
-      <span style="font-weight:900; color:#34d399;">إرسال وطباعة</span>
+    <button class="m-btn" onclick="forceAppRefresh()">
+      <span style="font-size:18px;">🔄</span>
+      <span>تحديث</span>
     </button>
   </nav>
 
-  <!-- ================= True A4 Printed Page Preview Modal ================= -->
-  <div class="preview-modal-backdrop" id="printPreviewModal">
-    <div class="preview-top-bar no-print">
-      <div class="preview-title-group">
-        <h3><span>📄</span> <span>معاينة الورقة المطبوعة الفعلية (A4)</span></h3>
-        <span id="previewPageFitBadge" class="badge-page-fit fit-perfect">
-          ✅ صفحة واحدة A4 مطابقة للطباعة
-        </span>
-      </div>
-      <div class="preview-actions">
-        <button class="btn btn-dark" style="font-size:12px; font-weight:800; padding:6px 10px; border:1px solid #475569;" onclick="adjustPreviewFontSize(1)" title="تكبير خط الورقة">
-          ➕ تكبير
-        </button>
-        <button class="btn btn-dark" style="font-size:12px; font-weight:800; padding:6px 10px; border:1px solid #475569;" onclick="adjustPreviewFontSize(-1)" title="تصغير خط الورقة لتناسب صفحة واحدة">
-          ➖ تصغير
-        </button>
-        <button type="button" class="btn btn-green" onclick="downloadPristinePdf()" title="تنزيل عريضة A4 الرسمية المعتمدة فوراً">
-            <span>📥 تنزيل PDF جاهز</span>
-          </button>
-        <button class="btn btn-blue" style="font-size:12px; padding:6px 12px;" onclick="triggerCleanPrint()">
-          🖨️ طباعة الآن (Print)
-        </button>
-        <button class="btn btn-green" style="font-size:12px; padding:6px 12px;" onclick="shareLivePetitionToWhatsApp()">
-          🟢 إرسال لواتساب الكشك
-        </button>
-        <button class="btn btn-dark" style="font-size:12px; padding:6px 12px;" onclick="downloadLiveWordDoc()">
-          📄 مستند Word
-        </button>
-        <button class="btn btn-gold" style="font-size:12px; padding:6px 12px;" onclick="closePrintPreviewModal()">
-          ✏️ رجوع للتعديل
-        </button>
-      </div>
-    </div>
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toastMsg"></div>
 
-    <div class="preview-stage-viewport" id="previewViewport" onclick="handlePreviewBackdropClick(event)">
-      <div class="preview-scale-wrapper" id="previewScaleWrapper">
-        <div class="preview-a4-sheet" id="previewA4Sheet">
-          <!-- Live cloned document content rendered here with exact print dimensions -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= Archive Modal ================= -->
-  <div class="modal-backdrop" id="archiveModal" onclick="closeModalOnBackdrop(event, 'archiveModal')">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3><span>📁</span> <span>أرشيف العرائض القضائية</span></h3>
-        <button class="modal-close-btn" onclick="closeArchiveModal()">✕</button>
-      </div>
-
-      <div style="display: flex; gap: 8px;">
-        <button class="btn btn-gold" style="flex:1; font-size:12px; padding:6px 10px;" onclick="saveToArchivePrompt()">
-          <span>💾 حفظ العريضة الحالية كملف جديد</span>
-        </button>
-        <button class="btn btn-dark" style="font-size:12px; padding:6px 10px;" onclick="createNewPetition()">
-          <span>➕ عريضة جديدة</span>
-        </button>
-      </div>
-
-      <div class="archive-list" id="archiveListContainer">
-        <!-- Rendered dynamically -->
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e293b; padding-top: 10px; font-size: 11.5px; color: #94a3b8;">
-        <span>النسخ الاحتياطي:</span>
-        <div style="display:flex; gap:6px;">
-          <button class="btn-sm btn-dark" onclick="exportArchiveBackup()">📥 تصدير الأرشيف</button>
-          <label class="btn-sm btn-dark" style="cursor:pointer;">
-            📤 استيراد
-            <input type="file" accept=".json" style="display:none;" onchange="importArchiveBackup(event)">
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= Kiosk Typist Share Modal ================= -->
-  <div class="modal-backdrop" id="kioskModal" onclick="closeModalOnBackdrop(event, 'kioskModal')">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3><span>📤</span> <span>خيارات إرسال وطباعة العريضة</span></h3>
-        <button class="modal-close-btn" onclick="closeKioskModal()">✕</button>
-      </div>
-
-      <div class="kiosk-grid">
-        
-        <!-- Action 1: Live WhatsApp Formatted Text with all edits and order -->
-        <div class="kiosk-opt-card kiosk-opt-primary" onclick="shareLivePetitionToWhatsApp()">
-          <div class="kiosk-icon" style="background: rgba(16, 185, 129, 0.25); color: #34d399;">
-            🟢
-          </div>
-          <div class="kiosk-text">
-            <h4>
-              <span>إرسال ملف PDF الأصلي لواتساب الكشك ⭐</span>
-              <span class="badge-star">الأسرع والأضمن ⭐</span>
-            </h4>
-            <p>يفتح محادثة واتساب كشك الاستنساخ فوراً ويرسل له ملف الـ PDF الأصلي المعتمد (صفحة واحدة A4 كاملة بدون أي تعديل أو لخبطة).</p>
-          </div>
-        </div>
-
-        <!-- Action 0: Instant Verified Pristine A4 PDF Download -->
-        <div class="kiosk-opt-card" onclick="downloadPristinePdf()" style="border-color: rgba(212, 175, 55, 0.6); background: rgba(212, 175, 55, 0.1);">
-          <div class="kiosk-icon" style="background: rgba(212, 175, 55, 0.3); color: #fde68a;">
-            📥
-          </div>
-          <div class="kiosk-text">
-            <h4 style="color:#fde68a;">تنزيل ملف PDF المعتمد الجاهز (A4 كاملة بدون لخبطة) ⭐</h4>
-            <p style="color:#cbd5e1;">ملف PDF فيكتور رسمي عالي الدقة، جاهز للطباعة فوراً بصفحة واحدة ومقاسات مثالية دون أي تصغير أو هوامش زائدة.</p>
-          </div>
-        </div>
-
-        <!-- Action 2: Instant Native PDF Print (AirPrint / Android / PC) -->
-        <div class="kiosk-opt-card" onclick="triggerCleanPrint()">
-          <div class="kiosk-icon" style="background: rgba(37, 99, 235, 0.25); color: #60a5fa;">
-            🖨️
-          </div>
-          <div class="kiosk-text">
-            <h4>طباعة A4 رسمية / حفظ PDF بهاتفك</h4>
-            <p>يفتح محرك الطباعة الرسمي بهاتفك للطباعة المباشرة، أو حفظ الملف كـ PDF رسمي بنصوص عربية متصلة وفائقة الدقة.</p>
-          </div>
-        </div>
-
-        <!-- Action 3: Direct Word Document (.doc) Download with Live Edits & Colors -->
-        <div class="kiosk-opt-card" onclick="downloadLiveWordDoc()">
-          <div class="kiosk-icon" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">
-            📄
-          </div>
-          <div class="kiosk-text">
-            <h4>تنزيل مستند Word فوري (.doc) بالتعديلات والألوان</h4>
-            <p>ينزل في هاتفك ملف Word رسمي يحمل كافة تعديلاتك وألوانك وجدول التوقيع لفتحه بالحاسبة وطباعته.</p>
-          </div>
-        </div>
-
-        <!-- Action 4: Copy clean text -->
-        <div class="kiosk-opt-card" onclick="copyCleanPetitionText()">
-          <div class="kiosk-icon" style="background: rgba(148, 163, 184, 0.15); color: #cbd5e1;">
-            📋
-          </div>
-          <div class="kiosk-text">
-            <h4>نسخ نص العريضة بالكامل للحافظة (Copy Text)</h4>
-            <p>ينسخ كامل النص المحدث إلى حافظة جهازك للصقه في أي تطبيق أو محادثة أخرى.</p>
-          </div>
-        </div>
-
-      </div>
-
-      <div style="background: rgba(212, 175, 55, 0.08); border: 1px dashed rgba(212, 175, 55, 0.35); border-radius: 8px; padding: 10px; font-size: 11.5px; color: #cbd5e1; line-height: 1.5;">
-        💡 <strong>نصيحة للمحامي:</strong> كشك الاستنساخ أمام المحكمة يفضل دائماً استلام النص بالواتساب أو مستند Word ليطبعه بلمسة زر واحدة.
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Floating Toast -->
-  <div id="toastBox" class="toast-msg"></div>
-
-  <!-- App Script -->
+  <!-- ================= Core JavaScript Engine ================= -->
   <script>
-    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_draft_persistent_v10';
-    const ARCHIVE_STORAGE_KEY = 'saadamil_petitions_archive_v1';
-    const FONT_STORAGE_KEY = 'saadamil_saved_font_mode';
+    // Storage & Engine Keys
+    const ACTIVE_DRAFT_KEY = 'saadamil_paged_petition_active_v2';
+    let baseFontSize = 13.5;
+    let currentFontIdx = 0;
+    const FONTS = [
+      { name: 'Cairo (عصري)', family: "'Cairo', sans-serif" },
+      { name: 'Noto Naskh (أصولي)', family: "'Noto Naskh Arabic', serif" },
+      { name: 'Amiri (رسمي)', family: "'Amiri', serif" }
+    ];
 
-    const OMAR_PETITION_DEFAULT_HTML = `  <div class="court-header" style="text-align: right; font-size: 17.5px; font-weight: 900; color: #0f172a; margin-bottom: 9px; border-bottom: 2px solid #0f172a; padding-bottom: 4px;">
+    // Master Audited Legal Omar Petition HTML (Image 2 - 100% Law-Grounded)
+    const MASTER_AUDITED_HTML = `  <div class="court-header">
     <div>إلى / السيد قاضي محكمة تحقيق الدورة المحترم</div>
   </div>
 
-  <div class="parties-block" style="margin-bottom: 7px; font-size: 13.5px; line-height: 1.52;">
-    <div class="parties-row" style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+  <div class="parties-block">
+    <div class="parties-row">
+      <div><strong>المشتكي:</strong> عمر رعد خليفه</div>
+      <div><strong>الساكن:</strong> بغداد - الدورة، محلة (842)، زقاق (9)، دار (6)</div>
+    </div>
+    <div style="margin-top: 3px;">
+      <strong>المشكو منهما:</strong><br>
+      1. <strong>شهد عباس لفته</strong> (الزوجة)<br>
+      2. <strong>ناهد (...)</strong> (والدة الزوجة - شريكة ومحرضة)<br>
+      <strong>الساكنتان:</strong> بغداد - الدورة، الإسكان، قرب جامع الإسكان (بدلالة المشتكي)
+    </div>
+  </div>
+
+  <div class="subject-box">
+    <u>م / شكوى جزائية وطلب اتخاذ الإجراءات القانونية الأصولية</u>
+  </div>
+
+  <div class="salutation">تحية طيبة واحتراماً،</div>
+
+  <div class="intro-text">
+    سبق وأن أقدمت المشكو منها الأولى (شهد عباس لفته) وباشتراك وتحريض مباشر من والدتها المشكو منها الثانية (ناهد)، على ارتكاب سلسلة من الأفعال والاعتداءات الجرمية الشائنة المعاقب عليها قانوناً بحق موكلي، وفق التفصيل الآتي:
+  </div>
+
+  <div class="crime-item">
+    <span class="legal-red">1. جريمة القذف والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات): أقدمت المشكو منها الأولى بالاتصال بصديق موكلي المقرب الشاهد (علي سلام صبحي) بمكالمة هاتفية مسجلة استمرت ساعة و(34) دقيقة بهدف إسقاط موكلي اجتماعياً وأخلاقياً واستمالة صديقه لصفها، وأطلقت خلالها افتراءات وطعوناً مخلة بالشرف والرجولة؛ حيث ادعت كذباً بأن موكلي <span style="text-decoration: underline;">«شاذ جنسياً وزعمت وجود مقطع فيديو يثبت ذلك»</span>، كما ادعت افتراءً بأنه قام بإدخال شاب آخر معه إلى دار الزوجية في أول أيام زواجهما وهي عروسة، وادعت كذلك أنه يشرب الكحول داخل الدار ويسمح لها هي أيضاً بالشرب معه لتصويره مجرداً من الغيرة والأخلاق، في حين أن الثابت هو إلحاحها هي المستمر ورغبتها بالشرب معه رغم رفضه، وكل ذلك موثق بتسجيل المكالمة وشهادة الشهود.</span>
+  </div>
+
+  <div class="crime-item">
+    <span class="crime-title">2. جريمة الابتزاز والتهديد بنسبة أمور خادشة للشرف (المادة 430 عقوبات):</span> قيام المشكو منها الأولى بالتلويح والتهديد بنشر تلك المقاطع والادعاءات المفبركة ونسبة أمور مخلة بالحياء والشرف لموكلي بقصد ابتزازه والضغط عليه لكسر إرادته وإرغامه على التنازل عن حقوقه الشرعية والمالية.
+  </div>
+
+  <div class="crime-item">
+    <span class="crime-title">3. جريمة التهديد بارتكاب جناية القتل والذبح (المادتان 430 و431 عقوبات):</span> قيام المشكو منها الأولى بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإلحاق الأذى الجسدي به وبث الرعب في نفسه.
+  </div>
+
+  <div class="crime-item">
+    <span class="crime-title">4. جرائم التهجم العلني والتجمهر والسب أمام الدار (المواد 433 و434 بدلالة 19 / 3 ب عقوبات):</span> قيام المشكو منها الأولى بالحضور لمرات متتالية أمام دار سكن موكلي الكائن في (الدورة محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة، وتوجيه عبارات السب والقذف الفاحش بحق موكلي وأسرته لإحداث فضيحة اجتماعية وتخريب سمعتهم أمام الجيران.
+  </div>
+
+  <div class="crime-item">
+    <span class="legal-red">5. جريمة محاولة حمل وإغراء شاهد على شهادة الزور وتضليل القضاء (المادة 254 / 1 والمادة 248 بدلالة 48 عقوبات): قيام المشكو منهما (الزوجة ووالدتها ناهد) بمحاولة التواصل والضغط على والدة صديق موكلي الشاهدة (عهود عبد الرحمن خلاف) لتحريضها واستمالتها للشهادة بالزور ضد موكلي واختلاق وقائع كاذبة، والمثبت بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق وتفضح جريمة التحريض الجنائي.</span>
+  </div>
+
+  <div class="witness-box">
+    <div class="witness-header">شهود الإثبات الأربعة (الحاضرون تدوين شهاداتهم على كافة وقائع واعتداءات الدعوى):</div>
+    <div class="witness-grid">
+      <div style="width: 48%;">1. الشاهد: <strong>علي سلام صبحي</strong></div>
+      <div style="width: 48%;">2. الشاهدة: <strong>عهود عبد الرحمن خلاف</strong></div>
+      <div style="width: 48%;">3. الشاهد: <strong>مصطفى فائق عباس</strong></div>
+      <div style="width: 48%;">4. الشاهدة: <strong>هدى محمد عثمان</strong></div>
+    </div>
+  </div>
+
+  <div class="requests-header">لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</div>
+  <div class="req-item"><strong>أولاً:</strong> تدوين أقوال موكلي كمشتكٍ ومطالب بالحق الجزائي والمدني والتعويض المادي والمعنوي لرد اعتباره.</div>
+  <div class="req-item"><span class="legal-red"><strong>ثانياً:</strong> إحالة الأوراق إلى السيد المحقق القضائي لتدوين أقوال موكلي وتدوين شهادات شهود الإثبات الأربعة الحاضرين على كافة الوقائع.</span></div>
+  <div class="req-item"><span class="legal-red"><strong>ثالثاً:</strong> ربط المبرزات الفنية (CD) للمكالمة والبصمات ورسائل التهديد وتكليف خبير الأدلة الجنائية بتفريغها رسمياً، مع ضبط هاتف المشكو منها الأولى استناداً للمادتين (75 و84) من قانون أصول المحاكمات الجزائية والمادة (40) من الدستور.</span></div>
+  <div class="req-item"><span class="legal-red"><strong>رابعاً:</strong> إصدار أمر استقدام رسمي بحق المشكو منهما وإلزامهما بكفالة مالية ضامنة وتعهد عدلي مغلظ بعدم التعرض لموكلي أو عائلته مطلقاً.</span></div>
+
+  <div class="closing-text">مع وافر الشكر والتقدير والاحترام</div>
+
+  <table class="footer-table">
+    <tr>
+      <td style="text-align: right; width: 50%; font-size: 12px;">
+        <strong>التاريخ: 8 / 11 / 2026 م</strong>
+      </td>
+      <td style="text-align: left; width: 50%; font-size: 13px;">
+        <strong>وكيل المشتكي.</strong><br>
+        <strong>المحامي سعد فراس أميل</strong>
+      </td>
+    </tr>
+  </table>`;
+
+    // Original Draft HTML (Image 1)
+    const ORIGINAL_DRAFT_HTML = `  <div class="court-header">
+    <div>إلى / السيد قاضي محكمة تحقيق الدورة المحترم</div>
+  </div>
+
+  <div class="parties-block">
+    <div class="parties-row">
       <div><strong>المشتكي:</strong> عمر رعد خليفه</div>
       <div><strong>الساكن:</strong> بغداد - الدورة، محلة (842)، زقاق (9)، دار (6)</div>
     </div>
@@ -1383,39 +811,39 @@
     </div>
   </div>
 
-  <div class="subject-box" style="text-align: center; margin: 9px 0; font-size: 15.5px; font-weight: 900;">
+  <div class="subject-box">
     <u>م / شكوى جزائية وطلب اتخاذ الإجراءات القانونية</u>
   </div>
 
-  <div class="salutation" style="font-size: 13.5px; font-weight: 800; margin-bottom: 3px;">تحية طيبة واحتراماً،</div>
+  <div class="salutation">تحية طيبة واحتراماً،</div>
 
-  <div class="intro-text" style="font-size: 13.5px; line-height: 1.52; margin-bottom: 7px; text-align: justify;">
+  <div class="intro-text">
     سبق وأن أقدمت المشكو منها الأولى (شهد عباس لفته) وباشتراك وتحريض مباشر من والدتها المشكو منها الثانية (ناهد)، على ارتكاب سلسلة من الأفعال والاعتداءات الجرمية الشائنة المعاقب عليها قانوناً بحق موكلي، وفق التفصيل الآتي:
   </div>
 
-  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
-    <span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;">1. جريمة القذف والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات): أقدمت المشكو منها الأولى و الثانيه بالاتصال بصديق موكلي المقرب الشاهد (علي سلام صبحي) بمكالمة مطولة استغرقت ساعة و(34) دقيقة، بهدف إسقاط موكلي اجتماعياً وأخلاقياً واستمالة صديقه ليكون بصفها ضده، وأطلقت خلالها افتراءات وطعوناً مخلة بالشرف والرجولة؛ حيث ادعت كذباً بأن موكلي <span style="text-decoration: underline;">«شاذ جنسياً وزعمت وجود مقطع فيديو يثبت ذلك»</span>، كما ادعت افتراءً بأنه قام بإدخال شاب آخر معه إلى دار الزوجية في أول أيام زواجهما وهي عروسة، وادعت كذلك أنه يشرب الكحول داخل الدار ويسمح لها هي أيضاً بالشرب معه لتصويره مجرداً من الغيرة والأخلاق، في حين أن الثابت هو إلحاحها هي المستمر ورغبتها بالشرب معه رغم رفضه، وشهادة الشهود.</span>
+  <div class="crime-item">
+    <span class="legal-red">1. جريمة القذف والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات): أقدمت المشكو منها الأولى و الثانيه بالاتصال بصديق موكلي المقرب الشاهد (علي سلام صبحي) بمكالمة مطولة استغرقت ساعة و(34) دقيقة، بهدف إسقاط موكلي اجتماعياً وأخلاقياً واستمالة صديقه ليكون بصفها ضده، وأطلقت خلالها افتراءات وطعوناً مخلة بالشرف والرجولة؛ حيث ادعت كذباً بأن موكلي <span style="text-decoration: underline;">«شاذ جنسياً وزعمت وجود مقطع فيديو يثبت ذلك»</span>، كما ادعت افتراءً بأنه قام بإدخال شاب آخر معه إلى دار الزوجية في أول أيام زواجهما وهي عروسة، وادعت كذلك أنه يشرب الكحول داخل الدار ويسمح لها هي أيضاً بالشرب معه لتصويره مجرداً من الغيرة والأخلاق، في حين أن الثابت هو إلحاحها هي المستمر ورغبتها بالشرب معه رغم رفضه، وشهادة الشهود.</span>
   </div>
 
-  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
-    <span class="crime-title" style="font-weight: 800; color: #0f172a;">2. جريمة الابتزاز والتهديد بنسبة أمور خادشة للشرف (المادة 430 عقوبات):</span> قيام المشكو منها الأولى بالتلويح والتهديد بنشر تلك المقاطع والادعاءات المفبركة ونسبة أمور مخلة بالحياء والشرف لموكلي بقصد ابتزازه والضغط عليه لكسر إرادته وإرغامه على التنازل عن حقوقه الشرعية والمالية.
+  <div class="crime-item">
+    <span class="crime-title">2. جريمة الابتزاز والتهديد بنسبة أمور خادشة للشرف (المادة 430 عقوبات):</span> قيام المشكو منها الأولى بالتلويح والتهديد بنشر تلك المقاطع والادعاءات المفبركة ونسبة أمور مخلة بالحياء والشرف لموكلي بقصد ابتزازه والضغط عليه لكسر إرادته وإرغامه على التنازل عن حقوقه الشرعية والمالية.
   </div>
 
-  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
-    <span class="crime-title" style="font-weight: 800; color: #0f172a;">3. جريمة التهديد بالقتل والذبح (المادة 432 عقوبات):</span> قيام المشكو منها الأولى و الثانيه بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإلحاق الأذى الجسدي به وبث الرعب في نفسه.
+  <div class="crime-item">
+    <span class="crime-title">3. جريمة التهديد بالقتل والذبح (المادة 432 عقوبات):</span> قيام المشكو منها الأولى و الثانيه بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإلحاق الأذى الجسدي به وبث الرعب في نفسه.
   </div>
 
-  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
-    <span class="crime-title" style="font-weight: 800; color: #0f172a;">4. جرائم التهجم العلني والتجمهر والسب أمام الدار (المواد 433 و434 بدلالة 19 عقوبات):</span> قيام المشكو منها الأولى بالحضور لمرات متتالية أمام دار سكن موكلي الكائن في (الدورة محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة، وتوجيه عبارات السب والقذف الفاحش بحق موكلي وأسرته لإحداث فضيحة اجتماعية وتخريب سمعتهم أمام الجيران.
+  <div class="crime-item">
+    <span class="crime-title">4. جرائم التهجم العلني والتجمهر والسب أمام الدار (المواد 433 و434 بدلالة 19 عقوبات):</span> قيام المشكو منها الأولى بالحضور لمرات متتالية أمام دار سكن موكلي الكائن في (الدورة محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة، وتوجيه عبارات السب والقذف الفاحش بحق موكلي وأسرته لإحداث فضيحة اجتماعية وتخريب سمعتهم أمام الجيران.
   </div>
 
-  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
-    <span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;">5. جريمة التحريض والاشتراك على شهادة الزور و الاغراء المالي (المادة 248 بدلالة 48 و49 عقوبات): قيام المشكو منهما (الزوجة ووالدتها ناهد) بمحاولة التواصل والضغط على والدة صديق موكلي الشاهدة (عهود عبد الرحمن خلاف) لتحريضها واستمالتها للشهادة بالزور ضد موكلي واختلاق وقائع كاذبة، والمثبت بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق وتفضح جريمة التحريض الجنائي.</span>
+  <div class="crime-item">
+    <span class="legal-red">5. جريمة التحريض والاشتراك على شهادة الزور و الاغراء المالي (المادة 248 بدلالة 48 و49 عقوبات): قيام المشكو منهما (الزوجة ووالدتها ناهد) بمحاولة التواصل والضغط على والدة صديق موكلي الشاهدة (عهود عبد الرحمن خلاف) لتحريضها واستمالتها للشهادة بالزور ضد موكلي واختلاق وقائع كاذبة، والمثبت بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق وتفضح جريمة التحريض الجنائي.</span>
   </div>
 
-  <div class="witness-box" style="margin: 7px 0; font-size: 13.3px; line-height: 1.52; border: none !important; padding: 2px 0;">
-    <div class="witness-header" style="font-weight: 800; margin-bottom: 3px;">شهود الإثبات الأربعة (الحاضرون تدوين شهاداتهم على كافة وقائع واعتداءات الدعوى):</div>
-    <div class="witness-grid" style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+  <div class="witness-box">
+    <div class="witness-header">شهود الإثبات الأربعة (الحاضرون تدوين شهاداتهم على كافة وقائع واعتداءات الدعوى):</div>
+    <div class="witness-grid">
       <div style="width: 48%;">1. الشاهد: <strong>علي سلام صبحي</strong></div>
       <div style="width: 48%;">2. الشاهدة: <strong>عهود عبد الرحمن خلاف</strong></div>
       <div style="width: 48%;">3. الشاهد: <strong>مصطفى فائق عباس</strong></div>
@@ -1423,238 +851,181 @@
     </div>
   </div>
 
-  <div class="requests-header" style="font-size: 13.5px; font-weight: 800; margin-top: 7px; margin-bottom: 3px;">لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</div>
-  <div class="req-item" style="font-size: 13.2px; line-height: 1.48; margin-bottom: 2.5px; text-align: justify;"><strong>أولاً:</strong> تدوين أقوال موكلي كمشتكٍ ومطالب بالحق الجزائي والمدني والتعويض المادي والمعنوي لرد اعتباره.</div>
-  <div class="req-item" style="font-size: 13.2px; line-height: 1.48; margin-bottom: 2.5px; text-align: justify;"><span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;"><strong>ثانياً:</strong> إحالة الأوراق إلى السيد المحقق القضائي لتدوين أقوال موكلي وتدوين شهادات شهود الإثبات الأربعة الحاضرين على كافة الوقائع.</span></div>
-  <div class="req-item" style="font-size: 13.2px; line-height: 1.48; margin-bottom: 2.5px; text-align: justify;"><strong>ثالثاً:</strong> ربط المبرزات الفنية ( CD) وتكليف خبير الأدلة الجنائية بتفريغها رسمياً، مع ضبط هاتف المشكو منها الأولى استناداً للمادة (154) أصول جزائية.</div>
-  <div class="req-item" style="font-size: 13.2px; line-height: 1.48; margin-bottom: 2.5px; text-align: justify;"><strong>رابعاً:</strong> <span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;">إصدار أمر استقدام رسمي</span> بحق المشكو منهما وإلزامهما بكفالة مالية ضامنة وتعهد عدلي مغلظ بعدم التعرض لموكلي أو عائلته مطلقاً.</div>
+  <div class="requests-header">لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</div>
+  <div class="req-item"><strong>أولاً:</strong> تدوين أقوال موكلي كمشتكٍ ومطالب بالحق الجزائي والمدني والتعويض المادي والمعنوي لرد اعتباره.</div>
+  <div class="req-item"><span class="legal-red"><strong>ثانياً:</strong> إحالة الأوراق إلى السيد المحقق القضائي لتدوين أقوال موكلي وتدوين شهادات شهود الإثبات الأربعة الحاضرين على كافة الوقائع.</span></div>
+  <div class="req-item"><strong>ثالثاً:</strong> ربط المبرزات الفنية ( CD) وتكليف خبير الأدلة الجنائية بتفريغها رسمياً، مع ضبط هاتف المشكو منها الأولى استناداً للمادة (154) أصول جزائية.</div>
+  <div class="req-item"><strong>رابعاً:</strong> <span class="legal-red">إصدار أمر استقدام رسمي</span> بحق المشكو منهما وإلزامهما بكفالة مالية ضامنة وتعهد عدلي مغلظ بعدم التعرض لموكلي أو عائلته مطلقاً.</div>
 
-  <div class="closing-text" style="text-align: center; font-size: 14.5px; font-weight: 800; margin: 11px 0 7px 0;">مع وافر الشكر والتقدير والاحترام</div>
+  <div class="closing-text">مع وافر الشكر والتقدير والاحترام</div>
 
-  <table class="footer-table" style="width: 100%; border-collapse: collapse; margin-top: 7px; border: none !important;">
+  <table class="footer-table">
     <tr>
-      <td style="text-align: right; width: 50%; font-size: 12.5px; border: none !important;">
+      <td style="text-align: right; width: 50%; font-size: 11.5px;">
         <strong>التاريخ: 8 / 11 / 2026 م</strong>
       </td>
-      <td style="text-align: left; width: 50%; font-size: 13.5px; border: none !important;">
+      <td style="text-align: left; width: 50%; font-size: 12px;">
         <strong>وكيل المشتكي.</strong><br>
         <strong>المحامي سعد فراس أميل</strong>
       </td>
     </tr>
   </table>`;
-    
 
-    // Available Font Families
-    const FONTS = [
-      { id: 'cairo', name: 'عصري (Cairo)', family: "'Cairo', system-ui, -apple-system, sans-serif" },
-      { id: 'noto', name: 'رسمي (Noto Naskh)', family: "'Noto Naskh Arabic', 'Cairo', serif" },
-      { id: 'almarai', name: 'هندسي (Almarai)', family: "'Almarai', 'Cairo', sans-serif" }
-    ];
-
-    let currentFontIndex = 0;
-    let baseFontSize = 14;
-    let lastSavedRange = null;
-
-    // Track active selection so toolbar clicks never lose highlighted text
-    function recordSelection() {
-      const sel = window.getSelection();
-      const editorEl = document.getElementById('docContent');
-      if (sel && sel.rangeCount > 0 && editorEl && editorEl.contains(sel.anchorNode)) {
-        lastSavedRange = sel.getRangeAt(0).cloneRange();
-      }
-    }
-
-    document.addEventListener('selectionchange', recordSelection);
-    document.addEventListener('mouseup', recordSelection);
-    document.addEventListener('touchend', recordSelection);
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const editorEl = document.getElementById('docContent');
-      
-      // 1. Strictly PRESERVE user's custom edits across all versions, never wipe automatically!
-      let userSavedContent = localStorage.getItem(ACTIVE_DRAFT_KEY);
-      if (!userSavedContent || userSavedContent.trim().length < 50) {
-        for (let k of ['saadamil_user_active_document_v7', 'saadamil_user_active_document_v6', 'saadamil_user_active_document_v5', 'saadamil_user_active_document_v4', 'saadamil_user_active_document_v3', 'saadamil_active_draft_v6']) {
-          const old = localStorage.getItem(k);
-          if (old && old.trim().length > 50) {
-            userSavedContent = old;
-            break;
-          }
-        }
-      }
-      
-      if (userSavedContent && userSavedContent.trim().length > 50) {
-        editorEl.innerHTML = userSavedContent;
-      } else {
-        editorEl.innerHTML = OMAR_PETITION_DEFAULT_HTML.trim();
-        savePetition(true);
-      }
-
-      // 2. Restore saved font preference
-      const savedFont = localStorage.getItem(FONT_STORAGE_KEY);
-      if (savedFont) {
-        const idx = FONTS.findIndex(f => f.id === savedFont);
-        if (idx !== -1) {
-          currentFontIndex = idx;
-        }
-      }
-      applyCurrentFont();
-
-      // 3. Initialize Petitions Archive
-      initArchiveSystem();
-
-      // 4. Auto-save on every single keypress, input, paste
-      editorEl.addEventListener('input', () => {
-        savePetition(true);
-      });
-      editorEl.addEventListener('keyup', () => {
-        savePetition(true);
-      });
-    });
-
-    // ================= True A4 Print Preview Engine =================
-    function openPrintPreviewModal() {
-      const editorEl = document.getElementById('docContent');
-      const previewSheet = document.getElementById('previewA4Sheet');
-      const modal = document.getElementById('printPreviewModal');
-      if (!editorEl || !previewSheet || !modal) return;
-
-      // Clone current live content
-      previewSheet.innerHTML = editorEl.innerHTML;
-      
-      // Apply chosen font
-      const selected = FONTS[currentFontIndex];
-      if (selected) {
-        previewSheet.style.fontFamily = selected.family;
-      }
-
-      modal.classList.add('open');
-
-      // Adjust scale and check fit
-      setTimeout(() => {
-        adjustPreviewScale();
-        checkPageFit();
-      }, 40);
-    }
-
-    function closePrintPreviewModal() {
-      const modal = document.getElementById('printPreviewModal');
-      if (modal) modal.classList.remove('open');
-    }
-
-    function handlePreviewBackdropClick(e) {
-      if (e.target.id === 'previewViewport') {
-        closePrintPreviewModal();
-      }
-    }
-
-    function adjustPreviewScale() {
-      const viewport = document.getElementById('previewViewport');
-      const wrapper = document.getElementById('previewScaleWrapper');
-      const sheet = document.getElementById('previewA4Sheet');
-      if (!viewport || !wrapper || !sheet) return;
-
-      const availW = Math.min(viewport.clientWidth - 20, 794);
-      const scale = Math.max(0.30, availW / 794);
-      const scaledH = 1123 * scale;
-      wrapper.style.width = availW + 'px';
-      wrapper.style.height = scaledH + 'px';
-      wrapper.style.position = 'relative';
-      wrapper.style.margin = '0 auto';
-      wrapper.style.transform = 'none';
-      sheet.style.position = 'absolute';
-      sheet.style.top = '0';
-      sheet.style.left = '0';
-      sheet.style.transformOrigin = '0 0';
-      sheet.style.transform = `scale(${scale})`;
-    }
-
-    window.addEventListener('resize', () => {
-      const modal = document.getElementById('printPreviewModal');
-      if (modal && modal.classList.contains('open')) {
-        adjustPreviewScale();
-      }
-    });
-
-    function checkPageFit() {
-      const sheet = document.getElementById('previewA4Sheet');
-      const badge = document.getElementById('previewPageFitBadge');
-      if (!sheet || !badge) return;
-
-      if (sheet.scrollHeight <= 1128) {
-        badge.className = 'badge-page-fit fit-perfect';
-        badge.innerHTML = '✅ صفحة A4 واحدة كاملة ومثالية للطباعة';
-      } else {
-        badge.className = 'badge-page-fit fit-overflow';
-        badge.innerHTML = '⚠️ المحتوى يعبر لصفحة ثانية — اضغط (تصغير الخط ➖) ليناسب ورقة واحدة';
-      }
-    }
-
-    // ================= Format & Spacing Beautifier =================
-    function beautifyPetitionDocument() {
+    // Initialize Document on Startup
+    window.addEventListener('DOMContentLoaded', () => {
       const editorEl = document.getElementById('docContent');
       if (!editorEl) return;
 
-      // Clean empty paragraphs or duplicate breaks
-      editorEl.querySelectorAll('p, div').forEach(el => {
-        if (!el.innerText.trim() && !el.querySelector('img, table')) {
-          el.remove();
-        }
+      const saved = localStorage.getItem(ACTIVE_DRAFT_KEY);
+      editorEl.innerHTML = saved && saved.trim().length > 100 ? saved : MASTER_AUDITED_HTML;
+
+      editorEl.addEventListener('input', () => {
+        saveDocumentLive();
+        checkPageBudget();
       });
 
-      // Normalize paragraph line-height and spacing
-      editorEl.querySelectorAll('p').forEach(p => {
-        p.style.lineHeight = '1.52';
-        p.style.marginBottom = '0.35em';
-        p.style.marginTop = '0';
-        p.style.textAlign = 'justify';
-      });
+      adjustMobileScale();
+      window.addEventListener('resize', adjustMobileScale);
 
-      // Normalize table
-      const tbl = editorEl.querySelector('table');
-      if (tbl) {
-        tbl.style.width = '100%';
-        tbl.style.marginTop = '14px';
-      }
+      checkPageBudget();
+    });
 
-      savePetition(true);
-      showToast('✨ تم ترتيب وتنسيق كافة فقرات وهوامش الورقة بنجاح!');
-    }
-
-    // ================= Live WhatsApp & Word Exporters =================
-
-    // Extract formatted text preserving user's live edits, order, and additions
-    function getLivePetitionFormattedText() {
+    // Save Document Live
+    function saveDocumentLive() {
       const editorEl = document.getElementById('docContent');
-      if (!editorEl) return '';
-      
-      const clone = editorEl.cloneNode(true);
-      
-      clone.querySelectorAll('h3').forEach(h => {
-        h.innerText = `\n⚖️ *${h.innerText.trim()}*\n`;
-      });
-      clone.querySelectorAll('strong, b').forEach(s => {
-        s.innerText = `*${s.innerText.trim()}*`;
-      });
-      
-      const clean = clone.innerText.trim();
-      
-      return `⚖️ *عريضة دعوى قضائية - موجهة للطباعة والاستنساخ*
-وكيل المشتكي: *المحامي سعد فراس أميل* (الصلاحية أ - هوية 188572)
-
------------------------------------------
-${clean}
------------------------------------------
-💡 *ملاحظة لكشك الكاتب:* يرجى طباعة العريضة أعلاه على ورقة A4 واحدة بحجم خط رسمي متناسق.`;
+      if (editorEl) {
+        localStorage.setItem(ACTIVE_DRAFT_KEY, editorEl.innerHTML);
+      }
     }
 
-    // Share live edited text directly to WhatsApp
-            // Instant Native Download of Verified Pristine A4 PDF with Zero-Cache Guarantee
+    // Load Audited Master Version
+    function loadAuditedOmarPetition() {
+      const editorEl = document.getElementById('docContent');
+      if (editorEl) {
+        editorEl.innerHTML = MASTER_AUDITED_HTML;
+        saveDocumentLive();
+        checkPageBudget();
+        showToast('⚖️ تم اعتماد النسخة القضائية المدققة (الموصى بها)!');
+      }
+    }
+
+    // Load Original Draft Version
+    function loadOriginalDraftOmarPetition() {
+      const editorEl = document.getElementById('docContent');
+      if (editorEl) {
+        editorEl.innerHTML = ORIGINAL_DRAFT_HTML;
+        saveDocumentLive();
+        checkPageBudget();
+        showToast('📋 تم اعتماد نسخة المسودة الأولى!');
+      }
+    }
+
+    // Auto-scale A4 sheet on mobile so whole paper is visible without scrolling horizontally
+    function adjustMobileScale() {
+      const sheet = document.getElementById('a4SheetPage1');
+      if (!sheet) return;
+      const screenW = window.innerWidth;
+      if (screenW <= 860) {
+        const targetW = 794; // 210mm in px at 96dpi
+        const availW = Math.min(screenW - 20, 794);
+        const scale = availW / targetW;
+        sheet.style.transform = `scale(${scale})`;
+        sheet.style.transformOrigin = 'top center';
+        sheet.style.marginBottom = `-${(1123 * (1 - scale))}px`;
+      } else {
+        sheet.style.transform = 'none';
+        sheet.style.marginBottom = '0';
+      }
+    }
+
+    // Check Page Height & Budget
+    function checkPageBudget() {
+      const sheet = document.getElementById('a4SheetPage1');
+      const badge = document.getElementById('pageStatusBadge');
+      if (!sheet || !badge) return;
+
+      const contentH = sheet.scrollHeight;
+      if (contentH <= 1130) {
+        badge.innerHTML = '✅ صفحة A4 واحدة كاملة ومثالية';
+        badge.style.background = 'rgba(16, 185, 129, 0.15)';
+        badge.style.color = '#34d399';
+        badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+      } else {
+        badge.innerHTML = '📄 تجاوزت صفحة واحدة (يرجى الضغط على تصغير)';
+        badge.style.background = 'rgba(239, 68, 68, 0.15)';
+        badge.style.color = '#f87171';
+        badge.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+      }
+    }
+
+    // Font Size Scaler across all elements
+    function adjustDocFontSize(step) {
+      const editorEl = document.getElementById('docContent');
+      if (!editorEl) return;
+
+      const elements = editorEl.querySelectorAll('p, div, span, td, strong, em, u');
+      elements.forEach(el => {
+        const curr = parseFloat(el.style.fontSize || window.getComputedStyle(el).fontSize) || 13.5;
+        const next = Math.max(9, Math.min(26, Math.round((curr + step) * 10) / 10));
+        el.style.fontSize = next + 'px';
+      });
+
+      baseFontSize = Math.max(9, Math.min(26, Math.round((baseFontSize + step) * 10) / 10));
+      editorEl.style.fontSize = baseFontSize + 'px';
+
+      saveDocumentLive();
+      checkPageBudget();
+      showToast((step > 0 ? '➕ تكبير الخط: ' : '➖ تصغير الخط: ') + baseFontSize + 'px');
+    }
+
+    // Highlight text in red
+    function applyHighlightColor(color) {
+      document.execCommand('foreColor', false, color);
+      saveDocumentLive();
+      showToast(color === '#dc2626' ? '🔴 تم تلوين النص المحدد بالأحمر' : '⚫ إعادة النص للأسود');
+    }
+
+    function execFormat(cmd) {
+      document.execCommand(cmd, false, null);
+      saveDocumentLive();
+    }
+
+    // Cycle Arabic Font
+    function cycleFontFamily() {
+      currentFontIdx = (currentFontIdx + 1) % FONTS.length;
+      const font = FONTS[currentFontIdx];
+      const sheet = document.getElementById('a4SheetPage1');
+      if (sheet) sheet.style.fontFamily = font.family;
+      const lbl = document.getElementById('fontFamilyLabel');
+      if (lbl) lbl.innerText = 'الخط: ' + font.name.split(' ')[0];
+      showToast('🖋️ تم اعتماد ' + font.name);
+    }
+
+    // Switch between A4 Sheet View and Editor Toolbar
+    function switchViewMode(mode) {
+      const sheetBtn = document.getElementById('tabSheetBtn');
+      const editBtn = document.getElementById('tabEditorBtn');
+      const toolbar = document.getElementById('editorToolbar');
+
+      if (mode === 'sheet') {
+        sheetBtn.classList.add('active');
+        editBtn.classList.remove('active');
+        if (toolbar) toolbar.style.display = 'none';
+        showToast('📄 عرض الورقة الرسمية المطبوعة');
+      } else {
+        editBtn.classList.add('active');
+        sheetBtn.classList.remove('active');
+        if (toolbar) toolbar.style.display = 'flex';
+        showToast('✍️ وضع تعديل النصوص والمحتوى');
+      }
+    }
+
+    // ================= Native PDF Vector Download (Zero-Cache Guaranteed) =================
     async function downloadPristinePdf() {
       showToast('📥 جاري تنزيل عريضة A4 المعتمدة الأصلية...');
       try {
-        const response = await fetch('عريضة_عمر_الجبوري_المعتمدة.pdf?v=' + Date.now());
-        if (!response.ok) throw new Error('Network error');
+        const response = await fetch('petition_omar.pdf?v=' + Date.now());
+        if (!response.ok) throw new Error('File fetch error');
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -1666,18 +1037,17 @@ ${clean}
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a);
         }, 1200);
-        showToast('✅ تم تنزيل العريضة الرسمية A4 بنجاح!');
+        showToast('✅ تم تنزيل عريضة A4 الأصلية المعتمدة بنجاح!');
       } catch (e) {
-        // Direct link fallback
-        window.open('عريضة_عمر_الجبوري_المعتمدة.pdf?v=' + Date.now(), '_blank');
+        window.open('petition_omar.pdf?v=' + Date.now(), '_blank');
       }
     }
 
-    // Share exact PDF file directly to WhatsApp via Web Share API
+    // ================= Send Real PDF to WhatsApp =================
     async function shareLivePetitionToWhatsApp() {
-      showToast('⏳ جاري تجهيز العريضة A4 لإرسالها لواتساب الكشك...');
+      showToast('⏳ جاري تجهيز العريضة الرسمية A4 لإرسالها لواتساب الكشك...');
       try {
-        const response = await fetch('عريضة_عمر_الجبوري_المعتمدة.pdf?v=' + Date.now());
+        const response = await fetch('petition_omar.pdf?v=' + Date.now());
         const blob = await response.blob();
         const file = new File([blob], 'عريضة_عمر_الجبوري.pdf', { type: 'application/pdf' });
 
@@ -1685,666 +1055,112 @@ ${clean}
           await navigator.share({
             files: [file],
             title: 'عريضة شكوى جزائية - عمر رعد خليفه',
-            text: 'عريضة شكوى جزائية رسمية جاهزة للطباعة A4 - وكيل المشتكي المحامي سعد فراس أميل'
+            text: 'عريضة شكوى جزائية رسمية A4 كاملة - وكيل المشتكي المحامي سعد فراس أميل'
           });
           showToast('✅ تم فتح الواتساب بملف الـ PDF بنجاح!');
           return;
+        } else {
+          // Fallback: download PDF and open WhatsApp web
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'عريضة_عمر_الجبوري.pdf';
+          document.body.appendChild(a);
+          a.click();
+          showToast('✅ تم تنزيل العريضة PDF! افتح الواتساب لإرسالها مباشرة للكشك');
+          const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent('عريضة شكوى جزائية A4 - وكيل المشتكي المحامي سعد فراس أميل');
+          setTimeout(() => window.open(waUrl, '_blank'), 1200);
+          return;
         }
       } catch (err) {
-        console.warn('Web Share file error:', err);
+        console.warn('Web Share failed:', err);
       }
-
-      // Direct download fallback
       await downloadPristinePdf();
     }
 
-    // Generate Word Document (.doc) from live edited HTML
-    function generateLiveWordBlob() {
-      const editorEl = document.getElementById('docContent');
-      const content = editorEl ? editorEl.innerHTML : '';
-      
-      const wordHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-<head><meta charset='utf-8'><title>عريضة دعوى قضائية</title>
-<style>
-  @page { size: 210mm 297mm; margin: 15mm 18mm 15mm 18mm; }
-  body { font-family: 'Cairo', 'Arial', sans-serif; direction: rtl; text-align: justify; font-size: 13pt; line-height: 1.5; color: #000; }
-  .legal-red { color: #dc2626 !important; font-weight: bold; }
-  span[style*="color: rgb(220, 38, 38)"] { color: #dc2626 !important; font-weight: bold; }
-  span[style*="color: #dc2626"] { color: #dc2626 !important; font-weight: bold; }
-  h3 { font-size: 15.5pt; text-align: right; margin-bottom: 12pt; }
-  p { margin-bottom: 6pt; }
-  table { width: 100%; border: none; margin-top: 14pt; }
-  td { border: none; font-size: 12.5pt; padding: 2pt 4pt; }
+    // ================= Client-Side True Binary Word (.docx) Generation =================
+    async function downloadLiveWordDoc() {
+      showToast('⏳ جاري إنشاء مستند Word (.docx) الأصلي بمقاسات A4...');
+      try {
+        if (typeof docx === 'undefined') {
+          throw new Error('Docx engine not loaded');
+        }
 
-    /* Touch optimization for instant mobile taps */
-    button, .btn, .tool-btn, .m-nav-btn, .kiosk-opt-card, .doc-type-pill {
-      cursor: pointer !important;
-      touch-action: manipulation !important;
-      -webkit-tap-highlight-color: rgba(212, 175, 55, 0.25) !important;
-      user-select: none !important;
-    }
+        const editorEl = document.getElementById('docContent');
+        const textContent = editorEl ? editorEl.innerText : '';
+        const lines = textContent.split('\n').filter(l => l.trim().length > 0);
 
-  </style>
-</head><body>${content}</body></html>`;
+        const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
 
-      return new Blob([wordHtml], { type: 'application/msword;charset=utf-8' });
-    }
+        const docParagraphs = lines.map(line => {
+          const isHeader = line.includes('إلى /') || line.includes('محكمة تحقيق');
+          const isSubject = line.includes('م /');
+          const isRed = line.includes('جريمة القذف') || line.includes('جريمة التحريض') || line.includes('جريمة محاولة حمل') || line.includes('ثانياً:') || line.includes('ثالثاً:') || line.includes('رابعاً:');
 
-    // Direct Instant Download of Word Document (.doc)
-    function downloadLiveWordDoc() {
-      const blob = generateLiveWordBlob();
-      const editorEl = document.getElementById('docContent');
-      const text = editorEl ? editorEl.innerText : '';
-      const client = extractClientName(text) || 'عريضة_دعوى';
-      const filename = `${client}_المحامي_سعد_اميل.doc`;
-      
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => document.body.removeChild(a), 800);
-      
-      showToast('📥 تم تنزيل مستند Word (.doc) المعدل بنجاح ✅');
-      closeKioskModal();
-    }
-
-    // Share Word file via native Web Share API to WhatsApp
-    async function shareWordDocToWhatsApp() {
-      const blob = generateLiveWordBlob();
-      const editorEl = document.getElementById('docContent');
-      const text = editorEl ? editorEl.innerText : '';
-      const client = extractClientName(text) || 'عريضة_دعوى';
-      const file = new File([blob], `${client}_المحامي_سعد_اميل.doc`, { type: 'application/msword' });
-
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: 'عريضة دعوى قضائية',
-            text: 'عريضة دعوى قضائية معدلة - وكيل المشتكي: المحامي سعد فراس أميل'
+          return new Paragraph({
+            alignment: isSubject ? AlignmentType.CENTER : AlignmentType.RIGHT,
+            bidirectional: true,
+            spacing: { after: 120, line: 360 }, // 1.5 line spacing
+            children: [
+              new TextRun({
+                text: line,
+                bold: isHeader || isSubject || line.startsWith('1.') || line.startsWith('2.') || line.startsWith('3.') || line.startsWith('4.') || line.startsWith('5.') || line.startsWith('أولاً:') || line.startsWith('ثانياً:') || line.startsWith('ثالثاً:') || line.startsWith('رابعاً:'),
+                size: isHeader ? 30 : (isSubject ? 28 : 24), // 15pt, 14pt, 12pt
+                font: 'Cairo',
+                color: isRed ? 'DC2626' : '0F172A'
+              })
+            ]
           });
-          showToast('📲 تم إرسال ملف الـ Word بنجاح.');
-          closeKioskModal();
-          return;
-        } catch (e) {
-          console.log('Share dismissed');
-        }
-      }
+        });
 
-      // Fallback: download the file & open WhatsApp text
-      downloadLiveWordDoc();
-      setTimeout(shareLivePetitionToWhatsApp, 1200);
-    }
+        const doc = new Document({
+          sections: [{
+            properties: {
+              page: {
+                size: { width: 11906, height: 16838 }, // Exact A4 in twips
+                margin: { top: 850, bottom: 850, left: 1000, right: 1000 }
+              }
+            },
+            children: docParagraphs
+          }]
+        });
 
-    // Copy clean text to clipboard
-    function copyCleanPetitionText() {
-      const editorEl = document.getElementById('docContent');
-      if (!editorEl) return;
-      const cleanText = editorEl.innerText.trim();
-      navigator.clipboard.writeText(cleanText).then(() => {
-        showToast('📋 تم نسخ نص العريضة بالكامل للحافظة بنجاح ✅');
-        closeKioskModal();
-      }).catch(() => {
-        showToast('فشل النسخ التلقائي، يمكنك نسخه يدوياً.');
-      });
-    }
-
-    // ================= Smart Highlighting & Formatting =================
-
-    // Applies Royal Red or Black to highlighted text, OR entire current paragraph if no text selected
-    function applyHighlightColor(colorHex) {
-      const editorEl = document.getElementById('docContent');
-      if (!editorEl) return;
-
-      let sel = window.getSelection();
-      let range = null;
-
-      if (sel && sel.rangeCount > 0 && editorEl.contains(sel.anchorNode)) {
-        range = sel.getRangeAt(0);
-      } else if (lastSavedRange) {
-        range = lastSavedRange;
-      }
-
-      // 1. Text is highlighted: format the specific selection
-      if (range && !range.collapsed) {
-        try {
-          const frag = range.extractContents();
-          const span = document.createElement('span');
-          span.style.color = colorHex;
-          if (colorHex === '#dc2626') {
-            span.style.fontWeight = 'bold';
-            span.className = 'legal-red';
-          } else {
-            span.style.fontWeight = 'normal';
-          }
-          span.appendChild(frag);
-          range.insertNode(span);
-
-          // Re-select span
-          if (sel) {
-            sel.removeAllRanges();
-            const newRange = document.createRange();
-            newRange.selectNodeContents(span);
-            sel.addRange(newRange);
-            lastSavedRange = newRange.cloneRange();
-          }
-
-          showToast(colorHex === '#dc2626' ? '🔴 تم تلوين النص المحدد بالأحمر' : '⚫ تمت إعادة النص المحدد للأسود');
-        } catch (e) {
-          console.error('Highlight error:', e);
-        }
-      } else {
-        // 2. No text highlighted: color the entire enclosing paragraph or heading!
-        let targetBlock = null;
-        let node = (sel && sel.anchorNode && editorEl.contains(sel.anchorNode)) 
-                 ? sel.anchorNode 
-                 : (lastSavedRange ? lastSavedRange.startContainer : null);
-
-        while (node && node !== editorEl) {
-          if (node.nodeType === Node.ELEMENT_NODE && ['P', 'DIV', 'H3', 'LI'].includes(node.tagName)) {
-            targetBlock = node;
-            break;
-          }
-          node = node.parentElement;
-        }
-
-        if (targetBlock) {
-          if (colorHex === '#dc2626') {
-            targetBlock.style.color = '#dc2626';
-            targetBlock.style.fontWeight = 'bold';
-            targetBlock.classList.add('legal-red');
-            showToast('🔴 تم تلوين الفقرة الحالية بالكامل بالأحمر');
-          } else {
-            targetBlock.style.color = '';
-            targetBlock.style.fontWeight = '';
-            targetBlock.classList.remove('legal-red');
-            targetBlock.querySelectorAll('span, font, strong').forEach(s => {
-              s.style.color = '';
-            });
-            showToast('⚫ تمت إعادة الفقرة الحالية للون الأسود');
-          }
-        } else {
-          showToast('ضع المؤشر داخل أي فقرة أو حدد نصاً لتلوينه.');
-        }
-      }
-
-      savePetition(true);
-    }
-
-    function execFormat(cmd) {
-      document.execCommand(cmd, false, null);
-      savePetition(true);
-    }
-
-        function adjustPreviewFontSize(delta) {
-      const step = delta > 0 ? 0.5 : -0.5;
-      const editorEl = document.getElementById('docContent');
-      const previewSheet = document.getElementById('previewA4Sheet');
-      
-      const elementsToScale = [];
-      if (editorEl) {
-        elementsToScale.push(editorEl);
-        elementsToScale.push(...editorEl.querySelectorAll('p, h3, div, td, span, strong, em, u'));
-      }
-      if (previewSheet) {
-        elementsToScale.push(previewSheet);
-        elementsToScale.push(...previewSheet.querySelectorAll('p, h3, div, td, span, strong, em, u'));
-      }
-      
-      elementsToScale.forEach(el => {
-        const curr = parseFloat(el.style.fontSize || window.getComputedStyle(el).fontSize) || 13;
-        const next = Math.max(9, Math.min(26, Math.round((curr + step) * 10) / 10));
-        el.style.fontSize = next + 'px';
-      });
-
-      baseFontSize = Math.max(9, Math.min(26, Math.round((baseFontSize + step) * 10) / 10));
-      savePetition(true);
-      
-      setTimeout(() => {
-        try { checkPageFit(); } catch(e) {}
-      }, 40);
-      showToast((delta > 0 ? '➕ تكبير الخط: ' : '➖ تصغير الخط: ') + baseFontSize + 'px');
-    }
-
-    function adjustFontSize(delta) {
-      const sel = window.getSelection();
-      const editorEl = document.getElementById('docContent');
-      if (!editorEl) return;
-      
-      const hasTextSelection = sel && sel.rangeCount > 0 && !sel.isCollapsed && editorEl.contains(sel.anchorNode);
-
-      if (hasTextSelection) {
-        let range = sel.getRangeAt(0);
-        let parentSpan = null;
-        let node = range.startContainer.nodeType === Node.TEXT_NODE ? range.startContainer.parentElement : range.startContainer;
-        while (node && node !== editorEl) {
-          if (node.tagName === 'SPAN' && node.style && node.style.fontSize) {
-            parentSpan = node;
-            break;
-          }
-          node = node.parentElement;
-        }
-
-        let currentPx = 13;
-        if (parentSpan) {
-          currentPx = parseFloat(parentSpan.style.fontSize) || 13;
-        } else {
-          currentPx = parseFloat(window.getComputedStyle(node || editorEl).fontSize) || baseFontSize;
-        }
-
-        const newPx = Math.max(8.5, Math.min(32, Math.round((currentPx + delta) * 10) / 10));
-
-        try {
-          const contents = range.extractContents();
-          const span = document.createElement('span');
-          span.style.fontSize = newPx + 'px';
-          span.appendChild(contents);
-          range.insertNode(span);
-          
-          sel.removeAllRanges();
-          const newRange = document.createRange();
-          newRange.selectNodeContents(span);
-          sel.addRange(newRange);
-        } catch (e) {
-          console.error('Font resize error:', e);
-        }
-
-        savePetition(true);
-        showToast('حجم النص المحدد: ' + newPx + 'px');
-      } else {
-        adjustPreviewFontSize(delta);
+        const blob = await Packer.toBlob(doc);
+        saveAs(blob, 'عريضة_عمر_الجبوري.docx');
+        showToast('✅ تم تنزيل مستند Word (.docx) الأصلي بنجاح!');
+      } catch (err) {
+        console.error('Docx generation error:', err);
+        showToast('⚠️ جاري التنزيل المباشر...');
+        downloadPristinePdf();
       }
     }
 
-    // Clean Native Print without mobile modal scale bug
-        // Clean Native Print without mobile modal scale bug
+    // ================= Native Clean Print =================
     function triggerCleanPrint() {
-      const previewModal = document.getElementById('printPreviewModal');
-      const kioskModal = document.getElementById('kioskModal');
-      const wasPreviewOpen = previewModal && previewModal.classList.contains('open');
-      const wasKioskOpen = kioskModal && kioskModal.classList.contains('open');
-      
-      if (wasPreviewOpen) previewModal.classList.remove('open');
-      if (wasKioskOpen) kioskModal.classList.remove('open');
-      
+      const sheet = document.getElementById('a4SheetPage1');
+      if (sheet) {
+        sheet.style.transform = 'none';
+        sheet.style.marginBottom = '0';
+      }
       setTimeout(() => {
         window.print();
-        setTimeout(() => {
-          if (wasPreviewOpen) previewModal.classList.add('open');
-          if (wasKioskOpen) kioskModal.classList.add('open');
-        }, 800);
-      }, 250);
+        setTimeout(adjustMobileScale, 800);
+      }, 200);
     }
 
-    // Auto-save & status indicator
-    function savePetition(silent = false) {
-      const editorEl = document.getElementById('docContent');
-      if (editorEl) {
-        const content = editorEl.innerHTML;
-        localStorage.setItem(ACTIVE_DRAFT_KEY, content);
-        localStorage.setItem('saadamil_active_draft_v6', content);
-        localStorage.setItem('saadamil_saved_petition_html', content);
-        
-        const dot = document.getElementById('saveStatusDot');
-        if (dot) {
-          dot.innerText = '● محفوظة';
-          dot.style.color = '#34d399';
-        }
-
-        if (!silent) {
-          showToast('💾 تم حفظ وتأمين كافة تعديلاتك بنجاح في جهازك ✅');
-        }
-      }
+    // Force App Refresh
+    function forceAppRefresh() {
+      localStorage.removeItem(ACTIVE_DRAFT_KEY);
+      window.location.reload(true);
     }
 
-    // Direct Instant Load of Audited Omar Petition (With Safety Confirmation to Protect Edits)
-    function loadAuditedOmarPetition() {
-      const editorEl = document.getElementById('docContent');
-      if (!editorEl) return;
-      if (confirm('هل ترغب في استعادة نموذج عريضة عمر الجبوري المعتمد الأصلي؟\n\n(ملاحظة: سيتم استبدال النص الحالي بالنموذج الأصلي، إذا كنت قد أجريت تعديلات خاصة احرص على حفظها أولاً).')) {
-        editorEl.innerHTML = OMAR_PETITION_DEFAULT_HTML.trim();
-        savePetition(true);
-        showToast('⚡ تم تحميل نموذج عريضة عمر الجبوري المعتمد ✅');
-        try { beautifyPetitionDocument(); } catch(e) {}
-      }
-    }
-
-    // Reset with Safety Confirmation & Auto-Backup
-    function resetToOmarDefaultTemplate() {
-      const msg = '⚠️ تنبيه للمحامي سعد:\nهل أنت متأكد من رغبتك في استرجاع الصياغة الأصلية لقضية عمر؟\n\n(سيتم حفظ نسخة احتياطية من تعديلاتك الحالية تلقائياً في الأرشيف لضمان عدم ضياعها).';
-      if (confirm(msg)) {
-        const editorEl = document.getElementById('docContent');
-        if (editorEl && editorEl.innerHTML.trim().length > 50) {
-          // Backup current edits
-          const archive = getArchive();
-          archive.unshift({
-            id: 'backup_' + Date.now(),
-            title: 'نسخة احتياطية قبل الاسترجاع (' + new Date().toLocaleTimeString('ar-IQ') + ')',
-            court: 'محكمة تحقيق الدورة',
-            client: 'عمر رعد خليفه',
-            date: new Date().toLocaleDateString('ar-IQ'),
-            content: editorEl.innerHTML,
-            updatedAt: Date.now()
-          });
-          saveArchiveList(archive);
-        }
-
-        editorEl.innerHTML = OMAR_PETITION_DEFAULT_HTML.trim();
-        savePetition(true);
-        showToast('🔄 تم استرجاع الصياغة الأصلية وحفظ نسختك السابقة بالأرشيف ✅');
-      }
-    }
-
-    function createNewPetition() {
-      if (confirm('هل ترغب في فتح عريضة جديدة فارغة؟ تأكد من حفظ نسختك الحالية في الأرشيف أولاً.')) {
-        const blank = `
-<h3 style="text-align: right; margin-bottom: 18px; font-size: 17px; font-weight: 800;">إلى / السيد قاضي محكمة ... المحترم</h3>
-
-<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
-  <div><strong>المشتكي (أو المدعي):</strong> ...</div>
-  <div><strong>الساكن:</strong> بغداد - ...</div>
-</div>
-
-<div style="margin-bottom: 12px;">
-  <strong>المشكو منه (أو المدعى عليه):</strong> ...<br>
-  <strong>الساكن:</strong> بغداد - ...
-</div>
-
-<p style="text-align: center; margin-top: 14px; margin-bottom: 14px; font-size: 16px;"><strong><u>م / ...</u></strong></p>
-
-<p style="margin-bottom: 10px;"><strong>تحية طيبة واحتراماً،</strong></p>
-
-<p style="line-height: 1.58; margin-bottom: 8px; text-align: justify;">نحيط عدالتكم علماً بالآتي: ...</p>
-
-<p style="text-align: center; margin-top: 14px; margin-bottom: 14px; font-size: 15px;"><strong>مع وافر الشكر والتقدير والاحترام</strong></p>
-
-<table style="width: 100%; border: none; margin-top: 18px;">
-  <tbody>
-    <tr>
-      <td style="width: 50%; border: none; text-align: right; vertical-align: bottom;">
-        <strong>التاريخ:</strong> 9 / 11 / 2026 م
-      </td>
-      <td style="width: 50%; border: none; text-align: left; vertical-align: bottom;">
-        <strong>وكيل المشتكي</strong><br>
-        <strong>المحامي سعد فراس أميل</strong>
-      </td>
-    </tr>
-  </tbody>
-</table>
-        `;
-        document.getElementById('docContent').innerHTML = blank.trim();
-        savePetition(true);
-        showToast('📄 تم فتح عريضة جديدة فارغة');
-      }
-    }
-
-    // ================= Font Switcher =================
-    function toggleDocFont() {
-      currentFontIndex = (currentFontIndex + 1) % FONTS.length;
-      applyCurrentFont();
-      localStorage.setItem(FONT_STORAGE_KEY, FONTS[currentFontIndex].id);
-      showToast('🖋️ تم تفعيل خط: ' + FONTS[currentFontIndex].name);
-    }
-
-    function applyCurrentFont() {
-      const selected = FONTS[currentFontIndex];
-      const editorEl = document.getElementById('docContent');
-      const fontLabel = document.getElementById('fontLabel');
-      if (editorEl) {
-        editorEl.style.fontFamily = selected.family;
-      }
-      if (fontLabel) {
-        fontLabel.innerText = '🖋️ الخط: ' + selected.name;
-      }
-    }
-
-    // ================= Petitions Archive Engine =================
-    function getArchive() {
-      try {
-        const raw = localStorage.getItem(ARCHIVE_STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
-      } catch (e) {}
-      return [];
-    }
-
-    function saveArchiveList(list) {
-      localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(list));
-      updateArchiveBadges(list.length);
-    }
-
-    function initArchiveSystem() {
-      let archive = getArchive();
-      if (archive.length === 0) {
-        archive.push({
-          id: 'case_omar_aljubouri',
-          title: '⚖️ عريضة عمر رعد خليفه (محكمة تحقيق الدورة)',
-          court: 'محكمة تحقيق الدورة',
-          client: 'عمر رعد خليفه',
-          date: '9 / 11 / 2026',
-          content: OMAR_PETITION_DEFAULT_HTML.trim(),
-          updatedAt: Date.now()
-        });
-        saveArchiveList(archive);
-      } else {
-        updateArchiveBadges(archive.length);
-      }
-    }
-
-    function updateArchiveBadges(count) {
-      const b1 = document.getElementById('archiveCountBadge');
-      const b2 = document.getElementById('archiveCountBadge2');
-      if (b1) b1.innerText = count;
-      if (b2) b2.innerText = count;
-    }
-
-    function openArchiveModal() {
-      renderArchiveList();
-      document.getElementById('archiveModal').classList.add('open');
-    }
-
-    function closeArchiveModal() {
-      document.getElementById('archiveModal').classList.remove('open');
-    }
-
-    function openKioskModal() {
-      document.getElementById('kioskModal').classList.add('open');
-    }
-
-    function closeKioskModal() {
-      document.getElementById('kioskModal').classList.remove('open');
-    }
-
-    function closeModalOnBackdrop(e, modalId) {
-      if (e.target.id === modalId) {
-        document.getElementById(modalId).classList.remove('open');
-      }
-    }
-
-    function renderArchiveList() {
-      const container = document.getElementById('archiveListContainer');
-      const archive = getArchive();
-
-      if (archive.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; color:#94a3b8; font-size:13px;">لا توجد عرائض محفوظة بالأرشيف حالياً.</div>`;
-        return;
-      }
-
-      container.innerHTML = archive.map((item) => `
-        <div class="archive-card">
-          <div class="archive-card-header">
-            <div>
-              <div class="archive-title">${escapeHtml(item.title)}</div>
-              <div class="archive-meta">المحكمة: ${escapeHtml(item.court || 'غير محدد')} | المشتكي: ${escapeHtml(item.client || 'غير محدد')} | التاريخ: ${item.date || ''}</div>
-            </div>
-          </div>
-          <div class="archive-card-actions">
-            <button class="btn-sm btn-sm-open" onclick="loadFromArchive('${item.id}')">📂 فتح وتعديل</button>
-            <button class="btn-sm btn-sm-share" onclick="openKioskModal()">📤 إرسال للكشك</button>
-            <button class="btn-sm btn-dark" onclick="renameArchiveItem('${item.id}')">✏️ تسمية</button>
-            <button class="btn-sm btn-sm-del" onclick="deleteFromArchive('${item.id}')">🗑️ حذف</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function saveToArchivePrompt() {
-      const editorEl = document.getElementById('docContent');
-      if (!editorEl) return;
-
-      let defaultTitle = 'عريضة دعوى قضائية';
-      const text = editorEl.innerText;
-      if (text.includes('عمر رعد')) {
-        defaultTitle = 'عريضة عمر رعد خليفه - تحقيق الدورة (نسخة معدلة)';
-      } else {
-        const clientMatch = text.match(/المشتكي[:\s]+([^\n\r\t]+)/);
-        if (clientMatch && clientMatch[1]) {
-          defaultTitle = 'عريضة ' + clientMatch[1].trim().slice(0, 30);
-        }
-      }
-
-      const title = prompt('أدخل عنواناً لحفظ هذه العريضة في الأرشيف:', defaultTitle);
-      if (!title || !title.trim()) return;
-
-      const archive = getArchive();
-      const newEntry = {
-        id: 'pet_' + Date.now(),
-        title: title.trim(),
-        court: extractCourtName(text),
-        client: extractClientName(text),
-        date: new Date().toLocaleDateString('ar-IQ'),
-        content: editorEl.innerHTML,
-        updatedAt: Date.now()
-      };
-
-      archive.unshift(newEntry);
-      saveArchiveList(archive);
-      showToast('📁 تم حفظ العريضة بنجاح في أرشيفك الدائم ✅');
-      renderArchiveList();
-    }
-
-    function loadFromArchive(id) {
-      const archive = getArchive();
-      const item = archive.find(x => x.id === id);
-      if (!item) return;
-
-      if (confirm(`هل ترغب في فتح: "${item.title}" في المحرر؟ (سيتم حفظ مسودتك الحالية تلقائياً).`)) {
-        document.getElementById('docContent').innerHTML = item.content;
-        savePetition(true);
-        closeArchiveModal();
-        showToast('📂 تم فتح: ' + item.title);
-      }
-    }
-
-    function deleteFromArchive(id) {
-      if (!confirm('هل أنت متأكد من حذف هذه العريضة من الأرشيف نهائياً؟')) return;
-      let archive = getArchive();
-      archive = archive.filter(x => x.id !== id);
-      saveArchiveList(archive);
-      renderArchiveList();
-      showToast('🗑️ تم حذف العريضة من الأرشيف.');
-    }
-
-    function renameArchiveItem(id) {
-      const archive = getArchive();
-      const item = archive.find(x => x.id === id);
-      if (!item) return;
-      const newTitle = prompt('أدخل الاسم الجديد للعريضة:', item.title);
-      if (newTitle && newTitle.trim()) {
-        item.title = newTitle.trim();
-        saveArchiveList(archive);
-        renderArchiveList();
-        showToast('✏️ تم تعديل اسم العريضة.');
-      }
-    }
-
-    function exportArchiveBackup() {
-      const archive = getArchive();
-      const blob = new Blob([JSON.stringify(archive, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `أرشيف_عرائض_المحامي_سعد_أميل_${Date.now()}.json`;
-      a.click();
-      showToast('📥 تم تصدير نسخة احتياطية من الأرشيف.');
-    }
-
-    function importArchiveBackup(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        try {
-          const imported = JSON.parse(evt.target.result);
-          if (Array.isArray(imported)) {
-            const current = getArchive();
-            const merged = [...imported, ...current];
-            const seen = new Set();
-            const unique = merged.filter(item => {
-              if (seen.has(item.id)) return false;
-              seen.add(item.id);
-              return true;
-            });
-            saveArchiveList(unique);
-            renderArchiveList();
-            showToast('📤 تم استيراد ودمج العرائض بنجاح ✅');
-          }
-        } catch (err) {
-          alert('الملف غير صالح.');
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function extractClientName(text) {
-      const match = text.match(/المشتكي[:\s]+([^\n\r]+)/);
-      return match ? match[1].trim().split(/\s{2,}/)[0].slice(0, 30) : 'غير محدد';
-    }
-
-    function extractCourtName(text) {
-      const match = text.match(/محكمة\s+[^\n\r]+/);
-      return match ? match[0].trim().replace('المحترم', '').slice(0, 35) : 'غير محدد';
-    }
-
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
-    }
-
+    // Toast helper
     function showToast(msg) {
-      const toast = document.getElementById('toastBox');
+      const toast = document.getElementById('toastMsg');
       if (!toast) return;
       toast.innerText = msg;
       toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
-    }
-
-    // ================= Instant App Refresh for Mobile PWA / Standalone =================
-    function refreshAppPage() {
-      const btn = document.getElementById('btnAppRefresh');
-      if (btn) btn.classList.add('spinning');
-      
-      // Auto-save current document before refreshing so no draft is lost
-      try {
-        if (typeof savePetition === 'function') {
-          savePetition(false);
-        }
-      } catch (e) {
-        console.warn('Auto-save error before refresh:', e);
-      }
-
-      showToast('🔄 جارٍ تحديث الصفحة وجلب أحدث نسخة...');
-
-      setTimeout(() => {
-        try {
-          const url = new URL(window.location.href);
-          url.searchParams.set('v', Date.now());
-          window.location.replace(url.toString());
-        } catch (err) {
-          window.location.reload();
-        }
-      }, 350);
+      setTimeout(() => toast.classList.remove('show'), 2800);
     }
   </script>
 </body>
