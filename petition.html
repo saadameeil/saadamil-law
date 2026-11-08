@@ -1290,10 +1290,10 @@
           </div>
           <div class="kiosk-text">
             <h4>
-              <span>إرسال نص العريضة المحدث لواتساب الكشك</span>
+              <span>إرسال ملف PDF الأصلي لواتساب الكشك ⭐</span>
               <span class="badge-star">الأسرع والأضمن ⭐</span>
             </h4>
-            <p>يفتح محادثة واتساب كشك الاستنساخ فوراً ويضع نص عريضتك المحدث بالكامل بتعديلاتك وترتيبك ليقوم بطباعته فوراً.</p>
+            <p>يفتح محادثة واتساب كشك الاستنساخ فوراً ويرسل له ملف الـ PDF الأصلي المعتمد (صفحة واحدة A4 كاملة بدون أي تعديل أو لخبطة).</p>
           </div>
         </div>
 
@@ -1355,82 +1355,86 @@
 
   <!-- App Script -->
   <script>
-    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_draft_persistent_v8';
+    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_draft_persistent_v9';
     const ARCHIVE_STORAGE_KEY = 'saadamil_petitions_archive_v1';
     const FONT_STORAGE_KEY = 'saadamil_saved_font_mode';
 
-    const OMAR_PETITION_DEFAULT_HTML = `<div class="court-header" style="text-align: right; font-size: 17px; font-weight: 900; color: #0f172a; margin-bottom: 10px; border-bottom: 2.5px solid #0f172a; padding-bottom: 4px;">إلى / السيد قاضي محكمة تحقيق الدورة المحترم</div>
-
-<div class="parties-block" style="margin-bottom: 8px; font-size: 13.2px; line-height: 1.5;">
-  <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-    <div><strong>المشتكي:</strong> عمر رعد خليفه</div>
-    <div><strong>الساكن:</strong> بغداد - الدورة، محلة (842)، زقاق (9)، دار (6)</div>
+    const OMAR_PETITION_DEFAULT_HTML = `  <div class="court-header" style="text-align: right; font-size: 17.5px; font-weight: 900; color: #0f172a; margin-bottom: 9px; border-bottom: 2px solid #0f172a; padding-bottom: 4px;">
+    <div>إلى / السيد قاضي محكمة تحقيق الدورة المحترم</div>
   </div>
-  <div style="margin-top: 3px;">
-    <strong>المشكو منهما:</strong> 1. <strong>شهد عباس لفته</strong> (الزوجة) &nbsp;|&nbsp; 2. <strong>ناهد (...)</strong> (والدة الزوجة - شريكة ومحرضة)<br>
-    <strong>الساكنتان:</strong> بغداد - الدورة، محله 822 زقاق 20 دار 712
+
+  <div class="parties-block" style="margin-bottom: 7px; font-size: 13.5px; line-height: 1.52;">
+    <div class="parties-row" style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+      <div><strong>المشتكي:</strong> عمر رعد خليفه</div>
+      <div><strong>الساكن:</strong> بغداد - الدورة، محلة (842)، زقاق (9)، دار (6)</div>
+    </div>
+    <div style="margin-top: 3px;">
+      <strong>المشكو منهما:</strong><br>
+      1. <strong>شهد عباس لفته</strong> (الزوجة)<br>
+      2. <strong>ناهد (...)</strong> (والدة الزوجة - شريكة ومحرضة)<br>
+      <strong>الساكنتان:</strong> بغداد - الدورة، محله 822 زقاق 20 دار 712
+    </div>
   </div>
-</div>
 
-<div class="subject-box" style="text-align: center; margin: 10px 0; font-size: 15.5px; font-weight: 900;">
-  <u>م / شكوى جزائية وطلب اتخاذ الإجراءات القانونية</u>
-</div>
-
-<div class="salutation" style="font-size: 13.2px; font-weight: 800; margin-bottom: 5px;">تحية طيبة واحتراماً،</div>
-
-<div class="intro-text" style="font-size: 13.2px; line-height: 1.5; margin-bottom: 7px; text-align: justify;">
-  سبق وأن أقدمت المشكو منها الأولى (شهد عباس لفته) وباشتراك وتحريض مباشر من والدتها المشكو منها الثانية (ناهد)، على ارتكاب سلسلة من الأفعال والاعتداءات الجرمية الشائنة المعاقب عليها قانوناً بحق موكلي، وفق التفصيل الآتي:
-</div>
-
-<div class="crime-item" style="font-size: 13.0px; line-height: 1.46; margin-bottom: 6px; text-align: justify;">
-  <span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;">1. جريمة القذف والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات): أقدمت المشكو منها الأولى و الثانيه بالاتصال بصديق موكلي المقرب الشاهد (علي سلام صبحي) بمكالمة مطولة استغرقت ساعة و(34) دقيقة، بهدف إسقاط موكلي اجتماعياً وأخلاقياً واستمالة صديقه ليكون بصفها ضده، وأطلقت خلالها افتراءات وطعوناً مخلة بالشرف والرجولة؛ حيث ادعت كذباً بأن موكلي <u>«شاذ جنسياً وزعمت وجود مقطع فيديو يثبت ذلك»</u>، كما ادعت افتراءً بأنه قام بإدخال شاب آخر معه إلى دار الزوجية في أول أيام زواجهما وهي عروسة، وادعت كذلك أنه يشرب الكحول داخل الدار ويسمح لها هي أيضاً بالشرب معه لتصويره مجرداً من الغيرة والأخلاق، في حين أن الثابت هو إلحاحها هي المستمر ورغبتها بالشرب معه رغم رفضه، وشهادة الشهود.</span>
-</div>
-
-<div class="crime-item" style="font-size: 13.0px; line-height: 1.46; margin-bottom: 6px; text-align: justify;">
-  <strong>2. جريمة الابتزاز والتهديد بنسبة أمور خادشة للشرف (المادة 430 عقوبات):</strong> قيام المشكو منها الأولى بالتلويح والتهديد بنشر تلك المقاطع والادعاءات المفبركة ونسبة أمور مخلة بالحياء والشرف لموكلي بقصد ابتزازه والضغط عليه لكسر إرادته وإرغامه على التنازل عن حقوقه الشرعية والمالية.
-</div>
-
-<div class="crime-item" style="font-size: 13.0px; line-height: 1.46; margin-bottom: 6px; text-align: justify;">
-  <strong>3. جريمة التهديد بالقتل والذبح (المادة 432 عقوبات):</strong> قيام المشكو منها الأولى و الثانيه بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإلحاق الأذى الجسدي به وبث الرعب في نفسه.
-</div>
-
-<div class="crime-item" style="font-size: 13.0px; line-height: 1.46; margin-bottom: 6px; text-align: justify;">
-  <strong>4. جرائم التهجم العلني والتجمهر والسب أمام الدار (المواد 433 و434 بدلالة 19 عقوبات):</strong> قيام المشكو منها الأولى بالحضور لمرات متتالية أمام دار سكن موكلي الكائن في (الدورة محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة، وتوجيه عبارات السب والقذف الفاحش بحق موكلي وأسرته لإحداث فضيحة اجتماعية وتخريب سمعتهم أمام الجيران.
-</div>
-
-<div class="crime-item" style="font-size: 13.0px; line-height: 1.46; margin-bottom: 6px; text-align: justify;">
-  <span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;">5. جريمة التحريض والاشتراك على شهادة الزور و الاغراء المالي (المادة 248 بدلالة 48 و49 عقوبات): قيام المشكو منهما (الزوجة ووالدتها ناهد) بمحاولة التواصل والضغط على والدة صديق موكلي الشاهدة (عهود عبد الرحمن خلاف) لتحريضها واستمالتها للشهادة بالزور ضد موكلي واختلاق وقائع كاذبة، والمثبت بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق وتفضح جريمة التحريض الجنائي.</span>
-</div>
-
-<div class="witness-box" style="margin: 8px 0 7px 0; font-size: 13.0px; line-height: 1.46; border-top: 1.5px dashed #94a3b8; border-bottom: 1.5px dashed #94a3b8; padding: 5px 0;">
-  <div class="witness-header" style="font-weight: 800; margin-bottom: 3px;">شهود الإثبات الأربعة (الحاضرون تدوين شهاداتهم على كافة وقائع واعتداءات الدعوى):</div>
-  <div class="witness-grid" style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-    <div style="width: 48%;">1. الشاهد: <strong>علي سلام صبحي</strong></div>
-    <div style="width: 48%;">2. الشاهدة: <strong>عهود عبد الرحمن خلاف</strong></div>
-    <div style="width: 48%;">3. الشاهد: <strong>مصطفى فائق عباس</strong></div>
-    <div style="width: 48%;">4. الشاهدة: <strong>هدى محمد عثمان</strong></div>
+  <div class="subject-box" style="text-align: center; margin: 9px 0; font-size: 15.5px; font-weight: 900;">
+    <u>م / شكوى جزائية وطلب اتخاذ الإجراءات القانونية</u>
   </div>
-</div>
 
-<div class="requests-header" style="font-size: 13.2px; font-weight: 800; margin-top: 7px; margin-bottom: 3px;">لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</div>
-<div class="req-item" style="font-size: 12.8px; line-height: 1.44; margin-bottom: 3px; text-align: justify;"><strong>أولاً:</strong> تدوين أقوال موكلي كمشتكٍ ومطالب بالحق الجزائي والمدني والتعويض المادي والمعنوي لرد اعتباره.</div>
-<div class="req-item" style="font-size: 12.8px; line-height: 1.44; margin-bottom: 3px; text-align: justify;"><span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;"><strong>ثانياً:</strong> إحالة الأوراق إلى السيد المحقق القضائي لتدوين أقوال موكلي وتدوين شهادات شهود الإثبات الأربعة الحاضرين على كافة الوقائع.</span></div>
-<div class="req-item" style="font-size: 12.8px; line-height: 1.44; margin-bottom: 3px; text-align: justify;"><strong>ثالثاً:</strong> ربط المبرزات الفنية ( CD) وتكليف خبير الأدلة الجنائية بتفريغها رسمياً، مع ضبط هاتف المشكو منها الأولى استناداً للمادة (154) أصول جزائية.</div>
-<div class="req-item" style="font-size: 12.8px; line-height: 1.44; margin-bottom: 3px; text-align: justify;"><strong>رابعاً:</strong> <span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;">إصدار أمر استقدام رسمي</span> بحق المشكو منهما وإلزامهما بكفالة مالية ضامنة وتعهد عدلي مغلظ بعدم التعرض لموكلي أو عائلته مطلقاً.</div>
+  <div class="salutation" style="font-size: 13.5px; font-weight: 800; margin-bottom: 3px;">تحية طيبة واحتراماً،</div>
 
-<div class="closing-text" style="text-align: center; font-size: 14px; font-weight: 800; margin: 10px 0 6px 0;">مع وافر الشكر والتقدير والاحترام</div>
+  <div class="intro-text" style="font-size: 13.5px; line-height: 1.52; margin-bottom: 7px; text-align: justify;">
+    سبق وأن أقدمت المشكو منها الأولى (شهد عباس لفته) وباشتراك وتحريض مباشر من والدتها المشكو منها الثانية (ناهد)، على ارتكاب سلسلة من الأفعال والاعتداءات الجرمية الشائنة المعاقب عليها قانوناً بحق موكلي، وفق التفصيل الآتي:
+  </div>
 
-<table class="footer-table" style="width: 100%; border-collapse: collapse; margin-top: 6px;">
-  <tr>
-    <td style="text-align: right; width: 50%; font-size: 12.8px; border: none;">
-      <strong>التاريخ: 8 / 11 / 2026 م</strong>
-    </td>
-    <td style="text-align: left; width: 50%; font-size: 13.5px; border: none;">
-      <strong>وكيل المشتكي.</strong><br>
-      <strong>المحامي سعد فراس أميل</strong>
-    </td>
-  </tr>
-</table>`;
+  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
+    <span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;">1. جريمة القذف والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات): أقدمت المشكو منها الأولى و الثانيه بالاتصال بصديق موكلي المقرب الشاهد (علي سلام صبحي) بمكالمة مطولة استغرقت ساعة و(34) دقيقة، بهدف إسقاط موكلي اجتماعياً وأخلاقياً واستمالة صديقه ليكون بصفها ضده، وأطلقت خلالها افتراءات وطعوناً مخلة بالشرف والرجولة؛ حيث ادعت كذباً بأن موكلي <span style="text-decoration: underline;">«شاذ جنسياً وزعمت وجود مقطع فيديو يثبت ذلك»</span>، كما ادعت افتراءً بأنه قام بإدخال شاب آخر معه إلى دار الزوجية في أول أيام زواجهما وهي عروسة، وادعت كذلك أنه يشرب الكحول داخل الدار ويسمح لها هي أيضاً بالشرب معه لتصويره مجرداً من الغيرة والأخلاق، في حين أن الثابت هو إلحاحها هي المستمر ورغبتها بالشرب معه رغم رفضه، وشهادة الشهود.</span>
+  </div>
+
+  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
+    <span class="crime-title" style="font-weight: 800; color: #0f172a;">2. جريمة الابتزاز والتهديد بنسبة أمور خادشة للشرف (المادة 430 عقوبات):</span> قيام المشكو منها الأولى بالتلويح والتهديد بنشر تلك المقاطع والادعاءات المفبركة ونسبة أمور مخلة بالحياء والشرف لموكلي بقصد ابتزازه والضغط عليه لكسر إرادته وإرغامه على التنازل عن حقوقه الشرعية والمالية.
+  </div>
+
+  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
+    <span class="crime-title" style="font-weight: 800; color: #0f172a;">3. جريمة التهديد بالقتل والذبح (المادة 432 عقوبات):</span> قيام المشكو منها الأولى و الثانيه بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإلحاق الأذى الجسدي به وبث الرعب في نفسه.
+  </div>
+
+  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
+    <span class="crime-title" style="font-weight: 800; color: #0f172a;">4. جرائم التهجم العلني والتجمهر والسب أمام الدار (المواد 433 و434 بدلالة 19 عقوبات):</span> قيام المشكو منها الأولى بالحضور لمرات متتالية أمام دار سكن موكلي الكائن في (الدورة محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة، وتوجيه عبارات السب والقذف الفاحش بحق موكلي وأسرته لإحداث فضيحة اجتماعية وتخريب سمعتهم أمام الجيران.
+  </div>
+
+  <div class="crime-item" style="font-size: 13.2px; line-height: 1.50; margin-bottom: 7px; text-align: justify;">
+    <span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;">5. جريمة التحريض والاشتراك على شهادة الزور و الاغراء المالي (المادة 248 بدلالة 48 و49 عقوبات): قيام المشكو منهما (الزوجة ووالدتها ناهد) بمحاولة التواصل والضغط على والدة صديق موكلي الشاهدة (عهود عبد الرحمن خلاف) لتحريضها واستمالتها للشهادة بالزور ضد موكلي واختلاق وقائع كاذبة، والمثبت بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق وتفضح جريمة التحريض الجنائي.</span>
+  </div>
+
+  <div class="witness-box" style="margin: 7px 0; font-size: 13.3px; line-height: 1.52; border: none !important; padding: 2px 0;">
+    <div class="witness-header" style="font-weight: 800; margin-bottom: 3px;">شهود الإثبات الأربعة (الحاضرون تدوين شهاداتهم على كافة وقائع واعتداءات الدعوى):</div>
+    <div class="witness-grid" style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+      <div style="width: 48%;">1. الشاهد: <strong>علي سلام صبحي</strong></div>
+      <div style="width: 48%;">2. الشاهدة: <strong>عهود عبد الرحمن خلاف</strong></div>
+      <div style="width: 48%;">3. الشاهد: <strong>مصطفى فائق عباس</strong></div>
+      <div style="width: 48%;">4. الشاهدة: <strong>هدى محمد عثمان</strong></div>
+    </div>
+  </div>
+
+  <div class="requests-header" style="font-size: 13.5px; font-weight: 800; margin-top: 7px; margin-bottom: 3px;">لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</div>
+  <div class="req-item" style="font-size: 13.2px; line-height: 1.48; margin-bottom: 2.5px; text-align: justify;"><strong>أولاً:</strong> تدوين أقوال موكلي كمشتكٍ ومطالب بالحق الجزائي والمدني والتعويض المادي والمعنوي لرد اعتباره.</div>
+  <div class="req-item" style="font-size: 13.2px; line-height: 1.48; margin-bottom: 2.5px; text-align: justify;"><span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;"><strong>ثانياً:</strong> إحالة الأوراق إلى السيد المحقق القضائي لتدوين أقوال موكلي وتدوين شهادات شهود الإثبات الأربعة الحاضرين على كافة الوقائع.</span></div>
+  <div class="req-item" style="font-size: 13.2px; line-height: 1.48; margin-bottom: 2.5px; text-align: justify;"><strong>ثالثاً:</strong> ربط المبرزات الفنية ( CD) وتكليف خبير الأدلة الجنائية بتفريغها رسمياً، مع ضبط هاتف المشكو منها الأولى استناداً للمادة (154) أصول جزائية.</div>
+  <div class="req-item" style="font-size: 13.2px; line-height: 1.48; margin-bottom: 2.5px; text-align: justify;"><strong>رابعاً:</strong> <span class="legal-red" style="color: #dc2626 !important; font-weight: 800 !important;">إصدار أمر استقدام رسمي</span> بحق المشكو منهما وإلزامهما بكفالة مالية ضامنة وتعهد عدلي مغلظ بعدم التعرض لموكلي أو عائلته مطلقاً.</div>
+
+  <div class="closing-text" style="text-align: center; font-size: 14.5px; font-weight: 800; margin: 11px 0 7px 0;">مع وافر الشكر والتقدير والاحترام</div>
+
+  <table class="footer-table" style="width: 100%; border-collapse: collapse; margin-top: 7px; border: none !important;">
+    <tr>
+      <td style="text-align: right; width: 50%; font-size: 12.5px; border: none !important;">
+        <strong>التاريخ: 8 / 11 / 2026 م</strong>
+      </td>
+      <td style="text-align: left; width: 50%; font-size: 13.5px; border: none !important;">
+        <strong>وكيل المشتكي.</strong><br>
+        <strong>المحامي سعد فراس أميل</strong>
+      </td>
+    </tr>
+  </table>`;
     
 
     // Available Font Families
@@ -1638,12 +1642,35 @@ ${clean}
     }
 
     // Share live edited text directly to WhatsApp
-    function shareLivePetitionToWhatsApp() {
-      const text = getLivePetitionFormattedText();
-      const whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text);
-      window.open(whatsappUrl, '_blank');
-      showToast('💬 جاري فتح الواتساب بنص العريضة المعدل بالكامل...');
-      closeKioskModal();
+        // Share exact PDF file directly to WhatsApp via Web Share API
+    async function shareLivePetitionToWhatsApp() {
+      showToast('⏳ جاري تجهيز ملف PDF للإرسال لواتساب الكشك...');
+      try {
+        const response = await fetch('petition_omar.pdf?v=' + Date.now());
+        const blob = await response.blob();
+        const file = new File([blob], 'عريضة_عمر_الجبوري.pdf', { type: 'application/pdf' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'عريضة شكوى جزائية - عمر رعد خليفه',
+            text: 'عريضة شكوى جزائية رسمية جاهزة للطباعة A4 - وكيل المشتكي المحامي سعد فراس أميل'
+          });
+          showToast('✅ تم فتح الواتساب بملف الـ PDF بنجاح!');
+          return;
+        }
+      } catch (err) {
+        console.warn('Web Share file error:', err);
+      }
+
+      // Direct download fallback if share sheet cancelled or not supported
+      const a = document.createElement('a');
+      a.href = 'petition_omar.pdf';
+      a.download = 'عريضة_عمر_الجبوري.pdf';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => document.body.removeChild(a), 500);
+      showToast('📥 تم تنزيل ملف PDF بالهاتف، يمكنك مشاركته فوراً في الواتساب!');
     }
 
     // Generate Word Document (.doc) from live edited HTML
