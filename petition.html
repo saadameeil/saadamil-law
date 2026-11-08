@@ -1340,66 +1340,68 @@
 
   <!-- App Script -->
   <script>
-    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_document_v6';
+    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_document_v7';
     const ARCHIVE_STORAGE_KEY = 'saadamil_petitions_archive_v1';
     const FONT_STORAGE_KEY = 'saadamil_saved_font_mode';
 
     const OMAR_PETITION_DEFAULT_HTML = `
-<h3 style="text-align: right; margin-bottom: 8px; font-size: 15.5px; font-weight: 800;">إلى / السيد قاضي محكمة تحقيق الدورة المحترم</h3>
+<h3 style="text-align: right; margin-bottom: 6px; font-size: 15px; font-weight: 800;">إلى / السيد قاضي محكمة تحقيق الدورة المحترم</h3>
 
-<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; font-size: 13px;">
+<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; font-size: 12.5px;">
   <div><strong>المشتكي:</strong> عمر رعد خليفه &nbsp;|&nbsp; <strong>الساكن:</strong> بغداد - الدورة، محلة (842)، زقاق (9)، دار (6)</div>
 </div>
 
-<div style="margin-bottom: 6px; font-size: 13px; line-height: 1.4;">
+<div style="margin-bottom: 5px; font-size: 12.5px; line-height: 1.38;">
   <strong>المشكو منهما:</strong>
   1. <strong>شهد عباس لفته</strong> (الزوجة) &nbsp;&nbsp; 2. <strong>ناهد (...)</strong> (والدة الزوجة - شريكة ومحرضة)<br>
   <strong>الساكنتان:</strong> بغداد - الدورة، محلة (822)، زقاق (20)، دار (712) <em>(وفق ورقة التبليغ القضائية الصادرة من محكمة الأحوال)</em>
 </div>
 
-<p style="text-align: center; margin-top: 6px; margin-bottom: 6px; font-size: 14.5px;"><strong><u>م / شكوى جزائية بالابتزاز المالي والتهديد بالقتل والقذف وإكراه الشهود على الزور</u></strong></p>
+<p style="text-align: center; margin-top: 5px; margin-bottom: 5px; font-size: 13.8px;"><strong><u>م / شكوى جزائية بالقذف الفاحش والتهجم العلني والابتزاز المالي وإكراه الشهود على الزور</u></strong></p>
 
-<p style="margin-bottom: 4px; font-size: 12.5px;"><strong>تحية طيبة واحتراماً،</strong></p>
+<p style="margin-bottom: 3px; font-size: 12.2px;"><strong>تحية طيبة واحتراماً،</strong></p>
 
-<p style="line-height: 1.42; margin-bottom: 4px; text-align: justify; font-size: 12.4px;">
+<p style="line-height: 1.4; margin-bottom: 3px; text-align: justify; font-size: 12px;">
 نعرض لعدالتكم قيام المشكو منهما بالاشتراك بارتكاب سلسلة جرائم واعتداءات معاقب عليها قانوناً بحق موكلي، وفق التفصيل الآتي:
 </p>
 
-<p style="line-height: 1.38; margin-bottom: 3px; text-align: justify; font-size: 12.2px;">
-<strong>1. القذف والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات):</strong> أقدمت المشكو منها الأولى بالاتصال بصديق موكلي الشاهد (علي سلام صبحي) بمكالمة استغرقت (1:34) ساعة، أطلقت خلالها طعوناً مخلة بالشرف زاعمة كذباً أنه <u>«شاذ جنسياً ويشرب الكحول وأدخل شاباً للدار»</u> لتسقيطه اجتماعياً واستمالة صديقه لصفها.
+<p style="line-height: 1.36; margin-bottom: 3px; text-align: justify; font-size: 11.6px;">
+<strong>1. استغلال مساعي الصلح والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات):</strong>
+تدخل صديق موكلي المقرب الشاهد (علي سلام صبحي) كوسيط خير للإصلاح بين الزوجين، إلا أن المشكو منها الأولى (شهد) قلبت مساعي الصلح واستغلت المكالمة الهاتفية التي استغرقت ساعة و(34) دقيقة ومحادثات الواتساب وإرسال الصور، لتحويلها إلى جلسة تسقيط وتشويه سمعة ممنهجة لموكلي أمام صديقه واستمالته لصفها؛ حيث أطلقت أبشع الافتراءات المخلة بالشرف مدعية كذباً أن موكلي <u>«شاذ جنسياً وزعمت وجود مقطع فيديو يثبت ذلك»</u>، كما ادعت افتراءً بأنه <u>«أدخل شاباً آخر للدار في أول أيام زواجهما وهي لا زالت عروساً جديدة»</u>، وادعت كذباً أنه يشرب الكحول ويسمح لها بالشرب لتصويره مجرداً من الغيرة، بينما الحقيقة الثابتة هي إلحاحها وإصرارها هي المستمر على الشرب رغم رفض موكلي حتى قال لها: «اشربي وخلصينا»، وكل ذلك بقصد تسقيطه اجتماعياً وأخلاقياً.
 </p>
 
-<p style="line-height: 1.38; margin-bottom: 3px; text-align: justify; font-size: 12.2px;">
-<strong>2. الابتزاز المالي والتهديد بالذبح <span class="legal-red" style="color: #dc2626; font-weight: bold;">(المادتان 430 و431 عقوبات)</span>:</strong> قيام المشكو منها الأولى بتهديد موكلي بالذبح والقتل، والابتزاز بالتشهير؛ وتأكد ركن الابتزاز المالي المادي بإقامتها الدعوى الشرعية (5977/ش/2026) أمام أحوال الدورة لمطالبته بمبلغ خيالي تعجيزي قدره <strong>(28,360,000 دينار)</strong> بدون أي سند أو توقيع لإرغامه على الرضوخ تحت وطأة التهديد.
+<p style="line-height: 1.36; margin-bottom: 3px; text-align: justify; font-size: 11.6px;">
+<strong>2. التهجم المتكرر (3 مرات) والصياح والفضيحة العلنية أمام الدار (المواد 433 و434 بدلالة 19/ 3/ ب عقوبات):</strong>
+قيام المشكو منها الأولى بالحضور والتهجم على دار سكن موكلي الكائن في (الدورة محلة 842) لـ <strong>ثلاث مرات متتالية</strong>، والصراخ في الشارع بأعلى صوتها وتوجيه شتائم وسباب فاحش بحق موكلي وأسرته، مما تسبب بتجمهر أهالي المنطقة والجيران وإحداث فضيحة علنية وتخريب سمعة موكلي وعائلته في المنطقة.
 </p>
 
-<p style="line-height: 1.38; margin-bottom: 3px; text-align: justify; font-size: 12.2px;">
-<strong>3. التهجم العلني والتجمهر والسب أمام الدار (المواد 433 و434 بدلالة 19/ 3/ ب عقوبات):</strong> قيام المشكو منها الأولى بالصراخ أمام دار موكلي والتجمهر في الشارع وتوجيه شتائم فاحشة لإحداث فضيحة عامة وتخريب سمعته وأسرته.
+<p style="line-height: 1.36; margin-bottom: 3px; text-align: justify; font-size: 11.6px;">
+<strong>3. التهديدات الهاتفية والابتزاز المالي <span class="legal-red" style="color: #dc2626; font-weight: bold;">(المادتان 430 و431 عقوبات)</span>:</strong>
+قيام المشكو منها الأولى بتهديد موكلي هاتفياً وعبر الرسائل لترهيبه وبث الرعب في نفسه؛ وتأكد ركن الابتزاز المالي بإقدامها على رفع الدعوى الشرعية (5977/ش/2026) أمام محكمة أحوال الدورة لمطالبته كيدياً بمبلغ تعجيزي قدره <strong>(28,360,000 دينار)</strong> كأثاث وذهب لا أصل لها ولا توقيع لموكلي عليها لابتزازه والضغط عليه.
 </p>
 
-<p style="line-height: 1.38; margin-bottom: 4px; text-align: justify; font-size: 12.2px;">
-<strong>4. جريمة حمل وإغراء الشهود على شهادة الزور <span class="legal-red" style="color: #dc2626; font-weight: bold;">(المادة 254/ 1 بدلالة 48 عقوبات)</span>:</strong>
-ثبوت قيام المشكو منها الأولى بالاتصال بالشاهدة (عهود عبد الرحمن خلاف - أم علي) لإغرائها بالشهادة زوراً ضد موكلي والمثبت بـ <strong>القرص المدمج (CD)</strong> المودع، كما ثبت قيام المشكو منها الثانية (والدة الزوجة ناهد) بالاتصال بالشاهد (علي سلام صبحي) ومحاولة إقناعه هو الآخر بالشهادة زوراً لتلفيق الاتهامات وتضليل القضاء.
+<p style="line-height: 1.36; margin-bottom: 3px; text-align: justify; font-size: 11.6px;">
+<strong>4. جريمة إكراه الشهود على شهادة الزور والتحريض المشترك <span class="legal-red" style="color: #dc2626; font-weight: bold;">(المادة 254/ 1 بدلالة المادة 48 عقوبات)</span>:</strong>
+ثبوت قيام المشكو منها الأولى (شهد) بالاتصال بوالدة صديق موكلي الشاهدة <strong>(عهود عبد الرحمن خلاف - أم علي)</strong> والضغط عليها لإغرائها بالوقوف بجانبها والشهادة بالزور ضد موكلي واختلاق وقائع كاذبة، وهو ما وثقته الشاهدة وسلّمت بشأنه <strong>القرص المدمج (CD)</strong> المودع طياً. كما ثبت قيام المشكو منها الثانية <strong>(ناهد - والدة الزوجة)</strong> بالاتصال بالشاهد <strong>(علي سلام صبحي)</strong> ومحاولة إقناعه هو الآخر بالشهادة بالزور ضد موكلي لتلفيق التهم وتضليل العدالة.
 </p>
 
-<div style="background: rgba(241,245,249,0.7); border: 1px solid #cbd5e1; border-radius: 4px; padding: 3px 6px; margin-bottom: 4px; font-size: 11.8px; line-height: 1.35;">
+<div style="background: rgba(241,245,249,0.7); border: 1px solid #cbd5e1; border-radius: 4px; padding: 3px 6px; margin-bottom: 4px; font-size: 11.2px; line-height: 1.35;">
   <strong>الأدلة والشهود الحاضرون:</strong>
   1. الشاهد: <strong>علي سلام صبحي</strong> &nbsp;|&nbsp; 2. الشاهدة: <strong>عهود عبد الرحمن خلاف (أم علي)</strong> &nbsp;|&nbsp; 3. الشاهد: <strong>مصطفى فائق عباس</strong> &nbsp;|&nbsp; 4. الشاهدة: <strong>هدى محمد عثمان</strong>.<br>
-  5. <strong>قرص مدمج (CD)</strong> يتضمن التسجيل الصوتي لجريمة محاولة إغراء الشهود بالزور &nbsp;|&nbsp; 6. صورة عريضة دعوى الأحوال (5977) كدليل مادي على الابتزاز المالي.
+  5. <strong>قرص مدمج (CD)</strong> يتضمن تسجيل محاولة إغراء الشاهدة بالزور &nbsp;|&nbsp; 6. صور محادثات الواتساب &nbsp;|&nbsp; 7. صورة عريضة دعوى الأحوال (5977) لإثبات الابتزاز المالي.
 </div>
 
-<p style="line-height: 1.35; margin-bottom: 2px; font-size: 12.2px;"><strong>لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</strong></p>
-<p style="line-height: 1.32; margin-bottom: 2px; font-size: 11.8px;"><strong>أولاً:</strong> إحالة الأوراق إلى <span class="legal-red" style="color: #dc2626; font-weight: bold;">السيد المحقق القضائي</span> لتدوين أقوال موكلي كمشتكٍ وسماع شهادة الشهود الأربعة الحاضرين.</p>
-<p style="line-height: 1.32; margin-bottom: 2px; font-size: 11.8px;"><strong>ثانياً:</strong> ربط <strong>القرص المدمج (CD)</strong> وتكليف الأدلة الجنائية بتفريغه ومطابقة الأصوات، مع <span class="legal-red" style="color: #dc2626; font-weight: bold;">ضبط هواتف المشكو منهما</span> وفق المادتين (75 و84) أصول جزائية.</p>
-<p style="line-height: 1.32; margin-bottom: 2px; font-size: 11.8px;"><strong>ثالثاً:</strong> <span class="legal-red" style="color: #dc2626; font-weight: bold;">إصدار أمر استقدام رسمي</span> بحق المشكو منهما على عنوانهما المثبت: (الدورة / م 822 / ز 20 / د 712) وفق المواد (430، 431، 433، 254 عقوبات).</p>
-<p style="line-height: 1.32; margin-bottom: 5px; font-size: 11.8px;"><strong>رابعاً:</strong> تزويدنا بكتاب لمحكمة الأحوال بالدورة لإشعارها بإقامة الشكوى لإيقاف الدعويين (5977 و5978) وجوبياً وفق المادة (26) أصول جزائية والمادة (83) مرافعات.</p>
+<p style="line-height: 1.35; margin-bottom: 2px; font-size: 11.8px;"><strong>لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</strong></p>
+<p style="line-height: 1.3; margin-bottom: 2px; font-size: 11.4px;"><strong>أولاً:</strong> إحالة الأوراق إلى <span class="legal-red" style="color: #dc2626; font-weight: bold;">السيد المحقق القضائي</span> لتدوين أقوال موكلي كمشتكٍ وسماع شهادة شهود الإثبات الأربعة الحاضرين على كافة تفاصيل الوقائع.</p>
+<p style="line-height: 1.3; margin-bottom: 2px; font-size: 11.4px;"><strong>ثانياً:</strong> ربط <strong>القرص المدمج (CD)</strong> ومحادثات الواتساب وتكليف الأدلة الجنائية بتفريغها رسمياً ومطابقة الأصوات، مع <span class="legal-red" style="color: #dc2626; font-weight: bold;">ضبط هواتف المشكو منهما</span> وفق المادتين (75 و84) أصول جزائية.</p>
+<p style="line-height: 1.3; margin-bottom: 4px; font-size: 11.4px;"><strong>ثالثاً:</strong> <span class="legal-red" style="color: #dc2626; font-weight: bold;">إصدار أمر استقدام رسمي</span> بحق المشكو منهما على عنوانهما المثبت: (الدورة / م 822 / ز 20 / د 712) وتوجيهه لمركز شرطة الدورة، وفق المواد (430، 431، 433، 254/ 1 عقوبات).</p>
 
-<p style="text-align: center; margin-top: 4px; margin-bottom: 4px; font-size: 12.5px;"><strong>مع وافر الشكر والتقدير والاحترام</strong></p>
+<p style="text-align: center; margin-top: 4px; margin-bottom: 4px; font-size: 12px;"><strong>مع وافر الشكر والتقدير والاحترام</strong></p>
 
-<table style="width: 100%; border: none; margin-top: 4px;">
+<table style="width: 100%; border: none; margin-top: 3px;">
   <tbody>
     <tr>
-      <td style="width: 50%; border: none; text-align: right; vertical-align: bottom; font-size: 12px;">
+      <td style="width: 50%; border: none; text-align: right; vertical-align: bottom; font-size: 11.6px;">
         <strong>التاريخ:</strong> 9 / 11 / 2026 م
       </td>
       <td style="width: 50%; border: none; text-align: left; vertical-align: bottom; font-size: 12px;">
