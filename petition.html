@@ -18,10 +18,10 @@
     :root {
       --gold-primary: #d4af37;
       --gold-hover: #b8860b;
-      --bg-dark: #090e1a;
+      --bg-dark: #070b14;
       --bg-card: #0f172a;
       --bg-input: #1e293b;
-      --border-color: rgba(212, 175, 55, 0.3);
+      --border-color: rgba(212, 175, 55, 0.35);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent-red: #ef4444;
@@ -35,6 +35,10 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Cairo', sans-serif;
       background: var(--bg-dark);
@@ -44,18 +48,30 @@
       flex-direction: column;
       direction: rtl;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* ================= Top Sticky App Header ================= */
-    .app-header {
-      background: rgba(15, 23, 42, 0.98);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-color);
+    /* ================= 🌟 Unified Sticky Top Command Panel 🌟 =================
+       This panel remains permanently pinned at the top. When the user scrolls,
+       the A4 paper slides smoothly UNDERNEATH this panel with frosted glass blur.
+    */
+    .sticky-top-panel {
       position: sticky;
       top: 0;
-      z-index: 100;
-      padding: 10px 16px;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75);
+    }
+
+    /* App Header (Inside Sticky Panel) */
+    .app-header {
+      padding: 8px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     .header-content {
@@ -75,15 +91,15 @@
     }
 
     .brand-logo {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 8px;
       border: 1px solid var(--gold-primary);
       flex-shrink: 0;
     }
 
     .brand-text h1 {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 900;
       color: var(--gold-primary);
       display: flex;
@@ -106,7 +122,7 @@
       border-radius: 4px;
     }
 
-    /* Header Actions */
+    /* Header Actions (Desktop) */
     .header-actions {
       display: flex;
       align-items: center;
@@ -119,8 +135,8 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 7px 13px;
-      font-size: 12.5px;
+      padding: 6.5px 12px;
+      font-size: 12px;
       font-weight: 800;
       font-family: inherit;
       border-radius: 8px;
@@ -131,6 +147,7 @@
       -webkit-tap-highlight-color: transparent;
       text-decoration: none;
       border: 1px solid transparent;
+      white-space: nowrap;
     }
 
     .btn:active {
@@ -167,16 +184,16 @@
       color: #fde68a;
     }
 
-    /* ================= View Modes Bar (Tabs) ================= */
+    /* Tabs Bar (Inside Sticky Panel) */
     .tabs-bar {
-      background: #0b1329;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding: 6px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
+      background: rgba(11, 19, 41, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .tab-group {
@@ -188,15 +205,16 @@
       background: #1e293b;
       border: 1px solid #334155;
       color: #cbd5e1;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 7px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       transition: all 0.15s ease;
+      white-space: nowrap;
     }
 
     .tab-btn.active {
@@ -211,44 +229,33 @@
       gap: 5px;
       font-size: 11px;
       font-weight: 800;
-      padding: 4px 10px;
+      padding: 3px 9px;
       border-radius: 6px;
       background: rgba(16, 185, 129, 0.15);
       color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.4);
+      white-space: nowrap;
     }
 
-    /* ================= Workspace Layout ================= */
-    .studio-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 12px 16px;
-      width: 100%;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    /* ================= Comprehensive Advanced Editor Toolbar ================= */
+    /* ================= Advanced Editing Toolbar (Inside Sticky Panel) ================= */
     .editor-toolbar {
-      background: #0f172a;
-      border: 1px solid rgba(212, 175, 55, 0.35);
-      border-radius: 12px;
-      padding: 10px 14px;
+      padding: 8px 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .toolbar-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      gap: 6px;
       overflow-x: auto;
+      white-space: nowrap;
       padding-bottom: 2px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
     }
 
     .toolbar-group {
@@ -256,9 +263,10 @@
       align-items: center;
       gap: 4px;
       background: #1e293b;
-      padding: 4px 8px;
-      border-radius: 8px;
+      padding: 4px 7px;
+      border-radius: 7px;
       border: 1px solid #334155;
+      flex-shrink: 0;
     }
 
     .group-label {
@@ -274,9 +282,9 @@
       background: #0f172a;
       border: 1px solid #334155;
       color: #f8fafc;
-      padding: 5px 9px;
+      padding: 4px 8px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       font-family: inherit;
       cursor: pointer;
@@ -302,9 +310,9 @@
       background: #0f172a;
       border: 1px solid #334155;
       color: #f8fafc;
-      padding: 5px 8px;
+      padding: 4px 7px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       font-family: inherit;
       cursor: pointer;
@@ -339,28 +347,42 @@
     .val-chip {
       background: #090e1a;
       color: #fde68a;
-      padding: 2px 7px;
+      padding: 2px 6px;
       border-radius: 4px;
       font-size: 11px;
       font-weight: 800;
       font-family: monospace;
       border: 1px solid rgba(212, 175, 55, 0.3);
-      min-width: 38px;
+      min-width: 36px;
       text-align: center;
     }
 
-    /* ================= A4 Physical Sheet Viewport ================= */
+    /* ================= Workspace Layout ================= */
+    .studio-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 10px 14px 100px;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 10; /* Lower than sticky panel so paper slides under cleanly */
+    }
+
+    /* The Stage: Holding Physical A4 Sheet */
     .stage-wrapper {
       background: #050811;
       border: 1px solid #1e293b;
       border-radius: 12px;
-      padding: 30px 10px;
+      padding: 24px 10px 80px;
       overflow-x: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 30px;
       min-height: 80vh;
+      position: relative;
     }
 
     /* The Real A4 Sheet (210mm x 297mm) */
@@ -383,6 +405,7 @@
       line-height: 1.52;
       word-spacing: 0px;
       transition: font-size 0.15s ease, line-height 0.15s ease, word-spacing 0.15s ease;
+      z-index: 5;
     }
 
     .a4-sheet-editable {
@@ -516,19 +539,21 @@
       left: 0;
       right: 0;
       background: rgba(15, 23, 42, 0.98);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid var(--border-color);
-      padding: 8px 6px;
-      z-index: 150;
+      padding: 8px 6px calc(8px + env(safe-area-inset-bottom, 0px));
+      z-index: 1100;
       justify-content: space-around;
       align-items: center;
+      box-shadow: 0 -6px 25px rgba(0,0,0,0.7);
     }
 
     .m-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
       background: transparent;
       border: none;
       color: var(--text-muted);
@@ -549,7 +574,7 @@
     /* Toast Notification */
     .toast-msg {
       position: fixed;
-      bottom: 75px;
+      bottom: 80px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
       background: #0f172a;
@@ -559,7 +584,7 @@
       border-radius: 8px;
       font-size: 13px;
       font-weight: 700;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.85);
       opacity: 0;
       pointer-events: none;
       transition: all 0.25s ease;
@@ -572,30 +597,35 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ================= Responsive Layout for Mobile ================= */
+    /* ================= Responsive Layout for iPhone & Mobile ================= */
     @media (max-width: 860px) {
       .mobile-float-bar {
         display: flex;
       }
       .studio-container {
-        padding: 8px 6px 75px;
+        padding: 6px 4px calc(90px + env(safe-area-inset-bottom, 0px));
+      }
+      .app-header {
+        padding: 6px 10px;
+      }
+      .header-actions {
+        display: none;
+      }
+      .tabs-bar {
+        padding: 5px 8px;
+        gap: 6px;
       }
       .editor-toolbar {
-        padding: 8px;
-      }
-      .toolbar-group {
-        padding: 3px 6px;
+        padding: 6px 8px;
       }
       .stage-wrapper {
-        padding: 14px 4px 60px;
+        padding: 10px 2px calc(80px + env(safe-area-inset-bottom, 0px));
         border-radius: 8px;
+        min-height: 70vh;
       }
       .a4-physical-sheet {
         transform-origin: top center;
         margin: 0 auto;
-      }
-      .header-actions {
-        display: none;
       }
     }
 
@@ -622,6 +652,7 @@
         overflow: visible !important;
       }
 
+      .sticky-top-panel,
       .app-header,
       .tabs-bar,
       .editor-toolbar,
@@ -661,74 +692,80 @@
 </head>
 <body>
 
-  <!-- ================= App Header ================= -->
-  <header class="app-header no-print">
-    <div class="header-content">
-      <div class="brand-group">
-        <img src="icon-192.png" alt="المحامي سعد فراس أميل" class="brand-logo">
-        <div class="brand-text">
-          <h1>استوديو العرائض القضائية الذكي <span class="badge-pill">محاكم بغداد</span></h1>
-          <p>المحامي سعد فراس أميل — هوية: 188572 (الصلاحية أ)</p>
+  <!-- ================= 🌟 Unified Sticky Top Command Panel 🌟 ================= -->
+  <div class="sticky-top-panel no-print" id="stickyTopPanel">
+
+    <!-- 1. App Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="brand-group">
+          <img src="icon-192.png" alt="المحامي سعد فراس أميل" class="brand-logo">
+          <div class="brand-text">
+            <h1>استوديو العرائض القضائية الذكي <span class="badge-pill">محاكم بغداد</span></h1>
+            <p>المحامي سعد فراس أميل — هوية: 188572 (الصلاحية أ)</p>
+          </div>
+        </div>
+
+        <!-- Desktop Action Buttons -->
+        <div class="header-actions">
+          <button type="button" class="btn btn-green" onclick="downloadPristinePdf()" title="تنزيل عريضة A4 الرسمية الأصلية المعتمدة فوراً">
+            📥 تنزيل PDF جاهز
+          </button>
+          <button type="button" class="btn btn-green" onclick="shareLivePetitionToWhatsApp()" title="إرسال ملف الـ PDF الأصلي لواتساب كشك الاستنساخ">
+            🟢 إرسال لواتساب الكشك
+          </button>
+          <button type="button" class="btn btn-blue" onclick="downloadLiveWordDoc()" title="توليد وتنزيل ملف Word (.docx) أصلي بمقاسات A4">
+            📄 ملف Word (.docx)
+          </button>
+          <button type="button" class="btn btn-dark" onclick="triggerCleanPrint()" title="طباعة الورقة فوراً">
+            🖨️ طباعة فورية
+          </button>
+          <button type="button" class="btn btn-refresh" onclick="forceAppRefresh()" title="تحديث وسحب أحدث نسخة">
+            🔄 تحديث
+          </button>
         </div>
       </div>
+    </header>
 
-      <!-- Desktop Essential Action Buttons -->
-      <div class="header-actions">
-        <button type="button" class="btn btn-green" onclick="downloadPristinePdf()" title="تنزيل عريضة A4 الرسمية الأصلية المعتمدة فوراً">
-          📥 تنزيل PDF جاهز
+    <!-- 2. Tabs & Zoom Bar -->
+    <div class="tabs-bar">
+      <div class="tab-group">
+        <button class="tab-btn active" id="tabSheetBtn" onclick="switchViewMode('sheet')">
+          📄 الورقة الرسمية (A4)
         </button>
-        <button type="button" class="btn btn-green" onclick="shareLivePetitionToWhatsApp()" title="إرسال ملف الـ PDF الأصلي لواتساب كشك الاستنساخ">
-          🟢 إرسال لواتساب الكشك
+        <button class="tab-btn" id="tabEditorBtn" onclick="switchViewMode('editor')">
+          ✍️ أدوات التحرير والتنسيق
         </button>
-        <button type="button" class="btn btn-blue" onclick="downloadLiveWordDoc()" title="توليد وتنزيل ملف Word (.docx) أصلي بمقاسات A4">
-          📄 ملف Word (.docx)
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+        <span class="page-status-badge" id="pageStatusBadge">
+          ✅ صفحة A4 واحدة كاملة ومثالية
+        </span>
+
+        <!-- Mobile Scale Mode Toggle -->
+        <button class="tool-btn tool-gold" id="mobileZoomToggleBtn" onclick="toggleMobileZoomMode()" title="التبديل بين ملائمة الشاشة وقراءة بالحجم الطبيعي">
+          🔍 قراءة 100%
         </button>
-        <button type="button" class="btn btn-dark" onclick="triggerCleanPrint()" title="طباعة الورقة فوراً">
-          🖨️ طباعة فورية
+
+        <button class="tool-btn" onclick="adjustDocFontSize(0.5)" title="تكبير الخط العام للورقة">
+          ➕ خط
         </button>
-        <button type="button" class="btn btn-refresh" onclick="forceAppRefresh()" title="تحديث وسحب أحدث نسخة">
-          🔄 تحديث
+        <button class="tool-btn" onclick="adjustDocFontSize(-0.5)" title="تصغير الخط العام للورقة">
+          ➖ خط
         </button>
       </div>
     </div>
-  </header>
 
-  <!-- ================= View Modes Bar ================= -->
-  <div class="tabs-bar no-print">
-    <div class="tab-group">
-      <button class="tab-btn active" id="tabSheetBtn" onclick="switchViewMode('sheet')">
-        📄 الورقة الرسمية المطبوعة (A4)
-      </button>
-      <button class="tab-btn" id="tabEditorBtn" onclick="switchViewMode('editor')">
-        ✍️ أدوات التحرير والتنسيق المتقدم
-      </button>
-    </div>
-
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <span class="page-status-badge" id="pageStatusBadge">
-        ✅ صفحة A4 واحدة كاملة ومثالية
-      </span>
-      <button class="tool-btn" onclick="adjustDocFontSize(0.5)" title="تكبير الخط العام للورقة">
-        ➕ تكبير العام
-      </button>
-      <button class="tool-btn" onclick="adjustDocFontSize(-0.5)" title="تصغير الخط العام للورقة">
-        ➖ تصغير العام
-      </button>
-    </div>
-  </div>
-
-  <!-- ================= Workspace Layout ================= -->
-  <main class="studio-container">
-
-    <!-- Advanced Typing & Formatting Toolbar -->
-    <div class="editor-toolbar no-print" id="editorToolbar">
+    <!-- 3. Advanced Typing & Typography Toolbar (Sticky at Top) -->
+    <div class="editor-toolbar" id="editorToolbar">
       
-      <!-- Row 1: Font Family, Selection Font Size, Red/Black Highlights, Basic Styles -->
+      <!-- Row 1: Font Family, Word Resize (A+/A-), Red & Black Highlights, Basic Styles -->
       <div class="toolbar-row">
         
         <!-- Font Family Selector -->
         <div class="toolbar-group">
-          <span class="group-label">🖋️ نوع الخط:</span>
+          <span class="group-label">🖋️ الخط:</span>
           <select class="tool-select" id="fontFamilySelect" onchange="changeDocFontFamily(this.value)">
             <option value="'Cairo', sans-serif">Cairo (عصري واضح)</option>
             <option value="'Noto Naskh Arabic', serif">Noto Naskh (أصولي للمحاكم)</option>
@@ -751,7 +788,7 @@
 
         <!-- Legal Red & Black Highlight -->
         <div class="toolbar-group">
-          <span class="group-label">🎨 تلوين الكلمة:</span>
+          <span class="group-label">🎨 التلوين:</span>
           <button class="tool-btn tool-red" onclick="applyColorToSelection('#dc2626')" title="تلوين الكلمة أو العبارة المحددة بالأحمر العريض">
             🔴 أحمر عريض
           </button>
@@ -760,7 +797,7 @@
           </button>
         </div>
 
-        <!-- Bold, Italic, Underline, Clear -->
+        <!-- Styles: Bold, Italic, Underline, Alignments -->
         <div class="toolbar-group">
           <span class="group-label">✍️ الأسلوب:</span>
           <button class="tool-btn" onclick="execFormat('bold')" title="عريض (Ctrl+B)">
@@ -788,7 +825,7 @@
 
       </div>
 
-      <!-- Row 2: Line Height, Word Spacing, Version Switcher -->
+      <!-- Row 2: Line Spacing, Word Spacing, Version Switcher -->
       <div class="toolbar-row">
 
         <!-- Line Spacing (Line Height) -->
@@ -848,6 +885,11 @@
 
     </div>
 
+  </div>
+
+  <!-- ================= Workspace Layout (Slides smoothly behind sticky panel) ================= -->
+  <main class="studio-container">
+
     <!-- The Stage: Holding Physical A4 Sheet -->
     <div class="stage-wrapper" id="stageWrapper">
       
@@ -892,11 +934,12 @@
   <!-- ================= Core JavaScript Engine ================= -->
   <script>
     // Storage & Engine Keys
-    const ACTIVE_DRAFT_KEY = 'saadamil_paged_petition_active_v3';
+    const ACTIVE_DRAFT_KEY = 'saadamil_paged_petition_active_v4';
     let baseFontSize = 13.5;
     let currentLineHeight = 1.52;
     let currentWordSpacing = 0;
     let currentFontFamily = "'Cairo', sans-serif";
+    let isMobileZoomFull = false; // false: fit to screen, true: 100% natural readable scale
 
     // Master Audited Legal Omar Petition HTML (Image 2 - 100% Law-Grounded)
     const MASTER_AUDITED_HTML = `  <div class="court-header">
@@ -1113,18 +1156,38 @@
       }
     }
 
-    // Auto-scale A4 sheet on mobile so whole paper is visible without scrolling horizontally
+    // Toggle Mobile Zoom Mode (Fit to screen vs 100% natural reading)
+    function toggleMobileZoomMode() {
+      isMobileZoomFull = !isMobileZoomFull;
+      const btn = document.getElementById('mobileZoomToggleBtn');
+      if (btn) {
+        btn.innerHTML = isMobileZoomFull ? '📱 ملائمة الشاشة' : '🔍 قراءة 100%';
+      }
+      adjustMobileScale();
+      showToast(isMobileZoomFull ? '🔍 وضع القراءة المريحة (100% حجم طبيعي)' : '📱 وضع ملائمة الشاشة الكاملة');
+    }
+
+    // Auto-scale A4 sheet on mobile so whole paper is visible without horizontal overflow
     function adjustMobileScale() {
       const sheet = document.getElementById('a4SheetPage1');
       if (!sheet) return;
       const screenW = window.innerWidth;
+      
       if (screenW <= 860) {
-        const targetW = 794; // 210mm in px at 96dpi
-        const availW = Math.min(screenW - 20, 794);
-        const scale = availW / targetW;
-        sheet.style.transform = `scale(${scale})`;
-        sheet.style.transformOrigin = 'top center';
-        sheet.style.marginBottom = `-${(1123 * (1 - scale))}px`;
+        if (isMobileZoomFull) {
+          // 100% scale for easy reading and editing
+          sheet.style.transform = 'scale(1)';
+          sheet.style.transformOrigin = 'top right';
+          sheet.style.marginBottom = '0';
+        } else {
+          // Fit whole A4 to screen
+          const targetW = 794; // 210mm in px at 96dpi
+          const availW = Math.min(screenW - 16, 794);
+          const scale = availW / targetW;
+          sheet.style.transform = `scale(${scale})`;
+          sheet.style.transformOrigin = 'top center';
+          sheet.style.marginBottom = `-${(1123 * (1 - scale))}px`;
+        }
       } else {
         sheet.style.transform = 'none';
         sheet.style.marginBottom = '0';
@@ -1155,7 +1218,6 @@
     function resizeSelectedText(delta) {
       const selection = window.getSelection();
       if (!selection.rangeCount || selection.isCollapsed) {
-        // If no specific text is highlighted, scale overall document font
         adjustDocFontSize(delta > 0 ? 0.5 : -0.5);
         return;
       }
@@ -1175,7 +1237,6 @@
         span.appendChild(range.extractContents());
         range.insertNode(span);
 
-        // Keep selection
         selection.removeAllRanges();
         const newRange = document.createRange();
         newRange.selectNodeContents(span);
