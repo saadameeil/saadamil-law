@@ -949,11 +949,11 @@
       }
     }
 
-    /* ================= 100% Strict Single-Page Clean Vector Print Rules ================= */
+        /* ================= 100% Strict Single-Page Clean Vector Print Rules ================= */
     @media print {
       @page {
         size: A4 portrait;
-        margin: 8mm 12mm 8mm 12mm;
+        margin: 10mm 12mm 10mm 12mm;
       }
 
       *, *::before, *::after {
@@ -966,63 +966,70 @@
         padding: 0 !important;
         width: 100% !important;
         height: auto !important;
-        max-height: none !important;
         background: #ffffff !important;
         color: #0f172a !important;
         overflow: visible !important;
       }
 
-      .no-print, 
-      .app-header, 
-      .mobile-bottom-bar, 
-      .studio-toolbar, 
-      .cases-bar,
-      .toast-msg,
-      .modal-backdrop,
-      .preview-modal-backdrop,
-      #printPreviewModal,
-      #kioskModal,
-      #archiveModal {
+      /* Hide ALL main site chrome */
+      body > *:not(#printPreviewModal) {
         display: none !important;
       }
 
-      .studio-wrapper, 
-      .studio-card, 
-      .paper-stage, 
-      .paper-container {
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        transform: none !important;
+      /* Show ONLY preview modal contents cleanly */
+      body > #printPreviewModal {
+        display: block !important;
         position: static !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: auto !important;
         overflow: visible !important;
       }
 
-      .legal-paper {
+      #printPreviewModal .preview-top-bar,
+      #printPreviewModal .preview-actions,
+      #printPreviewModal .badge-page-fit {
+        display: none !important;
+      }
+
+      #printPreviewModal .preview-stage-viewport {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+        height: auto !important;
+      }
+
+      #printPreviewModal .preview-scale-wrapper {
+        width: 100% !important;
+        height: auto !important;
+        transform: none !important;
+        margin: 0 !important;
         position: static !important;
+      }
+
+      #printPreviewModal .preview-a4-sheet {
         width: 100% !important;
         max-width: 100% !important;
-        height: auto !important;
         min-height: auto !important;
         max-height: none !important;
         transform: none !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
+        position: static !important;
         box-shadow: none !important;
         border: none !important;
-        border-radius: 0 !important;
-        box-sizing: border-box !important;
-        page-break-after: avoid !important;
-        page-break-inside: avoid !important;
-        overflow: visible !important;
+        outline: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
         background: #ffffff !important;
+        font-size: 13.6px !important;
+        line-height: 1.54 !important;
       }
 
-      .document-body {
-        transform: none !important;
+      .court-header {
+        border-bottom: 2px solid #0f172a !important;
       }
     }
   
@@ -1057,9 +1064,9 @@
 
         <!-- Desktop Action Buttons -->
         <div class="header-actions">
-          <a href="petition_omar.pdf" target="_blank" download="عريضة_عمر_الجبوري.pdf" class="btn btn-green" style="text-decoration:none;" title="تنزيل ملف PDF المعتمد بصفحة A4 كاملة ومثالية">
+          <button type="button" class="btn btn-green" onclick="downloadPristinePdf()" title="تنزيل عريضة A4 الرسمية المعتمدة فوراً">
             <span>📥 تنزيل PDF جاهز</span>
-          </a>
+          </button>
           <button class="btn btn-gold" onclick="openPrintPreviewModal()">
             <span>👁️ معاينة الطباعة (A4)</span>
           </button>
@@ -1212,9 +1219,9 @@
         <button class="btn btn-dark" style="font-size:12px; font-weight:800; padding:6px 10px; border:1px solid #475569;" onclick="adjustPreviewFontSize(-1)" title="تصغير خط الورقة لتناسب صفحة واحدة">
           ➖ تصغير
         </button>
-        <a href="petition_omar.pdf" target="_blank" download="عريضة_عمر_الجبوري.pdf" class="btn btn-green" style="font-size:12px; padding:6px 12px; text-decoration:none;">
-          📥 تنزيل PDF جاهز
-        </a>
+        <button type="button" class="btn btn-green" onclick="downloadPristinePdf()" title="تنزيل عريضة A4 الرسمية المعتمدة فوراً">
+            <span>📥 تنزيل PDF جاهز</span>
+          </button>
         <button class="btn btn-blue" style="font-size:12px; padding:6px 12px;" onclick="triggerCleanPrint()">
           🖨️ طباعة الآن (Print)
         </button>
@@ -1298,7 +1305,7 @@
         </div>
 
         <!-- Action 0: Instant Verified Pristine A4 PDF Download -->
-        <a href="petition_omar.pdf" target="_blank" download="عريضة_عمر_الجبوري.pdf" class="kiosk-opt-card" style="text-decoration:none; border-color: rgba(212, 175, 55, 0.6); background: rgba(212, 175, 55, 0.1);">
+        <div class="kiosk-opt-card" onclick="downloadPristinePdf()" style="border-color: rgba(212, 175, 55, 0.6); background: rgba(212, 175, 55, 0.1);">
           <div class="kiosk-icon" style="background: rgba(212, 175, 55, 0.3); color: #fde68a;">
             📥
           </div>
@@ -1306,7 +1313,7 @@
             <h4 style="color:#fde68a;">تنزيل ملف PDF المعتمد الجاهز (A4 كاملة بدون لخبطة) ⭐</h4>
             <p style="color:#cbd5e1;">ملف PDF فيكتور رسمي عالي الدقة، جاهز للطباعة فوراً بصفحة واحدة ومقاسات مثالية دون أي تصغير أو هوامش زائدة.</p>
           </div>
-        </a>
+        </div>
 
         <!-- Action 2: Instant Native PDF Print (AirPrint / Android / PC) -->
         <div class="kiosk-opt-card" onclick="triggerCleanPrint()">
@@ -1355,7 +1362,7 @@
 
   <!-- App Script -->
   <script>
-    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_draft_persistent_v9';
+    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_draft_persistent_v10';
     const ARCHIVE_STORAGE_KEY = 'saadamil_petitions_archive_v1';
     const FONT_STORAGE_KEY = 'saadamil_saved_font_mode';
 
@@ -1642,11 +1649,35 @@ ${clean}
     }
 
     // Share live edited text directly to WhatsApp
-        // Share exact PDF file directly to WhatsApp via Web Share API
-    async function shareLivePetitionToWhatsApp() {
-      showToast('⏳ جاري تجهيز ملف PDF للإرسال لواتساب الكشك...');
+            // Instant Native Download of Verified Pristine A4 PDF with Zero-Cache Guarantee
+    async function downloadPristinePdf() {
+      showToast('📥 جاري تنزيل عريضة A4 المعتمدة الأصلية...');
       try {
-        const response = await fetch('petition_omar.pdf?v=' + Date.now());
+        const response = await fetch('عريضة_عمر_الجبوري_المعتمدة.pdf?v=' + Date.now());
+        if (!response.ok) throw new Error('Network error');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'عريضة_عمر_الجبوري.pdf';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }, 1200);
+        showToast('✅ تم تنزيل العريضة الرسمية A4 بنجاح!');
+      } catch (e) {
+        // Direct link fallback
+        window.open('عريضة_عمر_الجبوري_المعتمدة.pdf?v=' + Date.now(), '_blank');
+      }
+    }
+
+    // Share exact PDF file directly to WhatsApp via Web Share API
+    async function shareLivePetitionToWhatsApp() {
+      showToast('⏳ جاري تجهيز العريضة A4 لإرسالها لواتساب الكشك...');
+      try {
+        const response = await fetch('عريضة_عمر_الجبوري_المعتمدة.pdf?v=' + Date.now());
         const blob = await response.blob();
         const file = new File([blob], 'عريضة_عمر_الجبوري.pdf', { type: 'application/pdf' });
 
@@ -1663,14 +1694,8 @@ ${clean}
         console.warn('Web Share file error:', err);
       }
 
-      // Direct download fallback if share sheet cancelled or not supported
-      const a = document.createElement('a');
-      a.href = 'petition_omar.pdf';
-      a.download = 'عريضة_عمر_الجبوري.pdf';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => document.body.removeChild(a), 500);
-      showToast('📥 تم تنزيل ملف PDF بالهاتف، يمكنك مشاركته فوراً في الواتساب!');
+      // Direct download fallback
+      await downloadPristinePdf();
     }
 
     // Generate Word Document (.doc) from live edited HTML
