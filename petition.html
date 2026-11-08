@@ -22,9 +22,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Cairo:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Client-side PDF Generation Engine -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
   <style>
     :root {
       --bg-dark: #0b1120;
@@ -435,7 +432,7 @@
       right: 0;
       background: #0f172a;
       border-top: 1px solid rgba(212, 175, 55, 0.3);
-      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+      padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
       z-index: 60;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -475,8 +472,8 @@
       right: 0;
       bottom: 0;
       background: rgba(3, 7, 18, 0.85);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 200;
       justify-content: center;
       align-items: center;
@@ -493,13 +490,13 @@
       border-radius: 14px;
       width: 100%;
       max-width: 580px;
-      max-height: 88vh;
+      max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
       padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       position: relative;
     }
 
@@ -524,9 +521,9 @@
       background: transparent;
       border: none;
       color: #94a3b8;
-      font-size: 20px;
+      font-size: 22px;
       cursor: pointer;
-      padding: 4px;
+      padding: 4px 8px;
       line-height: 1;
     }
 
@@ -619,20 +616,20 @@
 
     /* Kiosk Share Options */
     .kiosk-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .kiosk-opt-card {
       background: #1e293b;
       border: 1px solid #334155;
       border-radius: 10px;
-      padding: 14px;
+      padding: 12px 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       transition: all 0.15s ease;
       text-decoration: none;
       color: inherit;
@@ -641,6 +638,16 @@
     .kiosk-opt-card:hover {
       border-color: var(--gold-primary);
       transform: translateY(-1px);
+    }
+
+    .kiosk-opt-primary {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(5, 150, 105, 0.12));
+      border-color: rgba(52, 211, 153, 0.5);
+    }
+
+    .kiosk-opt-primary:hover {
+      border-color: #10b981;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.28), rgba(5, 150, 105, 0.22));
     }
 
     .kiosk-icon {
@@ -659,12 +666,24 @@
       font-weight: 800;
       color: #f8fafc;
       margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .kiosk-text p {
       font-size: 11.5px;
       color: var(--text-muted);
       line-height: 1.35;
+    }
+
+    .badge-star {
+      background: #10b981;
+      color: #0b1120;
+      font-size: 9.5px;
+      font-weight: 900;
+      padding: 2px 6px;
+      border-radius: 4px;
     }
 
     /* Toast */
@@ -865,7 +884,7 @@
     <div class="cases-bar no-print">
       <div class="case-pill pill-archive" onclick="openArchiveModal()">
         <span>📁</span>
-        <span>أرشيف العرائض المحفوظة (<span id="archiveCountBadge2">0</span>)</span>
+        <span>أرشيف العرائض (<span id="archiveCountBadge2">0</span>)</span>
       </div>
       <div class="case-pill active" id="chipOmar" onclick="loadOmarPetition()">
         <span>⚖️</span>
@@ -877,7 +896,7 @@
       </div>
       <div class="case-pill" onclick="saveToArchivePrompt()">
         <span>💾</span>
-        <span>حفظ نسخة جديدة بالأرشيف</span>
+        <span>حفظ مسودة في الأرشيف</span>
       </div>
     </div>
 
@@ -1029,59 +1048,62 @@
         <button class="modal-close-btn" onclick="closeKioskModal()">✕</button>
       </div>
 
-      <p style="font-size:12.5px; color:#cbd5e1; line-height:1.5;">
-        اختر الطريقة الأنسب لإرسال العريضة فوراً من هاتفك إلى صاحب كشك الاستنساخ أمام المحكمة:
-      </p>
-
       <div class="kiosk-grid">
         
-        <!-- Option 1: WhatsApp Full Text -->
-        <div class="kiosk-opt-card" onclick="shareToWhatsAppKiosk()">
-          <div class="kiosk-icon" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">
-            💬
+        <!-- Action 1: Direct Share PDF to WhatsApp -->
+        <div class="kiosk-opt-card kiosk-opt-primary" onclick="sharePdfDirectToWhatsApp()">
+          <div class="kiosk-icon" style="background: rgba(16, 185, 129, 0.25); color: #34d399;">
+            🟢
           </div>
           <div class="kiosk-text">
-            <h4>إرسال نص العريضة مباشرة عبر واتساب</h4>
-            <p>يفتح لك تطبيق الواتساب لاختيار كشك الكاتب وإرسال نص العريضة الكامل فوراً لطباعتها.</p>
+            <h4>
+              <span>إرسال ملف PDF عبر واتساب فوراً</span>
+              <span class="badge-star">الأسرع والموصى به ⭐</span>
+            </h4>
+            <p>يفتح لك تطبيق الواتساب لاختيار كشك الكاتب ويرسل له ملف الـ PDF الرسمي فوراً لطباعته.</p>
           </div>
         </div>
 
-        <!-- Option 2: Download Client-side PDF to Mobile -->
-        <div class="kiosk-opt-card" onclick="downloadClientPdf()">
+        <!-- Action 2: Direct Native PDF Download & View -->
+        <a href="petition.pdf" target="_blank" download="عريضة_عمر_رعد_خليفه_تحقيق_الدورة.pdf" class="kiosk-opt-card">
           <div class="kiosk-icon" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">
             📥
           </div>
           <div class="kiosk-text">
-            <h4>حفظ وتنزيل ملف PDF في هاتفك</h4>
-            <p>ينزل لك ملف PDF رسمي باسم الموكل في مجلد التنزيلات/الملفات بالهاتف لترسله كمستند.</p>
+            <h4>فتح وتنزيل ملف PDF في هاتفك (A4)</h4>
+            <p>يفتح وينزل ملف الـ PDF الرسمي مباشرة في هاتفك (مجلد التنزيلات / الملفات) لحفظه أو طباعته.</p>
           </div>
-        </div>
+        </a>
 
-        <!-- Option 3: Native Web Share (Files / WhatsApp / Telegram) -->
-        <div class="kiosk-opt-card" onclick="nativeMobileShare()">
+        <!-- Action 3: WhatsApp Formatted Text with Direct PDF Link -->
+        <div class="kiosk-opt-card" onclick="shareWhatsAppTextWithLink()">
           <div class="kiosk-icon" style="background: rgba(212, 175, 55, 0.2); color: #fde68a;">
-            📲
+            💬
           </div>
           <div class="kiosk-text">
-            <h4>مشاركة شاملة عبر الهاتف (AirDrop / واتساب / تيليغرام)</h4>
-            <p>يفتح قائمة المشاركة الأصلية في الآيفون/الأندرويد لاختيار التطبيق المناسب.</p>
+            <h4>إرسال رابط الـ PDF المباشر + نص العريضة لواتساب</h4>
+            <p>يرسل لصاحب الكشك رسالة بالواتساب تحتوي رابط التحميل الفوري + النص المحدث بالكامل.</p>
           </div>
         </div>
 
-        <!-- Option 4: Direct Print -->
+        <!-- Action 4: Native Apple / AirPrint Print -->
         <div class="kiosk-opt-card" onclick="window.print()">
           <div class="kiosk-icon" style="background: rgba(99, 102, 241, 0.2); color: #818cf8;">
             🖨️
           </div>
           <div class="kiosk-text">
-            <h4>طباعة A4 فورية (AirPrint / Wi-Fi)</h4>
-            <p>للطباعة المباشرة على طابعات الواي فاي أو حفظها كـ PDF عبر قائمة طباعة آبل.</p>
+            <h4>طباعة A4 فورية (AirPrint / تحويل لـ PDF عبر آبل)</h4>
+            <p>للطباعة المباشرة، أو تكبير المعاينة بإصبعيك (Pinch to Zoom) لحفظها كـ PDF رسمي.</p>
           </div>
         </div>
 
       </div>
 
-      <div style="text-align: center; margin-top: 4px;">
+      <div style="background: rgba(212, 175, 55, 0.08); border: 1px dashed rgba(212, 175, 55, 0.35); border-radius: 8px; padding: 10px; font-size: 11.5px; color: #cbd5e1; line-height: 1.5;">
+        💡 <strong>طريقة آيفون السريعة:</strong> اضغط على <strong>«إرسال ملف PDF عبر واتساب فوراً»</strong> وسيفتح لك شاشة المشاركة الرسمية لتختار محادثة كشك الكاتب بلمسة واحدة.
+      </div>
+
+      <div>
         <button class="btn btn-dark" style="width:100%; font-size:12px;" onclick="copyCleanPetitionText()">
           📋 نسخ نص العريضة بالكامل للحافظة (Copy Text)
         </button>
@@ -1168,6 +1190,7 @@
 
     let currentFontIndex = 0;
     let baseFontSize = 14;
+    let preloadedPdfFile = null;
 
     document.addEventListener('DOMContentLoaded', () => {
       const editorEl = document.getElementById('docContent');
@@ -1197,11 +1220,94 @@
       // 3. Initialize Petitions Archive
       initArchiveSystem();
 
-      // 4. Auto-save on typing
+      // 4. Preload PDF file into memory for instantaneous WhatsApp sharing on click!
+      preloadPdfFile();
+
+      // 5. Auto-save on typing
       editorEl.addEventListener('input', () => {
         localStorage.setItem(ACTIVE_DRAFT_KEY, editorEl.innerHTML);
       });
     });
+
+    // Preload PDF File so WhatsApp sharing happens synchronously on tap
+    async function preloadPdfFile() {
+      try {
+        const resp = await fetch('petition.pdf', { cache: 'no-cache' });
+        if (resp.ok) {
+          const blob = await resp.blob();
+          preloadedPdfFile = new File([blob], 'عريضة_عمر_رعد_خليفه_تحقيق_الدورة.pdf', { type: 'application/pdf' });
+          console.log('Official vector PDF preloaded in memory:', preloadedPdfFile.size, 'bytes');
+        }
+      } catch (e) {
+        console.warn('PDF preload note:', e);
+      }
+    }
+
+    // ================= Direct WhatsApp PDF Sharing =================
+    async function sharePdfDirectToWhatsApp() {
+      showToast('⏳ جاري فتح الواتساب لإرسال ملف الـ PDF...');
+
+      try {
+        // Ensure file is ready
+        let fileToShare = preloadedPdfFile;
+        if (!fileToShare) {
+          const resp = await fetch('petition.pdf');
+          const blob = await resp.blob();
+          fileToShare = new File([blob], 'عريضة_عمر_رعد_خليفه_تحقيق_الدورة.pdf', { type: 'application/pdf' });
+        }
+
+        // Check native file sharing (supported on iPhone Safari & Android Chrome)
+        if (navigator.canShare && navigator.canShare({ files: [fileToShare] })) {
+          await navigator.share({
+            files: [fileToShare],
+            title: 'عريضة دعوى قضائية',
+            text: 'عريضة شكوى جزائية - محكمة تحقيق الدورة (وكيل المشتكي: المحامي سعد فراس أميل)'
+          });
+          closeKioskModal();
+          showToast('✅ تم إرسال ملف الـ PDF بنجاح.');
+          return;
+        }
+      } catch (err) {
+        console.warn('Native file share dismissed or unsupported:', err);
+      }
+
+      // High-reliability fallback: Open WhatsApp with direct cloud link to PDF + full text
+      shareWhatsAppTextWithLink();
+    }
+
+    // Share WhatsApp with direct PDF cloud download link + formatted text
+    function shareWhatsAppTextWithLink() {
+      const editorEl = document.getElementById('docContent');
+      const text = editorEl ? editorEl.innerText.trim() : '';
+      
+      const message = `⚖️ *عريضة دعوى قضائية - موجهة للطباعة والاستنساخ*
+وكيل المشتكي: *المحامي سعد فراس أميل* (الصلاحية أ - 188572)
+
+📄 *رابط تحميل وطباعة ملف الـ PDF الرسمي مباشرة:*
+${window.location.origin + window.location.pathname.replace('petition.html', '')}petition.pdf
+
+-----------------------------------------
+📋 *نص العريضة المحدث:*
+${text}`;
+
+      const whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(message);
+      window.open(whatsappUrl, '_blank');
+      showToast('💬 جاري فتح الواتساب لإرسال الرابط والنص للكشك...');
+      closeKioskModal();
+    }
+
+    // Copy formatted text
+    function copyCleanPetitionText() {
+      const editorEl = document.getElementById('docContent');
+      if (!editorEl) return;
+      const cleanText = editorEl.innerText.trim();
+      navigator.clipboard.writeText(cleanText).then(() => {
+        showToast('📋 تم نسخ نص العريضة بالكامل للحافظة بنجاح ✅');
+        closeKioskModal();
+      }).catch(() => {
+        showToast('فشل النسخ التلقائي، يمكنك نسخه يدوياً.');
+      });
+    }
 
     // ================= Petitions Archive Engine =================
     function getArchive() {
@@ -1252,6 +1358,20 @@
       document.getElementById('archiveModal').classList.remove('open');
     }
 
+    function openKioskModal() {
+      document.getElementById('kioskModal').classList.add('open');
+    }
+
+    function closeKioskModal() {
+      document.getElementById('kioskModal').classList.remove('open');
+    }
+
+    function closeModalOnBackdrop(e, modalId) {
+      if (e.target.id === modalId) {
+        document.getElementById(modalId).classList.remove('open');
+      }
+    }
+
     function renderArchiveList() {
       const container = document.getElementById('archiveListContainer');
       const archive = getArchive();
@@ -1283,11 +1403,10 @@
       const editorEl = document.getElementById('docContent');
       if (!editorEl) return;
 
-      // Extract client and court automatically
       let defaultTitle = 'عريضة دعوى قضائية';
       const text = editorEl.innerText;
       if (text.includes('عمر رعد')) {
-        defaultTitle = 'عريضة عمر رعد خليفه - تحقيق الدورة';
+        defaultTitle = 'عريضة عمر رعد خليفه - تحقيق الدورة (نسخة معدلة)';
       } else {
         const clientMatch = text.match(/المشتكي[:\s]+([^\n\r\t]+)/);
         if (clientMatch && clientMatch[1]) {
@@ -1370,7 +1489,6 @@
           if (Array.isArray(imported)) {
             const current = getArchive();
             const merged = [...imported, ...current];
-            // Deduplicate by ID
             const seen = new Set();
             const unique = merged.filter(item => {
               if (seen.has(item.id)) return false;
@@ -1401,92 +1519,6 @@
     function escapeHtml(str) {
       if (!str) return '';
       return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
-    }
-
-    // ================= Kiosk Typist Share Engine =================
-    function openKioskModal() {
-      document.getElementById('kioskModal').classList.add('open');
-    }
-
-    function closeKioskModal() {
-      document.getElementById('kioskModal').classList.remove('open');
-    }
-
-    function closeModalOnBackdrop(e, modalId) {
-      if (e.target.id === modalId) {
-        document.getElementById(modalId).classList.remove('open');
-      }
-    }
-
-    // Share Text to WhatsApp Kiosk
-    function shareToWhatsAppKiosk() {
-      const editorEl = document.getElementById('docContent');
-      if (!editorEl) return;
-      const cleanText = editorEl.innerText.trim();
-      const whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(cleanText);
-      window.open(whatsappUrl, '_blank');
-      showToast('💬 جاري فتح الواتساب لإرسال العريضة للكشك...');
-      closeKioskModal();
-    }
-
-    // Copy formatted text
-    function copyCleanPetitionText() {
-      const editorEl = document.getElementById('docContent');
-      if (!editorEl) return;
-      const cleanText = editorEl.innerText.trim();
-      navigator.clipboard.writeText(cleanText).then(() => {
-        showToast('📋 تم نسخ نص العريضة بالكامل للحافظة بنجاح ✅');
-        closeKioskModal();
-      }).catch(() => {
-        showToast('فشل النسخ التلقائي، يمكنك نسخه يدوياً.');
-      });
-    }
-
-    // Download Client-side PDF directly to phone downloads
-    async function downloadClientPdf() {
-      const paperEl = document.getElementById('legalPaper');
-      if (!paperEl) return;
-
-      showToast('⏳ جاري تجهيز وتحميل ملف الـ PDF بهاتفك...');
-      
-      const opt = {
-        margin:       [10, 16, 10, 16],
-        filename:     'عريضة_قضائية_المحامي_سعد_اميل.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      try {
-        await html2pdf().set(opt).from(paperEl).save();
-        showToast('📥 تم حفظ ملف الـ PDF بنجاح في هاتفك ✅');
-        closeKioskModal();
-      } catch (err) {
-        console.error(err);
-        window.print();
-      }
-    }
-
-    // Native Mobile Share API
-    async function nativeMobileShare() {
-      const editorEl = document.getElementById('docContent');
-      if (!editorEl) return;
-
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: 'عريضة دعوى قضائية - المحامي سعد فراس أميل',
-            text: editorEl.innerText.trim(),
-            url: window.location.href
-          });
-          showToast('📲 تم فتح قائمة المشاركة بنجاح.');
-          closeKioskModal();
-        } catch (e) {
-          console.log('Share dismissed');
-        }
-      } else {
-        copyCleanPetitionText();
-      }
     }
 
     // ================= Standard Editing & Formatting =================
