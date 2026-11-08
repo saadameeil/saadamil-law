@@ -126,6 +126,58 @@
       font-weight: 600;
     }
 
+    .header-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-app-refresh {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(212, 175, 55, 0.28));
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      border-radius: 8px;
+      color: #fde68a;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
+    }
+
+    .btn-app-refresh:hover {
+      background: rgba(212, 175, 55, 0.38);
+      border-color: #fcd34d;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-app-refresh:active {
+      transform: scale(0.94);
+    }
+
+    .refresh-spinner {
+      display: inline-block;
+      font-size: 15px;
+      line-height: 1;
+      transition: transform 0.6s ease;
+    }
+
+    .btn-app-refresh.spinning .refresh-spinner {
+      animation: spinRefresh 0.7s linear infinite;
+    }
+
+    @keyframes spinRefresh {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
     .header-actions {
       display: flex;
       align-items: center;
@@ -852,6 +904,20 @@
         display: none;
       }
 
+      .brand-text h1 {
+        font-size: 14px;
+        gap: 4px;
+      }
+
+      .brand-text p {
+        font-size: 10.5px;
+      }
+
+      .btn-app-refresh {
+        padding: 5px 9px;
+        font-size: 12px;
+      }
+
       .studio-wrapper {
         padding: 6px 4px 85px;
       }
@@ -990,16 +1056,25 @@
           <p>محاكم استئناف بغداد الاتحادية — هوية: 188572 (الصلاحية أ)</p>
         </div>
       </div>
-      <div class="header-actions">
-        <button class="btn btn-gold" onclick="openPrintPreviewModal()">
-          <span>👁️ معاينة الطباعة (A4)</span>
+      <div class="header-tools">
+        <!-- Always visible refresh button for PWA / Mobile / Desktop -->
+        <button type="button" class="btn-app-refresh" id="btnAppRefresh" onclick="refreshAppPage()" title="تحديث الصفحة وجلب أحدث تعديل">
+          <span class="refresh-spinner" id="refreshSpinner">🔄</span>
+          <span class="refresh-label">تحديث</span>
         </button>
-        <button class="btn btn-green" onclick="openKioskModal()">
-          <span>📤 إرسال وطباعة</span>
-        </button>
-        <button class="btn btn-dark" onclick="openArchiveModal()">
-          <span>📁 الأرشيف (<span id="archiveCountBadge">0</span>)</span>
-        </button>
+
+        <!-- Desktop Action Buttons -->
+        <div class="header-actions">
+          <button class="btn btn-gold" onclick="openPrintPreviewModal()">
+            <span>👁️ معاينة الطباعة (A4)</span>
+          </button>
+          <button class="btn btn-green" onclick="openKioskModal()">
+            <span>📤 إرسال وطباعة</span>
+          </button>
+          <button class="btn btn-dark" onclick="openArchiveModal()">
+            <span>📁 الأرشيف (<span id="archiveCountBadge">0</span>)</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -1013,6 +1088,10 @@
         <span>⚖️</span>
         <span>عريضتك الحالية (قيد التحرير)</span>
         <span id="saveStatusDot" style="color:#34d399; font-size:10px; margin-right:4px;">● محفوظة تلقائياً</span>
+      </div>
+      <div class="case-pill" onclick="refreshAppPage()" style="background: rgba(56, 189, 248, 0.16); border-color: rgba(56, 189, 248, 0.45); color: #7dd3fc;">
+        <span>🔄</span>
+        <span>تحديث الصفحة وجلب آخر نسخة</span>
       </div>
       <div class="case-pill pill-archive" onclick="openPrintPreviewModal()" style="background: rgba(212, 175, 55, 0.18); border-color: rgba(212, 175, 55, 0.5); color: #fde68a;">
         <span>👁️</span>
@@ -2088,6 +2167,33 @@ ${clean}
       setTimeout(() => {
         toast.classList.remove('show');
       }, 3000);
+    }
+
+    // ================= Instant App Refresh for Mobile PWA / Standalone =================
+    function refreshAppPage() {
+      const btn = document.getElementById('btnAppRefresh');
+      if (btn) btn.classList.add('spinning');
+      
+      // Auto-save current document before refreshing so no draft is lost
+      try {
+        if (typeof savePetition === 'function') {
+          savePetition(false);
+        }
+      } catch (e) {
+        console.warn('Auto-save error before refresh:', e);
+      }
+
+      showToast('🔄 جارٍ تحديث الصفحة وجلب أحدث نسخة...');
+
+      setTimeout(() => {
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set('v', Date.now());
+          window.location.replace(url.toString());
+        } catch (err) {
+          window.location.reload();
+        }
+      }, 350);
     }
   </script>
 </body>
