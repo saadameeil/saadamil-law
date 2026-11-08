@@ -8,7 +8,7 @@
   <!-- Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700;800&family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
   
   <!-- Modern Document Engines (Docx & FileSaver) -->
   <script src="https://unpkg.com/docx@9/dist/index.iife.js"></script>
@@ -222,55 +222,131 @@
     .studio-container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 16px;
+      padding: 12px 16px;
       width: 100%;
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
 
-    /* Editor Toolbar */
+    /* ================= Comprehensive Advanced Editor Toolbar ================= */
     .editor-toolbar {
       background: #0f172a;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 8px 12px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .toolbar-row {
       display: flex;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
+      overflow-x: auto;
+      padding-bottom: 2px;
     }
 
-    .tool-btn {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #f8fafc;
-      padding: 6px 11px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
+    .toolbar-group {
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      background: #1e293b;
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+    }
+
+    .group-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #94a3b8;
+      margin-left: 4px;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .tool-btn {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #f8fafc;
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
       touch-action: manipulation;
+      transition: all 0.15s ease;
+      white-space: nowrap;
     }
 
     .tool-btn:hover {
       background: #334155;
+      border-color: #64748b;
+    }
+
+    .tool-btn:active {
+      transform: scale(0.96);
+    }
+
+    .tool-select {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #f8fafc;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .tool-select:focus {
+      border-color: var(--gold-primary);
     }
 
     .tool-red {
-      color: #ef4444;
-      border-color: rgba(239, 68, 68, 0.4);
-      background: rgba(239, 68, 68, 0.1);
+      color: #ffffff !important;
+      background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+      border-color: #f87171 !important;
+      font-weight: 800;
+    }
+
+    .tool-black {
+      color: #f8fafc !important;
+      background: #020617 !important;
+      border-color: #475569 !important;
+      font-weight: 800;
     }
 
     .tool-gold {
+      color: #0b1120 !important;
+      background: linear-gradient(135deg, #fcd34d, #d4af37) !important;
+      border-color: #fef08a !important;
+      font-weight: 800;
+    }
+
+    .val-chip {
+      background: #090e1a;
       color: #fde68a;
-      border-color: rgba(212, 175, 55, 0.4);
-      background: rgba(212, 175, 55, 0.1);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      font-family: monospace;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      min-width: 38px;
+      text-align: center;
     }
 
     /* ================= A4 Physical Sheet Viewport ================= */
@@ -305,7 +381,8 @@
       font-family: 'Cairo', 'Noto Naskh Arabic', sans-serif;
       font-size: 13.5px;
       line-height: 1.52;
-      transition: all 0.2s ease;
+      word-spacing: 0px;
+      transition: font-size 0.15s ease, line-height 0.15s ease, word-spacing 0.15s ease;
     }
 
     .a4-sheet-editable {
@@ -327,7 +404,7 @@
     .parties-block {
       margin-bottom: 6px;
       font-size: 13.5px;
-      line-height: 1.52;
+      line-height: inherit;
     }
 
     .parties-row {
@@ -356,14 +433,14 @@
 
     .intro-text {
       font-size: 13.5px;
-      line-height: 1.52;
+      line-height: inherit;
       margin-bottom: 6px;
       text-align: justify;
     }
 
     .crime-item {
       font-size: 13.1px;
-      line-height: 1.48;
+      line-height: inherit;
       margin-bottom: 6px;
       text-align: justify;
     }
@@ -381,7 +458,7 @@
     .witness-box {
       margin: 6px 0;
       font-size: 13.2px;
-      line-height: 1.50;
+      line-height: inherit;
       border: none !important;
       padding: 2px 0;
     }
@@ -406,7 +483,7 @@
 
     .req-item {
       font-size: 13.0px;
-      line-height: 1.47;
+      line-height: inherit;
       margin-bottom: 2px;
       text-align: justify;
     }
@@ -502,6 +579,12 @@
       }
       .studio-container {
         padding: 8px 6px 75px;
+      }
+      .editor-toolbar {
+        padding: 8px;
+      }
+      .toolbar-group {
+        padding: 3px 6px;
       }
       .stage-wrapper {
         padding: 14px 4px 60px;
@@ -617,7 +700,7 @@
         📄 الورقة الرسمية المطبوعة (A4)
       </button>
       <button class="tab-btn" id="tabEditorBtn" onclick="switchViewMode('editor')">
-        ✍️ تعديل المحتوى والنصوص
+        ✍️ أدوات التحرير والتنسيق المتقدم
       </button>
     </div>
 
@@ -625,11 +708,11 @@
       <span class="page-status-badge" id="pageStatusBadge">
         ✅ صفحة A4 واحدة كاملة ومثالية
       </span>
-      <button class="tool-btn" onclick="adjustDocFontSize(0.5)" title="تكبير الخط">
-        ➕ تكبير
+      <button class="tool-btn" onclick="adjustDocFontSize(0.5)" title="تكبير الخط العام للورقة">
+        ➕ تكبير العام
       </button>
-      <button class="tool-btn" onclick="adjustDocFontSize(-0.5)" title="تصغير الخط">
-        ➖ تصغير
+      <button class="tool-btn" onclick="adjustDocFontSize(-0.5)" title="تصغير الخط العام للورقة">
+        ➖ تصغير العام
       </button>
     </div>
   </div>
@@ -637,29 +720,132 @@
   <!-- ================= Workspace Layout ================= -->
   <main class="studio-container">
 
-    <!-- Secondary Formatting Toolbar (Visible in Edit Mode) -->
-    <div class="editor-toolbar no-print" id="editorToolbar" style="display: none;">
-      <button class="tool-btn tool-red" onclick="applyHighlightColor('#dc2626')">
-        🔴 تلوين أحمر
-      </button>
-      <button class="tool-btn" onclick="applyHighlightColor('#0f172a')">
-        ⚫ إعادة للأسود
-      </button>
-      <button class="tool-btn" onclick="execFormat('bold')">
-        <b>B عريض</b>
-      </button>
-      <button class="tool-btn" onclick="execFormat('underline')">
-        <u>U تسطير</u>
-      </button>
-      <button class="tool-btn tool-gold" onclick="cycleFontFamily()">
-        🖋️ <span id="fontFamilyLabel">الخط: Cairo</span>
-      </button>
-      <button class="tool-btn" onclick="loadAuditedOmarPetition()" title="استعادة النسخة القضائية المدققة (الموصى بها)">
-        ⚖️ النسخة المدققة قانونياً
-      </button>
-      <button class="tool-btn" onclick="loadOriginalDraftOmarPetition()" title="استعادة النسخة الأصلية الأولى">
-        📋 النسخة الأولى
-      </button>
+    <!-- Advanced Typing & Formatting Toolbar -->
+    <div class="editor-toolbar no-print" id="editorToolbar">
+      
+      <!-- Row 1: Font Family, Selection Font Size, Red/Black Highlights, Basic Styles -->
+      <div class="toolbar-row">
+        
+        <!-- Font Family Selector -->
+        <div class="toolbar-group">
+          <span class="group-label">🖋️ نوع الخط:</span>
+          <select class="tool-select" id="fontFamilySelect" onchange="changeDocFontFamily(this.value)">
+            <option value="'Cairo', sans-serif">Cairo (عصري واضح)</option>
+            <option value="'Noto Naskh Arabic', serif">Noto Naskh (أصولي للمحاكم)</option>
+            <option value="'Amiri', serif">Amiri (رسمي للمذكرات)</option>
+            <option value="'Scheherazade New', serif">Scheherazade (كلاسيكي قضائي)</option>
+            <option value="'Almarai', sans-serif">Almarai (مريح للقراءة)</option>
+          </select>
+        </div>
+
+        <!-- Selection-Level Word Resize -->
+        <div class="toolbar-group">
+          <span class="group-label">🔍 حجم التحديد:</span>
+          <button class="tool-btn tool-gold" onclick="resizeSelectedText(1.5)" title="تكبير الكلمة أو العبارة المحددة">
+            <b>A+</b> تكبير الكلمة
+          </button>
+          <button class="tool-btn" onclick="resizeSelectedText(-1.5)" title="تصغير الكلمة أو العبارة المحددة">
+            <b>A-</b> تصغير الكلمة
+          </button>
+        </div>
+
+        <!-- Legal Red & Black Highlight -->
+        <div class="toolbar-group">
+          <span class="group-label">🎨 تلوين الكلمة:</span>
+          <button class="tool-btn tool-red" onclick="applyColorToSelection('#dc2626')" title="تلوين الكلمة أو العبارة المحددة بالأحمر العريض">
+            🔴 أحمر عريض
+          </button>
+          <button class="tool-btn tool-black" onclick="applyColorToSelection('#0f172a')" title="إعادة الكلمة المحددة للأسود الطبيعي">
+            ⚫ أسود
+          </button>
+        </div>
+
+        <!-- Bold, Italic, Underline, Clear -->
+        <div class="toolbar-group">
+          <span class="group-label">✍️ الأسلوب:</span>
+          <button class="tool-btn" onclick="execFormat('bold')" title="عريض (Ctrl+B)">
+            <b>B</b>
+          </button>
+          <button class="tool-btn" onclick="execFormat('italic')" title="مائل (Ctrl+I)">
+            <i>I</i>
+          </button>
+          <button class="tool-btn" onclick="execFormat('underline')" title="تسطير (Ctrl+U)">
+            <u>U</u>
+          </button>
+          <button class="tool-btn" onclick="execFormat('justifyRight')" title="محاذاة لليمين">
+            ➡️ يمين
+          </button>
+          <button class="tool-btn" onclick="execFormat('justifyCenter')" title="محاذاة للوسط">
+            ↔️ وسط
+          </button>
+          <button class="tool-btn" onclick="execFormat('justifyFull')" title="ضبط المحاذاة (كشيدة)">
+            📄 ضبط
+          </button>
+          <button class="tool-btn" onclick="execFormat('removeFormat')" title="مسح التنسيق عن التحديد">
+            🧹 تنظيف
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Row 2: Line Height, Word Spacing, Version Switcher -->
+      <div class="toolbar-row">
+
+        <!-- Line Spacing (Line Height) -->
+        <div class="toolbar-group">
+          <span class="group-label">↕️ تباعد الأسطر:</span>
+          <button class="tool-btn" onclick="adjustLineHeight(-0.05)" title="تقريب الأسطر (لحشر النص في A4)">
+            ➖ ضغط
+          </button>
+          <span class="val-chip" id="lineHeightLabel">1.52</span>
+          <button class="tool-btn" onclick="adjustLineHeight(0.05)" title="توسيع الأسطر">
+            ➕ توسيع
+          </button>
+          <button class="tool-btn" onclick="setLineHeightDirect(1.36)" title="مضغوط جداً">
+            1.36
+          </button>
+          <button class="tool-btn" onclick="setLineHeightDirect(1.52)" title="أصولي مثالي">
+            1.52
+          </button>
+          <button class="tool-btn" onclick="setLineHeightDirect(1.70)" title="متباعد">
+            1.70
+          </button>
+        </div>
+
+        <!-- Word Spacing -->
+        <div class="toolbar-group">
+          <span class="group-label">↔️ تباعد الكلمات:</span>
+          <button class="tool-btn" onclick="adjustWordSpacing(-0.5)" title="تقريب الكلمات لضغط الصفحة">
+            ➖ تقارب
+          </button>
+          <span class="val-chip" id="wordSpacingLabel">0px</span>
+          <button class="tool-btn" onclick="adjustWordSpacing(0.5)" title="تباعد الكلمات">
+            ➕ تباعد
+          </button>
+          <button class="tool-btn" onclick="setWordSpacingDirect(-0.5)" title="تقارب طفيف">
+            -0.5px
+          </button>
+          <button class="tool-btn" onclick="setWordSpacingDirect(0)" title="عادي">
+            0px
+          </button>
+          <button class="tool-btn" onclick="setWordSpacingDirect(1)" title="متباعد">
+            +1px
+          </button>
+        </div>
+
+        <!-- Legal Version Switcher -->
+        <div class="toolbar-group">
+          <span class="group-label">⚖️ النسخة:</span>
+          <button class="tool-btn tool-gold" onclick="loadAuditedOmarPetition()" title="استعادة النسخة القضائية المدققة (الموصى بها)">
+            ⚖️ المدققة (430/431)
+          </button>
+          <button class="tool-btn" onclick="loadOriginalDraftOmarPetition()" title="استعادة النسخة الأصلية الأولى">
+            📋 المسودة الأولى
+          </button>
+        </div>
+
+      </div>
+
     </div>
 
     <!-- The Stage: Holding Physical A4 Sheet -->
@@ -706,14 +892,11 @@
   <!-- ================= Core JavaScript Engine ================= -->
   <script>
     // Storage & Engine Keys
-    const ACTIVE_DRAFT_KEY = 'saadamil_paged_petition_active_v2';
+    const ACTIVE_DRAFT_KEY = 'saadamil_paged_petition_active_v3';
     let baseFontSize = 13.5;
-    let currentFontIdx = 0;
-    const FONTS = [
-      { name: 'Cairo (عصري)', family: "'Cairo', sans-serif" },
-      { name: 'Noto Naskh (أصولي)', family: "'Noto Naskh Arabic', serif" },
-      { name: 'Amiri (رسمي)', family: "'Amiri', serif" }
-    ];
+    let currentLineHeight = 1.52;
+    let currentWordSpacing = 0;
+    let currentFontFamily = "'Cairo', sans-serif";
 
     // Master Audited Legal Omar Petition HTML (Image 2 - 100% Law-Grounded)
     const MASTER_AUDITED_HTML = `  <div class="court-header">
@@ -879,6 +1062,16 @@
       const saved = localStorage.getItem(ACTIVE_DRAFT_KEY);
       editorEl.innerHTML = saved && saved.trim().length > 100 ? saved : MASTER_AUDITED_HTML;
 
+      // Restore saved typography preferences
+      const savedFont = localStorage.getItem('saadamil_font_family');
+      if (savedFont) changeDocFontFamily(savedFont, false);
+
+      const savedLH = localStorage.getItem('saadamil_line_height');
+      if (savedLH) setLineHeightDirect(parseFloat(savedLH), false);
+
+      const savedWS = localStorage.getItem('saadamil_word_spacing');
+      if (savedWS) setWordSpacingDirect(parseFloat(savedWS), false);
+
       editorEl.addEventListener('input', () => {
         saveDocumentLive();
         checkPageBudget();
@@ -951,11 +1144,47 @@
         badge.style.color = '#34d399';
         badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
       } else {
-        badge.innerHTML = '📄 تجاوزت صفحة واحدة (يرجى الضغط على تصغير)';
+        badge.innerHTML = '⚠️ تجاوزت A4 (اضغط ➖ تقارب الكلمات أو ضغط الأسطر)';
         badge.style.background = 'rgba(239, 68, 68, 0.15)';
         badge.style.color = '#f87171';
         badge.style.borderColor = 'rgba(239, 68, 68, 0.4)';
       }
+    }
+
+    // ================= Typography: Word/Selection-Level Resizing =================
+    function resizeSelectedText(delta) {
+      const selection = window.getSelection();
+      if (!selection.rangeCount || selection.isCollapsed) {
+        // If no specific text is highlighted, scale overall document font
+        adjustDocFontSize(delta > 0 ? 0.5 : -0.5);
+        return;
+      }
+
+      const range = selection.getRangeAt(0);
+      let parent = selection.anchorNode.parentElement;
+
+      if (parent && parent.id !== 'docContent' && (parent.tagName === 'SPAN' || parent.tagName === 'FONT')) {
+        let curSize = parseFloat(window.getComputedStyle(parent).fontSize) || 13.5;
+        let newSize = Math.max(8, Math.min(32, Math.round((curSize + delta) * 10) / 10));
+        parent.style.fontSize = newSize + 'px';
+      } else {
+        const span = document.createElement('span');
+        let curSize = parseFloat(window.getComputedStyle(parent || document.getElementById('docContent')).fontSize) || 13.5;
+        let newSize = Math.max(8, Math.min(32, Math.round((curSize + delta) * 10) / 10));
+        span.style.fontSize = newSize + 'px';
+        span.appendChild(range.extractContents());
+        range.insertNode(span);
+
+        // Keep selection
+        selection.removeAllRanges();
+        const newRange = document.createRange();
+        newRange.selectNodeContents(span);
+        selection.addRange(newRange);
+      }
+
+      saveDocumentLive();
+      checkPageBudget();
+      showToast(delta > 0 ? '➕ تم تكبير الكلمة/المقطع المحدد' : '➖ تم تصغير الكلمة/المقطع المحدد');
     }
 
     // Font Size Scaler across all elements
@@ -975,33 +1204,97 @@
 
       saveDocumentLive();
       checkPageBudget();
-      showToast((step > 0 ? '➕ تكبير الخط: ' : '➖ تصغير الخط: ') + baseFontSize + 'px');
+      showToast((step > 0 ? '➕ تكبير الخط العام: ' : '➖ تصغير الخط العام: ') + baseFontSize + 'px');
     }
 
-    // Highlight text in red
-    function applyHighlightColor(color) {
-      document.execCommand('foreColor', false, color);
+    // ================= Word/Selection Color Highlighter =================
+    function applyColorToSelection(color) {
+      const selection = window.getSelection();
+      if (!selection.rangeCount || selection.isCollapsed) {
+        showToast('⚠️ يرجى تظليل/تحديد الكلمة أولاً لتلوينها!');
+        return;
+      }
+
+      const range = selection.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.color = color;
+      if (color === '#dc2626') {
+        span.style.fontWeight = '800';
+      } else {
+        span.style.fontWeight = 'normal';
+      }
+      span.appendChild(range.extractContents());
+      range.insertNode(span);
+
       saveDocumentLive();
-      showToast(color === '#dc2626' ? '🔴 تم تلوين النص المحدد بالأحمر' : '⚫ إعادة النص للأسود');
+      showToast(color === '#dc2626' ? '🔴 تم تلوين النص المحدد بالأحمر العريض' : '⚫ إعادة النص المحدد للأسود');
     }
 
-    function execFormat(cmd) {
-      document.execCommand(cmd, false, null);
+    function execFormat(cmd, value = null) {
+      document.execCommand(cmd, false, value);
       saveDocumentLive();
+      checkPageBudget();
     }
 
-    // Cycle Arabic Font
-    function cycleFontFamily() {
-      currentFontIdx = (currentFontIdx + 1) % FONTS.length;
-      const font = FONTS[currentFontIdx];
+    // ================= Font Family Control =================
+    function changeDocFontFamily(fontFamily, showNotify = true) {
+      currentFontFamily = fontFamily;
       const sheet = document.getElementById('a4SheetPage1');
-      if (sheet) sheet.style.fontFamily = font.family;
-      const lbl = document.getElementById('fontFamilyLabel');
-      if (lbl) lbl.innerText = 'الخط: ' + font.name.split(' ')[0];
-      showToast('🖋️ تم اعتماد ' + font.name);
+      if (sheet) sheet.style.fontFamily = fontFamily;
+      
+      const sel = document.getElementById('fontFamilySelect');
+      if (sel) sel.value = fontFamily;
+
+      localStorage.setItem('saadamil_font_family', fontFamily);
+      saveDocumentLive();
+      checkPageBudget();
+      if (showNotify) {
+        const fontDisplayName = fontFamily.split(',')[0].replace(/'/g, '');
+        showToast('🖋️ تم اعتماد خط: ' + fontDisplayName);
+      }
     }
 
-    // Switch between A4 Sheet View and Editor Toolbar
+    // ================= Line Spacing (Line Height) =================
+    function adjustLineHeight(delta) {
+      currentLineHeight = Math.max(1.15, Math.min(2.4, Math.round((currentLineHeight + delta) * 100) / 100));
+      setLineHeightDirect(currentLineHeight);
+    }
+
+    function setLineHeightDirect(val, showNotify = true) {
+      currentLineHeight = val;
+      const sheet = document.getElementById('a4SheetPage1');
+      if (sheet) sheet.style.lineHeight = currentLineHeight;
+
+      const lbl = document.getElementById('lineHeightLabel');
+      if (lbl) lbl.innerText = currentLineHeight.toFixed(2);
+
+      localStorage.setItem('saadamil_line_height', currentLineHeight);
+      saveDocumentLive();
+      checkPageBudget();
+      if (showNotify) showToast('↕️ تباعد الأسطر: ' + currentLineHeight.toFixed(2));
+    }
+
+    // ================= Word Spacing (Inter-word Gap) =================
+    function adjustWordSpacing(delta) {
+      currentWordSpacing = Math.max(-2, Math.min(6, Math.round((currentWordSpacing + delta) * 10) / 10));
+      setWordSpacingDirect(currentWordSpacing);
+    }
+
+    function setWordSpacingDirect(val, showNotify = true) {
+      currentWordSpacing = val;
+      const sheet = document.getElementById('a4SheetPage1');
+      if (sheet) sheet.style.wordSpacing = currentWordSpacing + 'px';
+
+      const lbl = document.getElementById('wordSpacingLabel');
+      if (lbl) lbl.innerText = currentWordSpacing === 0 ? '0px' : (currentWordSpacing > 0 ? `+${currentWordSpacing}px` : `${currentWordSpacing}px`);
+
+      localStorage.setItem('saadamil_word_spacing', currentWordSpacing);
+      saveDocumentLive();
+      checkPageBudget();
+      if (showNotify) showToast('↔️ تباعد الكلمات: ' + currentWordSpacing + 'px');
+    }
+
+    // ================= Tabs / View Modes =================
     function switchViewMode(mode) {
       const sheetBtn = document.getElementById('tabSheetBtn');
       const editBtn = document.getElementById('tabEditorBtn');
@@ -1016,7 +1309,7 @@
         editBtn.classList.add('active');
         sheetBtn.classList.remove('active');
         if (toolbar) toolbar.style.display = 'flex';
-        showToast('✍️ وضع تعديل النصوص والمحتوى');
+        showToast('✍️ وضع تعديل وتنسيق النصوص المتقدم');
       }
     }
 
@@ -1151,6 +1444,9 @@
     // Force App Refresh
     function forceAppRefresh() {
       localStorage.removeItem(ACTIVE_DRAFT_KEY);
+      localStorage.removeItem('saadamil_line_height');
+      localStorage.removeItem('saadamil_word_spacing');
+      localStorage.removeItem('saadamil_font_family');
       window.location.reload(true);
     }
 
