@@ -864,14 +864,14 @@
         </div>
       </div>
       <div class="header-actions">
+        <button class="btn btn-blue" onclick="window.print()">
+          <span>⚡ حفظ PDF / طباعة A4</span>
+        </button>
         <button class="btn btn-green" onclick="openKioskModal()">
-          <span>📤 إرسال لكشك الكاتب / واتساب</span>
+          <span>📤 إرسال للكشك / واتساب</span>
         </button>
         <button class="btn btn-gold" onclick="openArchiveModal()">
           <span>📁 أرشيف العرائض (<span id="archiveCountBadge">0</span>)</span>
-        </button>
-        <button class="btn btn-blue" onclick="window.print()">
-          <span>🖨️ طباعة A4</span>
         </button>
       </div>
     </div>
@@ -886,17 +886,26 @@
         <span>📁</span>
         <span>أرشيف العرائض (<span id="archiveCountBadge2">0</span>)</span>
       </div>
-      <div class="case-pill active" id="chipOmar" onclick="loadOmarPetition()">
+      <div class="case-pill active" id="chipOmar" onclick="showToast('عريضتك الحالية مفتوحة ونشطة وقيد التحرير.')">
         <span>⚖️</span>
-        <span>عريضة عمر رعد خليفه (تحقيق الدورة) ⭐</span>
+        <span>عريضتك الحالية (قيد التحرير)</span>
+        <span id="saveStatusDot" style="color:#34d399; font-size:10px; margin-right:4px;">● محفوظة</span>
+      </div>
+      <div class="case-pill" onclick="saveToArchivePrompt()">
+        <span>💾</span>
+        <span>حفظ نسخة في الأرشيف</span>
+      </div>
+      <div class="case-pill" onclick="downloadLiveWordDoc()">
+        <span>📄</span>
+        <span>تنزيل مستند Word (.doc)</span>
+      </div>
+      <div class="case-pill" onclick="resetToOmarDefaultTemplate()" style="opacity: 0.85;">
+        <span>🔄</span>
+        <span>استرجاع الصياغة الأصلية</span>
       </div>
       <div class="case-pill" onclick="createNewPetition()">
         <span>➕</span>
         <span>عريضة جديدة فارغة</span>
-      </div>
-      <div class="case-pill" onclick="saveToArchivePrompt()">
-        <span>💾</span>
-        <span>حفظ مسودة في الأرشيف</span>
       </div>
     </div>
 
@@ -908,43 +917,46 @@
         <div class="toolbar-left">
           
           <!-- Highlighting & Formatting (keeps text selection intact) -->
-          <button type="button" class="tool-btn btn-red-tool" onmousedown="event.preventDefault()" onclick="applyHighlightColor('#dc2626')" title="تلوين النص المحدد بالأحمر الملوكي لجذب نظر المحكمة">
+          <button type="button" class="tool-btn btn-red-tool" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="applyHighlightColor('#dc2626')" title="تلوين النص المحدد أو الفقرة بالأحمر لجذب نظر المحكمة">
             🔴 أحمر
           </button>
-          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="applyHighlightColor('#0f172a')" title="إعادة النص للون الأسود الرسمي">
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="applyHighlightColor('#0f172a')" title="إعادة النص أو الفقرة للون الأسود">
             ⚫ أسود
           </button>
-          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="execFormat('bold')" title="خط عريض">
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="execFormat('bold')" title="خط عريض">
             <b>B عريض</b>
           </button>
-          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="execFormat('underline')" title="تسطير">
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="execFormat('underline')" title="تسطير">
             <u>U تسطير</u>
           </button>
 
           <!-- Smart Font Size: Selection if text selected, or Entire Document if no selection -->
-          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="adjustFontSize(1)" title="تكبير الخط (للنص المحدد، أو لكامل الورقة إذا لم تحدد نصاً)">
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="adjustFontSize(1)" title="تكبير الخط (للنص المحدد، أو لكامل الورقة إذا لم تحدد نصاً)">
             ➕ تكبير
           </button>
-          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" onclick="adjustFontSize(-1)" title="تصغير الخط (للنص المحدد، أو لكامل الورقة إذا لم تحدد نصاً)">
+          <button type="button" class="tool-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="adjustFontSize(-1)" title="تصغير الخط (للنص المحدد، أو لكامل الورقة إذا لم تحدد نصاً)">
             ➖ تصغير
           </button>
 
           <!-- Font Chooser -->
-          <button type="button" class="tool-btn btn-font-switch" onmousedown="event.preventDefault()" onclick="toggleDocFont()" title="تغيير نوع الخط العربي">
+          <button type="button" class="tool-btn btn-font-switch" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="toggleDocFont()" title="تغيير نوع الخط العربي">
             <span id="fontLabel">🖋️ الخط: عصري (Cairo)</span>
           </button>
 
         </div>
 
         <div class="toolbar-right">
+          <button type="button" class="tool-btn" onclick="window.print()" style="background:#2563eb; color:#fff; border-color:#3b82f6;">
+            ⚡ حفظ PDF / طباعة A4
+          </button>
           <button type="button" class="tool-btn" onclick="openKioskModal()" style="background:#059669; color:#fff; border-color:#10b981;">
             📤 إرسال للكشك / واتساب
           </button>
+          <button type="button" class="tool-btn" onclick="downloadLiveWordDoc()" style="background:#0284c7; color:#fff; border-color:#38bdf8;">
+            📄 تنزيل Word (.doc)
+          </button>
           <button type="button" class="tool-btn" onclick="savePetition()" style="background:#d4af37; color:#0b1120; border-color:#fcd34d;">
             💾 حفظ وتأمين
-          </button>
-          <button type="button" class="tool-btn" onclick="window.print()" style="background:#2563eb; color:#fff; border-color:#3b82f6;">
-            🖨️ طباعة A4
           </button>
         </div>
 
@@ -968,25 +980,29 @@
 
   <!-- ================= Mobile Fixed Bottom Bar ================= -->
   <nav class="mobile-bottom-bar no-print">
-    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="applyHighlightColor('#dc2626')">
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="applyHighlightColor('#dc2626')">
       <span style="font-size:16px;">🔴</span>
       <span style="color:#ef4444; font-weight:800;">أحمر</span>
     </button>
-    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="applyHighlightColor('#0f172a')">
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="applyHighlightColor('#0f172a')">
       <span style="font-size:16px;">⚫</span>
       <span>أسود</span>
     </button>
-    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="execFormat('bold')">
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="execFormat('bold')">
       <span style="font-size:16px; font-weight:900;">B</span>
       <span>عريض</span>
     </button>
-    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="adjustFontSize(1)">
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="adjustFontSize(1)">
       <span style="font-size:16px; font-weight:900;">➕</span>
       <span>تكبير</span>
     </button>
-    <button class="m-nav-btn" onmousedown="event.preventDefault()" onclick="adjustFontSize(-1)">
+    <button class="m-nav-btn" onmousedown="event.preventDefault()" ontouchstart="event.preventDefault()" onclick="adjustFontSize(-1)">
       <span style="font-size:16px; font-weight:900;">➖</span>
       <span>تصغير</span>
+    </button>
+    <button class="m-nav-btn" onclick="window.print()" style="color:#38bdf8;">
+      <span style="font-size:16px; font-weight:900;">⚡</span>
+      <span style="font-weight:800;">حفظ PDF</span>
     </button>
     <button class="m-nav-btn" onclick="openKioskModal()" style="color:#34d399;">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
@@ -995,14 +1011,6 @@
     <button class="m-nav-btn" onclick="openArchiveModal()" style="color:#fde68a;">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
       <span>الأرشيف</span>
-    </button>
-    <button class="m-nav-btn" onclick="savePetition()">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-      <span>حفظ</span>
-    </button>
-    <button class="m-nav-btn" onclick="window.print()" style="color:#38bdf8;">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-      <span>طباعة</span>
     </button>
   </nav>
 
@@ -1044,63 +1052,63 @@
   <div class="modal-backdrop" id="kioskModal" onclick="closeModalOnBackdrop(event, 'kioskModal')">
     <div class="modal-box">
       <div class="modal-header">
-        <h3><span>📤</span> <span>إرسال العريضة لكشك الكاتب / الاستنساخ</span></h3>
+        <h3><span>📤</span> <span>إرسال العريضة المعدلة لكشك الكاتب / الاستنساخ</span></h3>
         <button class="modal-close-btn" onclick="closeKioskModal()">✕</button>
       </div>
 
       <div class="kiosk-grid">
         
-        <!-- Action 1: Direct Share PDF to WhatsApp -->
-        <div class="kiosk-opt-card kiosk-opt-primary" onclick="sharePdfDirectToWhatsApp()">
+        <!-- Action 1: Live WhatsApp Formatted Text with all edits and order -->
+        <div class="kiosk-opt-card kiosk-opt-primary" onclick="shareLivePetitionToWhatsApp()">
           <div class="kiosk-icon" style="background: rgba(16, 185, 129, 0.25); color: #34d399;">
             🟢
           </div>
           <div class="kiosk-text">
             <h4>
-              <span>إرسال ملف PDF عبر واتساب فوراً</span>
-              <span class="badge-star">الأسرع والموصى به ⭐</span>
+              <span>إرسال نص العريضة المعدل بالكامل لواتساب الكشك</span>
+              <span class="badge-star">الأسرع والأضمن ⭐</span>
             </h4>
-            <p>يفتح لك تطبيق الواتساب لاختيار كشك الكاتب ويرسل له ملف الـ PDF الرسمي فوراً لطباعته.</p>
+            <p>يرسل رسالة واتساب منسقة بكافة تعديلاتك، ترتيب الفقرات، وتفاصيل الشهود والوقائع لطباعتها فوراً.</p>
           </div>
         </div>
 
-        <!-- Action 2: Direct Native PDF Download & View -->
-        <a href="petition.pdf" target="_blank" download="عريضة_عمر_رعد_خليفه_تحقيق_الدورة.pdf" class="kiosk-opt-card">
+        <!-- Action 2: Direct Word Document (.doc) Download with Live Edits & Colors -->
+        <div class="kiosk-opt-card" onclick="downloadLiveWordDoc()">
           <div class="kiosk-icon" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">
-            📥
+            📄
           </div>
           <div class="kiosk-text">
-            <h4>فتح وتنزيل ملف PDF في هاتفك (A4)</h4>
-            <p>يفتح وينزل ملف الـ PDF الرسمي مباشرة في هاتفك (مجلد التنزيلات / الملفات) لحفظه أو طباعته.</p>
-          </div>
-        </a>
-
-        <!-- Action 3: WhatsApp Formatted Text with Direct PDF Link -->
-        <div class="kiosk-opt-card" onclick="shareWhatsAppTextWithLink()">
-          <div class="kiosk-icon" style="background: rgba(212, 175, 55, 0.2); color: #fde68a;">
-            💬
-          </div>
-          <div class="kiosk-text">
-            <h4>إرسال رابط الـ PDF المباشر + نص العريضة لواتساب</h4>
-            <p>يرسل لصاحب الكشك رسالة بالواتساب تحتوي رابط التحميل الفوري + النص المحدث بالكامل.</p>
+            <h4>تنزيل مستند Word فوري (.doc) بالتعديلات والألوان</h4>
+            <p>ينزل فوراً ملف Word رسمي يحتوي نصك المعدل مع تمييز النصوص الحمراء وجدول التوقيع لطباعته بأي طابعة.</p>
           </div>
         </div>
 
-        <!-- Action 4: Native Apple / AirPrint Print -->
+        <!-- Action 3: Share Word Document directly via WhatsApp -->
+        <div class="kiosk-opt-card" onclick="shareWordDocToWhatsApp()">
+          <div class="kiosk-icon" style="background: rgba(212, 175, 55, 0.2); color: #fde68a;">
+            📲
+          </div>
+          <div class="kiosk-text">
+            <h4>إرسال ملف Word عبر واتساب للكشك</h4>
+            <p>يرسل ملف المستند (.doc) مباشرة عبر شاشة المشاركة إلى محادثة واتساب كشك الاستنساخ لفتحه بالحاسبة.</p>
+          </div>
+        </div>
+
+        <!-- Action 4: Instant Native PDF Print (AirPrint / Android / PC) -->
         <div class="kiosk-opt-card" onclick="window.print()">
           <div class="kiosk-icon" style="background: rgba(99, 102, 241, 0.2); color: #818cf8;">
             🖨️
           </div>
           <div class="kiosk-text">
-            <h4>طباعة A4 فورية (AirPrint / تحويل لـ PDF عبر آبل)</h4>
-            <p>للطباعة المباشرة، أو تكبير المعاينة بإصبعيك (Pinch to Zoom) لحفظها كـ PDF رسمي.</p>
+            <h4>طباعة A4 فورية (حفظ كـ PDF رسمي متصل الحروف)</h4>
+            <p>للطباعة المباشرة، أو حفظ الملف كـ PDF رسمي بنصوص عربية متصلة وفائقة الدقة عبر هاتفك.</p>
           </div>
         </div>
 
       </div>
 
       <div style="background: rgba(212, 175, 55, 0.08); border: 1px dashed rgba(212, 175, 55, 0.35); border-radius: 8px; padding: 10px; font-size: 11.5px; color: #cbd5e1; line-height: 1.5;">
-        💡 <strong>طريقة آيفون السريعة:</strong> اضغط على <strong>«إرسال ملف PDF عبر واتساب فوراً»</strong> وسيفتح لك شاشة المشاركة الرسمية لتختار محادثة كشك الكاتب بلمسة واحدة.
+        💡 <strong>نصيحة عملية للكاتب:</strong> إذا كان كشك الاستنساخ يعمل ببرنامج Word أو واتساب ويب، اضغط على <strong>«إرسال نص العريضة المعدل»</strong> أو <strong>«تنزيل مستند Word»</strong> ليقوم بطباعتها في ثوانٍ.
       </div>
 
       <div>
@@ -1117,7 +1125,7 @@
 
   <!-- App Script -->
   <script>
-    const ACTIVE_DRAFT_KEY = 'saadamil_active_draft_v6';
+    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_document_v2';
     const ARCHIVE_STORAGE_KEY = 'saadamil_petitions_archive_v1';
     const FONT_STORAGE_KEY = 'saadamil_saved_font_mode';
 
@@ -1190,13 +1198,28 @@
 
     let currentFontIndex = 0;
     let baseFontSize = 14;
-    let preloadedPdfFile = null;
+    let lastSavedRange = null;
+
+    // Track active selection so toolbar clicks never lose highlighted text
+    function recordSelection() {
+      const sel = window.getSelection();
+      const editorEl = document.getElementById('docContent');
+      if (sel && sel.rangeCount > 0 && editorEl && editorEl.contains(sel.anchorNode)) {
+        lastSavedRange = sel.getRangeAt(0).cloneRange();
+      }
+    }
+
+    document.addEventListener('selectionchange', recordSelection);
+    document.addEventListener('mouseup', recordSelection);
+    document.addEventListener('touchend', recordSelection);
 
     document.addEventListener('DOMContentLoaded', () => {
       const editorEl = document.getElementById('docContent');
       
-      // 1. Check all historical storage keys to strictly PRESERVE user's edits!
+      // 1. Strictly PRESERVE user's edits across all sessions
       const userSavedContent = localStorage.getItem(ACTIVE_DRAFT_KEY) 
+                            || localStorage.getItem('saadamil_user_active_document_v1')
+                            || localStorage.getItem('saadamil_active_draft_v6')
                             || localStorage.getItem('saadamil_saved_petition_html_v5') 
                             || localStorage.getItem('saadamil_saved_petition_html_v4') 
                             || localStorage.getItem('saadamil_saved_petition_html');
@@ -1220,83 +1243,122 @@
       // 3. Initialize Petitions Archive
       initArchiveSystem();
 
-      // 4. Preload PDF file into memory for instantaneous WhatsApp sharing on click!
-      preloadPdfFile();
-
-      // 5. Auto-save on typing
+      // 4. Auto-save on every single keypress, input, paste
       editorEl.addEventListener('input', () => {
-        localStorage.setItem(ACTIVE_DRAFT_KEY, editorEl.innerHTML);
+        savePetition(true);
+      });
+      editorEl.addEventListener('keyup', () => {
+        savePetition(true);
       });
     });
 
-    // Preload PDF File so WhatsApp sharing happens synchronously on tap
-    async function preloadPdfFile() {
-      try {
-        const resp = await fetch('petition.pdf', { cache: 'no-cache' });
-        if (resp.ok) {
-          const blob = await resp.blob();
-          preloadedPdfFile = new File([blob], 'عريضة_عمر_رعد_خليفه_تحقيق_الدورة.pdf', { type: 'application/pdf' });
-          console.log('Official vector PDF preloaded in memory:', preloadedPdfFile.size, 'bytes');
-        }
-      } catch (e) {
-        console.warn('PDF preload note:', e);
-      }
-    }
+    // ================= Live WhatsApp & Word Exporters =================
 
-    // ================= Direct WhatsApp PDF Sharing =================
-    async function sharePdfDirectToWhatsApp() {
-      showToast('⏳ جاري فتح الواتساب لإرسال ملف الـ PDF...');
-
-      try {
-        // Ensure file is ready
-        let fileToShare = preloadedPdfFile;
-        if (!fileToShare) {
-          const resp = await fetch('petition.pdf');
-          const blob = await resp.blob();
-          fileToShare = new File([blob], 'عريضة_عمر_رعد_خليفه_تحقيق_الدورة.pdf', { type: 'application/pdf' });
-        }
-
-        // Check native file sharing (supported on iPhone Safari & Android Chrome)
-        if (navigator.canShare && navigator.canShare({ files: [fileToShare] })) {
-          await navigator.share({
-            files: [fileToShare],
-            title: 'عريضة دعوى قضائية',
-            text: 'عريضة شكوى جزائية - محكمة تحقيق الدورة (وكيل المشتكي: المحامي سعد فراس أميل)'
-          });
-          closeKioskModal();
-          showToast('✅ تم إرسال ملف الـ PDF بنجاح.');
-          return;
-        }
-      } catch (err) {
-        console.warn('Native file share dismissed or unsupported:', err);
-      }
-
-      // High-reliability fallback: Open WhatsApp with direct cloud link to PDF + full text
-      shareWhatsAppTextWithLink();
-    }
-
-    // Share WhatsApp with direct PDF cloud download link + formatted text
-    function shareWhatsAppTextWithLink() {
+    // Extract formatted text preserving user's live edits, order, and additions
+    function getLivePetitionFormattedText() {
       const editorEl = document.getElementById('docContent');
-      const text = editorEl ? editorEl.innerText.trim() : '';
+      if (!editorEl) return '';
       
-      const message = `⚖️ *عريضة دعوى قضائية - موجهة للطباعة والاستنساخ*
-وكيل المشتكي: *المحامي سعد فراس أميل* (الصلاحية أ - 188572)
-
-📄 *رابط تحميل وطباعة ملف الـ PDF الرسمي مباشرة:*
-${window.location.origin + window.location.pathname.replace('petition.html', '')}petition.pdf
+      const clone = editorEl.cloneNode(true);
+      
+      clone.querySelectorAll('h3').forEach(h => {
+        h.innerText = `\n⚖️ *${h.innerText.trim()}*\n`;
+      });
+      clone.querySelectorAll('strong, b').forEach(s => {
+        s.innerText = `*${s.innerText.trim()}*`;
+      });
+      
+      const clean = clone.innerText.trim();
+      
+      return `⚖️ *عريضة دعوى قضائية - موجهة للطباعة والاستنساخ*
+وكيل المشتكي: *المحامي سعد فراس أميل* (الصلاحية أ - هوية 188572)
 
 -----------------------------------------
-📋 *نص العريضة المحدث:*
-${text}`;
+${clean}
+-----------------------------------------
+💡 *ملاحظة لكشك الكاتب:* يرجى طباعة العريضة أعلاه على ورقة A4 واحدة بحجم خط رسمي متناسق.`;
+    }
 
-      const whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(message);
+    // Share live edited text directly to WhatsApp
+    function shareLivePetitionToWhatsApp() {
+      const text = getLivePetitionFormattedText();
+      const whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text);
       window.open(whatsappUrl, '_blank');
-      showToast('💬 جاري فتح الواتساب لإرسال الرابط والنص للكشك...');
+      showToast('💬 جاري فتح الواتساب بنص العريضة المعدل بالكامل...');
       closeKioskModal();
     }
 
-    // Copy formatted text
+    // Generate Word Document (.doc) from live edited HTML
+    function generateLiveWordBlob() {
+      const editorEl = document.getElementById('docContent');
+      const content = editorEl ? editorEl.innerHTML : '';
+      
+      const wordHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head><meta charset='utf-8'><title>عريضة دعوى قضائية</title>
+<style>
+  @page { size: 210mm 297mm; margin: 15mm 18mm 15mm 18mm; }
+  body { font-family: 'Cairo', 'Arial', sans-serif; direction: rtl; text-align: justify; font-size: 13pt; line-height: 1.5; color: #000; }
+  .legal-red { color: #dc2626 !important; font-weight: bold; }
+  span[style*="color: rgb(220, 38, 38)"] { color: #dc2626 !important; font-weight: bold; }
+  span[style*="color: #dc2626"] { color: #dc2626 !important; font-weight: bold; }
+  h3 { font-size: 15.5pt; text-align: right; margin-bottom: 12pt; }
+  p { margin-bottom: 6pt; }
+  table { width: 100%; border: none; margin-top: 14pt; }
+  td { border: none; font-size: 12.5pt; padding: 2pt 4pt; }
+</style>
+</head><body>${content}</body></html>`;
+
+      return new Blob([wordHtml], { type: 'application/msword;charset=utf-8' });
+    }
+
+    // Direct Instant Download of Word Document (.doc)
+    function downloadLiveWordDoc() {
+      const blob = generateLiveWordBlob();
+      const editorEl = document.getElementById('docContent');
+      const text = editorEl ? editorEl.innerText : '';
+      const client = extractClientName(text) || 'عريضة_دعوى';
+      const filename = `${client}_المحامي_سعد_اميل.doc`;
+      
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => document.body.removeChild(a), 800);
+      
+      showToast('📥 تم تنزيل مستند Word (.doc) المعدل بنجاح ✅');
+      closeKioskModal();
+    }
+
+    // Share Word file via native Web Share API to WhatsApp
+    async function shareWordDocToWhatsApp() {
+      const blob = generateLiveWordBlob();
+      const editorEl = document.getElementById('docContent');
+      const text = editorEl ? editorEl.innerText : '';
+      const client = extractClientName(text) || 'عريضة_دعوى';
+      const file = new File([blob], `${client}_المحامي_سعد_اميل.doc`, { type: 'application/msword' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'عريضة دعوى قضائية',
+            text: 'عريضة دعوى قضائية معدلة - وكيل المشتكي: المحامي سعد فراس أميل'
+          });
+          showToast('📲 تم إرسال ملف الـ Word بنجاح.');
+          closeKioskModal();
+          return;
+        } catch (e) {
+          console.log('Share dismissed');
+        }
+      }
+
+      // Fallback: download the file & open WhatsApp text
+      downloadLiveWordDoc();
+      setTimeout(shareLivePetitionToWhatsApp, 1200);
+    }
+
+    // Copy clean text to clipboard
     function copyCleanPetitionText() {
       const editorEl = document.getElementById('docContent');
       if (!editorEl) return;
@@ -1307,6 +1369,259 @@ ${text}`;
       }).catch(() => {
         showToast('فشل النسخ التلقائي، يمكنك نسخه يدوياً.');
       });
+    }
+
+    // ================= Smart Highlighting & Formatting =================
+
+    // Applies Royal Red or Black to highlighted text, OR entire current paragraph if no text selected
+    function applyHighlightColor(colorHex) {
+      const editorEl = document.getElementById('docContent');
+      if (!editorEl) return;
+
+      let sel = window.getSelection();
+      let range = null;
+
+      if (sel && sel.rangeCount > 0 && editorEl.contains(sel.anchorNode)) {
+        range = sel.getRangeAt(0);
+      } else if (lastSavedRange) {
+        range = lastSavedRange;
+      }
+
+      // 1. Text is highlighted: format the specific selection
+      if (range && !range.collapsed) {
+        try {
+          const frag = range.extractContents();
+          const span = document.createElement('span');
+          span.style.color = colorHex;
+          if (colorHex === '#dc2626') {
+            span.style.fontWeight = 'bold';
+            span.className = 'legal-red';
+          } else {
+            span.style.fontWeight = 'normal';
+          }
+          span.appendChild(frag);
+          range.insertNode(span);
+
+          // Re-select span
+          if (sel) {
+            sel.removeAllRanges();
+            const newRange = document.createRange();
+            newRange.selectNodeContents(span);
+            sel.addRange(newRange);
+            lastSavedRange = newRange.cloneRange();
+          }
+
+          showToast(colorHex === '#dc2626' ? '🔴 تم تلوين النص المحدد بالأحمر' : '⚫ تمت إعادة النص المحدد للأسود');
+        } catch (e) {
+          console.error('Highlight error:', e);
+        }
+      } else {
+        // 2. No text highlighted: color the entire enclosing paragraph or heading!
+        let targetBlock = null;
+        let node = (sel && sel.anchorNode && editorEl.contains(sel.anchorNode)) 
+                 ? sel.anchorNode 
+                 : (lastSavedRange ? lastSavedRange.startContainer : null);
+
+        while (node && node !== editorEl) {
+          if (node.nodeType === Node.ELEMENT_NODE && ['P', 'DIV', 'H3', 'LI'].includes(node.tagName)) {
+            targetBlock = node;
+            break;
+          }
+          node = node.parentElement;
+        }
+
+        if (targetBlock) {
+          if (colorHex === '#dc2626') {
+            targetBlock.style.color = '#dc2626';
+            targetBlock.style.fontWeight = 'bold';
+            targetBlock.classList.add('legal-red');
+            showToast('🔴 تم تلوين الفقرة الحالية بالكامل بالأحمر');
+          } else {
+            targetBlock.style.color = '';
+            targetBlock.style.fontWeight = '';
+            targetBlock.classList.remove('legal-red');
+            targetBlock.querySelectorAll('span, font, strong').forEach(s => {
+              s.style.color = '';
+            });
+            showToast('⚫ تمت إعادة الفقرة الحالية للون الأسود');
+          }
+        } else {
+          showToast('ضع المؤشر داخل أي فقرة أو حدد نصاً لتلوينه.');
+        }
+      }
+
+      savePetition(true);
+    }
+
+    function execFormat(cmd) {
+      document.execCommand(cmd, false, null);
+      savePetition(true);
+    }
+
+    function adjustFontSize(delta) {
+      const sel = window.getSelection();
+      const editorEl = document.getElementById('docContent');
+      
+      let range = (sel && sel.rangeCount > 0 && !sel.isCollapsed && editorEl.contains(sel.anchorNode))
+                ? sel.getRangeAt(0)
+                : ((lastSavedRange && !lastSavedRange.collapsed) ? lastSavedRange : null);
+
+      if (range) {
+        let parentSpan = null;
+        let node = range.startContainer.nodeType === Node.TEXT_NODE ? range.startContainer.parentElement : range.startContainer;
+        while (node && node !== editorEl) {
+          if (node.tagName === 'SPAN' && node.style && node.style.fontSize) {
+            parentSpan = node;
+            break;
+          }
+          node = node.parentElement;
+        }
+
+        let currentPx = 14;
+        if (parentSpan) {
+          currentPx = parseFloat(parentSpan.style.fontSize) || 14;
+        } else {
+          currentPx = parseFloat(window.getComputedStyle(node || editorEl).fontSize) || baseFontSize;
+        }
+
+        const newPx = Math.max(10, Math.min(36, Math.round(currentPx + delta)));
+
+        try {
+          const contents = range.extractContents();
+          const span = document.createElement('span');
+          span.style.fontSize = newPx + 'px';
+          span.appendChild(contents);
+          range.insertNode(span);
+          
+          if (sel) {
+            sel.removeAllRanges();
+            const newRange = document.createRange();
+            newRange.selectNodeContents(span);
+            sel.addRange(newRange);
+            lastSavedRange = newRange.cloneRange();
+          }
+        } catch (e) {
+          console.error('Font resize error:', e);
+        }
+
+        savePetition(true);
+        showToast('حجم النص المحدد: ' + newPx + 'px');
+      } else {
+        baseFontSize = Math.max(10, Math.min(24, Math.round((baseFontSize + delta) * 10) / 10));
+        editorEl.style.fontSize = baseFontSize + 'px';
+        savePetition(true);
+        showToast('حجم خط كامل الورقة: ' + baseFontSize + 'px');
+      }
+    }
+
+    // Auto-save & status indicator
+    function savePetition(silent = false) {
+      const editorEl = document.getElementById('docContent');
+      if (editorEl) {
+        const content = editorEl.innerHTML;
+        localStorage.setItem(ACTIVE_DRAFT_KEY, content);
+        localStorage.setItem('saadamil_active_draft_v6', content);
+        localStorage.setItem('saadamil_saved_petition_html', content);
+        
+        const dot = document.getElementById('saveStatusDot');
+        if (dot) {
+          dot.innerText = '● محفوظة';
+          dot.style.color = '#34d399';
+        }
+
+        if (!silent) {
+          showToast('💾 تم حفظ وتأمين كافة تعديلاتك بنجاح في جهازك ✅');
+        }
+      }
+    }
+
+    // Reset with Safety Confirmation & Auto-Backup
+    function resetToOmarDefaultTemplate() {
+      const msg = '⚠️ تنبيه للمحامي سعد:\nهل أنت متأكد من رغبتك في استرجاع الصياغة الأصلية لقضية عمر؟\n\n(سيتم حفظ نسخة احتياطية من تعديلاتك الحالية تلقائياً في الأرشيف لضمان عدم ضياعها).';
+      if (confirm(msg)) {
+        const editorEl = document.getElementById('docContent');
+        if (editorEl && editorEl.innerHTML.trim().length > 50) {
+          // Backup current edits
+          const archive = getArchive();
+          archive.unshift({
+            id: 'backup_' + Date.now(),
+            title: 'نسخة احتياطية قبل الاسترجاع (' + new Date().toLocaleTimeString('ar-IQ') + ')',
+            court: 'محكمة تحقيق الدورة',
+            client: 'عمر رعد خليفه',
+            date: new Date().toLocaleDateString('ar-IQ'),
+            content: editorEl.innerHTML,
+            updatedAt: Date.now()
+          });
+          saveArchiveList(archive);
+        }
+
+        editorEl.innerHTML = OMAR_PETITION_DEFAULT_HTML.trim();
+        savePetition(true);
+        showToast('🔄 تم استرجاع الصياغة الأصلية وحفظ نسختك السابقة بالأرشيف ✅');
+      }
+    }
+
+    function createNewPetition() {
+      if (confirm('هل ترغب في فتح عريضة جديدة فارغة؟ تأكد من حفظ نسختك الحالية في الأرشيف أولاً.')) {
+        const blank = `
+<h3 style="text-align: right; margin-bottom: 18px; font-size: 17px; font-weight: 800;">إلى / السيد قاضي محكمة ... المحترم</h3>
+
+<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+  <div><strong>المشتكي (أو المدعي):</strong> ...</div>
+  <div><strong>الساكن:</strong> بغداد - ...</div>
+</div>
+
+<div style="margin-bottom: 12px;">
+  <strong>المشكو منه (أو المدعى عليه):</strong> ...<br>
+  <strong>الساكن:</strong> بغداد - ...
+</div>
+
+<p style="text-align: center; margin-top: 14px; margin-bottom: 14px; font-size: 16px;"><strong><u>م / ...</u></strong></p>
+
+<p style="margin-bottom: 10px;"><strong>تحية طيبة واحتراماً،</strong></p>
+
+<p style="line-height: 1.58; margin-bottom: 8px; text-align: justify;">نحيط عدالتكم علماً بالآتي: ...</p>
+
+<p style="text-align: center; margin-top: 14px; margin-bottom: 14px; font-size: 15px;"><strong>مع وافر الشكر والتقدير والاحترام</strong></p>
+
+<table style="width: 100%; border: none; margin-top: 18px;">
+  <tbody>
+    <tr>
+      <td style="width: 50%; border: none; text-align: right; vertical-align: bottom;">
+        <strong>التاريخ:</strong> 8 / 11 / 2026 م
+      </td>
+      <td style="width: 50%; border: none; text-align: left; vertical-align: bottom;">
+        <strong>وكيل المشتكي</strong><br>
+        <strong>المحامي سعد فراس أميل</strong>
+      </td>
+    </tr>
+  </tbody>
+</table>
+        `;
+        document.getElementById('docContent').innerHTML = blank.trim();
+        savePetition(true);
+        showToast('📄 تم فتح عريضة جديدة فارغة');
+      }
+    }
+
+    // ================= Font Switcher =================
+    function toggleDocFont() {
+      currentFontIndex = (currentFontIndex + 1) % FONTS.length;
+      applyCurrentFont();
+      localStorage.setItem(FONT_STORAGE_KEY, FONTS[currentFontIndex].id);
+      showToast('🖋️ تم تفعيل خط: ' + FONTS[currentFontIndex].name);
+    }
+
+    function applyCurrentFont() {
+      const selected = FONTS[currentFontIndex];
+      const editorEl = document.getElementById('docContent');
+      const fontLabel = document.getElementById('fontLabel');
+      if (editorEl) {
+        editorEl.style.fontFamily = selected.family;
+      }
+      if (fontLabel) {
+        fontLabel.innerText = '🖋️ الخط: ' + selected.name;
+      }
     }
 
     // ================= Petitions Archive Engine =================
@@ -1325,7 +1640,6 @@ ${text}`;
 
     function initArchiveSystem() {
       let archive = getArchive();
-      // If archive is empty, seed it with Omar's primary petition
       if (archive.length === 0) {
         archive.push({
           id: 'case_omar_aljubouri',
@@ -1381,7 +1695,7 @@ ${text}`;
         return;
       }
 
-      container.innerHTML = archive.map((item, idx) => `
+      container.innerHTML = archive.map((item) => `
         <div class="archive-card">
           <div class="archive-card-header">
             <div>
@@ -1441,7 +1755,7 @@ ${text}`;
 
       if (confirm(`هل ترغب في فتح: "${item.title}" في المحرر؟ (سيتم حفظ مسودتك الحالية تلقائياً).`)) {
         document.getElementById('docContent').innerHTML = item.content;
-        localStorage.setItem(ACTIVE_DRAFT_KEY, item.content);
+        savePetition(true);
         closeArchiveModal();
         showToast('📂 تم فتح: ' + item.title);
       }
@@ -1519,176 +1833,6 @@ ${text}`;
     function escapeHtml(str) {
       if (!str) return '';
       return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
-    }
-
-    // ================= Standard Editing & Formatting =================
-    function toggleDocFont() {
-      currentFontIndex = (currentFontIndex + 1) % FONTS.length;
-      applyCurrentFont();
-      localStorage.setItem(FONT_STORAGE_KEY, FONTS[currentFontIndex].id);
-      showToast('🖋️ تم تفعيل خط: ' + FONTS[currentFontIndex].name);
-    }
-
-    function applyCurrentFont() {
-      const selected = FONTS[currentFontIndex];
-      const editorEl = document.getElementById('docContent');
-      const fontLabel = document.getElementById('fontLabel');
-      if (editorEl) {
-        editorEl.style.fontFamily = selected.family;
-      }
-      if (fontLabel) {
-        fontLabel.innerText = '🖋️ الخط: ' + selected.name;
-      }
-    }
-
-    function applyHighlightColor(colorHex) {
-      document.execCommand('styleWithCSS', false, true);
-      document.execCommand('foreColor', false, colorHex);
-      
-      const sel = window.getSelection();
-      if (sel && sel.rangeCount > 0) {
-        const range = sel.getRangeAt(0);
-        if (!range.collapsed) {
-          const span = document.createElement('span');
-          span.style.color = colorHex;
-          if (colorHex === '#dc2626') {
-            span.className = 'legal-red';
-            span.style.fontWeight = 'bold';
-          }
-          try {
-            range.surroundContents(span);
-          } catch (e) {}
-        }
-      }
-
-      savePetition(true);
-      if (colorHex === '#dc2626') {
-        showToast('🔴 تم تلوين النص المحدد بالأحمر');
-      } else {
-        showToast('⚫ تمت إعادة النص للون الأسود');
-      }
-    }
-
-    function execFormat(cmd) {
-      document.execCommand(cmd, false, null);
-      savePetition(true);
-    }
-
-    function adjustFontSize(delta) {
-      const sel = window.getSelection();
-      const editorEl = document.getElementById('docContent');
-      
-      const hasSelection = sel && sel.rangeCount > 0 && !sel.isCollapsed && editorEl.contains(sel.anchorNode);
-
-      if (hasSelection) {
-        const range = sel.getRangeAt(0);
-        let parentSpan = null;
-        let node = sel.anchorNode.nodeType === Node.TEXT_NODE ? sel.anchorNode.parentElement : sel.anchorNode;
-        while (node && node !== editorEl) {
-          if (node.tagName === 'SPAN' && node.style && node.style.fontSize) {
-            parentSpan = node;
-            break;
-          }
-          node = node.parentElement;
-        }
-
-        let currentPx = 14;
-        if (parentSpan) {
-          currentPx = parseFloat(parentSpan.style.fontSize) || 14;
-        } else {
-          currentPx = parseFloat(window.getComputedStyle(sel.anchorNode.parentElement || editorEl).fontSize) || baseFontSize;
-        }
-
-        const newPx = Math.max(10, Math.min(36, Math.round(currentPx + delta)));
-
-        if (parentSpan && range.toString().trim() === parentSpan.innerText.trim()) {
-          parentSpan.style.fontSize = newPx + 'px';
-        } else {
-          const span = document.createElement('span');
-          span.style.fontSize = newPx + 'px';
-          try {
-            const contents = range.extractContents();
-            span.appendChild(contents);
-            range.insertNode(span);
-            
-            sel.removeAllRanges();
-            const newRange = document.createRange();
-            newRange.selectNodeContents(span);
-            sel.addRange(newRange);
-          } catch (e) {
-            console.error('Font resize error:', e);
-          }
-        }
-
-        savePetition(true);
-        showToast('حجم النص المحدد: ' + newPx + 'px');
-      } else {
-        baseFontSize = Math.max(10, Math.min(24, Math.round((baseFontSize + delta) * 10) / 10));
-        editorEl.style.fontSize = baseFontSize + 'px';
-        savePetition(true);
-        showToast('حجم خط كامل الورقة: ' + baseFontSize + 'px');
-      }
-    }
-
-    function savePetition(silent = false) {
-      const editorEl = document.getElementById('docContent');
-      if (editorEl) {
-        localStorage.setItem(ACTIVE_DRAFT_KEY, editorEl.innerHTML);
-        if (!silent) {
-          showToast('💾 تم حفظ وتأمين العريضة بنجاح في جهازك ✅');
-        }
-      }
-    }
-
-    function loadOmarPetition() {
-      if (confirm('هل ترغب في استرجاع عريضة عمر رعد خليفه الأصلية؟')) {
-        document.getElementById('docContent').innerHTML = OMAR_PETITION_DEFAULT_HTML.trim();
-        savePetition(true);
-        showToast('⚖️ تم استرجاع عريضة عمر رعد (محكمة تحقيق الدورة)');
-      }
-    }
-
-    function createNewPetition() {
-      if (confirm('هل ترغب في فتح عريضة جديدة فارغة؟ تأكد من حفظ نسختك السابقة في الأرشيف أولاً.')) {
-        const blank = `
-<h3 style="text-align: right; margin-bottom: 18px; font-size: 17px; font-weight: 800;">إلى / السيد قاضي محكمة ... المحترم</h3>
-
-<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
-  <div><strong>المشتكي (أو المدعي):</strong> ...</div>
-  <div><strong>الساكن:</strong> بغداد - ...</div>
-</div>
-
-<div style="margin-bottom: 12px;">
-  <strong>المشكو منه (أو المدعى عليه):</strong> ...<br>
-  <strong>الساكن:</strong> بغداد - ...
-</div>
-
-<p style="text-align: center; margin-top: 14px; margin-bottom: 14px; font-size: 16px;"><strong><u>م / ...</u></strong></p>
-
-<p style="margin-bottom: 10px;"><strong>تحية طيبة واحتراماً،</strong></p>
-
-<p style="line-height: 1.58; margin-bottom: 8px; text-align: justify;">نحيط عدالتكم علماً بالآتي: ...</p>
-
-<p style="text-align: center; margin-top: 14px; margin-bottom: 14px; font-size: 15px;"><strong>مع وافر الشكر والتقدير والاحترام</strong></p>
-
-<table style="width: 100%; border: none; margin-top: 18px;">
-  <tbody>
-    <tr>
-      <td style="width: 50%; border: none; text-align: right; vertical-align: bottom;">
-        <strong>التاريخ:</strong> 8 / 11 / 2026 م
-      </td>
-      <td style="width: 50%; border: none; text-align: left; vertical-align: bottom;">
-        <strong>وكيل المشتكي</strong><br>
-        <strong>المحامي سعد فراس أميل</strong>
-      </td>
-    </tr>
-  </tbody>
-</table>
-        `;
-        document.getElementById('docContent').innerHTML = blank.trim();
-        savePetition(true);
-        showToast('📄 تم فتح عريضة جديدة فارغة');
-      }
     }
 
     function showToast(msg) {
