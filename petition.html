@@ -952,8 +952,8 @@
     /* ================= 100% Strict Single-Page Clean Vector Print Rules ================= */
     @media print {
       @page {
-        size: 210mm 297mm;
-        margin: 0 !important;
+        size: A4 portrait;
+        margin: 8mm 12mm 8mm 12mm;
       }
 
       *, *::before, *::after {
@@ -964,12 +964,12 @@
       html, body {
         margin: 0 !important;
         padding: 0 !important;
-        width: 210mm !important;
-        height: 297mm !important;
-        max-height: 297mm !important;
+        width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
         background: #ffffff !important;
         color: #0f172a !important;
-        overflow: hidden !important;
+        overflow: visible !important;
       }
 
       .no-print, 
@@ -978,7 +978,11 @@
       .studio-toolbar, 
       .cases-bar,
       .toast-msg,
-      .modal-backdrop {
+      .modal-backdrop,
+      .preview-modal-backdrop,
+      #printPreviewModal,
+      #kioskModal,
+      #archiveModal {
         display: none !important;
       }
 
@@ -988,9 +992,7 @@
       .paper-container {
         margin: 0 !important;
         padding: 0 !important;
-        width: 210mm !important;
-        height: 297mm !important;
-        max-height: 297mm !important;
+        width: 100% !important;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -1000,46 +1002,27 @@
       }
 
       .legal-paper {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 210mm !important;
-        height: 297mm !important;
-        max-height: 297mm !important;
-        min-height: 297mm !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
         transform: none !important;
-        margin: 0 !important;
-        padding: 12mm 16mm 12mm 16mm !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
         box-sizing: border-box !important;
         page-break-after: avoid !important;
         page-break-inside: avoid !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         background: #ffffff !important;
       }
 
       .document-body {
-        font-size: 12.2px !important;
-        line-height: 1.48 !important;
-        min-height: auto !important;
-      }
-
-      .document-body h3 {
-        font-size: 14.5px !important;
-        margin-bottom: 7px !important;
-        text-align: right !important;
-      }
-
-      .document-body p {
-        margin-bottom: 0.32em !important;
-      }
-
-      .document-body table td {
-        font-size: 12px !important;
-        padding: 2px 4px !important;
+        transform: none !important;
       }
     }
   </style>
@@ -1065,6 +1048,9 @@
 
         <!-- Desktop Action Buttons -->
         <div class="header-actions">
+          <a href="petition_omar.pdf" target="_blank" download="عريضة_عمر_الجبوري.pdf" class="btn btn-green" style="text-decoration:none;" title="تنزيل ملف PDF المعتمد بصفحة A4 كاملة ومثالية">
+            <span>📥 تنزيل PDF جاهز</span>
+          </a>
           <button class="btn btn-gold" onclick="openPrintPreviewModal()">
             <span>👁️ معاينة الطباعة (A4)</span>
           </button>
@@ -1211,7 +1197,10 @@
         </span>
       </div>
       <div class="preview-actions">
-        <button class="btn btn-blue" style="font-size:12px; padding:6px 12px;" onclick="window.print()">
+        <a href="petition_omar.pdf" target="_blank" download="عريضة_عمر_الجبوري.pdf" class="btn btn-green" style="font-size:12px; padding:6px 12px; text-decoration:none;">
+          📥 تنزيل PDF جاهز
+        </a>
+        <button class="btn btn-blue" style="font-size:12px; padding:6px 12px;" onclick="triggerCleanPrint()">
           🖨️ طباعة الآن (Print)
         </button>
         <button class="btn btn-green" style="font-size:12px; padding:6px 12px;" onclick="shareLivePetitionToWhatsApp()">
@@ -1293,8 +1282,19 @@
           </div>
         </div>
 
+        <!-- Action 0: Instant Verified Pristine A4 PDF Download -->
+        <a href="petition_omar.pdf" target="_blank" download="عريضة_عمر_الجبوري.pdf" class="kiosk-opt-card" style="text-decoration:none; border-color: rgba(212, 175, 55, 0.6); background: rgba(212, 175, 55, 0.1);">
+          <div class="kiosk-icon" style="background: rgba(212, 175, 55, 0.3); color: #fde68a;">
+            📥
+          </div>
+          <div class="kiosk-text">
+            <h4 style="color:#fde68a;">تنزيل ملف PDF المعتمد الجاهز (A4 كاملة بدون لخبطة) ⭐</h4>
+            <p style="color:#cbd5e1;">ملف PDF فيكتور رسمي عالي الدقة، جاهز للطباعة فوراً بصفحة واحدة ومقاسات مثالية دون أي تصغير أو هوامش زائدة.</p>
+          </div>
+        </a>
+
         <!-- Action 2: Instant Native PDF Print (AirPrint / Android / PC) -->
-        <div class="kiosk-opt-card" onclick="window.print()">
+        <div class="kiosk-opt-card" onclick="triggerCleanPrint()">
           <div class="kiosk-icon" style="background: rgba(37, 99, 235, 0.25); color: #60a5fa;">
             🖨️
           </div>
@@ -1340,7 +1340,7 @@
 
   <!-- App Script -->
   <script>
-    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_document_v7';
+    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_draft_persistent';
     const ARCHIVE_STORAGE_KEY = 'saadamil_petitions_archive_v1';
     const FONT_STORAGE_KEY = 'saadamil_saved_font_mode';
 
@@ -1440,8 +1440,17 @@
     document.addEventListener('DOMContentLoaded', () => {
       const editorEl = document.getElementById('docContent');
       
-      // 1. Strictly PRESERVE user's edits for active version v3, or load fresh audited petition
-      const userSavedContent = localStorage.getItem(ACTIVE_DRAFT_KEY);
+      // 1. Strictly PRESERVE user's custom edits across all versions, never wipe automatically!
+      let userSavedContent = localStorage.getItem(ACTIVE_DRAFT_KEY);
+      if (!userSavedContent || userSavedContent.trim().length < 50) {
+        for (let k of ['saadamil_user_active_document_v7', 'saadamil_user_active_document_v6', 'saadamil_user_active_document_v5', 'saadamil_user_active_document_v4', 'saadamil_user_active_document_v3', 'saadamil_active_draft_v6']) {
+          const old = localStorage.getItem(k);
+          if (old && old.trim().length > 50) {
+            userSavedContent = old;
+            break;
+          }
+        }
+      }
       
       if (userSavedContent && userSavedContent.trim().length > 50) {
         editorEl.innerHTML = userSavedContent;
@@ -1790,6 +1799,7 @@ ${clean}
     function adjustFontSize(delta) {
       const sel = window.getSelection();
       const editorEl = document.getElementById('docContent');
+      if (!editorEl) return;
       
       let range = (sel && sel.rangeCount > 0 && !sel.isCollapsed && editorEl.contains(sel.anchorNode))
                 ? sel.getRangeAt(0)
@@ -1806,14 +1816,14 @@ ${clean}
           node = node.parentElement;
         }
 
-        let currentPx = 14;
+        let currentPx = 13;
         if (parentSpan) {
-          currentPx = parseFloat(parentSpan.style.fontSize) || 14;
+          currentPx = parseFloat(parentSpan.style.fontSize) || 13;
         } else {
           currentPx = parseFloat(window.getComputedStyle(node || editorEl).fontSize) || baseFontSize;
         }
 
-        const newPx = Math.max(10, Math.min(36, Math.round(currentPx + delta)));
+        const newPx = Math.max(8.5, Math.min(32, Math.round((currentPx + delta) * 10) / 10));
 
         try {
           const contents = range.extractContents();
@@ -1836,11 +1846,41 @@ ${clean}
         savePetition(true);
         showToast('حجم النص المحدد: ' + newPx + 'px');
       } else {
-        baseFontSize = Math.max(10, Math.min(24, Math.round((baseFontSize + delta) * 10) / 10));
+        // Scale ALL headings, paragraphs, divs, table cells across the entire document
+        const step = delta > 0 ? 0.6 : -0.6;
+        const targets = editorEl.querySelectorAll('p, h3, div, td, span, strong, em');
+        targets.forEach(el => {
+          const curr = parseFloat(el.style.fontSize || window.getComputedStyle(el).fontSize) || 12;
+          const next = Math.max(8.5, Math.min(26, Math.round((curr + step) * 10) / 10));
+          el.style.fontSize = next + 'px';
+        });
+
+        baseFontSize = Math.max(8.5, Math.min(26, Math.round((baseFontSize + step) * 10) / 10));
         editorEl.style.fontSize = baseFontSize + 'px';
+        
         savePetition(true);
-        showToast('حجم خط كامل الورقة: ' + baseFontSize + 'px');
+        try { checkPageFit(); } catch(e) {}
+        showToast(delta > 0 ? '➕ تم تكبير خط العريضة بالكامل' : '➖ تم تصغير خط العريضة بالكامل');
       }
+    }
+
+    // Clean Native Print without mobile modal scale bug
+    function triggerCleanPrint() {
+      const previewModal = document.getElementById('printPreviewModal');
+      const kioskModal = document.getElementById('kioskModal');
+      const wasPreviewOpen = previewModal && previewModal.classList.contains('open');
+      const wasKioskOpen = kioskModal && kioskModal.classList.contains('open');
+      
+      if (wasPreviewOpen) previewModal.classList.remove('open');
+      if (wasKioskOpen) kioskModal.classList.remove('open');
+
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => {
+          if (wasPreviewOpen) previewModal.classList.add('open');
+          if (wasKioskOpen) kioskModal.classList.add('open');
+        }, 700);
+      }, 150);
     }
 
     // Auto-save & status indicator
@@ -1864,14 +1904,16 @@ ${clean}
       }
     }
 
-    // Direct Instant Load of Audited Omar Petition
+    // Direct Instant Load of Audited Omar Petition (With Safety Confirmation to Protect Edits)
     function loadAuditedOmarPetition() {
       const editorEl = document.getElementById('docContent');
       if (!editorEl) return;
-      editorEl.innerHTML = OMAR_PETITION_DEFAULT_HTML.trim();
-      savePetition(true);
-      showToast('⚡ تم تفعيل وتثبيت عريضة عمر الجبوري المدققة بالألوان والتنسيق الأصولي ✅');
-      try { beautifyPetitionDocument(); } catch(e) {}
+      if (confirm('هل ترغب في استعادة نموذج عريضة عمر الجبوري المعتمد الأصلي؟\n\n(ملاحظة: سيتم استبدال النص الحالي بالنموذج الأصلي، إذا كنت قد أجريت تعديلات خاصة احرص على حفظها أولاً).')) {
+        editorEl.innerHTML = OMAR_PETITION_DEFAULT_HTML.trim();
+        savePetition(true);
+        showToast('⚡ تم تحميل نموذج عريضة عمر الجبوري المعتمد ✅');
+        try { beautifyPetitionDocument(); } catch(e) {}
+      }
     }
 
     // Reset with Safety Confirmation & Auto-Backup
