@@ -42,8 +42,8 @@
       --font-almarai: 'Almarai', 'Cairo', sans-serif;
       
       --doc-font-family: var(--font-cairo);
-      --doc-font-size: 14.5px;
-      --doc-line-height: 1.62;
+      --doc-font-size: 14px;
+      --doc-line-height: 1.58;
     }
 
     *, *::before, *::after {
@@ -324,7 +324,7 @@
       border-radius: 4px;
       box-shadow: 0 10px 35px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(0, 0, 0, 0.12);
       box-sizing: border-box;
-      padding: 22mm 20mm 20mm 20mm;
+      padding: 20mm 18mm 18mm 18mm;
       margin: 0 auto;
       min-height: 980px;
     }
@@ -345,16 +345,16 @@
 
     /* Greeting starts from right edge */
     .document-body h3 {
-      font-size: 17px;
+      font-size: 16.5px;
       font-weight: 800;
       text-align: right !important;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       color: #0f172a;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .document-body p {
-      margin-bottom: 0.45em;
+      margin-bottom: 0.42em;
       line-height: var(--doc-line-height);
       text-align: justify;
     }
@@ -388,7 +388,7 @@
     .document-body table {
       width: 100% !important;
       border-collapse: collapse !important;
-      margin-top: 18px !important;
+      margin-top: 14px !important;
       border: none !important;
     }
 
@@ -396,7 +396,7 @@
       border: none !important;
       padding: 4px 6px !important;
       vertical-align: top;
-      font-size: 14px;
+      font-size: 13.5px;
     }
 
     /* ================= Mobile Fixed Bottom Bar ================= */
@@ -487,7 +487,7 @@
       }
 
       .legal-paper {
-        padding: 16mm 10mm 16mm 10mm;
+        padding: 14mm 8mm 14mm 8mm;
         border-radius: 4px;
       }
 
@@ -569,7 +569,7 @@
         min-height: 297mm !important;
         transform: none !important;
         margin: 0 !important;
-        padding: 16mm 20mm 16mm 20mm !important;
+        padding: 12mm 16mm 12mm 16mm !important;
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
@@ -581,23 +581,23 @@
       }
 
       .document-body {
-        font-size: 13.5px !important;
-        line-height: 1.55 !important;
+        font-size: 12.2px !important;
+        line-height: 1.48 !important;
         min-height: auto !important;
       }
 
       .document-body h3 {
-        font-size: 15.5px !important;
-        margin-bottom: 10px !important;
+        font-size: 14.5px !important;
+        margin-bottom: 7px !important;
         text-align: right !important;
       }
 
       .document-body p {
-        margin-bottom: 0.4em !important;
+        margin-bottom: 0.32em !important;
       }
 
       .document-body table td {
-        font-size: 13.5px !important;
+        font-size: 12px !important;
         padding: 2px 4px !important;
       }
     }
@@ -751,50 +751,55 @@
 
   <!-- App Script -->
   <script>
-    const STORAGE_KEY = 'saadamil_saved_petition_html_v4';
+    const STORAGE_KEY = 'saadamil_saved_petition_html_v5';
     const FONT_STORAGE_KEY = 'saadamil_saved_font_mode';
 
     const OMAR_PETITION_DEFAULT_HTML = `
-<h3 style="text-align: right; margin-bottom: 18px; font-size: 17px; font-weight: 800;">إلى / السيد قاضي محكمة تحقيق الدورة المحترم</h3>
+<h3 style="text-align: right; margin-bottom: 14px; font-size: 16.5px; font-weight: 800;">إلى / السيد قاضي محكمة تحقيق الدورة المحترم</h3>
 
-<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
   <div><strong>المشتكي:</strong> عمر رعد خليفه</div>
   <div><strong>الساكن:</strong> بغداد - الدورة، محلة (842)، زقاق (9)، دار (6)</div>
 </div>
 
-<div style="margin-bottom: 12px;">
+<div style="margin-bottom: 10px;">
   <strong>المشكو منهما:</strong><br>
   1. <strong>شهد عباس لفته</strong> (الزوجة)<br>
-  2. <strong>ناهد</strong> (والدة الزوجة - شريكة بالتحريض والاتفاق)<br>
+  2. <strong>ناهد (...)</strong> (والدة الزوجة - شريكة ومحرضة)<br>
   <div style="margin-right: 14px; margin-top: 2px;"><strong>الساكنتان:</strong> بغداد - الدورة، الإسكان، قرب جامع الإسكان (بدلالة المشتكي)</div>
 </div>
 
-<p style="text-align: center; margin-top: 14px; margin-bottom: 14px; font-size: 16px;"><strong><u>م / طلب اتخاذ الإجراءات القانونية</u></strong></p>
+<p style="text-align: center; margin-top: 12px; margin-bottom: 12px; font-size: 15.5px;"><strong><u>م / شكوى جزائية وطلب اتخاذ الإجراءات القانونية</u></strong></p>
 
-<p style="margin-bottom: 10px;"><strong>تحية طيبة واحتراماً،</strong></p>
+<p style="margin-bottom: 8px;"><strong>تحية طيبة واحتراماً،</strong></p>
 
-<p style="line-height: 1.58; margin-bottom: 8px; text-align: justify;">سبق وأن أقدمت المشكو منها الأولى باتفاق وتحريض ومساعدة من والدتها المشكو منها الثانية، على ارتكاب الأفعال الجرمية الآتية بحق موكلي:</p>
+<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;">سبق وأن أقدمت المشكو منها الأولى (شهد عباس لفته) وباشتراك وتحريض مباشر من والدتها المشكو منها الثانية (ناهد)، على ارتكاب سلسلة من الأفعال والاعتداءات الجرمية الشائنة المعاقب عليها قانوناً بحق موكلي، وفق التفصيل الآتي:</p>
 
-<p style="line-height: 1.58; margin-bottom: 7px; text-align: justify;"><strong>1.</strong> قيام المشكو منها الأولى بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإيذائه والنيل من سلامته الجسدية.</p>
+<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>1. جريمة القذف والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات):</strong> أقدمت المشكو منها الأولى بالاتصال بصديق موكلي المقرب الشاهد (علي سلام صبحي) بمكالمة مطولة استغرقت ساعة و(34) دقيقة، بهدف إسقاط موكلي اجتماعياً وأخلاقياً واستمالة صديقه ليكون بصفها ضده، وأطلقت خلالها افتراءات وطعوناً مخلة بالشرف والرجولة؛ حيث ادعت كذباً بأن موكلي <u>«شاذ جنسياً وزعمت وجود مقطع فيديو يثبت ذلك»</u>، كما ادعت افتراءً بأنه قام بإدخال شاب آخر معه إلى دار الزوجية في أول أيام زواجهما وهي عروسة، وادعت كذلك أنه يشرب الكحول داخل الدار ويسمح لها هي أيضاً بالشرب معه لتصويره مجرداً من الغيرة والأخلاق، في حين أن الثابت هو إلحاحها هي المستمر ورغبتها بالشرب معه رغم رفضه، وكل ذلك موثق بتسجيل المكالمة وشهادة الشهود.</p>
 
-<p style="line-height: 1.58; margin-bottom: 7px; text-align: justify;"><strong>2.</strong> قيام المشكو منها الأولى بالحضور لمرتين متتاليتين أمام دار سكن موكلي الكائن في (الدورة - محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة وتوجيه عبارات السب والقذف والشتم العلني بحق موكلي ووالدته وأسرته بقصد الحط من كرامتهم وتخريب سمعتهم أمام الجيران، والمثبت بشهادة الشهود الحاضرين.</p>
+<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>2. جريمة الابتزاز والتهديد بنسبة أمور خادشة للشرف (المادة 430 عقوبات):</strong> قيام المشكو منها الأولى بالتلويح والتهديد بنشر تلك المقاطع والادعاءات المفبركة ونسبة أمور مخلة بالحياء والشرف لموكلي بقصد ابتزازه والضغط عليه لكسر إرادته وإرغامه على التنازل عن حقوقه الشرعية والمالية.</p>
 
-<p style="line-height: 1.58; margin-bottom: 7px; text-align: justify;"><strong>3.</strong> قيام المشكو منها بالتشهير بموكلي لدى صديقه المقرب (الشاهد) علي سلام (صبحي) والطعن بسلوكه وأخلاقه وادعاء أنه يشرب الكحول داخل الدار في حين أنها هي من طلبت ذلك وألحت عليه، فضلاً عن التلويح باختلاق تهمة كاذبة مخلة بالحياء والشرف تزعم فيها إدخال شخص للدار وهي عروسة بقصد ابتزازه والإساءة لسمعته، والمثبت بالمحادثات ومكالمة الوساطة المسجلة التي استغرقت ساعة و(34) دقيقة.</p>
+<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>3. جريمة التهديد بالقتل والذبح (المادة 432 عقوبات):</strong> قيام المشكو منها الأولى بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإلحاق الأذى الجسدي به وبث الرعب في نفسه.</p>
 
-<p style="line-height: 1.58; margin-bottom: 10px; text-align: justify;"><strong>4.</strong> قيام المشكو منهما بالاتصال بالشاهدة (عهود) عبد الرحمن خلاف - والدة صديق موكلي علي سلام (صبحي) ومحاولة التأثير عليها والضغط لحملها هي وابنها على الإدلاء بشهادة زور ضد موكلي واختلاق ادعاءات باطلة، والموثق بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق هذه المحاولات بدلالة جريمة التحريض على شهادة الزور.</p>
+<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>4. جرائم التهجم العلني والتجمهر والسب أمام الدار (المواد 433 و434 بدلالة 19 عقوبات):</strong> قيام المشكو منها الأولى بالحضور لمرات متتالية أمام دار سكن موكلي الكائن في (الدورة محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة، وتوجيه عبارات السب والقذف الفاحش بحق موكلي وأسرته لإحداث فضيحة اجتماعية وتخريب سمعتهم أمام الجيران.</p>
 
-<p style="line-height: 1.58; margin-bottom: 10px; text-align: justify;">وحيث إن ما ارتكبته المشكو منهما يشكل جرائم معاقباً عليها بموجب أحكام <strong>المواد (430) و(432) و(434) و(248)</strong> وبدلالة <strong>المادتين (48 و49)</strong> من قانون العقوبات العراقي رقم 111 لسنة 1969 المعدل:</p>
+<p style="line-height: 1.55; margin-bottom: 8px; text-align: justify;"><strong>5. جريمة التحريض والاشتراك على شهادة الزور (المادة 248 بدلالة 48 و49 عقوبات):</strong> قيام المشكو منهما (الزوجة ووالدتها ناهد) بمحاولة التواصل والضغط على والدة صديق موكلي الشاهدة (عهود عبد الرحمن خلاف) لتحريضها واستمالتها للشهادة بالزور ضد موكلي واختلاق وقائع كاذبة، والمثبت بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق وتفضح جريمة التحريض الجنائي.</p>
 
-<p style="line-height: 1.58; margin-bottom: 5px;"><strong>لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</strong></p>
-<p style="line-height: 1.52; margin-bottom: 4px;"><strong>أولاً:</strong> تدوين أقوال موكلي كمشتكٍ ومطالب بالحق الجزائي والشخصي والتعويض المادي والمعنوي لرد اعتباره.</p>
-<p style="line-height: 1.52; margin-bottom: 4px;"><strong>ثانياً:</strong> التفضل بإحالة الأوراق إلى <span class="legal-red" style="color: #dc2626; font-weight: bold;">السيد المحقق القضائي</span> في محكمتكم الموقرة لتدوين أقوال موكلي وتدوين شهادات شهود الإثبات الأربعة (علي سلام، صبحي مصطفى فائق، عباس عهود عبد الرحمن، خلاف هدى محمد عثمان) الحاضرين بدلالة المشتكي توفيراً للوقت وحفاظاً على سرية الإجراءات.</p>
-<p style="line-height: 1.52; margin-bottom: 4px;"><strong>ثالثاً:</strong> ربط المبرزات الجرمية الفنية (البصمات الصوتية والمحادثات) المرفقة على وسيط تخزين بالأوراق التحقيقية وتكليف خبير الأدلة الفنية بتفريغها رسمياً.</p>
-<p style="line-height: 1.52; margin-bottom: 4px;"><strong>رابعاً:</strong> إصدار أمر بضبط جهاز الهاتف المحمول الخاص بالمشكو منها الأولى وتفريغه فنياً كونه أداة ارتكاب الجريمة استناداً للمادة (154) من قانون أصول المحاكمات الجزائية.</p>
-<p style="line-height: 1.52; margin-bottom: 10px;"><strong>خامساً:</strong> اتخاذ الإجراءات القانونية الأصولية وإصدار أمر استقدام بحق المشكو منهما وإلزامهما بتقديم تعهد عدلي مغلظ مصحوب بكفالة مالية ضامنة بعدم التعرض لموكلي أو عائلته أو الاقتراب من دار سكناه مطلقاً.</p>
+<p style="line-height: 1.52; margin-bottom: 4px;"><strong>شهود الإثبات الأربعة (الحاضرون تدوين شهاداتهم على كافة وقائع واعتداءات الدعوى):</strong></p>
+<p style="line-height: 1.5; margin-bottom: 6px; font-size: 13px;">
+1. الشاهد: <strong>علي سلام صبحي</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. الشاهدة: <strong>عهود عبد الرحمن خلاف</strong><br>
+3. الشاهد: <strong>مصطفى فائق عباس</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4. الشاهدة: <strong>هدى محمد عثمان</strong>
+</p>
 
-<p style="text-align: center; margin-top: 14px; margin-bottom: 14px; font-size: 15px;"><strong>مع وافر الشكر والتقدير والاحترام</strong></p>
+<p style="line-height: 1.5; margin-bottom: 4px;"><strong>لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</strong></p>
+<p style="line-height: 1.48; margin-bottom: 3px;"><strong>أولاً:</strong> تدوين أقوال موكلي كمشتكٍ ومطالب بالحق الجزائي والمدني والتعويض المادي والمعنوي لرد اعتباره.</p>
+<p style="line-height: 1.48; margin-bottom: 3px;"><strong>ثانياً:</strong> إحالة الأوراق إلى <span class="legal-red" style="color: #dc2626; font-weight: bold;">السيد المحقق القضائي</span> لتدوين أقوال موكلي وتدوين شهادات شهود الإثبات الأربعة الحاضرين على كافة الوقائع.</p>
+<p style="line-height: 1.48; margin-bottom: 3px;"><strong>ثالثاً:</strong> ربط المبرزات الفنية (فلاش ميموري المكالمة والبصمات ورسائل التهديد) وتكليف خبير الأدلة الجنائية بتفريغها رسمياً، مع ضبط هاتف المشكو منها الأولى استناداً للمادة (154) أصول جزائية.</p>
+<p style="line-height: 1.48; margin-bottom: 8px;"><strong>رابعاً:</strong> إصدار أمر استقدام رسمي بحق المشكو منهما وإلزامهما بكفالة مالية ضامنة وتعهد عدلي مغلظ بعدم التعرض لموكلي أو عائلته مطلقاً.</p>
 
-<table style="width: 100%; border: none; margin-top: 18px;">
+<p style="text-align: center; margin-top: 10px; margin-bottom: 10px; font-size: 14.5px;"><strong>مع وافر الشكر والتقدير والاحترام</strong></p>
+
+<table style="width: 100%; border: none; margin-top: 12px;">
   <tbody>
     <tr>
       <td style="width: 50%; border: none; text-align: right; vertical-align: bottom;">
@@ -817,7 +822,7 @@
     ];
 
     let currentFontIndex = 0;
-    let baseFontSize = 14.5;
+    let baseFontSize = 14;
 
     document.addEventListener('DOMContentLoaded', () => {
       const editorEl = document.getElementById('docContent');
@@ -922,9 +927,9 @@
           node = node.parentElement;
         }
 
-        let currentPx = 14.5;
+        let currentPx = 14;
         if (parentSpan) {
-          currentPx = parseFloat(parentSpan.style.fontSize) || 14.5;
+          currentPx = parseFloat(parentSpan.style.fontSize) || 14;
         } else {
           currentPx = parseFloat(window.getComputedStyle(sel.anchorNode.parentElement || editorEl).fontSize) || baseFontSize;
         }
@@ -954,7 +959,7 @@
         showToast('حجم النص المحدد: ' + newPx + 'px');
       } else {
         // No selection: Change the ENTIRE document font size!
-        baseFontSize = Math.max(11, Math.min(24, Math.round((baseFontSize + delta) * 10) / 10));
+        baseFontSize = Math.max(10, Math.min(24, Math.round((baseFontSize + delta) * 10) / 10));
         editorEl.style.fontSize = baseFontSize + 'px';
         savePetition(true);
         showToast('حجم خط كامل الورقة: ' + baseFontSize + 'px');
