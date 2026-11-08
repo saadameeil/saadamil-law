@@ -1084,10 +1084,10 @@
     
     <!-- Quick Actions Bar -->
     <div class="cases-bar no-print">
-      <div class="case-pill active" id="chipOmar" onclick="showToast('عريضتك الحالية مفتوحة ونشطة ومحفوظة.')">
-        <span>⚖️</span>
-        <span>عريضتك الحالية (قيد التحرير)</span>
-        <span id="saveStatusDot" style="color:#34d399; font-size:10px; margin-right:4px;">● محفوظة تلقائياً</span>
+      <div class="case-pill active" id="chipOmar" onclick="loadAuditedOmarPetition()" style="background: rgba(220, 38, 38, 0.18); border-color: rgba(220, 38, 38, 0.55); color: #fca5a5;" title="تحميل وتحديث عريضة الموكل عمر الجبوري بأحدث تنسيق وألوان">
+        <span>⚡</span>
+        <span>عريضة عمر الجبوري (النسخة الرسمية بالألوان)</span>
+        <span id="saveStatusDot" style="color:#34d399; font-size:10px; margin-right:4px;">● نشطة</span>
       </div>
       <div class="case-pill" onclick="refreshAppPage()" style="background: rgba(56, 189, 248, 0.16); border-color: rgba(56, 189, 248, 0.45); color: #7dd3fc;">
         <span>🔄</span>
@@ -1340,7 +1340,7 @@
 
   <!-- App Script -->
   <script>
-    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_document_v2';
+    const ACTIVE_DRAFT_KEY = 'saadamil_user_active_document_v3';
     const ARCHIVE_STORAGE_KEY = 'saadamil_petitions_archive_v1';
     const FONT_STORAGE_KEY = 'saadamil_saved_font_mode';
 
@@ -1359,21 +1359,21 @@
   <div style="margin-right: 14px; margin-top: 2px;"><strong>الساكنتان:</strong> بغداد - الدورة، الإسكان، قرب جامع الإسكان (بدلالة المشتكي)</div>
 </div>
 
-<p style="text-align: center; margin-top: 12px; margin-bottom: 12px; font-size: 15.5px;"><strong><u>م / شكوى جزائية وطلب اتخاذ الإجراءات القانونية</u></strong></p>
+<p style="text-align: center; margin-top: 12px; margin-bottom: 12px; font-size: 15.5px;"><strong><u>م / شكوى جزائية وطلب اتخاذ الإجراءات القانونية الأصولية</u></strong></p>
 
 <p style="margin-bottom: 8px;"><strong>تحية طيبة واحتراماً،</strong></p>
 
 <p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;">سبق وأن أقدمت المشكو منها الأولى (شهد عباس لفته) وباشتراك وتحريض مباشر من والدتها المشكو منها الثانية (ناهد)، على ارتكاب سلسلة من الأفعال والاعتداءات الجرمية الشائنة المعاقب عليها قانوناً بحق موكلي، وفق التفصيل الآتي:</p>
 
-<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>1. جريمة القذف والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات):</strong> أقدمت المشكو منها الأولى بالاتصال بصديق موكلي المقرب الشاهد (علي سلام صبحي) بمكالمة مطولة استغرقت ساعة و(34) دقيقة، بهدف إسقاط موكلي اجتماعياً وأخلاقياً واستمالة صديقه ليكون بصفها ضده، وأطلقت خلالها افتراءات وطعوناً مخلة بالشرف والرجولة؛ حيث ادعت كذباً بأن موكلي <u>«شاذ جنسياً وزعمت وجود مقطع فيديو يثبت ذلك»</u>، كما ادعت افتراءً بأنه قام بإدخال شاب آخر معه إلى دار الزوجية في أول أيام زواجهما وهي عروسة، وادعت كذلك أنه يشرب الكحول داخل الدار ويسمح لها هي أيضاً بالشرب معه لتصويره مجرداً من الغيرة والأخلاق، في حين أن الثابت هو إلحاحها هي المستمر ورغبتها بالشرب معه رغم رفضه، وكل ذلك موثق بتسجيل المكالمة وشهادة الشهود.</p>
+<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>1. جريمة القذف والطعن الفاحش بالشرف والتسقيط الممنهج (المادتان 433 و434 عقوبات):</strong> أقدمت المشكو منها الأولى بالاتصال بصديق موكلي المقرب الشاهد (علي سلام صبحي) بمكالمة هاتفية مسجلة استغرقت ساعة و(34) دقيقة بهدف إسقاط موكلي اجتماعياً وأخلاقياً واستمالة صديقه لصفها، وأطلقت خلالها افتراءات وطعوناً مخلة بالشرف والرجولة؛ حيث ادعت كذباً بأن موكلي <u>«شاذ جنسياً وزعمت وجود مقطع فيديو يثبت ذلك»</u>، كما ادعت افتراءً بأنه قام بإدخال شاب آخر معه إلى دار الزوجية في أول أيام زواجهما وهي عروسة، وادعت كذلك أنه يشرب الكحول داخل الدار ويسمح لها هي أيضاً بالشرب معه لتصويره مجرداً من الغيرة والأخلاق، في حين أن الثابت هو إلحاحها هي المستمر ورغبتها بالشرب معه رغم رفضه، وكل ذلك موثق بتسجيل المكالمة وشهادة الشهود.</p>
 
-<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>2. جريمة الابتزاز والتهديد بنسبة أمور خادشة للشرف (المادة 430 عقوبات):</strong> قيام المشكو منها الأولى بالتلويح والتهديد بنشر تلك المقاطع والادعاءات المفبركة ونسبة أمور مخلة بالحياء والشرف لموكلي بقصد ابتزازه والضغط عليه لكسر إرادته وإرغامه على التنازل عن حقوقه الشرعية والمالية.</p>
+<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>2. جريمة الابتزاز والتهديد بنسبة أمور خادشة للشرف <span class="legal-red" style="color: #dc2626; font-weight: bold;">(المادة 430 عقوبات)</span>:</strong> قيام المشكو منها الأولى بالتلويح والتهديد بنشر تلك المقاطع والادعاءات المفبركة ونسبة أمور مخلة بالحياء والشرف لموكلي بقصد ابتزازه والضغط عليه لكسر إرادته وإرغامه على التنازل عن حقوقه الشرعية والمالية.</p>
 
-<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>3. جريمة التهديد بارتكاب جناية القتل والذبح (المادتان 430 و431 عقوبات):</strong> قيام المشكو منها الأولى بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإلحاق الأذى الجسدي به وبث الرعب في نفسه.</p>
+<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>3. جريمة التهديد بارتكاب جناية القتل والذبح <span class="legal-red" style="color: #dc2626; font-weight: bold;">(المادتان 430 و431 عقوبات)</span>:</strong> قيام المشكو منها الأولى بتهديد موكلي هاتفياً وعبر الرسائل النصية بالقتل والذبح والتوعد بالاستعانة بأقاربها وأعمامها لإلحاق الأذى الجسدي به وبث الرعب في نفسه.</p>
 
-<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>4. جرائم التهجم العلني والتجمهر والسب أمام الدار (المواد 433 و434 بدلالة 19 عقوبات):</strong> قيام المشكو منها الأولى بالحضور لمرات متتالية أمام دار سكن موكلي الكائن في (الدورة محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة، وتوجيه عبارات السب والقذف الفاحش بحق موكلي وأسرته لإحداث فضيحة اجتماعية وتخريب سمعتهم أمام الجيران.</p>
+<p style="line-height: 1.55; margin-bottom: 6px; text-align: justify;"><strong>4. جرائم التهجم العلني والتجمهر والسب أمام الدار (المواد 433 و434 بدلالة 19/ 3/ ب عقوبات):</strong> قيام المشكو منها الأولى بالحضور لمرات متتالية أمام دار سكن موكلي الكائن في (الدورة محلة 842) والصراخ في الشارع والتسبب بتجمهر أهالي المنطقة، وتوجيه عبارات السب والقذف الفاحش بحق موكلي وأسرته لإحداث فضيحة اجتماعية وتخريب سمعتهم أمام الجيران.</p>
 
-<p style="line-height: 1.55; margin-bottom: 8px; text-align: justify;"><strong>5. جريمة محاولة حمل الشاهد على شهادة الزور وتضليل القضاء (المادة 254/ 1 والمادة 248 بدلالة 48 عقوبات):</strong> قيام المشكو منهما (الزوجة ووالدتها ناهد) بمحاولة التواصل والضغط على والدة صديق موكلي الشاهدة (عهود عبد الرحمن خلاف) لتحريضها واستمالتها للشهادة بالزور ضد موكلي واختلاق وقائع كاذبة، والمثبت بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق وتفضح جريمة التحريض الجنائي.</p>
+<p style="line-height: 1.55; margin-bottom: 8px; text-align: justify;"><strong>5. جريمة محاولة حمل وإغراء شاهد على شهادة الزور وتضليل القضاء <span class="legal-red" style="color: #dc2626; font-weight: bold;">(المادة 254/ 1 والمادة 248 بدلالة 48 عقوبات)</span>:</strong> قيام المشكو منهما (الزوجة ووالدتها ناهد) بمحاولة التواصل والضغط على والدة صديق موكلي الشاهدة (عهود عبد الرحمن خلاف) لتحريضها واستمالتها للشهادة بالزور ضد موكلي واختلاق وقائع كاذبة، والمثبت بالبصمات الصوتية الصادرة من الشاهدة (عهود) التي توثق وتفضح جريمة التحريض الجنائي.</p>
 
 <p style="line-height: 1.52; margin-bottom: 4px;"><strong>شهود الإثبات الأربعة (الحاضرون تدوين شهاداتهم على كافة وقائع واعتداءات الدعوى):</strong></p>
 <p style="line-height: 1.5; margin-bottom: 6px; font-size: 13px;">
@@ -1384,8 +1384,8 @@
 <p style="line-height: 1.5; margin-bottom: 4px;"><strong>لذا؛ نطلب من عدالتكم الموقرة التفضل بـ:</strong></p>
 <p style="line-height: 1.48; margin-bottom: 3px;"><strong>أولاً:</strong> تدوين أقوال موكلي كمشتكٍ ومطالب بالحق الجزائي والمدني والتعويض المادي والمعنوي لرد اعتباره.</p>
 <p style="line-height: 1.48; margin-bottom: 3px;"><strong>ثانياً:</strong> إحالة الأوراق إلى <span class="legal-red" style="color: #dc2626; font-weight: bold;">السيد المحقق القضائي</span> لتدوين أقوال موكلي وتدوين شهادات شهود الإثبات الأربعة الحاضرين على كافة الوقائع.</p>
-<p style="line-height: 1.48; margin-bottom: 3px;"><strong>ثالثاً:</strong> ربط المبرزات الفنية (فلاش ميموري المكالمة والبصمات ورسائل التهديد) وتكليف خبير الأدلة الجنائية بتفريغها رسمياً، مع ضبط هاتف المشكو منها الأولى استناداً للمادتين (75 و84) من قانون أصول المحاكمات الجزائية والمادة (40) من الدستور.</p>
-<p style="line-height: 1.48; margin-bottom: 8px;"><strong>رابعاً:</strong> إصدار أمر استقدام رسمي بحق المشكو منهما وإلزامهما بكفالة مالية ضامنة وتعهد عدلي مغلظ بعدم التعرض لموكلي أو عائلته مطلقاً.</p>
+<p style="line-height: 1.48; margin-bottom: 3px;"><strong>ثالثاً:</strong> ربط المبرزات الفنية (فلاش ميموري المكالمة والبصمات ورسائل التهديد) وتكليف خبير الأدلة الجنائية بتفريغها رسمياً، مع <span class="legal-red" style="color: #dc2626; font-weight: bold;">ضبط هاتف المشكو منها الأولى</span> استناداً للمادتين (75 و84) من قانون أصول المحاكمات الجزائية والمادة (40) من الدستور.</p>
+<p style="line-height: 1.48; margin-bottom: 8px;"><strong>رابعاً:</strong> <span class="legal-red" style="color: #dc2626; font-weight: bold;">إصدار أمر استقدام رسمي</span> بحق المشكو منهما وإلزامهما بكفالة مالية ضامنة وتعهد عدلي مغلظ بعدم التعرض لموكلي أو عائلته مطلقاً.</p>
 
 <p style="text-align: center; margin-top: 10px; margin-bottom: 10px; font-size: 14.5px;"><strong>مع وافر الشكر والتقدير والاحترام</strong></p>
 
@@ -1431,18 +1431,14 @@
     document.addEventListener('DOMContentLoaded', () => {
       const editorEl = document.getElementById('docContent');
       
-      // 1. Strictly PRESERVE user's edits across all sessions
-      const userSavedContent = localStorage.getItem(ACTIVE_DRAFT_KEY) 
-                            || localStorage.getItem('saadamil_user_active_document_v1')
-                            || localStorage.getItem('saadamil_active_draft_v6')
-                            || localStorage.getItem('saadamil_saved_petition_html_v5') 
-                            || localStorage.getItem('saadamil_saved_petition_html_v4') 
-                            || localStorage.getItem('saadamil_saved_petition_html');
+      // 1. Strictly PRESERVE user's edits for active version v3, or load fresh audited petition
+      const userSavedContent = localStorage.getItem(ACTIVE_DRAFT_KEY);
       
       if (userSavedContent && userSavedContent.trim().length > 50) {
         editorEl.innerHTML = userSavedContent;
       } else {
         editorEl.innerHTML = OMAR_PETITION_DEFAULT_HTML.trim();
+        savePetition(true);
       }
 
       // 2. Restore saved font preference
@@ -1857,6 +1853,16 @@ ${clean}
           showToast('💾 تم حفظ وتأمين كافة تعديلاتك بنجاح في جهازك ✅');
         }
       }
+    }
+
+    // Direct Instant Load of Audited Omar Petition
+    function loadAuditedOmarPetition() {
+      const editorEl = document.getElementById('docContent');
+      if (!editorEl) return;
+      editorEl.innerHTML = OMAR_PETITION_DEFAULT_HTML.trim();
+      savePetition(true);
+      showToast('⚡ تم تفعيل وتثبيت عريضة عمر الجبوري المدققة بالألوان والتنسيق الأصولي ✅');
+      try { beautifyPetitionDocument(); } catch(e) {}
     }
 
     // Reset with Safety Confirmation & Auto-Backup
