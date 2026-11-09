@@ -722,7 +722,450 @@
         border-color: #000 !important;
       }
     }
-  </style>
+  
+    /* ========================================================
+       ENHANCED STYLES: CASE TIMELINE, AUDIT HISTORY & CONTRACT STUDIO
+       ======================================================== */
+    .view-toggle-bar {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--surface-card);
+      padding: 6px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 1.25rem;
+      width: fit-content;
+    }
+    .view-toggle-btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .view-toggle-btn.active {
+      background: var(--gold-gradient);
+      color: #070a12;
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.25);
+    }
+
+    .sf-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+      gap: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .sf-cases-grid { grid-template-columns: 1fr; }
+    }
+
+    .sf-case-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .sf-case-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .sf-case-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; left: 0; height: 3px;
+      background: var(--gold-gradient);
+    }
+
+    .sf-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 0.85rem;
+    }
+    .sf-code-pill {
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.5px;
+    }
+    .sf-court-pill {
+      font-size: 0.8rem;
+      color: var(--cyan);
+      background: rgba(6, 182, 212, 0.1);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(6, 182, 212, 0.25);
+    }
+    .sf-case-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .sf-meta-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      background: rgba(0,0,0,0.25);
+      padding: 0.85rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      font-size: 0.84rem;
+    }
+    .sf-meta-label { color: var(--text-dim); font-size: 0.76rem; display: block; margin-bottom: 2px; }
+    .sf-meta-val { color: var(--text); font-weight: 600; }
+
+    /* Upcoming Hearing Banner */
+    .next-hearing-banner {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.14) 0%, rgba(212, 175, 55, 0.08) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .next-hearing-title {
+      color: var(--gold-light);
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .next-hearing-time {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .next-hearing-action {
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border-right: 3px solid var(--gold);
+    }
+
+    /* Interactive Timeline */
+    .timeline-wrapper {
+      margin-top: 0.25rem;
+    }
+    .timeline-toggle-btn {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: inherit;
+    }
+    .timeline-toggle-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
+    .timeline-content {
+      padding: 0.75rem 0.5rem 0.25rem 0.5rem;
+      position: relative;
+    }
+    .timeline-item {
+      position: relative;
+      padding-right: 28px;
+      padding-bottom: 1rem;
+      border-right: 2px solid rgba(212, 175, 55, 0.25);
+    }
+    .timeline-item:last-child {
+      border-right: 2px solid transparent;
+      padding-bottom: 0;
+    }
+    .timeline-dot {
+      position: absolute;
+      right: -7px;
+      top: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+    }
+    .timeline-date {
+      font-size: 0.78rem;
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .timeline-action-text {
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.5;
+      margin-top: 2px;
+    }
+    .timeline-decision {
+      font-size: 0.8rem;
+      color: var(--cyan);
+      background: rgba(6, 182, 212, 0.08);
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    /* Case Card Action Toolbar */
+    .sf-actions-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: auto;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .btn-timeline-action {
+      flex: 1;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border-subtle);
+      background: var(--surface-card);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .btn-timeline-action:hover {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .btn-timeline-rollback {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+    .btn-timeline-rollback:hover {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: var(--danger);
+      color: #fff;
+    }
+
+    /* Modal for Adding Session */
+    .session-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .session-modal-card {
+      background: var(--surface);
+      border: 1px solid var(--gold);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 580px;
+      padding: 1.75rem;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* ========================================================
+       FEE CONTRACT STUDIO STYLES
+       ======================================================== */
+    .contracts-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    @media (max-width: 1100px) {
+      .contracts-container { grid-template-columns: 1fr; }
+    }
+
+    .contract-presets-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+    .preset-chip {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--gold);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .preset-chip:hover {
+      background: var(--gold);
+      color: #070a12;
+    }
+
+    .contract-a4-wrapper {
+      background: #1e293b;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contract-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      background: rgba(0,0,0,0.4);
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+    .contract-a4-sheet {
+      background: #ffffff;
+      color: #1a1a1a;
+      width: 100%;
+      min-height: 297mm;
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 20mm 18mm 18mm 18mm;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      font-family: 'Amiri', 'Cairo', serif;
+      font-size: 11pt;
+      line-height: 1.65;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .contract-header {
+      text-align: center;
+      border-bottom: 2px solid #b8860b;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    .contract-header h2 {
+      font-size: 16pt;
+      color: #1a1a1a;
+      font-weight: 800;
+      margin-bottom: 4px;
+      font-family: 'Cairo', sans-serif;
+    }
+    .contract-header p {
+      font-size: 9.5pt;
+      color: #4b5563;
+      line-height: 1.4;
+    }
+    .contract-title-badge {
+      display: inline-block;
+      background: #fef3c7;
+      border: 1.5px solid #d97706;
+      color: #92400e;
+      padding: 4px 20px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 13pt;
+      margin: 10px 0 14px 0;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .contract-parties {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 10pt;
+    }
+    .contract-clause {
+      margin-bottom: 11px;
+      text-align: justify;
+      font-size: 10.5pt;
+    }
+    .contract-clause-title {
+      font-weight: 800;
+      color: #0f172a;
+      display: inline;
+    }
+
+    .contract-signatures {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1.5px dashed #cbd5e1;
+      text-align: center;
+    }
+    .sig-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 10pt;
+    }
+    .sig-line {
+      width: 140px;
+      height: 45px;
+      border-bottom: 1.5px solid #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    @media print {
+      body * { visibility: hidden !important; }
+      #contract-print-target, #contract-print-target * { visibility: visible !important; }
+      #contract-print-target {
+        position: absolute !important;
+        left: 0 !important; top: 0 !important;
+        width: 100% !important; max-width: 100% !important;
+        padding: 15mm 15mm !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: #fff !important;
+      }
+      .btn-no-print { display: none !important; }
+    }
+
+</style>
 </head>
 <body>
 
@@ -775,6 +1218,14 @@
             <span>الرسائل والاستشارات</span>
           </div>
           <span class="nav-badge" id="badge-inbox-new" style="background:var(--gold-light);color:#000;">1</span>
+        </a>
+
+                <a class="nav-item" data-tab="tab-contracts">
+          <div class="nav-item-inner">
+            <span class="nav-item-icon">📜</span>
+            <span>استديو عقود الأتعاب</span>
+          </div>
+          <span class="nav-badge" id="badge-contracts-count" style="background:var(--gold);color:#000;font-weight:700;">جديد</span>
         </a>
 
         <a class="nav-item" data-tab="tab-dockets">
@@ -943,6 +1394,251 @@
 
         <!-- ================= TAB 3: DOCKETS & CASES ================= -->
         <section id="tab-dockets" class="tab-view">
+          <!-- Main Toggle: SF-Cases vs Consultations -->
+          <div class="view-toggle-bar btn-no-print">
+            <button class="view-toggle-btn active" id="btn-view-sfcases" onclick="switchDocketsSubView('cases')">
+              <span>⚖️</span>
+              <span>الدعاوى القضائية النشطة (SF-CASES)</span>
+              <span class="nav-badge" id="badge-sf-cases-total" style="background:var(--gold);color:#000;">6</span>
+            </button>
+            <button class="view-toggle-btn" id="btn-view-inbox-dockets" onclick="switchDocketsSubView('consultations')">
+              <span>💬</span>
+              <span>الاستشارات والطلبات الواردة</span>
+              <span class="nav-badge" id="badge-consult-total" style="background:rgba(255,255,255,0.1);color:#fff;">0</span>
+            </button>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="controls-bar btn-no-print">
+            <div class="search-box">
+              <input type="text" id="dockets-search" class="search-input" placeholder="🔍 بحث في القضايا بالكود، المحكمة، الموكل، الخصم...">
+            </div>
+
+            <div class="filter-tabs" id="cases-filter-tabs">
+              <button class="filter-tab active" data-case-filter="all">جميع القضايا</button>
+              <button class="filter-tab" data-case-filter="تحقيق">تحقيق وجنايات 🔴</button>
+              <button class="filter-tab" data-case-filter="بداءة">بداءة وتعويض 🔵</button>
+              <button class="filter-tab" data-case-filter="أحوال">أحوال وتركات 🟢</button>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button onclick="openNewCaseModal()" class="btn btn-gold btn-sm">تسجيل قضية جديدة +</button>
+              <button onclick="loadOfficialCases()" class="btn btn-secondary btn-sm">تحديث حى 🔄</button>
+            </div>
+          </div>
+
+          <!-- Container 1: Official SF-CASES with Full Timeline -->
+          <div id="sf-cases-container" class="sf-cases-grid">
+            <!-- Injected via JS from data/cases.json -->
+          </div>
+
+          <!-- Container 2: Consultations / Manual Dockets (Hidden by default) -->
+          <div id="dockets-cards-container" class="dockets-grid" style="display: none;">
+            <!-- Injected via JS -->
+          </div>
+        </section>
+
+        <!-- ================= TAB: FEE CONTRACTS STUDIO (NEW) ================= -->
+        <section id="tab-contracts" class="tab-view">
+          <div class="contracts-container">
+            <!-- Left Column: Form & Presets -->
+            <div class="cms-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                <div>
+                  <h3 style="margin-bottom:0.25rem;">📜 استديو تحرير عقود أتعاب المحاماة</h3>
+                  <p style="font-size:0.82rem; color:var(--text-muted);">
+                    تنظيم وتوليد عقود أتعاب أصولية محصنة بموجب قانون المحاماة العراقي رقم 173 لسنة 1965 المعدل (المواد 47 - 58).
+                  </p>
+                </div>
+                <span class="sf-code-pill">الصلاحية (ب)</span>
+              </div>
+
+              <!-- Quick Presets -->
+              <div class="contract-presets-bar">
+                <span style="font-size:0.8rem; color:var(--text-dim); align-self:center; margin-left:4px;">قوالب سريعة:</span>
+                <button type="button" class="preset-chip" onclick="applyContractPreset('criminal')">⚡ شكوى جزائية وتحقيق</button>
+                <button type="button" class="preset-chip" onclick="applyContractPreset('civil')">⚡ بداءة وتعويض</button>
+                <button type="button" class="preset-chip" onclick="applyContractPreset('sharia')">⚡ أحوال شخصية ونفقة</button>
+                <button type="button" class="preset-chip" onclick="applyContractPreset('qassam')">⚡ قسام شرعي وحصر تركة</button>
+                <button type="button" class="preset-chip" onclick="applyContractPreset('realestate')">⚡ إزالة شيوع وفرز عقار</button>
+              </div>
+
+              <form id="contract-form" oninput="updateLiveContractPreview()">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem;">
+                  <div class="form-group">
+                    <label>اسم الموكل (الطرف الثاني) *</label>
+                    <input type="text" id="c-client-name" class="form-control" placeholder="مثال: عمر رعد خليفه" required>
+                  </div>
+                  <div class="form-group">
+                    <label>صفة الموكل في الدعوى *</label>
+                    <select id="c-client-role" class="form-control">
+                      <option value="مشتكٍ ومدعٍ بالحق الجزائي والمدني">مشتكٍ ومدعٍ مدنياً</option>
+                      <option value="مدعٍ (طالب الحق)">مدعٍ (بداءة / أحوال)</option>
+                      <option value="مدعى عليه">مدعى عليه</option>
+                      <option value="مشكو منه / متهم">مشكو منه / متهم</option>
+                      <option value="وارث / طالب القسام الشرعي">وارث / طالب قسام</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem;">
+                  <div class="form-group">
+                    <label>رقم البطاقة الموحدة / الهوية</label>
+                    <input type="text" id="c-client-id" class="form-control" placeholder="199888597552">
+                  </div>
+                  <div class="form-group">
+                    <label>رقم هاتف الموكل</label>
+                    <input type="text" id="c-client-phone" class="form-control" placeholder="07812429495">
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem;">
+                  <div class="form-group">
+                    <label>محل سكن الموكل</label>
+                    <input type="text" id="c-client-address" class="form-control" placeholder="بغداد - الدورة، محلة 842">
+                  </div>
+                  <div class="form-group">
+                    <label>اسم الخصم / المطلوب ضده</label>
+                    <input type="text" id="c-opponent-name" class="form-control" placeholder="شهد عباس لفته ووالدتها">
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:0.85rem;">
+                  <div class="form-group">
+                    <label>موضوع الدعوى / العمل الموكل به *</label>
+                    <input type="text" id="c-case-subject" class="form-control" placeholder="الشكوى الجزائية وفق المادة 430 و433 عقوبات ومتابعة إجراءات التحقيق" required>
+                  </div>
+                  <div class="form-group">
+                    <label>المحكمة المختصة *</label>
+                    <input type="text" id="c-court-name" class="form-control" placeholder="محكمة تحقيق الدورة" required>
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem;">
+                  <div class="form-group">
+                    <label>إجمالي مبلغ الأتعاب المتفق عليه *</label>
+                    <input type="text" id="c-total-fee" class="form-control" placeholder="مثال: 3,000,000 دينار عراقي" required>
+                  </div>
+                  <div class="form-group">
+                    <label>مبلغ الدفعة المقدمة (عند التوقيع) *</label>
+                    <input type="text" id="c-advance-fee" class="form-control" placeholder="مثال: 1,000,000 دينار عراقي" required>
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem;">
+                  <div class="form-group">
+                    <label>المؤخر / الدفعة عند صدور الحكم أو الإنجاز</label>
+                    <input type="text" id="c-final-fee" class="form-control" placeholder="مثال: 2,000,000 دينار عراقي">
+                  </div>
+                  <div class="form-group">
+                    <label>نسبة مئوية من المبلغ المتحصل (إن وجدت)</label>
+                    <input type="text" id="c-percentage" class="form-control" placeholder="مثال: 10% من قيمة المبلغ المحكوم به">
+                  </div>
+                </div>
+
+                <!-- Clauses Checklist -->
+                <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle); padding:0.85rem; border-radius:10px; margin-top:0.5rem;">
+                  <div style="font-size:0.82rem; font-weight:700; color:var(--gold); margin-bottom:0.5rem;">شروط والتزامات العقد الأصولية:</div>
+                  <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.8rem; margin-bottom:4px; cursor:pointer;">
+                    <input type="checkbox" id="chk-clause-fees" checked onchange="updateLiveContractPreview()"> الرسوم القضائية ومصاريف الخبراء والانتقال على عاتق الطرف الثاني (الموكل) حصراً.
+                  </label>
+                  <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.8rem; margin-bottom:4px; cursor:pointer;">
+                    <input type="checkbox" id="chk-clause-revoke" checked onchange="updateLiveContractPreview()"> التزام الموكل بعدم الصلح أو التنازل أو عزل المحامي إلا بعد تسديد كامل الأتعاب المتفق عليها (م 54 محاماة).
+                  </label>
+                  <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.8rem; cursor:pointer;">
+                    <input type="checkbox" id="chk-clause-arb" checked onchange="updateLiveContractPreview()"> خضوع أي خلاف ناشئ عن العقد لاختصاص وتحكيم مجلس نقابة المحامين العراقيين.
+                  </label>
+                </div>
+
+                <div style="display:flex; gap:0.75rem; margin-top:1.25rem;">
+                  <button type="button" onclick="saveContractToLedger()" class="btn btn-gold" style="flex:1;">💾 حفظ العقد في الأرشيف</button>
+                  <button type="button" onclick="resetContractForm()" class="btn btn-secondary">تفريغ الحقول</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Right Column: Live A4 Printable Sheet -->
+            <div class="contract-a4-wrapper">
+              <div class="contract-toolbar btn-no-print">
+                <button type="button" onclick="printContractSheet()" class="btn btn-gold btn-sm">🖨️ طباعة A4 فورية</button>
+                <button type="button" onclick="shareContractWhatsApp()" class="btn btn-secondary btn-sm" style="color:#22c55e;">📲 إرسال لواتساب الموكل</button>
+                <button type="button" onclick="copyContractText()" class="btn btn-secondary btn-sm">📋 نسخ النص كاملاً</button>
+              </div>
+
+              <!-- Single Page A4 Target -->
+              <div id="contract-print-target" class="contract-a4-sheet">
+                <!-- Header -->
+                <div class="contract-header">
+                  <div style="display:flex; justify-content:space-between; align-items:center; font-size:8pt; color:#6b7280; font-family:'Cairo', sans-serif;">
+                    <span>جمهورية العراق — نقابة المحامين العراقيين</span>
+                    <span id="preview-contract-code">عقد رقم: SF-CNT-2026-01</span>
+                    <span id="preview-contract-date">التاريخ: 2026/11/09</span>
+                  </div>
+                  <h2 style="margin-top:6px;">مكتب المحامي سعد فراس أميل</h2>
+                  <p>المحامي المقيد بنقابة المحامين العراقيين (رقم الهوية: 188572 — الصلاحية ب)<br>هاتف: 07812429495 • بغداد — مجمع محاكم الكرخ</p>
+                  <div class="contract-title-badge">عقد أتعاب محاماة أصولي</div>
+                </div>
+
+                <!-- Body Clauses -->
+                <div>
+                  <div class="contract-parties">
+                    <p style="margin-bottom:4px;"><strong>الطرف الأول (المحامي الوكيل):</strong> الأستاذ سعد فراس أميل — المحامي المقيد بالصلاحية (ب) بموجب هوية النقابة المرقمة (188572)، والمتخذ له موطناً مختاراً مكتبه في بغداد.</p>
+                    <p><strong>الطرف الثاني (الموكل المستدعي):</strong> السيد/ة <span id="p-client-name" style="font-weight:700; color:#b45309;">عمر رعد خليفه</span>، رقم الهوية/الموحدة: (<span id="p-client-id">199888597552</span>)، هاتف: (<span id="p-client-phone">07812429495</span>)، الساكن: (<span id="p-client-address">بغداد - الدورة، محلة 842</span>)، بصفته: (<span id="p-client-role">مشتكٍ ومدعٍ بالحق الجزائي والمدني</span>).</p>
+                  </div>
+
+                  <p style="margin-bottom:8px; font-size:9.5pt; color:#374151;">
+                    تم الاتفاق والتراضي بين الطرفين بكامل أهليتهما القانونية والشرعية وفقاً لأحكام قانون المحاماة العراقي رقم (173) لسنة 1965 المعدل على البنود الآتية:
+                  </p>
+
+                  <div class="contract-clause">
+                    <span class="contract-clause-title">البند الأول (موضوع التوكيل والولاية):</span>
+                    وكّل الطرف الثاني الطرف الأول وتولى بموجبه إقامة ومتابعة والدفاع في <span id="p-case-subject" style="font-weight:700;">الشكوى الجزائية وفق المادتين 430 و433 عقوبات والمطالبة بالتعويض المادي والمعنوي</span> المقامة ضد (<span id="p-opponent-name">شهد عباس لفته ووالدتها ناهد</span>) أمام (<span id="p-court-name" style="font-weight:700;">محكمة تحقيق الدورة</span>) وكافة الجهات والمحاكم ذات العلاقة.
+                  </div>
+
+                  <div class="contract-clause">
+                    <span class="contract-clause-title">البند الثاني (مقدار الأتعاب وجدول السداد):</span>
+                    اتفق الطرفان على أن تكون أتعاب الطرف الأول الإجمالية عن هذا العمل مبلغاً مقطوعاً قدره (<span id="p-total-fee" style="font-weight:800; color:#92400e;">3,000,000 دينار عراقي</span>) <span id="p-percentage-span"></span>، وتدفع وفق الآتي:
+                    <ul style="padding-right:20px; margin-top:3px; font-size:9.5pt;">
+                      <li><strong>الدفعة المقدمة (المعجلة):</strong> مبلغ قدره (<span id="p-advance-fee">1,000,000 دينار عراقي</span>) تُدفع نقداً عند توقيع هذا العقد واستلام التوكيل.</li>
+                      <li><strong>الدفعة المؤخرة (المؤجلة):</strong> مبلغ قدره (<span id="p-final-fee">2,000,000 دينار عراقي</span>) تُستحق وتسدد عند صدور القرار/الحكم النهائي أو إنجاز العمل.</li>
+                    </ul>
+                  </div>
+
+                  <div class="contract-clause" id="p-clause-fees-box">
+                    <span class="contract-clause-title">البند الثالث (الرسوم ومصاريف التقاضي):</span>
+                    كافة الرسوم القضائية والعدلية وأجور الخبراء ورسوم الاستنساخ ومصاريف الانتقال خارج المحكمة تقع على عاتق الطرف الثاني (الموكل) حصراً ومستقلة عن مبلغ الأتعاب المنصوص عليه في البند الثاني.
+                  </div>
+
+                  <div class="contract-clause" id="p-clause-revoke-box">
+                    <span class="contract-clause-title">البند الرابع (حظر التصالح أو العزل الجائر):</span>
+                    استناداً للمادة (54) من قانون المحاماة العراقي، إذا قام الطرف الثاني بعزل الطرف الأول دون سبب مشروع أو تصالح مع خصمه أو تنازل عن الدعوى أو أهمل تزويده بالمستمسكات، استحق الطرف الأول كامل مبلغ الأتعاب المتفق عليه فوراً دون أي إنقاص.
+                  </div>
+
+                  <div class="contract-clause" id="p-clause-arb-box">
+                    <span class="contract-clause-title">البند الخامس (التحكيم والنفاذ):</span>
+                    حُرر هذا العقد من نسختين أصليتين بيد كل طرف نسخة للعمل بموجبها، ويخضع أي نزاع في تفسيره لاختصاص وتحكيم مجلس نقابة المحامين العراقيين.
+                  </div>
+                </div>
+
+                <!-- Signatures -->
+                <div class="contract-signatures">
+                  <div class="sig-box">
+                    <strong>الطرف الأول (المحامي الوكيل)</strong>
+                    <span>المحامي سعد فراس أميل</span>
+                    <div class="sig-line"></div>
+                    <span style="font-size:7.5pt; color:#6b7280;">هوية النقابة: 188572 (الصلاحية ب)</span>
+                  </div>
+                  <div class="sig-box">
+                    <strong>الطرف الثاني (الموكل)</strong>
+                    <span id="p-sig-client-name">عمر رعد خليفه</span>
+                    <div class="sig-line"></div>
+                    <span style="font-size:7.5pt; color:#6b7280;">التوقيع أو بصمة الإبهام الأيسر</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
           <div class="controls-bar btn-no-print">
             <div class="search-box">
               <input type="text" id="dockets-search" class="search-input" placeholder="🔍 بحث في الإضبارات بالرقم، الخصم، الموكل...">
@@ -1189,7 +1885,8 @@
     const tabTitles = {
       'tab-dashboard': '<span>📊</span> لوحة القيادة والمؤشرات العامة',
       'tab-inbox': '<span>💬</span> صندوق الرسائل والاستشارات الواردة',
-      'tab-dockets': '<span>📁</span> سجل القضايا والإضبارات القضائية',
+      'tab-dockets': '<span>📁</span> سجل القضايا وسير الجلسات (Dockets & Timeline)',
+      'tab-contracts': '<span>📜</span> استديو عقود أتعاب المحاماة الرسمية (Legal Fee Contracts)',
       'tab-cms': '<span>✍️</span> ناشر المقالات والدراسات القانونية (GEO & CMS)',
       'tab-forensic': '<span>🛡️</span> مختبر الأدلة الرقمية والتشفير الجنائي',
       'tab-settings': '<span>⚙️</span> المراجع الرسمية وروابط الإدارة'
@@ -1263,7 +1960,527 @@
     });
 
     // Load All Data
+    
+    // ========================================================
+    // OFFICIAL LITIGATION CASES & SESSIONS TIMELINE CONTROLLER
+    // ========================================================
+    let officialCases = [];
+    let currentDocketsSubView = 'cases';
+    let currentCaseFilter = 'all';
+
+    async function loadOfficialCases() {
+      try {
+        const resp = await fetch('data/cases.json?v=' + Date.now());
+        if (resp.ok) {
+          const data = await resp.json();
+          officialCases = data.cases || [];
+        }
+      } catch (err) {
+        console.warn('Could not fetch data/cases.json, trying local storage:', err);
+      }
+
+      // Merge with localStorage overrides
+      const localEdits = JSON.parse(localStorage.getItem('saad_amil_cases_overrides') || '{}');
+      officialCases = officialCases.map(c => {
+        if (localEdits[c.id]) {
+          return { ...c, ...localEdits[c.id] };
+        }
+        return c;
+      });
+
+      const badgeTotal = document.getElementById('badge-sf-cases-total');
+      if (badgeTotal) badgeTotal.textContent = officialCases.length;
+
+      renderOfficialCases();
+    }
+
+    function switchDocketsSubView(view) {
+      currentDocketsSubView = view;
+      const btnCases = document.getElementById('btn-view-sfcases');
+      const btnConsult = document.getElementById('btn-view-inbox-dockets');
+      const containerCases = document.getElementById('sf-cases-container');
+      const containerConsult = document.getElementById('dockets-cards-container');
+      const filterTabs = document.getElementById('cases-filter-tabs');
+
+      if (view === 'cases') {
+        btnCases.classList.add('active');
+        btnConsult.classList.remove('active');
+        containerCases.style.display = 'grid';
+        containerConsult.style.display = 'none';
+        if (filterTabs) filterTabs.style.display = 'flex';
+        renderOfficialCases();
+      } else {
+        btnCases.classList.remove('active');
+        btnConsult.classList.add('active');
+        containerCases.style.display = 'none';
+        containerConsult.style.display = 'grid';
+        if (filterTabs) filterTabs.style.display = 'none';
+        renderDocketsCards();
+      }
+    }
+
+    // Filter Buttons for Cases
+    document.querySelectorAll('[data-case-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-case-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCaseFilter = btn.dataset.caseFilter;
+        renderOfficialCases();
+      });
+    });
+
+    function renderOfficialCases() {
+      const container = document.getElementById('sf-cases-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const searchInput = document.getElementById('dockets-search');
+      const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+      let list = officialCases.filter(c => {
+        if (currentCaseFilter !== 'all') {
+          const typeStr = (c.type || '') + ' ' + (c.court || '');
+          if (!typeStr.includes(currentCaseFilter)) return false;
+        }
+        if (query) {
+          const hay = [
+            c.id, c.case_code, c.court_case_num, c.court, c.type,
+            c.parties?.client?.name, c.parties?.opponents?.[0]?.name, c.parties?.opponent?.name
+          ].join(' ').toLowerCase();
+          if (!hay.includes(query)) return false;
+        }
+        return true;
+      });
+
+      if (list.length === 0) {
+        container.innerHTML = '<div style="grid-column:1/-1; padding:3rem; text-align:center; color:var(--text-muted); background:var(--surface); border-radius:12px; border:1px dashed #334155;">لا توجد دعاوى مطابقة لخيارات البحث المحددة.</div>';
+        return;
+      }
+
+      list.forEach(c => {
+        container.appendChild(createOfficialCaseCard(c));
+      });
+    }
+
+    function createOfficialCaseCard(c) {
+      const card = document.createElement('article');
+      card.className = 'sf-case-card';
+
+      const clientName = c.parties?.client?.name || c.parties?.client_beneficiary?.name || 'مكتب المحامي سعد فراس أميل';
+      const clientPhone = c.parties?.client?.phone || c.parties?.intermediary_contact?.residence || '';
+      
+      let opponentName = 'غير محدد';
+      if (c.parties?.opponents && Array.isArray(c.parties.opponents)) {
+        opponentName = c.parties.opponents.map(o => o.name).join(' و ');
+      } else if (c.parties?.opponent?.name) {
+        opponentName = c.parties.opponent.name;
+      } else if (c.parties?.deceased_father?.name) {
+        opponentName = 'تركة: ' + c.parties.deceased_father.name;
+      }
+
+      const timeline = c.timeline || [];
+      const nextHearing = c.next_hearing;
+      const hasHistory = c.history_snapshots && c.history_snapshots.length > 0;
+
+      let timelineHtml = '';
+      if (timeline.length > 0) {
+        timelineHtml = timeline.map(t => `
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">🗓️ ${t.date} — الجلسة / المرحلة #${t.session_no || ''}</div>
+            <div class="timeline-action-text"><strong>شو سوينا:</strong> ${t.action}</div>
+            ${t.court_decision ? `<div class="timeline-decision">⚖️ <strong>القرار / الإجراء:</strong> ${t.court_decision}</div>` : ''}
+          </div>
+        `).join('');
+      } else {
+        timelineHtml = '<div style="color:var(--text-dim); font-size:0.8rem; padding:0.5rem;">لا توجد جلسات مدونة بعد في الخط الزمني.</div>';
+      }
+
+      let nextHearingHtml = '';
+      if (nextHearing && nextHearing.date) {
+        nextHearingHtml = `
+          <div class="next-hearing-banner">
+            <div class="next-hearing-title">
+              <span>📅</span>
+              <span>الموعد / الجلسة القادمة:</span>
+              <span class="next-hearing-time">${nextHearing.day || ''} ${nextHearing.date} ${nextHearing.time ? '• الساعة ' + nextHearing.time : ''}</span>
+            </div>
+            <div class="next-hearing-action">
+              <strong>الإجراء المطلوب:</strong> ${nextHearing.action_required || 'المرافعة وحضور الجلسة'}
+            </div>
+          </div>
+        `;
+      }
+
+      card.innerHTML = `
+        <div class="sf-card-header">
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:4px;">
+              <span class="sf-code-pill">${c.id}</span>
+              <span class="sf-court-pill">🏛️ ${c.court || 'المحكمة المختصة'}</span>
+              ${c.filing_date ? `<span style="font-size:0.75rem; color:var(--text-dim);">بدأت: ${c.filing_date}</span>` : ''}
+            </div>
+            <div class="sf-case-title">${c.type || 'دعوى قضائية'}</div>
+            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">رقم الدعوى: <strong>${c.court_case_num || 'قيد التحقيق'}</strong> • ملف: ${c.office_file_no || ''}</div>
+          </div>
+        </div>
+
+        <div class="sf-meta-row">
+          <div>
+            <span class="sf-meta-label">الموكل المستدعي:</span>
+            <span class="sf-meta-val">👤 ${clientName}</span>
+            ${clientPhone ? `<div style="font-size:0.75rem; color:var(--cyan); margin-top:2px;">${clientPhone}</div>` : ''}
+          </div>
+          <div>
+            <span class="sf-meta-label">الخصم / المطلوب ضده:</span>
+            <span class="sf-meta-val">⚖️ ${opponentName}</span>
+          </div>
+        </div>
+
+        ${nextHearingHtml}
+
+        <div class="timeline-wrapper">
+          <button type="button" class="timeline-toggle-btn" onclick="toggleTimelineView('${c.id}')">
+            <span>📜 سير الجلسات والإجراءات (${timeline.length} جلسة)</span>
+            <span id="timeline-icon-${c.id}">▼</span>
+          </button>
+          <div id="timeline-box-${c.id}" class="timeline-content" style="display:block;">
+            ${timelineHtml}
+          </div>
+        </div>
+
+        <div class="sf-actions-toolbar btn-no-print">
+          <button type="button" class="btn-timeline-action" onclick="openAddSessionModal('${c.id}')" title="إضافة جلسة أو تحديث بعد المحكمة">
+            <span>➕</span>
+            <span>إضافة جلسة / تحديث</span>
+          </button>
+
+          ${hasHistory ? `
+            <button type="button" class="btn-timeline-action btn-timeline-rollback" onclick="rollbackCaseUpdate('${c.id}')" title="تراجع عن آخر تحديث لحالة القضية">
+              <span>⏮️</span>
+              <span>تراجع للنسخة السابقة</span>
+            </button>
+          ` : ''}
+
+          <button type="button" class="btn-timeline-action" onclick="createContractForCase('${c.id}')" title="إنشاء عقد أتعاب محاماة رسمي لهذه الدعوى">
+            <span>📜</span>
+            <span>عقد أتعاب</span>
+          </button>
+        </div>
+      `;
+
+      return card;
+    }
+
+    function toggleTimelineView(caseId) {
+      const box = document.getElementById('timeline-box-' + caseId);
+      const icon = document.getElementById('timeline-icon-' + caseId);
+      if (!box) return;
+      if (box.style.display === 'none') {
+        box.style.display = 'block';
+        if (icon) icon.textContent = '▼';
+      } else {
+        box.style.display = 'none';
+        if (icon) icon.textContent = '◀';
+      }
+    }
+
+    // Modal Session Handling
+    function openAddSessionModal(caseId) {
+      const c = officialCases.find(item => item.id === caseId);
+      if (!c) return;
+
+      document.getElementById('modal-case-id').value = c.id;
+      document.getElementById('modal-case-title').textContent = `${c.id}: ${c.type || 'دعوى قضائية'}`;
+      
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('modal-session-date').value = today;
+      document.getElementById('modal-session-num').value = `جلسة بتأريخ ${today}`;
+      document.getElementById('modal-session-action').value = '';
+      document.getElementById('modal-court-decision').value = '';
+      
+      if (c.next_hearing && c.next_hearing.date) {
+        document.getElementById('modal-next-date').value = c.next_hearing.date;
+        document.getElementById('modal-next-time').value = c.next_hearing.time || '09:00 ص';
+        document.getElementById('modal-next-action').value = c.next_hearing.action_required || '';
+      } else {
+        document.getElementById('modal-next-date').value = '';
+        document.getElementById('modal-next-time').value = '09:00 ص';
+        document.getElementById('modal-next-action').value = '';
+      }
+
+      document.getElementById('session-modal-overlay').style.display = 'flex';
+    }
+
+    function closeSessionModal() {
+      document.getElementById('session-modal-overlay').style.display = 'none';
+    }
+
+    function handleSessionSubmit(e) {
+      e.preventDefault();
+      const caseId = document.getElementById('modal-case-id').value;
+      const c = officialCases.find(item => item.id === caseId);
+      if (!c) return;
+
+      // 1. Snapshot current state for Rollback / Undo
+      c.history_snapshots = c.history_snapshots || [];
+      const snapshot = {
+        timestamp: new Date().toISOString(),
+        timeline: JSON.parse(JSON.stringify(c.timeline || [])),
+        next_hearing: c.next_hearing ? JSON.parse(JSON.stringify(c.next_hearing)) : null,
+        status: c.status || ''
+      };
+      c.history_snapshots.push(snapshot);
+
+      // 2. Add New Session Entry
+      c.timeline = c.timeline || [];
+      const newSession = {
+        session_no: c.timeline.length + 1,
+        date: document.getElementById('modal-session-date').value,
+        action: document.getElementById('modal-session-action').value.trim(),
+        court_decision: document.getElementById('modal-court-decision').value.trim()
+      };
+      c.timeline.push(newSession);
+
+      // 3. Update Next Hearing
+      const nextDate = document.getElementById('modal-next-date').value;
+      if (nextDate) {
+        c.next_hearing = {
+          date: nextDate,
+          time: document.getElementById('modal-next-time').value.trim(),
+          day: new Date(nextDate).toLocaleDateString('ar-IQ', { weekday: 'long' }),
+          action_required: document.getElementById('modal-next-action').value.trim()
+        };
+      }
+
+      // 4. Save to localStorage overrides
+      const localEdits = JSON.parse(localStorage.getItem('saad_amil_cases_overrides') || '{}');
+      localEdits[c.id] = {
+        timeline: c.timeline,
+        next_hearing: c.next_hearing,
+        history_snapshots: c.history_snapshots
+      };
+      localStorage.setItem('saad_amil_cases_overrides', JSON.stringify(localEdits));
+
+      closeSessionModal();
+      renderOfficialCases();
+      alert(`✅ تم تحديث الخط الزمني للدعوى (${c.id}) بنجاح، وحفظ نسخة سابقة للتراجع!`);
+    }
+
+    // Rollback / Undo to Previous Snapshot
+    function rollbackCaseUpdate(caseId) {
+      const c = officialCases.find(item => item.id === caseId);
+      if (!c || !c.history_snapshots || c.history_snapshots.length === 0) {
+        alert('لا توجد نسخة سابقة محفوظة لهذه الدعوى.');
+        return;
+      }
+
+      if (!confirm(`هل أنت متأكد من استرجاع حالة الدعوى (${c.id}) إلى النسخة المحفوظة قبل آخر تحديث؟`)) {
+        return;
+      }
+
+      const prev = c.history_snapshots.pop();
+      c.timeline = prev.timeline;
+      c.next_hearing = prev.next_hearing;
+      if (prev.status) c.status = prev.status;
+
+      // Update localStorage
+      const localEdits = JSON.parse(localStorage.getItem('saad_amil_cases_overrides') || '{}');
+      localEdits[c.id] = {
+        timeline: c.timeline,
+        next_hearing: c.next_hearing,
+        history_snapshots: c.history_snapshots
+      };
+      localStorage.setItem('saad_amil_cases_overrides', JSON.stringify(localEdits));
+
+      renderOfficialCases();
+      alert(`↩️ تم استرجاع حالة الدعوى (${c.id}) بنجاح إلى ما كانت عليه قبل الجلسة الأخيرة!`);
+    }
+
+    // ========================================================
+    // LEGAL FEE CONTRACT STUDIO CONTROLLER
+    // ========================================================
+    const contractPresets = {
+      criminal: {
+        subject: 'الشكوى الجزائية والمطالبة بالحقين الجزائي والمدني والتعويض عن جرائم التهديد والابتزاز والقذف',
+        court: 'محكمة تحقيق الكرخ / الدورة',
+        role: 'مشتكٍ ومدعٍ بالحق الجزائي والمدني',
+        totalFee: '3,500,000 دينار عراقي',
+        advanceFee: '1,500,000 دينار عراقي',
+        finalFee: '2,000,000 دينار عراقي',
+        percentage: '10% من قيمة التعويض المحكوم به'
+      },
+      civil: {
+        subject: 'دعوى البداءة الموضوعية والمطالبة بالتعويض المادي والمعنوي وأجر المثل والضرر',
+        court: 'محكمة بداءة الكرخ',
+        role: 'مدعٍ (طالب الحق)',
+        totalFee: '4,000,000 دينار عراقي',
+        advanceFee: '1,500,000 دينار عراقي',
+        finalFee: '2,500,000 دينار عراقي',
+        percentage: '15% من المبالغ المتحصلة تنفيذاً'
+      },
+      sharia: {
+        subject: 'الدعوى الشرعية أمام محكمة الأحوال الشخصية والمطالبة بالحقوق والنفقة والتعويض',
+        court: 'محكمة الأحوال الشخصية في الدورة',
+        role: 'مدعٍ (أحوال شخصية)',
+        totalFee: '2,500,000 دينار عراقي',
+        advanceFee: '1,000,000 دينار عراقي',
+        finalFee: '1,500,000 دينار عراقي',
+        percentage: ''
+      },
+      qassam: {
+        subject: 'إصدار حجة القسام الشرعي وتصفية التركة وانتقال الحقوق التقاعدية العسكرية',
+        court: 'محكمة الأحوال الشخصية في بغداد + هيئة التقاعد الوطنية',
+        role: 'وارث / طالب القسام الشرعي',
+        totalFee: '2,000,000 دينار عراقي',
+        advanceFee: '1,000,000 دينار عراقي',
+        finalFee: '1,000,000 دينار عراقي',
+        percentage: '5% من مبالغ متراكم الرواتب المصروفة'
+      },
+      realestate: {
+        subject: 'دعوى إزالة الشيوع وفرز الحصص العقارية وبيع العقار المشاع قضاءً وتوزيع الثمن',
+        court: 'محكمة بداءة الكرخ / الرصافة',
+        role: 'مدعٍ (شريك مشاع)',
+        totalFee: '5,000,000 دينار عراقي',
+        advanceFee: '2,000,000 دينار عراقي',
+        finalFee: '3,000,000 دينار عراقي',
+        percentage: '5% من حصة الموكل في ثمن البيع الإحالي'
+      }
+    };
+
+    function applyContractPreset(type) {
+      const p = contractPresets[type];
+      if (!p) return;
+      document.getElementById('c-case-subject').value = p.subject;
+      document.getElementById('c-court-name').value = p.court;
+      document.getElementById('c-client-role').value = p.role;
+      document.getElementById('c-total-fee').value = p.totalFee;
+      document.getElementById('c-advance-fee').value = p.advanceFee;
+      document.getElementById('c-final-fee').value = p.finalFee;
+      document.getElementById('c-percentage').value = p.percentage;
+      updateLiveContractPreview();
+    }
+
+    function createContractForCase(caseId) {
+      const c = officialCases.find(item => item.id === caseId);
+      if (!c) return;
+
+      switchTab('tab-contracts');
+
+      const client = c.parties?.client || c.parties?.client_beneficiary || {};
+      const opponent = c.parties?.opponents?.[0]?.name || c.parties?.opponent?.name || '';
+
+      document.getElementById('c-client-name').value = client.name || '';
+      document.getElementById('c-client-phone').value = client.phone || '';
+      document.getElementById('c-client-address').value = client.detailed_address || client.residence || 'بغداد';
+      document.getElementById('c-client-id').value = client.id_number || '199888597552';
+      document.getElementById('c-opponent-name').value = opponent;
+      document.getElementById('c-case-subject').value = (c.type || 'دعوى قضائية') + ` (ملف: ${c.office_file_no || c.id})`;
+      document.getElementById('c-court-name').value = c.court || 'المحكمة المختصة';
+
+      updateLiveContractPreview();
+    }
+
+    function updateLiveContractPreview() {
+      const getVal = (id, fallback) => {
+        const el = document.getElementById(id);
+        return (el && el.value.trim()) ? el.value.trim() : fallback;
+      };
+
+      const cName = getVal('c-client-name', 'عمر رعد خليفه');
+      document.getElementById('p-client-name').textContent = cName;
+      document.getElementById('p-sig-client-name').textContent = cName;
+
+      document.getElementById('p-client-role').textContent = getVal('c-client-role', 'مشتكٍ ومدعٍ بالحق الجزائي والمدني');
+      document.getElementById('p-client-id').textContent = getVal('c-client-id', '199888597552');
+      document.getElementById('p-client-phone').textContent = getVal('c-client-phone', '07812429495');
+      document.getElementById('p-client-address').textContent = getVal('c-client-address', 'بغداد - الدورة');
+
+      document.getElementById('p-case-subject').textContent = getVal('c-case-subject', 'الشكوى الجزائية وفق المادتين 430 و433 عقوبات والمطالبة بالتعويض');
+      document.getElementById('p-court-name').textContent = getVal('c-court-name', 'محكمة تحقيق الدورة');
+      document.getElementById('p-opponent-name').textContent = getVal('c-opponent-name', 'شهد عباس لفته ووالدتها ناهد');
+
+      document.getElementById('p-total-fee').textContent = getVal('c-total-fee', '3,000,000 دينار عراقي');
+      document.getElementById('p-advance-fee').textContent = getVal('c-advance-fee', '1,000,000 دينار عراقي');
+      document.getElementById('p-final-fee').textContent = getVal('c-final-fee', '2,000,000 دينار عراقي');
+
+      const perc = document.getElementById('c-percentage').value.trim();
+      const percSpan = document.getElementById('p-percentage-span');
+      if (percSpan) {
+        percSpan.textContent = perc ? `بالإضافة إلى نسبة قدرها (${perc})` : '';
+      }
+
+      // Checkboxes clauses visibility
+      const chkFees = document.getElementById('chk-clause-fees');
+      const boxFees = document.getElementById('p-clause-fees-box');
+      if (boxFees) boxFees.style.display = chkFees.checked ? 'block' : 'none';
+
+      const chkRev = document.getElementById('chk-clause-revoke');
+      const boxRev = document.getElementById('p-clause-revoke-box');
+      if (boxRev) boxRev.style.display = chkRev.checked ? 'block' : 'none';
+
+      const chkArb = document.getElementById('chk-clause-arb');
+      const boxArb = document.getElementById('p-clause-arb-box');
+      if (boxArb) boxArb.style.display = chkArb.checked ? 'block' : 'none';
+
+      // Update date and code
+      const now = new Date();
+      const dateEl = document.getElementById('preview-contract-date');
+      if (dateEl) dateEl.textContent = 'التاريخ: ' + now.toLocaleDateString('ar-IQ');
+    }
+
+    function printContractSheet() {
+      window.print();
+    }
+
+    function shareContractWhatsApp() {
+      const cName = document.getElementById('c-client-name').value.trim() || 'عمر رعد خليفه';
+      const cPhone = document.getElementById('c-client-phone').value.trim();
+      const subject = document.getElementById('c-case-subject').value.trim();
+      const court = document.getElementById('c-court-name').value.trim();
+      const totalFee = document.getElementById('c-total-fee').value.trim();
+      const advanceFee = document.getElementById('c-advance-fee').value.trim();
+
+      const text = `السلام عليكم ${cName} المحترم،\nمعك المحامي سعد فراس أميل (هوية نقابة المحامين: 188572 - الصلاحية ب).\n\nنرسل لك تفاصيل وبنود عقد أتعاب المحاماة الأصولي الخاص بـ:\n- موضوع العمل: ${subject}\n- المحكمة المختصة: ${court}\n- إجمالي الأتعاب: ${totalFee}\n- الدفعة المقدمة: ${advanceFee}\n\nيرجى الاطلاع والاعتماد لتوقيع النسخة الرسمية وبدء الإجراءات فوراً.`;
+
+      let cleanNum = cPhone.replace(/[^0-9]/g, '');
+      if (cleanNum.startsWith('07')) cleanNum = '964' + cleanNum.substring(1);
+      
+      const url = `https://wa.me/${cleanNum}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+    }
+
+    function copyContractText() {
+      const sheet = document.getElementById('contract-print-target');
+      if (!sheet) return;
+      navigator.clipboard.writeText(sheet.innerText).then(() => {
+        alert('📋 تم نسخ نص عقد أتعاب المحاماة بالكامل إلى الحافظة!');
+      });
+    }
+
+    function saveContractToLedger() {
+      const contract = {
+        id: 'SF-CNT-' + Date.now(),
+        clientName: document.getElementById('c-client-name').value.trim(),
+        subject: document.getElementById('c-case-subject').value.trim(),
+        court: document.getElementById('c-court-name').value.trim(),
+        totalFee: document.getElementById('c-total-fee').value.trim(),
+        advanceFee: document.getElementById('c-advance-fee').value.trim(),
+        date: new Date().toLocaleDateString('ar-IQ')
+      };
+      const contracts = JSON.parse(localStorage.getItem('saad_amil_saved_contracts') || '[]');
+      contracts.unshift(contract);
+      localStorage.setItem('saad_amil_saved_contracts', JSON.stringify(contracts));
+      alert('💾 تم حفظ عقد الأتعاب في أرشيف مكتب المحامي سعد فراس أميل بنجاح!');
+    }
+
+    function resetContractForm() {
+      document.getElementById('contract-form').reset();
+      updateLiveContractPreview();
+    }
+
     async function loadAllData() {
+      loadOfficialCases();
       await Promise.all([loadDockets(), loadArticles()]);
     }
 
@@ -1633,6 +2850,9 @@
     });
 
     document.getElementById('dockets-search').addEventListener('input', (e) => {
+      if (currentDocketsSubView === 'cases') {
+        renderOfficialCases();
+      }
       docketSearch = e.target.value.trim();
       renderDocketsCards();
     });
@@ -1774,7 +2994,74 @@
               <p style="margin-top: 25px;">.........................................</p>
             </div>
           </div>
-        </body>
+        
+    <!-- ================= MODAL: ADD / UPDATE SESSION ================= -->
+    <div id="session-modal-overlay" class="session-modal-overlay" style="display:none;">
+      <div class="session-modal-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.75rem;">
+          <h3 style="color:var(--gold); display:flex; align-items:center; gap:0.5rem;">
+            <span>📝</span>
+            <span>إضافة جلسة وتحديث سير الدعوى</span>
+          </h3>
+          <button type="button" onclick="closeSessionModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.5rem; cursor:pointer;">&times;</button>
+        </div>
+
+        <div style="background:rgba(212, 175, 55, 0.1); border:1px solid rgba(212, 175, 55, 0.3); padding:0.75rem 1rem; border-radius:8px; font-size:0.85rem;">
+          <div style="font-weight:700; color:var(--gold);" id="modal-case-title">SF-CASE-05: شكوى جزائية</div>
+          <div style="color:var(--text-muted); font-size:0.78rem; margin-top:2px;">سيتم حفظ هذه الجلسة في الخط الزمني، وحفظ نسخة سابقة تلقائياً للتمكن من الرجوع إليها.</div>
+        </div>
+
+        <form id="session-update-form" onsubmit="handleSessionSubmit(event)">
+          <input type="hidden" id="modal-case-id">
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem;">
+            <div class="form-group">
+              <label>تاريخ الجلسة / الإجراء *</label>
+              <input type="date" id="modal-session-date" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>رقم الجلسة / المرحلة</label>
+              <input type="text" id="modal-session-num" class="form-control" placeholder="مثال: الجلسة الثانية / تحقيق">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>ماذا تم في الجلسة بالتفصيل (شو سوينا اليوم) *</label>
+            <textarea id="modal-session-action" class="form-control" rows="3" placeholder="مثال: الحضور أمام ضابط التحقيق، تدوين أقوال المشتكي عمر، ربط عقد الزواج المصدق والـ CD..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>قرار المحكمة / القاضي في هذه الجلسة *</label>
+            <input type="text" id="modal-court-decision" class="form-control" placeholder="مثال: تكليف المشتكي بإحضار شهود الإثبات الأربعة وتسطير كتاب الأدلة الجنائية" required>
+          </div>
+
+          <div style="background:rgba(245, 158, 11, 0.08); border:1px solid rgba(245, 158, 11, 0.3); padding:0.85rem; border-radius:8px;">
+            <div style="font-weight:700; color:var(--gold-light); font-size:0.82rem; margin-bottom:0.5rem;">📅 تحديد موعد وإجراء الجلسة القادمة:</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+              <div class="form-group">
+                <label style="font-size:0.76rem;">تاريخ الجلسة القادمة</label>
+                <input type="date" id="modal-next-date" class="form-control">
+              </div>
+              <div class="form-group">
+                <label style="font-size:0.76rem;">وقت وساعة الجلسة</label>
+                <input type="text" id="modal-next-time" class="form-control" placeholder="08:30 ص">
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:0.4rem;">
+              <label style="font-size:0.76rem;">الإجراء المطلوب للمرافعة / الجلسة القادمة</label>
+              <input type="text" id="modal-next-action" class="form-control" placeholder="مثال: حضور الشهود الأربعة لتدوين شهاداتهم واستلام كتاب الأدلة">
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.25rem;">
+            <button type="button" onclick="closeSessionModal()" class="btn btn-secondary">إلغاء</button>
+            <button type="submit" class="btn btn-gold">حفظ الجلسة وتحديث الخط الزمني 💾</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+</body>
         </html>
       `);
       printWin.document.close();
