@@ -1863,6 +1863,8 @@
   <!-- Modern Document Engines (Docx & FileSaver) for Petition Studio -->
   <script src="https://unpkg.com/docx@9/dist/index.iife.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -4687,57 +4689,112 @@
       }
     }
 
-    // ================= Native PDF Vector Download (Zero-Cache Guaranteed) =================
-    async function downloadPristinePdf() {
-      showToast('📥 جاري تنزيل عريضة A4 المعتمدة الأصلية...');
-      try {
-        const response = await fetch('petition_omar.pdf?v=' + Date.now());
-        if (!response.ok) throw new Error('File fetch error');
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'عريضة_عمر_الجبوري.pdf';
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => {
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
-        }, 1200);
-        showToast('✅ تم تنزيل عريضة A4 الأصلية المعتمدة بنجاح!');
-      } catch (e) {
-        window.open('petition_omar.pdf?v=' + Date.now(), '_blank');
+    // ================= Dynamic Live Petition Metadata Extractor =================
+    function getLivePetitionMetadata() {
+      const editorEl = document.getElementById('docContent');
+      const text = editorEl ? editorEl.innerText : '';
+      let clientName = 'عريضة_قضائية';
+      let title = 'عريضة قضائية رسمية A4';
+
+      if (text.includes('تصديق') && text.includes('زواج')) {
+        clientName = 'دعوى_تصديق_زواج_أمين_وزينة';
+        title = 'عريضة دعوى تصديق زواج خارجي - أمين وزينة';
+      } else if (text.includes('أمين موفق صبري')) {
+        clientName = 'عريضة_أمين_موفق_صبري';
+        title = 'عريضة شكوى جزائية - أمين موفق صبري';
+      } else if (text.includes('عمر رعد خليفه')) {
+        clientName = 'عريضة_عمر_رعد_خليفه';
+        title = 'عريضة شكوى جزائية - عمر رعد خليفه';
+      } else {
+        const m = text.match(/المشتكي(?:\s+بالذات)?:\s*([^\n\/]+)/) || text.match(/المدعي(?:\s+بالذات)?:\s*([^\n\/]+)/);
+        if (m && m[1]) {
+          const clean = m[1].trim().replace(/[^\u0621-\u064A0-9a-zA-Z\s]/g, '').trim().replace(/\s+/g, '_');
+          if (clean.length > 2) {
+            clientName = 'عريضة_' + clean;
+            title = 'عريضة قضائية - ' + m[1].trim();
+          }
+        }
       }
+      return { filename: clientName, title: title, text: text };
     }
 
-    // ================= Send Real PDF to WhatsApp =================
-    async function shareLivePetitionToWhatsApp() {
-      showToast('⏳ جاري تجهيز العريضة الرسمية A4 لإرسالها لواتساب الكشك...');
+    // ================= True Client-Side Live PDF Vector/Raster Exporter =================
+    async function downloadPristinePdf() {
+      const meta = getLivePetitionMetadata();
+      showToast('📥 جاري توليد وتحميل PDF للعريضة المعروضة حالياً...');
       try {
-        const response = await fetch('petition_omar.pdf?v=' + Date.now());
-        const blob = await response.blob();
-        const file = new File([blob], 'عريضة_عمر_الجبوري.pdf', { type: 'application/pdf' });
+        const sheetEl = document.getElementById('a4SheetPage1');
+        if (!sheetEl) throw new Error('Sheet element not found');
 
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: 'عريضة شكوى جزائية - عمر رعد خليفه',
-            text: 'عريضة شكوى جزائية رسمية A4 كاملة - وكيل المشتكي المحامي سعد فراس أميل'
+        const prevTransform = sheetEl.style.transform;
+        const prevMargin = sheetEl.style.marginBottom;
+        sheetEl.style.transform = 'none';
+        sheetEl.style.marginBottom = '0';
+
+        if (typeof html2canvas !== 'undefined' && typeof window.jspdf !== 'undefined') {
+          const canvas = await html2canvas(sheetEl, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            logging: false
           });
-          showToast('✅ تم فتح الواتساب بملف الـ PDF بنجاح!');
+          const imgData = canvas.toDataURL('image/jpeg', 0.98);
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+          doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+
+          const blob = doc.output('blob');
+          saveAs(blob, meta.filename + '.pdf');
+
+          sheetEl.style.transform = prevTransform;
+          sheetEl.style.marginBottom = prevMargin;
+          showToast('✅ تم تنزيل العريضة المعروضة بصيغة PDF بنجاح!');
           return;
-        } else {
-          // Fallback: download PDF and open WhatsApp web
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'عريضة_عمر_الجبوري.pdf';
-          document.body.appendChild(a);
-          a.click();
-          showToast('✅ تم تنزيل العريضة PDF! افتح الواتساب لإرسالها مباشرة للكشك');
-          const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent('عريضة شكوى جزائية A4 - وكيل المشتكي المحامي سعد فراس أميل');
-          setTimeout(() => window.open(waUrl, '_blank'), 1200);
-          return;
+        }
+      } catch (err) {
+        console.error('Live PDF generation error:', err);
+      }
+      triggerCleanPrint();
+    }
+
+    // ================= Send Real Live PDF to WhatsApp =================
+    async function shareLivePetitionToWhatsApp() {
+      const meta = getLivePetitionMetadata();
+      showToast('⏳ جاري تجهيز العريضة المعروضة لإرسالها لواتساب الكشك...');
+      try {
+        const sheetEl = document.getElementById('a4SheetPage1');
+        if (sheetEl && typeof html2canvas !== 'undefined' && typeof window.jspdf !== 'undefined') {
+          const prevTransform = sheetEl.style.transform;
+          const prevMargin = sheetEl.style.marginBottom;
+          sheetEl.style.transform = 'none';
+          sheetEl.style.marginBottom = '0';
+
+          const canvas = await html2canvas(sheetEl, { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false });
+          const imgData = canvas.toDataURL('image/jpeg', 0.98);
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+          doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+          const blob = doc.output('blob');
+          const file = new File([blob], meta.filename + '.pdf', { type: 'application/pdf' });
+
+          sheetEl.style.transform = prevTransform;
+          sheetEl.style.marginBottom = prevMargin;
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: meta.title,
+              text: meta.title + ' — وكيل المشتكي المحامي سعد فراس أميل'
+            });
+            showToast('✅ تم فتح الواتساب بملف الـ PDF بنجاح!');
+            return;
+          } else {
+            saveAs(blob, meta.filename + '.pdf');
+            showToast('✅ تم تنزيل PDF العريضة الحالية! جاري فتح الواتساب...');
+            const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(meta.title + '\n(العريضة الحالية الرسمية A4)\nوكيل المشتكي المحامي سعد فراس أميل');
+            setTimeout(() => window.open(waUrl, '_blank'), 1000);
+            return;
+          }
         }
       } catch (err) {
         console.warn('Web Share failed:', err);
@@ -4745,9 +4802,10 @@
       await downloadPristinePdf();
     }
 
-    // ================= Client-Side True Binary Word (.docx) Generation =================
+    // ================= Client-Side True Binary Word (.docx) Generation From Live Screen =================
     async function downloadLiveWordDoc() {
-      showToast('⏳ جاري إنشاء مستند Word (.docx) الأصلي بمقاسات A4...');
+      const meta = getLivePetitionMetadata();
+      showToast('⏳ جاري إنشاء مستند Word (.docx) للعريضة المعروضة حالياً...');
       try {
         if (typeof docx === 'undefined') {
           throw new Error('Docx engine not loaded');
@@ -4760,9 +4818,9 @@
         const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
 
         const docParagraphs = lines.map(line => {
-          const isHeader = line.includes('إلى /') || line.includes('محكمة تحقيق');
-          const isSubject = line.includes('م /');
-          const isRed = line.includes('جريمة القذف') || line.includes('جريمة التحريض') || line.includes('جريمة محاولة حمل') || line.includes('ثانياً:') || line.includes('ثالثاً:') || line.includes('رابعاً:');
+          const isHeader = line.includes('إلى /') || line.includes('محكمة تحقيق') || line.includes('محكمة الأحوال');
+          const isSubject = line.includes('م /') || line.includes('م/');
+          const isRed = line.includes('المادة 421') || line.includes('المادة 430') || line.includes('المادة 433') || line.includes('المادة 413') || line.includes('المادة 248') || line.includes('ثانياً:') || line.includes('ثالثاً:') || line.includes('رابعاً:') || line.includes('أولاً:') || line.includes('التعذيب');
 
           return new Paragraph({
             alignment: isSubject ? AlignmentType.CENTER : AlignmentType.RIGHT,
@@ -4793,8 +4851,8 @@
         });
 
         const blob = await Packer.toBlob(doc);
-        saveAs(blob, 'عريضة_عمر_الجبوري.docx');
-        showToast('✅ تم تنزيل مستند Word (.docx) الأصلي بنجاح!');
+        saveAs(blob, meta.filename + '.docx');
+        showToast('✅ تم تنزيل مستند Word للعريضة المعروضة بنجاح!');
       } catch (err) {
         console.error('Docx generation error:', err);
         showToast('⚠️ جاري التنزيل المباشر...');
