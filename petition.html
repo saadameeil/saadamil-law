@@ -704,23 +704,26 @@
           <img src="icon-192.png" alt="المحامي سعد فراس أميل" class="brand-logo">
           <div class="brand-text">
             <h1>استوديو العرائض القضائية الذكي <span class="badge-pill">محاكم بغداد</span></h1>
-            <p>المحامي سعد فراس أميل — هوية: 188572 (الصلاحية أ)</p>
+            <p>المحامي سعد فراس أميل — هوية: 188572 (الصلاحية ب)</p>
           </div>
         </div>
 
         <!-- Desktop Action Buttons -->
         <div class="header-actions">
-          <button type="button" class="btn btn-green" onclick="downloadPristinePdf()" title="تنزيل عريضة A4 الرسمية الأصلية المعتمدة فوراً">
+          <button type="button" class="btn btn-green" onclick="downloadPristinePdf()" title="تنزيل عريضة A4 المعروضة بصيغة PDF عالية الدقة">
             📥 تنزيل PDF جاهز
           </button>
-          <button type="button" class="btn btn-green" onclick="shareLivePetitionToWhatsApp()" title="إرسال ملف الـ PDF الأصلي لواتساب كشك الاستنساخ">
+          <button type="button" class="btn btn-green" onclick="shareLivePetitionToWhatsApp()" title="إرسال ملف الـ PDF الحالي لواتساب كشك الاستنساخ">
             🟢 إرسال لواتساب الكشك
           </button>
           <button type="button" class="btn btn-blue" onclick="downloadLiveWordDoc()" title="توليد وتنزيل ملف Word (.docx) أصلي بمقاسات A4">
             📄 ملف Word (.docx)
           </button>
-          <button type="button" class="btn btn-dark" onclick="triggerCleanPrint()" title="طباعة الورقة فوراً">
-            🖨️ طباعة فورية
+          <button type="button" class="btn btn-dark" onclick="copyLivePetitionText()" title="نسخ نص العريضة الصافي للصقه في Word أو الواتساب">
+            📋 نسخ النص
+          </button>
+          <button type="button" class="btn btn-dark" onclick="triggerCleanPrint()" title="طباعة أو حفظ PDF أصلي بالمتصفح">
+            🖨️ طباعة / PDF نصي
           </button>
           <button type="button" class="btn btn-refresh" onclick="forceAppRefresh()" title="تحديث وسحب أحدث نسخة">
             🔄 تحديث
@@ -744,9 +747,10 @@
       <div class="toolbar-group" style="margin: 0 4px; background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary);">
         <span class="group-label" style="color: var(--gold-primary);">📋 العريضة المحصنة:</span>
         <select class="tool-select" id="petitionPresetSelect" onchange="loadPresetByName(this.value)" style="border-color: var(--gold-primary); font-weight: 800; color: #fde68a;">
-          <option value="amin_rescue" selected>⚡ شكوى أمين موفق صبري (إنقاذ زينة وحجز حرية)</option>
+          <option value="amin_rescue" selected>⚡ شكوى أمين موفق صبري (تخليص زينة وحجز حرية)</option>
           <option value="omar_threat">شكوى عمر رعد خليفه (تهديد وابتزاز وشهود)</option>
           <option value="amin_marriage">عريضة تصديق زواج خارجي (أمين وزينة)</option>
+          <option value="blank">📝 عريضة جديدة فارغة (للصق والكتابة الحرة)</option>
         </select>
       </div>
 
@@ -946,12 +950,14 @@
   <!-- ================= Core JavaScript Engine ================= -->
   <script>
     // Storage & Engine Keys
-    const ACTIVE_DRAFT_KEY = 'saadamil_paged_petition_active_v4';
+    const ACTIVE_DRAFT_KEY = 'saadamil_paged_petition_active_v5';
     let baseFontSize = 13.5;
     let currentLineHeight = 1.52;
     let currentWordSpacing = 0;
     let currentFontFamily = "'Cairo', sans-serif";
     let isMobileZoomFull = false; // false: fit to screen, true: 100% natural readable scale
+    let cachedPdfState = { hash: '', blob: null, filename: 'عريضة_قضائية' };
+    let pdfCacheTimer = null;
 
     // Master Audited Legal Omar Petition HTML (Image 2 - 100% Law-Grounded)
     const MASTER_AUDITED_HTML = `  <div class="court-header">
@@ -1110,51 +1116,45 @@
   </table>`;
 
     const PETITION_AMIN_RESCUE_HTML = `  <div class="court-header">
-    <div>إلى / السيد قاضي محكمة تحقيق الدورة المحترم</div>
-    <div style="font-size: 13px; font-weight: 700; color: #475569; margin-top: 2px;">(المختص بقضايا العنف الأسري وحماية الأسرة والطفل)</div>
+    <div>لدى محكمة تحقيق الدورة المحترمة</div>
+    <div style="font-size: 13px; font-weight: 700; color: #475569; margin-top: 2px;">(المختصة بقضايا العنف الأسري وحماية الأسرة والطفل)</div>
   </div>
 
   <div class="parties-block">
     <div class="parties-row">
       <div><strong>المشتكي بالذات:</strong> أمين موفق صبري</div>
-      <div><strong>السكن:</strong> بغداد - الدورة، حي الميكانيك / شارع الشرطة</div>
+      <div><strong>الساكن:</strong> بغداد - الدورة، حي الميكانيك / شارع الشرطة</div>
     </div>
     <div style="margin-top: 2px; font-size: 12px; color: #1e293b;">
-      <strong>بحضور ومؤازرة محاميه:</strong> الأستاذ المحامي سعد فراس أميل (هوية النقابة: 188572 - الصلاحية ب)
+      <strong>بحضور ومؤازرة محاميه:</strong> الأستاذ سعد فراس أميل (هوية نقابة المحامين العراقيين: 188572 - الصلاحية ب)
     </div>
     <div style="margin-top: 4px;">
-      <strong>المشكو منهما:</strong><br>
-      1. <strong>علي إسماعيل رشيد</strong> (والد الزوجة - منسوب وزارة الداخلية العراقية) / دار سكنه في الدورة.<br>
-      2. <strong>بان حميد شلغم</strong> (والدة الزوجة) / دار سكنها في الدورة وبدلالة المشتكي.
+      <strong>المشكو منه:</strong> <strong>علي إسماعيل رشيد</strong> (والد الزوجة - منتسب وزارة الداخلية العراقية) / الساكن: بغداد - الدورة (ويُبلغ بدلالة المشتكي).
     </div>
   </div>
 
   <div class="subject-box">
-    <u>م / شكوى جزائية عاجلة وطلب تسيير مفرزة أمنية وحماية الأسرة لتخليص محتجزة وإحالتها للطب العدلي</u>
+    <u>م / شكوى جزائية عاجلة وطلب تسيير مفرزة حماية الأسرة لتخليص زوجتي المحتجزة وإحالتها للطب العدلي</u>
   </div>
 
-  <div style="margin-bottom: 5px; font-weight: 800; font-size: 13px;">سيدي القاضي المحترم:</div>
-  <div style="margin-bottom: 6px; font-size: 13px; text-align: justify; line-height: 1.42;">
-    أحيط عدالتكم علماً بأنني زوج شرعي للمدعوة <strong>(زينة علي إسماعيل رشيد)</strong> البالغة سن الرشد وكاملة الأهلية، بموجب عقد زواج شرعي صحيح معقود بحضور شاهدي عدل هما كل من <strong>المشكو منه الأول بالذات (والدها علي إسماعيل رشيد - شاهد أول)</strong> و<strong>(مصطفى طه غازي - شاهد ثانٍ)</strong>، (مرفق طياً نسخته). وحيث أقدم المشكو منهما على ارتكاب الجرائم الجنائية المشهودة والخطيرة الآتية:
-  </div>
-
-  <div class="crime-item">
-    <span class="legal-red"><strong>1. جناية حجز الحرية المقترن بالتعذيب والضرب المبرح (المادة 421/أ والمادة 413 عقوبات والمادة 9/ 2 أحوال شخصية):</strong></span> قيام المشكو منهما باحتجاز حرية زوجتي (زينة) داخل دار سكنهم قسراً ومصادرة هاتفها ومستمسكاتها ومنعها من الخروج، واستعمال العنف الجسدي المفرط والتعذيب والضرب بالعصي والأيدي، لإكراهها على فسخ الزواج ومنعها من زوجها رغم بلوغها سن الرشد، والمثبت بالصور الفوتوغرافية التي توثق الكدمات الدامية على جسدها.
+  <div style="margin-bottom: 5px; font-weight: 800; font-size: 13px;">السيد قاضي محكمة تحقيق الدورة المحترم:</div>
+  <div style="margin-bottom: 7px; font-size: 13px; text-align: justify; line-height: 1.48;">
+    أعرض أمام عدالتكم الموقرة أنني زوج شرعي للمدعوة <strong>(زينة علي إسماعيل رشيد)</strong> البالغة سن الرشد وكاملة الأهلية القانونية، بموجب عقد زواج شرعي صحيح معقود بحضور شاهدي عدل هما: <strong>المشكو منه بالذات (والدها علي إسماعيل رشيد - الشاهد الأول)</strong> و<strong>(مصطفى طه غازي - الشاهد الثاني)</strong>، والمرفق طياً صورة منه مع الاستعداد لإبراز الأصل أمام عدالتكم.
   </div>
 
   <div class="crime-item">
-    <span class="crime-title"><strong>2. جناية التهديد بالقتل واستغلال السلاح والوظيفة الأمنية (المادتان 430 و331 عقوبات):</strong></span> قيام المشكو منه الأول (علي إسماعيل) باستغلال صفته الوظيفية كمنتسب في وزارة الداخلية وتهديدي بالقتل شاهراً سلاحه الناري الوظيفي: <em>«أحط طلقة براسك بالمسدس مالتي واستغل وظيفتي بترهيبك»</em>، ما يشكل تهديداً بجناية ومخالفة صارخة لواجبات الوظيفة واستغلالاً لسلاح الدولة.
+    <span class="legal-red"><strong>1. حجز الحرية المقترن بالضرب المبرح والمنع من الزواج (المادتان 421/أ و413 من قانون العقوبات رقم 111 لسنة 1969، والمادة 9/ 2 من قانون الأحوال الشخصية رقم 188 لسنة 1959):</strong></span> قيام المشكو منه باحتجاز حرية زوجتي قسراً داخل داره في الدورة، ومصادرة هاتفها ومستمسكاتها ومنعها من الخروج، والاعتداء عليها بالضرب المبرح لإكراهها على ترك زوجها رغم بلوغها سن الرشد وموافقته المسبقة وشهادته على العقد، وهو ما توثقه الصور الفوتوغرافية لآثار الكدمات على جسدها.
   </div>
 
   <div class="crime-item">
-    <span class="crime-title"><strong>3. جريمة التهديد العشائري والدكة (قانون مكافحة الإرهاب رقم 13 لسنة 2005):</strong></span> قيام المشكو منها الثانية (بان حميد) بتهديدي بالدكة العشائرية وتسيير مجاميع مسلحة لدار أهلي، بالمخالفة لأحكام المادة (2/ 1) من قانون مكافحة الإرهاب وإعمام مجلس القضاء الأعلى رقم (897/مكتب/2018).
+    <span class="crime-title"><strong>2. التهديد واستغلال السلاح الوظيفي لمنعي من استلام زوجتي (المادتان 430 و331 عقوبات):</strong></span> قيام المشكو منه باستغلال صفته كمنتسب في وزارة الداخلية وتهديدي بالقتل شاهراً سلاحه الناري الوظيفي بقوله: <em>«أحط طلقة براسك بالمسدس مالتي واستغل وظيفتي بترهيبك»</em>، مما يحول دون مراجعتي للدار إلا عبر الحماية القضائية.
   </div>
 
-  <div class="requests-header">لذا؛ ولخطورة الموقف ووجود خطر داهم يهدد حياة زوجتي وسلامتها، نلتمس التفضل بـ:</div>
-  <div class="req-item"><span class="legal-red"><strong>أولاً:</strong> إصدار أمركم القضائي العاجل بتسيير مفرزة أمنية بالاشتراك مع مديرية حماية الأسرة والطفل لتفتيش الدار وتخليص زوجتي المحتجزة وإحضارها أمام عدالتكم فوراً لتدوين أقوالها.</span></div>
-  <div class="req-item"><strong>ثانياً:</strong> إحالة المجنى عليها بصحبة المفرزة إلى معهد الطب العدلي فوراً لتوثيق وتثبيت آثار الكدمات والتعذيب البدني.</div>
-  <div class="req-item"><strong>ثالثاً:</strong> تدوين إقرار المجنى عليها برغبتها بالخروج مع زوجها وتخلية سبيلها استناداً لأحكام المادة (15) من الدستور، وإلزام المشكو منه الأول بتعهد عدلي مغلظ بعدم التعرض (المادة 121 أصول جزائية).</div>
-  <div class="req-item"><strong>رابعاً:</strong> اتخاذ الإجراءات القانونية المشددة بحق المشكو منهما وإشعار وزارة الداخلية لضبط السلاح الوظيفي.</div>
+  <div class="requests-header">لذا؛ ولوجود خطر داهم يهدد سلامة زوجتي، نطلب من عدالتكم الموقرة التفضل بـ:</div>
+  <div class="req-item"><strong>أولاً:</strong> قبول الشكوى وتدوين أقوال المشتكي بالذات بحضور محاميه (المواد 1 و47 و57 أصول جزائية).</div>
+  <div class="req-item"><span class="legal-red"><strong>ثانياً:</strong> تسطير أمر قضائي عاجل بتسيير مفرزة من مديرية حماية الأسرة والطفل بدلالة المشتكي إلى دار المشكو منه لتخليص زوجتي المحتجزة (زينة علي إسماعيل رشيد) وإحضارها فوراً أمام عدالتكم لتدوين أقوالها وتسليمها لزوجها.</span></div>
+  <div class="req-item"><strong>ثالثاً:</strong> إحالة زوجتي فوراً بكتاب رسمي إلى دائرة الطب العدلي لتثبيت آثار الضرب والاعتداء الجسدي.</div>
+  <div class="req-item"><strong>رابعاً:</strong> اتخاذ الإجراءات القانونية بحق المشكو منه وفق المواد المذكورة أعلاه، وأخذ التعهد القانوني بعدم التعرض لزوجتي أو لي استناداً للمادة (121 أصول جزائية).</div>
 
   <div class="closing-text">مع وافر الشكر والتقدير والاحترام لعدالتكم الموقرة</div>
 
@@ -1162,12 +1162,54 @@
     <tr>
       <td style="text-align: right; width: 45%; font-size: 11.5px;">
         <strong>تحريراً في: 11 / 11 / 2026 م</strong><br>
-        <span style="font-size: 11px; color: #475569;">المرفقات: نسخة العقد الشرعي + صور التعذيب</span>
+        <span style="font-size: 11px; color: #475569;">المرفقات: نسخة العقد الشرعي + صور الكدمات</span>
       </td>
       <td style="text-align: left; width: 55%; font-size: 12px;">
         <strong>المشتكي بالذات: أمين موفق صبري</strong><br>
         <span style="font-size: 11px;">(التوقيع والبصمة)</span><br>
         <span style="font-size: 10.5px; color: #334155;">بحضور ومؤازرة محاميه: <strong>سعد فراس أميل</strong></span>
+      </td>
+    </tr>
+  </table>`;
+
+    const PETITION_BLANK_HTML = `  <div class="court-header">
+    <div>لدى محكمة [اسم المحكمة المختصة] المحترمة</div>
+  </div>
+
+  <div class="parties-block">
+    <div class="parties-row">
+      <div><strong>المدعي / المشتكي:</strong> [الاسم الثلاثي واللقب]</div>
+      <div><strong>الساكن:</strong> [محل السكن بدقة]</div>
+    </div>
+    <div style="margin-top: 3px;">
+      <strong>وكيله:</strong> المحامي سعد فراس أميل (هوية النقابة: 188572 - الصلاحية ب)<br>
+      <strong>المدعى عليه / المشكو منه:</strong> [الاسم الكامل وعنوان التبليغ الواضح]
+    </div>
+  </div>
+
+  <div class="subject-box">
+    <u>م / [عنوان الدعوى أو الشكوى]</u>
+  </div>
+
+  <div class="salutation">السيد قاضي المحكمة المحترم،،،</div>
+  <div class="intro-text" style="margin-bottom: 10px;">
+    [اكتب وقائع الدعوى أو ألصق النص الجاهز هنا بتسلسل زمني وقانوني موجز...]
+  </div>
+
+  <div class="requests-header">الطلبات:</div>
+  <div class="req-item"><strong>أولاً:</strong> [الطلب الأول...]</div>
+  <div class="req-item"><strong>ثانياً:</strong> [الطلب الثاني مع الرسوم والمصاريف وأتعاب المحاماة...]</div>
+
+  <div class="closing-text">مع وافر التقدير والاحترام لعدالتكم</div>
+
+  <table class="footer-table">
+    <tr>
+      <td style="text-align: right; width: 50%; font-size: 11.5px;">
+        <strong>تحريراً في: &nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/ 2026 م</strong>
+      </td>
+      <td style="text-align: left; width: 50%; font-size: 12px;">
+        <strong>وكيل المدعي / المشتكي.</strong><br>
+        <strong>المحامي سعد فراس أميل</strong>
       </td>
     </tr>
   </table>`;
@@ -1218,7 +1260,8 @@
     const PETITION_PRESETS = {
       amin_rescue: PETITION_AMIN_RESCUE_HTML,
       omar_threat: MASTER_AUDITED_HTML,
-      amin_marriage: PETITION_AMIN_MARRIAGE_HTML
+      amin_marriage: PETITION_AMIN_MARRIAGE_HTML,
+      blank: PETITION_BLANK_HTML
     };
 
     function loadPresetByName(presetKey) {
@@ -1230,6 +1273,7 @@
       localStorage.setItem('saadamil_active_preset_name', presetKey);
       saveDocumentLive();
       checkPageBudget();
+      schedulePdfCache();
       showToast('تم تحميل نموذج العريضة بنجاح 📋');
     }
 
@@ -1250,7 +1294,7 @@
         editorEl.innerHTML = saved;
         const sel = document.getElementById('petitionPresetSelect');
         const activeName = localStorage.getItem('saadamil_active_preset_name');
-        if (sel && activeName) sel.value = activeName;
+        if (sel && activeName && PETITION_PRESETS[activeName]) sel.value = activeName;
       } else {
         editorEl.innerHTML = PETITION_AMIN_RESCUE_HTML;
       }
@@ -1268,12 +1312,31 @@
       editorEl.addEventListener('input', () => {
         saveDocumentLive();
         checkPageBudget();
+        schedulePdfCache();
+      });
+
+      // Clean plain-text paste handling to preserve neat A4 typography
+      editorEl.addEventListener('paste', (e) => {
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        if (text && !e.clipboardData.getData('text/html').includes('court-header')) {
+          e.preventDefault();
+          const lines = text.split(/\r?\n/);
+          const htmlFrag = lines.map(l => {
+            const safe = l.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return safe.trim() ? `<div style="margin-bottom:4px;">${safe}</div>` : '<div><br></div>';
+          }).join('');
+          document.execCommand('insertHTML', false, htmlFrag);
+          saveDocumentLive();
+          checkPageBudget();
+          schedulePdfCache();
+        }
       });
 
       adjustMobileScale();
       window.addEventListener('resize', adjustMobileScale);
 
       checkPageBudget();
+      setTimeout(schedulePdfCache, 800);
     });
 
     // Save Document Live
@@ -1553,128 +1616,313 @@
       return { filename: clientName, title: title, text: text };
     }
 
-    // ================= True Client-Side Live PDF Vector/Raster Exporter =================
-    async function downloadPristinePdf() {
-      const meta = getLivePetitionMetadata();
-      showToast('📥 جاري توليد وتحميل PDF للعريضة المعروضة حالياً...');
-      try {
-        const sheetEl = document.getElementById('a4SheetPage1');
-        if (!sheetEl) throw new Error('Sheet element not found');
-
-        // Temporarily reset zoom/scale transform so canvas renders at 100% true A4 resolution
-        const prevTransform = sheetEl.style.transform;
-        const prevMargin = sheetEl.style.marginBottom;
-        sheetEl.style.transform = 'none';
-        sheetEl.style.marginBottom = '0';
-
-        if (typeof html2canvas !== 'undefined' && typeof window.jspdf !== 'undefined') {
-          const canvas = await html2canvas(sheetEl, {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: '#ffffff',
-            logging: false
-          });
-          const imgData = canvas.toDataURL('image/jpeg', 0.98);
-          const { jsPDF } = window.jspdf;
-          const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-          doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
-
-          const blob = doc.output('blob');
-          saveAs(blob, meta.filename + '.pdf');
-
-          // Restore display scale
-          sheetEl.style.transform = prevTransform;
-          sheetEl.style.marginBottom = prevMargin;
-          showToast('✅ تم تنزيل العريضة المعروضة بصيغة PDF بنجاح!');
-          return;
-        }
-      } catch (err) {
-        console.error('Live PDF generation error:', err);
-      }
-      // Native fallback
-      triggerCleanPrint();
+    // ================= Offscreen 1:1 A4 PDF Builder & Instant Cache =================
+    function computeDraftHash() {
+      const ed = document.getElementById('docContent');
+      return (ed ? ed.innerHTML : '') + '|' + currentFontFamily + '|' + currentLineHeight + '|' + currentWordSpacing;
     }
 
-    // ================= Send Real Live PDF to WhatsApp =================
+    function schedulePdfCache() {
+      if (pdfCacheTimer) clearTimeout(pdfCacheTimer);
+      pdfCacheTimer = setTimeout(async () => {
+        try {
+          const hash = computeDraftHash();
+          if (cachedPdfState.hash === hash && cachedPdfState.blob) return;
+          const meta = getLivePetitionMetadata();
+          const blob = await buildLivePdfBlob();
+          if (blob) {
+            cachedPdfState = { hash, blob, filename: meta.filename };
+          }
+        } catch (e) {
+          // Silent background warmup
+        }
+      }, 900);
+    }
+
+    async function buildLivePdfBlob() {
+      const sheetEl = document.getElementById('a4SheetPage1');
+      if (!sheetEl) throw new Error('Sheet element not found');
+      if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+        throw new Error('PDF libraries not loaded');
+      }
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+
+      // Render inside an isolated 1:1 physical A4 container (210mm x 297mm = 794px x 1123px at 96dpi)
+      const stage = document.createElement('div');
+      stage.style.cssText = 'position:fixed;left:-99999px;top:0;width:794px;background:#ffffff;z-index:-1;margin:0;padding:0;overflow:visible;';
+      const clone = sheetEl.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.style.transform = 'none';
+      clone.style.margin = '0';
+      clone.style.boxShadow = 'none';
+      clone.style.border = 'none';
+      clone.style.borderRadius = '0';
+      clone.style.width = '794px';
+      clone.style.minHeight = '1123px';
+      clone.style.height = 'auto';
+      clone.style.overflow = 'visible';
+      clone.style.fontFamily = sheetEl.style.fontFamily || currentFontFamily;
+      clone.style.lineHeight = sheetEl.style.lineHeight || String(currentLineHeight);
+      clone.style.wordSpacing = sheetEl.style.wordSpacing || (currentWordSpacing + 'px');
+      stage.appendChild(clone);
+      document.body.appendChild(stage);
+
+      try {
+        // Gentle auto-fit if text slightly overflows 1 A4 page (keeps single-page rule cleanly)
+        const docClone = clone.querySelector('.a4-sheet-editable');
+        if (docClone && clone.scrollHeight > 1135 && clone.scrollHeight <= 1320) {
+          let shrink = 0.94;
+          while (clone.scrollHeight > 1123 && shrink >= 0.80) {
+            docClone.style.fontSize = Math.round(baseFontSize * shrink * 10) / 10 + 'px';
+            clone.style.lineHeight = Math.max(1.25, currentLineHeight - 0.12);
+            shrink -= 0.04;
+          }
+        }
+
+        const totalH = Math.max(1123, clone.scrollHeight);
+        const pageCount = totalH > 1145 ? Math.ceil(totalH / 1123) : 1;
+        const captureH = pageCount === 1 ? 1123 : pageCount * 1123;
+        clone.style.height = captureH + 'px';
+
+        const canvas = await html2canvas(clone, {
+          scale: 3, // Sharp 300-DPI lossless PNG rendering
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          width: 794,
+          height: captureH,
+          windowWidth: 794,
+          windowHeight: captureH,
+          scrollX: 0,
+          scrollY: 0,
+          logging: false
+        });
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
+
+        if (pageCount === 1) {
+          const imgData = canvas.toDataURL('image/png');
+          doc.addImage(imgData, 'PNG', 0, 0, 210, 297, undefined, 'FAST');
+        } else {
+          const sliceHeightPx = Math.floor(canvas.height / pageCount);
+          for (let i = 0; i < pageCount; i++) {
+            if (i > 0) doc.addPage('a4', 'p');
+            const sliceCanvas = document.createElement('canvas');
+            sliceCanvas.width = canvas.width;
+            sliceCanvas.height = sliceHeightPx;
+            const ctx = sliceCanvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+            ctx.drawImage(canvas, 0, i * sliceHeightPx, canvas.width, sliceHeightPx, 0, 0, canvas.width, sliceHeightPx);
+            doc.addImage(sliceCanvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297, undefined, 'FAST');
+          }
+        }
+
+        return doc.output('blob');
+      } finally {
+        document.body.removeChild(stage);
+      }
+    }
+
+    // ================= Download Clean A4 PDF =================
+    async function downloadPristinePdf() {
+      const meta = getLivePetitionMetadata();
+      const hash = computeDraftHash();
+      if (cachedPdfState.hash === hash && cachedPdfState.blob) {
+        saveAs(cachedPdfState.blob, meta.filename + '.pdf');
+        showToast('✅ تم تنزيل ملف PDF عالي الدقة بنجاح!');
+        return;
+      }
+
+      showToast('📥 جاري توليد PDF عالي الدقة للعريضة الحالية...');
+      try {
+        const blob = await buildLivePdfBlob();
+        cachedPdfState = { hash, blob, filename: meta.filename };
+        saveAs(blob, meta.filename + '.pdf');
+        showToast('✅ تم تنزيل ملف PDF بنجاح!');
+      } catch (err) {
+        console.error('Live PDF generation error:', err);
+        showToast('⚠️ تعذر التوليد التلقائي — جاري فتح نافذة حفظ PDF من المتصفح');
+        triggerCleanPrint();
+      }
+    }
+
+    // ================= Send Live PDF to WhatsApp (iOS/Android/Desktop Safe) =================
     async function shareLivePetitionToWhatsApp() {
       const meta = getLivePetitionMetadata();
-      showToast('⏳ جاري تجهيز العريضة المعروضة لإرسالها لواتساب الكشك...');
-      try {
-        const sheetEl = document.getElementById('a4SheetPage1');
-        if (sheetEl && typeof html2canvas !== 'undefined' && typeof window.jspdf !== 'undefined') {
-          const prevTransform = sheetEl.style.transform;
-          const prevMargin = sheetEl.style.marginBottom;
-          sheetEl.style.transform = 'none';
-          sheetEl.style.marginBottom = '0';
+      const hash = computeDraftHash();
 
-          const canvas = await html2canvas(sheetEl, { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false });
-          const imgData = canvas.toDataURL('image/jpeg', 0.98);
-          const { jsPDF } = window.jspdf;
-          const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-          doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
-          const blob = doc.output('blob');
-          const file = new File([blob], meta.filename + '.pdf', { type: 'application/pdf' });
-
-          sheetEl.style.transform = prevTransform;
-          sheetEl.style.marginBottom = prevMargin;
-
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      // Synchronous share when cache is warm (critical for iOS Safari user-gesture requirement)
+      if (cachedPdfState.hash === hash && cachedPdfState.blob) {
+        const file = new File([cachedPdfState.blob], meta.filename + '.pdf', { type: 'application/pdf' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
             await navigator.share({
               files: [file],
               title: meta.title,
-              text: meta.title + ' — وكيل المشتكي المحامي سعد فراس أميل'
+              text: meta.title + ' — المحامي سعد فراس أميل'
+            });
+            showToast('✅ تم إرسال ملف الـ PDF للواتساب بنجاح!');
+            return;
+          } catch (shareErr) {
+            if (shareErr && shareErr.name === 'AbortError') return;
+          }
+        }
+      }
+
+      showToast('⏳ جاري تجهيز ملف PDF لإرساله لواتساب الكشك...');
+      try {
+        const blob = await buildLivePdfBlob();
+        cachedPdfState = { hash, blob, filename: meta.filename };
+        const file = new File([blob], meta.filename + '.pdf', { type: 'application/pdf' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: meta.title,
+              text: meta.title + ' — المحامي سعد فراس أميل'
             });
             showToast('✅ تم فتح الواتساب بملف الـ PDF بنجاح!');
             return;
-          } else {
-            // Fallback for desktop: download the generated live PDF & open WhatsApp Web
-            saveAs(blob, meta.filename + '.pdf');
-            showToast('✅ تم تنزيل PDF العريضة الحالية! جاري فتح الواتساب...');
-            const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(meta.title + '\n(العريضة الحالية الرسمية A4)\nوكيل المشتكي المحامي سعد فراس أميل');
-            setTimeout(() => window.open(waUrl, '_blank'), 1000);
-            return;
+          } catch (shareErr) {
+            if (shareErr && shareErr.name === 'AbortError') return;
           }
         }
+
+        // Desktop fallback: save PDF + open WhatsApp Web
+        saveAs(blob, meta.filename + '.pdf');
+        showToast('✅ تم تنزيل PDF العريضة الحالية! جاري فتح الواتساب...');
+        const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(meta.title + '\n(ملف PDF الرسمي A4)\nوكيل المشتكي المحامي سعد فراس أميل');
+        setTimeout(() => window.open(waUrl, '_blank'), 800);
       } catch (err) {
-        console.warn('Web Share failed:', err);
+        console.warn('WhatsApp share failed:', err);
+        downloadPristinePdf();
       }
-      await downloadPristinePdf();
+    }
+
+    // ================= Copy Clean Formatted Plain Text for Word / WhatsApp =================
+    async function copyLivePetitionText() {
+      const editorEl = document.getElementById('docContent');
+      const text = editorEl ? editorEl.innerText.replace(/\n{3,}/g, '\n\n').trim() : '';
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast('📋 تم نسخ نص العريضة صافي للّصق المباشر في Word أو الواتساب!');
+      } catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('📋 تم نسخ نص العريضة بنجاح!');
+      }
     }
 
     // ================= Client-Side True Binary Word (.docx) Generation From Live Screen =================
     async function downloadLiveWordDoc() {
       const meta = getLivePetitionMetadata();
-      showToast('⏳ جاري إنشاء مستند Word (.docx) للعريضة المعروضة حالياً...');
+      showToast('⏳ جاري إنشاء مستند Word (.docx) منسق بمقاسات A4...');
       try {
         if (typeof docx === 'undefined') {
           throw new Error('Docx engine not loaded');
         }
 
         const editorEl = document.getElementById('docContent');
-        const textContent = editorEl ? editorEl.innerText : '';
-        const lines = textContent.split('\n').filter(l => l.trim().length > 0);
+        if (!editorEl) throw new Error('Editor not found');
 
-        const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
+        const { Document, Packer, Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, UnderlineType } = docx;
+        const children = [];
 
-        const docParagraphs = lines.map(line => {
-          const isHeader = line.includes('إلى /') || line.includes('محكمة تحقيق') || line.includes('محكمة الأحوال');
-          const isSubject = line.includes('م /') || line.includes('م/');
-          const isRed = line.includes('المادة 421') || line.includes('المادة 430') || line.includes('المادة 433') || line.includes('المادة 413') || line.includes('المادة 248') || line.includes('ثانياً:') || line.includes('ثالثاً:') || line.includes('رابعاً:') || line.includes('أولاً:') || line.includes('التعذيب');
-
-          return new Paragraph({
-            alignment: isSubject ? AlignmentType.CENTER : AlignmentType.RIGHT,
-            bidirectional: true,
-            spacing: { after: 120, line: 360 }, // 1.5 line spacing
-            children: [
-              new TextRun({
-                text: line,
-                bold: isHeader || isSubject || line.startsWith('1.') || line.startsWith('2.') || line.startsWith('3.') || line.startsWith('4.') || line.startsWith('5.') || line.startsWith('أولاً:') || line.startsWith('ثانياً:') || line.startsWith('ثالثاً:') || line.startsWith('رابعاً:'),
-                size: isHeader ? 30 : (isSubject ? 28 : 24), // 15pt, 14pt, 12pt
-                font: 'Cairo',
-                color: isRed ? 'DC2626' : '0F172A'
-              })
-            ]
+        function extractRunsFromNode(node, defaultColor, forceBold, forceUnderline) {
+          const runs = [];
+          node.childNodes.forEach(child => {
+            if (child.nodeType === Node.TEXT_NODE) {
+              const t = child.textContent;
+              if (t) {
+                runs.push(new TextRun({
+                  text: t,
+                  bold: forceBold,
+                  underline: forceUnderline ? { type: UnderlineType.SINGLE } : undefined,
+                  size: 23,
+                  font: 'Cairo',
+                  color: defaultColor
+                }));
+              }
+            } else if (child.nodeType === Node.ELEMENT_NODE) {
+              if (child.tagName === 'BR') {
+                runs.push(new TextRun({ break: 1 }));
+                return;
+              }
+              const tag = child.tagName;
+              const isBold = forceBold || tag === 'STRONG' || tag === 'B' || child.classList.contains('crime-title') || child.classList.contains('legal-red');
+              const isUnderline = forceUnderline || tag === 'U';
+              const isRed = child.classList.contains('legal-red') || (child.style && (child.style.color === 'rgb(220, 38, 38)' || child.style.color === '#dc2626'));
+              const color = isRed ? 'DC2626' : defaultColor;
+              runs.push(...extractRunsFromNode(child, color, isBold, isUnderline));
+            }
           });
+          return runs;
+        }
+
+        Array.from(editorEl.children).forEach(el => {
+          if (el.tagName === 'TABLE' && el.classList.contains('footer-table')) {
+            const cells = el.querySelectorAll('td');
+            const rightText = cells[0] ? cells[0].innerText.trim().split('\n') : [''];
+            const leftText = cells[1] ? cells[1].innerText.trim().split('\n') : [''];
+            const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+            const tableBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder, insideHorizontal: noBorder, insideVertical: noBorder };
+
+            children.push(new Table({
+              width: { size: 100, type: WidthType.PERCENTAGE },
+              visuallyRightToLeft: true,
+              borders: tableBorders,
+              rows: [
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: { size: 50, type: WidthType.PERCENTAGE },
+                      borders: tableBorders,
+                      children: rightText.map(line => new Paragraph({
+                        alignment: AlignmentType.RIGHT,
+                        bidirectional: true,
+                        spacing: { after: 40 },
+                        children: [new TextRun({ text: line.trim(), bold: true, size: 22, font: 'Cairo', color: '0F172A' })]
+                      }))
+                    }),
+                    new TableCell({
+                      width: { size: 50, type: WidthType.PERCENTAGE },
+                      borders: tableBorders,
+                      children: leftText.map(line => new Paragraph({
+                        alignment: AlignmentType.LEFT,
+                        bidirectional: true,
+                        spacing: { after: 40 },
+                        children: [new TextRun({ text: line.trim(), bold: true, size: 23, font: 'Cairo', color: '0F172A' })]
+                      }))
+                    })
+                  ]
+                })
+              ]
+            }));
+            return;
+          }
+
+          const isHeader = el.classList.contains('court-header');
+          const isSubject = el.classList.contains('subject-box');
+          const isClosing = el.classList.contains('closing-text');
+          const runs = extractRunsFromNode(el, '0F172A', isHeader || isSubject || isClosing, isSubject);
+
+          if (runs.length > 0) {
+            children.push(new Paragraph({
+              alignment: (isSubject || isClosing) ? AlignmentType.CENTER : (isHeader ? AlignmentType.RIGHT : AlignmentType.JUSTIFIED),
+              bidirectional: true,
+              spacing: { before: isSubject ? 100 : 40, after: isHeader || isSubject ? 100 : 70, line: 300 },
+              children: runs
+            }));
+          }
         });
 
         const doc = new Document({
@@ -1682,24 +1930,24 @@
             properties: {
               page: {
                 size: { width: 11906, height: 16838 }, // Exact A4 in twips
-                margin: { top: 850, bottom: 850, left: 1000, right: 1000 }
+                margin: { top: 680, bottom: 680, left: 850, right: 850 }
               }
             },
-            children: docParagraphs
+            children: children
           }]
         });
 
         const blob = await Packer.toBlob(doc);
         saveAs(blob, meta.filename + '.docx');
-        showToast('✅ تم تنزيل مستند Word للعريضة المعروضة بنجاح!');
+        showToast('✅ تم تنزيل مستند Word (.docx) مطابقاً للورقة بنجاح!');
       } catch (err) {
         console.error('Docx generation error:', err);
-        showToast('⚠️ جاري التنزيل المباشر...');
+        showToast('⚠️ جاري استخدام التنزيل الاحتياطي...');
         downloadPristinePdf();
       }
     }
 
-    // ================= Native Clean Print =================
+    // ================= Native Clean Print / Browser Vector PDF =================
     function triggerCleanPrint() {
       const sheet = document.getElementById('a4SheetPage1');
       if (sheet) {
@@ -1715,6 +1963,7 @@
     // Force App Refresh
     function forceAppRefresh() {
       localStorage.removeItem(ACTIVE_DRAFT_KEY);
+      localStorage.removeItem('saadamil_paged_petition_active_v4');
       localStorage.removeItem('saadamil_line_height');
       localStorage.removeItem('saadamil_word_spacing');
       localStorage.removeItem('saadamil_font_family');
