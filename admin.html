@@ -2088,6 +2088,7 @@
             </div>
 
             <div style="display: flex; gap: 0.5rem;">
+              <button onclick="clearAllConsultations()" class="btn btn-danger btn-sm" style="background:rgba(239,68,68,0.15); border:1px solid #ef4444; color:#f87171;" title="مسح كافة الاستشارات والتجريبية من النظام">مسح الكل 🗑️</button>
               <button onclick="loadAllData()" class="btn btn-secondary btn-sm">تحديث 🔄</button>
             </div>
           </div>
@@ -3424,17 +3425,22 @@
       // Fallback static read
       if (serverDockets.length === 0) {
         try {
-          const r = await fetch('data/consultations.json');
+          const r = await fetch('data/consultations.json?v=' + Date.now());
           if (r.ok) serverDockets = await r.json();
         } catch (e) {}
       }
 
-      // Merge with localStorage
+      // Merge with localStorage and exclude permanently deleted dockets
       const localDockets = JSON.parse(localStorage.getItem('saad_amil_consultations') || '[]');
+      const deletedIds = new Set(JSON.parse(localStorage.getItem('saad_amil_deleted_consultations') || '[]'));
+
       const docketMap = new Map();
-      serverDockets.forEach(d => docketMap.set(d.docketId, d));
+      serverDockets.forEach(d => {
+        if (!deletedIds.has(d.docketId)) docketMap.set(d.docketId, d);
+      });
+      // Local changes take precedence
       localDockets.forEach(d => {
-        if (!docketMap.has(d.docketId)) docketMap.set(d.docketId, d);
+        if (!deletedIds.has(d.docketId)) docketMap.set(d.docketId, d);
       });
 
       allDockets = Array.from(docketMap.values());
@@ -3680,11 +3686,21 @@
     async function deleteDocket(docketId) {
       if (!confirm('هل أنت متأكد من حذف هذه الإضبارة نهائياً من النظام؟')) return;
       allDockets = allDockets.filter(x => x.docketId !== docketId);
+
+      // Save updated active list to localStorage
+      localStorage.setItem('saad_amil_consultations', JSON.stringify(allDockets));
+
+      // Add to permanent tombstone list so server reload never restores it
+      const deletedList = JSON.parse(localStorage.getItem('saad_amil_deleted_consultations') || '[]');
+      if (!deletedList.includes(docketId)) {
+        deletedList.push(docketId);
+        localStorage.setItem('saad_amil_deleted_consultations', JSON.stringify(deletedList));
+      }
+
       updateKPIs();
       renderInboxCards();
       renderDocketsCards();
       renderDashboardRecent();
-      localStorage.setItem('saad_amil_consultations', JSON.stringify(allDockets));
 
       try {
         await fetch('api/dockets.php?pin=' + encodeURIComponent(currentPin), {
@@ -3693,6 +3709,23 @@
           body: JSON.stringify({ action: 'delete', docketId })
         });
       } catch (err) {}
+    }
+
+    // Clear All Consultations (Wipe demo / all consultations)
+    function clearAllConsultations() {
+      if (!confirm('هل أنت متأكد من حذف وتصفير كافة الاستشارات الواردة والتجريبية نهائياً من النظام؟')) return;
+      const allIds = allDockets.map(d => d.docketId);
+      const deletedList = JSON.parse(localStorage.getItem('saad_amil_deleted_consultations') || '[]');
+      allIds.forEach(id => {
+        if (!deletedList.includes(id)) deletedList.push(id);
+      });
+      localStorage.setItem('saad_amil_deleted_consultations', JSON.stringify(deletedList));
+      allDockets = [];
+      localStorage.setItem('saad_amil_consultations', JSON.stringify([]));
+      updateKPIs();
+      renderInboxCards();
+      renderDocketsCards();
+      renderDashboardRecent();
     }
 
     // View Receipt Modal
