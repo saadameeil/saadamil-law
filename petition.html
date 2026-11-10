@@ -738,6 +738,16 @@
         </button>
       </div>
 
+      <!-- Quick Preset Selector -->
+      <div class="toolbar-group" style="margin: 0 4px; background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary);">
+        <span class="group-label" style="color: var(--gold-primary);">📋 العريضة المحصنة:</span>
+        <select class="tool-select" id="petitionPresetSelect" onchange="loadPresetByName(this.value)" style="border-color: var(--gold-primary); font-weight: 800; color: #fde68a;">
+          <option value="amin_rescue" selected>⚡ شكوى أمين موفق صبري (إنقاذ زينة وحجز حرية)</option>
+          <option value="omar_threat">شكوى عمر رعد خليفه (تهديد وابتزاز وشهود)</option>
+          <option value="amin_marriage">عريضة تصديق زواج خارجي (أمين وزينة)</option>
+        </select>
+      </div>
+
       <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
         <span class="page-status-badge" id="pageStatusBadge">
           ✅ صفحة A4 واحدة كاملة ومثالية
@@ -1097,13 +1107,151 @@
     </tr>
   </table>`;
 
+    const PETITION_AMIN_RESCUE_HTML = `  <div class="court-header">
+    <div>إلى / السيد قاضي محكمة تحقيق الدورة المحترم</div>
+    <div style="font-size: 13px; font-weight: 700; color: #475569; margin-top: 2px;">(المختص بقضايا العنف الأسري وحماية الأسرة والطفل)</div>
+  </div>
+
+  <div class="parties-block">
+    <div class="parties-row">
+      <div><strong>المشتكي بالذات:</strong> أمين موفق صبري</div>
+      <div><strong>السكن:</strong> بغداد - الدورة، حي الميكانيك / شارع الشرطة</div>
+    </div>
+    <div style="margin-top: 2px; font-size: 12px; color: #1e293b;">
+      <strong>بحضور ومؤازرة محاميه:</strong> الأستاذ المحامي سعد فراس أميل (هوية النقابة: 188572 - الصلاحية ب)
+    </div>
+    <div style="margin-top: 4px;">
+      <strong>المشكو منهما:</strong><br>
+      1. <strong>علي إسماعيل رشيد</strong> (والد الزوجة - منسوب وزارة الداخلية العراقية) / دار سكنه في الدورة.<br>
+      2. <strong>بان حميد شلغم</strong> (والدة الزوجة) / دار سكنها في الدورة وبدلالة المشتكي.
+    </div>
+  </div>
+
+  <div class="subject-box">
+    <u>م / شكوى جزائية عاجلة وطلب تسيير مفرزة أمنية وحماية الأسرة لتخليص محتجزة وإحالتها للطب العدلي</u>
+  </div>
+
+  <div style="margin-bottom: 5px; font-weight: 800; font-size: 13px;">سيدي القاضي المحترم:</div>
+  <div style="margin-bottom: 6px; font-size: 13px; text-align: justify; line-height: 1.42;">
+    أحيط عدالتكم علماً بأنني زوج شرعي للمدعوة <strong>(زينة علي إسماعيل رشيد)</strong> البالغة سن الرشد وكاملة الأهلية، بموجب عقد زواج شرعي صحيح معقود بحضور الشهود (مرفق طياً نسخته). وحيث أقدم المشكو منهما على ارتكاب الجرائم الجنائية المشهودة والخطيرة الآتية:
+  </div>
+
+  <div class="crime-item">
+    <span class="legal-red"><strong>1. جناية حجز الحرية المقترن بالتعذيب والضرب المبرح (المادة 421/أ والمادة 413 عقوبات والمادة 9/ 2 أحوال شخصية):</strong></span> قيام المشكو منهما باحتجاز حرية زوجتي (زينة) داخل دار سكنهم قسراً ومصادرة هاتفها ومستمسكاتها ومنعها من الخروج، واستعمال العنف الجسدي المفرط والتعذيب والضرب بالعصي والأيدي، لإكراهها على فسخ الزواج ومنعها من زوجها رغم بلوغها سن الرشد، والمثبت بالصور الفوتوغرافية التي توثق الكدمات الدامية على جسدها.
+  </div>
+
+  <div class="crime-item">
+    <span class="crime-title"><strong>2. جناية التهديد بالقتل واستغلال السلاح والوظيفة الأمنية (المادتان 430 و331 عقوبات):</strong></span> قيام المشكو منه الأول (علي إسماعيل) باستغلال صفته الوظيفية كمنتسب في وزارة الداخلية وتهديدي بالقتل شاهراً سلاحه الناري الوظيفي: <em>«أحط طلقة براسك بالمسدس مالتي واستغل وظيفتي بترهيبك»</em>، ما يشكل تهديداً بجناية ومخالفة صارخة لواجبات الوظيفة واستغلالاً لسلاح الدولة.
+  </div>
+
+  <div class="crime-item">
+    <span class="crime-title"><strong>3. جريمة التهديد العشائري والدكة (قانون مكافحة الإرهاب رقم 13 لسنة 2005):</strong></span> قيام المشكو منها الثانية (بان حميد) بتهديدي بالدكة العشائرية وتسيير مجاميع مسلحة لدار أهلي، بالمخالفة لأحكام المادة (2/ 1) من قانون مكافحة الإرهاب وإعمام مجلس القضاء الأعلى رقم (897/مكتب/2018).
+  </div>
+
+  <div class="requests-header">لذا؛ ولخطورة الموقف ووجود خطر داهم يهدد حياة زوجتي وسلامتها، نلتمس التفضل بـ:</div>
+  <div class="req-item"><span class="legal-red"><strong>أولاً:</strong> إصدار أمركم القضائي العاجل بتسيير مفرزة أمنية بالاشتراك مع مديرية حماية الأسرة والطفل لتفتيش الدار وتخليص زوجتي المحتجزة وإحضارها أمام عدالتكم فوراً لتدوين أقوالها.</span></div>
+  <div class="req-item"><strong>ثانياً:</strong> إحالة المجنى عليها بصحبة المفرزة إلى معهد الطب العدلي فوراً لتوثيق وتثبيت آثار الكدمات والتعذيب البدني.</div>
+  <div class="req-item"><strong>ثالثاً:</strong> تدوين إقرار المجنى عليها برغبتها بالخروج مع زوجها وتخلية سبيلها استناداً لأحكام المادة (15) من الدستور، وإلزام المشكو منه الأول بتعهد عدلي مغلظ بعدم التعرض (المادة 121 أصول جزائية).</div>
+  <div class="req-item"><strong>رابعاً:</strong> اتخاذ الإجراءات القانونية المشددة بحق المشكو منهما وإشعار وزارة الداخلية لضبط السلاح الوظيفي.</div>
+
+  <div class="closing-text">مع وافر الشكر والتقدير والاحترام لعدالتكم الموقرة</div>
+
+  <table class="footer-table">
+    <tr>
+      <td style="text-align: right; width: 45%; font-size: 11.5px;">
+        <strong>تحريراً في: 11 / 11 / 2026 م</strong><br>
+        <span style="font-size: 11px; color: #475569;">المرفقات: نسخة العقد الشرعي + صور التعذيب</span>
+      </td>
+      <td style="text-align: left; width: 55%; font-size: 12px;">
+        <strong>المشتكي بالذات: أمين موفق صبري</strong><br>
+        <span style="font-size: 11px;">(التوقيع والبصمة)</span><br>
+        <span style="font-size: 10.5px; color: #334155;">بحضور ومؤازرة محاميه: <strong>سعد فراس أميل</strong></span>
+      </td>
+    </tr>
+  </table>`;
+
+    const PETITION_AMIN_MARRIAGE_HTML = `  <div class="court-header">
+    <div>إلى / محكمة الأحوال الشخصية في الدورة المحترمة</div>
+  </div>
+
+  <div class="parties-block">
+    <div class="parties-row">
+      <div><strong>المدعي:</strong> أمين موفق صبري / بغداد - الدورة</div>
+      <div><strong>وكيله:</strong> المحامي سعد فراس أميل (هوية: 188572)</div>
+    </div>
+    <div style="margin-top: 3px;">
+      <strong>المدعى عليها:</strong> زينة علي إسماعيل رشيد / دار سكنها في بغداد - الدورة
+    </div>
+  </div>
+
+  <div class="subject-box">
+    <u>م / دعوى تصديق عقد زواج خارجي</u>
+  </div>
+
+  <div style="margin-bottom: 6px; font-weight: 800; font-size: 13px;">سيدي القاضي المحترم:</div>
+  <div style="margin-bottom: 10px; font-size: 13.5px; text-align: justify; line-height: 1.55;">
+    بتاريخ &nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;/ 2026 تم زواج موكلي المدعي بالمدعى عليها بموجب عقد زواج شرعي خارجي خارج المحكمة، بإيجاب وقبول شرعيين صحيحين، وعلى مهر مسمّى معجله ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) دينار ومؤجله ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) دينار، وبحضور شاهدي عدل هما كل من ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) و ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )، وقد دخل موكلي بها شرعاً ولا مانع شرعي أو قانوني يمنع صحة هذا الزواج، وحيث أن هذا الزواج ما زال غير مسجل في السجلات الرسمية؛
+  </div>
+
+  <div class="requests-header">عليه، واستناداً لأحكام المادة العاشرة من قانون الأحوال الشخصية رقم 188 لسنة 1959 والمادة (300) مرافعات:</div>
+  <div class="req-item"><strong>أولاً:</strong> دعوة المدعى عليها للمرافعة بعد تبليغها بصورة من عريضة الدعوى.</div>
+  <div class="req-item"><span class="legal-red"><strong>ثانياً:</strong> الحكم بتصديق الزواج الخارجي الجاري بين موكلي والمدعى عليها واعتباره صحيحاً ونافذاً من تاريخ وقوعه.</span></div>
+  <div class="req-item"><strong>ثالثاً:</strong> إشعار الدائرة المختصة (مديرية الأحوال المدنية والجوازات والإقامة) لتسجيل الواقعة رسمياً وإصدار حجة الزواج.</div>
+  <div class="req-item"><strong>رابعاً:</strong> تحميل المدعى عليها المصاريف والرسوم القضائية وأتعاب المحاماة.</div>
+
+  <div class="closing-text">مع وافر الشكر والتقدير والاحترام</div>
+
+  <table class="footer-table">
+    <tr>
+      <td style="text-align: right; width: 50%; font-size: 11.5px;">
+        <strong>تحريراً في: 15 / 11 / 2026 م</strong>
+      </td>
+      <td style="text-align: left; width: 50%; font-size: 12px;">
+        <strong>وكيل المدعي.</strong><br>
+        <strong>المحامي سعد فراس أميل</strong>
+      </td>
+    </tr>
+  </table>`;
+
+    const PETITION_PRESETS = {
+      amin_rescue: PETITION_AMIN_RESCUE_HTML,
+      omar_threat: MASTER_AUDITED_HTML,
+      amin_marriage: PETITION_AMIN_MARRIAGE_HTML
+    };
+
+    function loadPresetByName(presetKey) {
+      if (!PETITION_PRESETS[presetKey]) return;
+      const editorEl = document.getElementById('docContent');
+      if (!editorEl) return;
+      editorEl.innerHTML = PETITION_PRESETS[presetKey];
+      localStorage.setItem(ACTIVE_DRAFT_KEY, PETITION_PRESETS[presetKey]);
+      localStorage.setItem('saadamil_active_preset_name', presetKey);
+      saveDocumentLive();
+      checkPageBudget();
+      showToast('تم تحميل نموذج العريضة بنجاح 📋');
+    }
+
     // Initialize Document on Startup
     window.addEventListener('DOMContentLoaded', () => {
       const editorEl = document.getElementById('docContent');
       if (!editorEl) return;
 
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedPreset = urlParams.get('preset') || localStorage.getItem('saadamil_active_preset_name') || 'amin_rescue';
+
       const saved = localStorage.getItem(ACTIVE_DRAFT_KEY);
-      editorEl.innerHTML = saved && saved.trim().length > 100 ? saved : MASTER_AUDITED_HTML;
+      if (urlParams.get('preset') && PETITION_PRESETS[requestedPreset]) {
+        editorEl.innerHTML = PETITION_PRESETS[requestedPreset];
+        const sel = document.getElementById('petitionPresetSelect');
+        if (sel) sel.value = requestedPreset;
+      } else if (saved && saved.trim().length > 100) {
+        editorEl.innerHTML = saved;
+        const sel = document.getElementById('petitionPresetSelect');
+        const activeName = localStorage.getItem('saadamil_active_preset_name');
+        if (sel && activeName) sel.value = activeName;
+      } else {
+        editorEl.innerHTML = PETITION_AMIN_RESCUE_HTML;
+      }
 
       // Restore saved typography preferences
       const savedFont = localStorage.getItem('saadamil_font_family');
