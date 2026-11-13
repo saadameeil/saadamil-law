@@ -1,8 +1,8 @@
 'use strict';
+
 // Verified office contact and payment info
 const WHATSAPP_NUMBER = '9647801222119';
 const SUPER_ID = 'SUPER-IQ-77098231';
-const LAWYER_PIN = '188572'; // Iraqi Bar ID as secret access code
 const QI_SHORTLINK = 'https://m.banqi.qi.iq/shortlink/web/csb/exgy7vng';
 const QI_APP_SCHEME = 'qicardwallet://qicard/deeplink.htm?action=native&pageId=shortLink&usecase=restore&source=DEEP_LINK&url=' + encodeURIComponent(QI_SHORTLINK);
 
@@ -13,14 +13,6 @@ const preview = document.querySelector('#preview');
 const previewWrap = document.querySelector('#preview-wrap');
 const finalSubmitBtn = document.querySelector('#final-submit-btn');
 const submitBtnText = document.querySelector('#submit-btn-text');
-
-let previewUrl = '';
-let receiptValid = false;
-let receiptBase64 = '';
-let imageVersion = 0;
-let previousFocus;
-let selectedTopic = '';
-let selectedPlan = {name:'استشارة كتابية متكاملة مع العريضة', price:75000};
 const receiptStatus = document.querySelector('#receipt-status');
 
 // Stepper Elements
@@ -38,6 +30,24 @@ const docClientInfo = document.querySelector('#doc-client-info');
 const docOpponentInfo = document.querySelector('#doc-opponent-info');
 const docTopicVal = document.querySelector('#doc-topic-val');
 const docFactsVal = document.querySelector('#doc-facts-val');
+const docStatusDesc = document.querySelector('.status-desc');
+
+let previewUrl = '';
+let receiptValid = false;
+let receiptBase64 = '';
+let imageVersion = 0;
+let previousFocus;
+let selectedTopic = '';
+let generatedDocketId = 'IQ-SA-' + Math.floor(10000 + Math.random() * 90000);
+
+// Active consultation plan & currency state
+let currentPlan = {
+  name: 'استشارة قانونية ودراسة ملف',
+  fee: 75000,
+  currency: 'IQD',
+  formattedFee: '75,000 د.ع',
+  paymentMethod: 'qi_super'
+};
 
 function getArabicDate() {
   const months = ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'];
@@ -48,9 +58,7 @@ function getArabicDate() {
   return day + ' ' + month + ' ' + year;
 }
 
-let generatedDocketId = 'IQ-SA-' + Math.floor(10000 + Math.random() * 90000);
-
-// Mandatory Receipt Lock Handler
+// Receipt Lock & Button Status Handler
 function updateReceiptLock(isValid) {
   receiptValid = isValid;
   if (!finalSubmitBtn) return;
@@ -59,12 +67,16 @@ function updateReceiptLock(isValid) {
     finalSubmitBtn.disabled = false;
     finalSubmitBtn.classList.remove('locked');
     finalSubmitBtn.classList.add('unlocked');
-    if (submitBtnText) submitBtnText.textContent = '🟢 تم تأكيد الوصل بنجاح ── إرسال الكتاب والملف للمحامي سعد أميل 📨';
+    if (submitBtnText) {
+      submitBtnText.textContent = `إرسال طلب الاستشارة للمراجعة والتدقيق (${currentPlan.formattedFee}) ←`;
+    }
   } else {
     finalSubmitBtn.disabled = true;
     finalSubmitBtn.classList.remove('unlocked');
     finalSubmitBtn.classList.add('locked');
-    if (submitBtnText) submitBtnText.textContent = '🔒 يرجى إرفاق وصل التحويل لتفعيل الإرسال (75,000 د.ع)';
+    if (submitBtnText) {
+      submitBtnText.textContent = `🔒 يرجى إرفاق إشعار التحويل لتفعيل الإرسال (${currentPlan.formattedFee})`;
+    }
   }
 }
 
@@ -103,7 +115,7 @@ function showStep2() {
   if (!nameVal || !phoneVal || !locVal || !topicVal || !summaryVal) {
     if (step1Error) {
       step1Error.hidden = false;
-      step1Error.textContent = 'يرجى إكمال الحقول الأساسية (الاسم، الهاتف، منطقة السكن، موضوع القضية، والشرح) لإصدار كتابك الرسمي.';
+      step1Error.textContent = 'يرجى إكمال الحقول الأساسية (الاسم، الهاتف، منطقة السكن، موضوع القضية، والشرح الموجز) لإصدار الكتاب الرسمي.';
     }
     if (!nameVal && nameInput) nameInput.focus();
     else if (!phoneVal && phoneInput) phoneInput.focus();
@@ -113,10 +125,10 @@ function showStep2() {
     return;
   }
 
-  if (phoneVal.length < 9) {
+  if (phoneVal.length < 8) {
     if (step1Error) {
       step1Error.hidden = false;
-      step1Error.textContent = 'يرجى كتابة رقم هاتف صحيح ليتسنى للأستاذ سعد أميل الاتصال بك هاتفياً.';
+      step1Error.textContent = 'يرجى كتابة رقم هاتف صحيح ليتسنى للمكتب الاتصال بك هاتفياً وتحديد الموعد.';
     }
     if (phoneInput) phoneInput.focus();
     return;
@@ -124,7 +136,7 @@ function showStep2() {
 
   if (step1Error) step1Error.hidden = true;
 
-  // Populate Official Letterhead Document
+  // Populate Official Letterhead Document safely using textContent
   if (docDate) docDate.textContent = getArabicDate();
   if (docId) docId.textContent = generatedDocketId;
   
@@ -133,7 +145,7 @@ function showStep2() {
   }
   
   if (docOpponentInfo) {
-    let oppStr = oppNameVal || 'مجهول الهوية / غير محدد';
+    let oppStr = oppNameVal || 'غير محدد في هذا الطلب';
     if (oppPhoneVal) oppStr += ' • هاتف: ' + oppPhoneVal;
     if (oppLocVal) oppStr += ' (' + oppLocVal + ')';
     docOpponentInfo.textContent = oppStr;
@@ -142,7 +154,15 @@ function showStep2() {
   if (docTopicVal) docTopicVal.textContent = topicVal;
   if (docFactsVal) docFactsVal.textContent = summaryVal;
 
-  // Transition view & lock check
+  if (docStatusDesc) {
+    if (currentPlan.currency === 'USD') {
+      docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية والاتصال المباشر بالموكل فور مراجعة وتأكيد أتعاب الاستشارة الدولية المعتمدة ($100 USD).';
+    } else {
+      docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية والاتصال الهاتفي بالموكل فور مراجعة وتأكيد أتعاب الاستشارة المعتمدة (٧٥٬٠٠٠ د.ع).';
+    }
+  }
+
+  // Transition view & update lock
   updateReceiptLock(receiptValid);
   step1Details.hidden = true;
   step2Payment.hidden = false;
@@ -171,8 +191,8 @@ function clearPreview(resetInput=true){
   previewUrl = '';
   receiptBase64 = '';
   updateReceiptLock(false);
-  preview.removeAttribute('src');
-  previewWrap.hidden = true;
+  if (preview) preview.removeAttribute('src');
+  if (previewWrap) previewWrap.hidden = true;
   if(resetInput && receipt) receipt.value = '';
   if(receiptStatus) receiptStatus.textContent = '';
 }
@@ -181,10 +201,24 @@ function clearPreview(resetInput=true){
 document.querySelectorAll('[data-plan]').forEach(button => {
   button.addEventListener('click', () => {
     previousFocus = button;
-    selectedPlan = {
-      name: button.dataset.plan || 'استشارة كتابية متكاملة مع العريضة',
-      price: Number(button.dataset.price) || 75000
-    };
+    const isDiaspora = (button.dataset.plan || '').includes('مغترب') || (button.dataset.plan || '').includes('خارج');
+    if (isDiaspora) {
+      currentPlan = {
+        name: 'استشارة وتمثيل قانوني للمغتربين',
+        fee: 100,
+        currency: 'USD',
+        formattedFee: '$100 USD',
+        paymentMethod: 'usd_chase'
+      };
+    } else {
+      currentPlan = {
+        name: 'استشارة قانونية ودراسة ملف',
+        fee: 75000,
+        currency: 'IQD',
+        formattedFee: '75,000 د.ع',
+        paymentMethod: 'qi_super'
+      };
+    }
     
     if (selectedTopic) {
       const topicDropdown = document.querySelector('#topic');
@@ -237,19 +271,19 @@ if (copyBtn) {
   });
 }
 
-// Receipt File Upload & Preview + Mandatory Lock Unlock
+// Receipt File Upload & Preview
 if (receipt) {
   receipt.addEventListener('change', async () => {
     const file = receipt.files[0];
     clearPreview(false);
     if (!file) return;
     if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      receiptStatus.textContent = 'اختر صورة بصيغة JPG أو PNG أو WebP.';
+      receiptStatus.textContent = 'يرجى اختيار صورة بصيغة JPG أو PNG أو WebP.';
       updateReceiptLock(false);
       return;
     }
     if (file.size > 8 * 1024 * 1024) {
-      receiptStatus.textContent = 'حجم الصورة أكبر من ٨ ميغابايت. اختر صورة أصغر.';
+      receiptStatus.textContent = 'حجم الصورة أكبر من 8 ميغابايت. يرجى اختيار صورة أصغر.';
       updateReceiptLock(false);
       return;
     }
@@ -258,7 +292,7 @@ if (receipt) {
     const image = new Image();
     image.src = url;
 
-    // Read base64 for lawyer's inbox storage
+    // Read base64 for secure transmission to server
     const reader = new FileReader();
     reader.onload = e => { receiptBase64 = e.target.result; };
     reader.readAsDataURL(file);
@@ -272,12 +306,16 @@ if (receipt) {
       previewUrl = url;
       preview.src = url;
       previewWrap.hidden = false;
+      const previewBadge = previewWrap.querySelector('.receipt-success-badge');
+      if (previewBadge) {
+        previewBadge.textContent = 'تم إرفاق صورة الإشعار — بانتظار التحقق والمراجعة';
+      }
       updateReceiptLock(true);
       if (receiptStatus) receiptStatus.textContent = '';
     } catch {
       URL.revokeObjectURL(url);
       if (version === imageVersion) {
-        receiptStatus.textContent = 'تعذر فتح الصورة. يرجى اختيار صورة أخرى.';
+        receiptStatus.textContent = 'تعذر فتح الصورة. يرجى اختيار صورة واضحة أخرى.';
         updateReceiptLock(false);
       }
     }
@@ -287,35 +325,19 @@ if (receipt) {
 const removeReceiptBtn = document.querySelector('#remove-receipt');
 if (removeReceiptBtn) removeReceiptBtn.addEventListener('click', clearPreview);
 
-// Save submission into Lawyer Inbox
-function saveToLawyerInbox(submission) {
-  try {
-    const existing = JSON.parse(localStorage.getItem('saad_amil_consultations') || '[]');
-    existing.unshift(submission);
-    localStorage.setItem('saad_amil_consultations', JSON.stringify(existing));
-  } catch(e) {
-    console.error('Inbox save note:', e);
-  }
-
-  // Central Server Synchronization for Lawyer Admin Portal
-  try {
-    fetch('api/submit.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(submission)
-    }).catch(err => console.log('Server sync background:', err));
-  } catch(err) {}
-}
-
-// Form Submit: Final Step (ONLY ALLOWED WITH VALID RECEIPT)
+// Form Submit: Final Step
 const briefForm = document.querySelector('#brief');
 if (briefForm) {
-  briefForm.addEventListener('submit', event => {
+  briefForm.addEventListener('submit', async event => {
     event.preventDefault();
     if (!receiptValid) {
-      alert('يرجى إرفاق صورة إشعار أو وصل التحويل أولاً لتفعيل الكتاب الرسمي وإرساله إلى المحامي سعد أميل.');
+      alert('يرجى إرفاق صورة إشعار أو وصل التحويل أولاً لتأكيد طلبك وتحديد موعد الاستشارة.');
       return;
     }
+
+    // Prevent duplicate clicks
+    finalSubmitBtn.disabled = true;
+    if (submitBtnText) submitBtnText.textContent = '⏳ جارٍ حفظ وتأكيد الطلب في السجل الرسمي...';
 
     const f = new FormData(briefForm);
     const titlePrefix = f.get('title_prefix') || 'السيد';
@@ -328,8 +350,7 @@ if (briefForm) {
     const oppLoc = String(f.get('opponent_location') || '').trim();
     const summary = String(f.get('summary') || '').trim();
 
-    // 1. Save directly into Lawyer's Private Inbox
-    const submissionData = {
+    const payload = {
       docketId: generatedDocketId,
       date: getArabicDate(),
       timestamp: new Date().toISOString(),
@@ -338,121 +359,127 @@ if (briefForm) {
       phone: phone,
       location: loc,
       topic: topic,
+      planName: currentPlan.name,
+      fee: currentPlan.fee,
+      currency: currentPlan.currency,
+      paymentMethod: currentPlan.paymentMethod,
       opponentName: oppName,
       opponentPhone: oppPhone,
       opponentLocation: oppLoc,
       summary: summary,
-      receiptImage: receiptBase64 || previewUrl,
-      fee: 75000
+      receiptBase64: receiptBase64
     };
-    saveToLawyerInbox(submissionData);
 
-    // 2. Prepare structured WhatsApp message for the Lawyer
-    let oppSummary = oppName || 'غير محدد';
-    if (oppPhone) oppSummary += ' • هاتف: ' + oppPhone;
-    if (oppLoc) oppSummary += ' (' + oppLoc + ')';
+    try {
+      const response = await fetch('api/submit.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-    const message = [
-      '📜 كتاب قيد استشارة قضائية — مكتب المحامي سعد أميل',
-      'رقم الإضبارة: ' + generatedDocketId + ' | التاريخ: ' + getArabicDate(),
-      '════════════════════════════',
-      '👤 المستشير: ' + titlePrefix + ' ' + name,
-      '📞 الهاتف: ' + phone,
-      '📍 منطقة السكن: ' + loc,
-      '⚖️ موضوع القضية: ' + topic,
-      '────────────────────────────',
-      '🎯 المشكو منه (الخصم): ' + oppSummary,
-      '────────────────────────────',
-      '📋 وقائع وتفاصيل المشكلة القضائية:',
-      summary,
-      '════════════════════════════',
-      '💳 وصل الدفع (سوبر / كي كارد): تم سداد 75,000 د.ع بنجاح ومرفق إشعار التحويل.',
-      '════════════════════════════',
-      'بانتظار مراجعة الأوراق وتدقيق الثغرات وصياغة العريضة والاتصال الهاتفي من قبل الأستاذ سعد أميل.'
-    ].join('\n');
+      const resData = await response.json();
+      if (!response.ok || resData.status !== 'success') {
+        throw new Error(resData.message || 'تعذر حفظ الطلب في الخادم');
+      }
 
-    const url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
-    const fallbackLink = document.querySelector('#whatsapp-fallback');
-    if (fallbackLink) fallbackLink.href = url;
-    const handoff = document.querySelector('#handoff');
-    if (handoff) handoff.hidden = false;
+      const assignedDocketId = resData.docketId || generatedDocketId;
 
-    window.open(url, '_blank', 'noopener,noreferrer');
-  });
-}
+      // Concise, privacy-preserving WhatsApp message
+      const waMessage = [
+        'طلب استشارة قانونية ودراسة ملف — مكتب المحامي سعد أميل',
+        'رقم الإضبارة: ' + assignedDocketId,
+        'المستشير: ' + titlePrefix + ' ' + name,
+        'الهاتف: ' + phone,
+        'المنطقة: ' + loc,
+        'موضوع الاستشارة: ' + topic,
+        'الخدمة والأتعاب: ' + currentPlan.name + ' (' + currentPlan.formattedFee + ')',
+        'حالة الإشعار: تم إرفاق صورة إشعار التحويل في النظام',
+        'يرجى مراجعة الطلب وتأكيد موعد جلسة الاستشارة المباشرة.'
+      ].join('\n');
 
-// ==========================================================
-// LAWYER'S PRIVATE INBOX LOGIC
-// ==========================================================
-const openInboxLink = document.querySelector('#open-lawyer-inbox');
-const inboxModal = document.querySelector('#inbox-modal');
-const closeInboxBtn = document.querySelector('#close-inbox-modal');
-const inboxList = document.querySelector('#inbox-list');
-const inboxCounter = document.querySelector('#inbox-counter');
-const clearInboxBtn = document.querySelector('#clear-inbox-btn');
+      const waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(waMessage);
 
-function renderInbox() {
-  if (!inboxList || !inboxCounter) return;
-  const submissions = JSON.parse(localStorage.getItem('saad_amil_consultations') || '[]');
-  inboxCounter.textContent = 'المعاملات الواردة: ' + submissions.length + ' ملف';
-
-  if (submissions.length === 0) {
-    inboxList.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:12px;">لا توجد طلبات استشارة واردة حالياً.</div>';
-    return;
-  }
-
-  inboxList.innerHTML = submissions.map((sub, i) => `
-    <article class="inbox-card">
-      <div class="inbox-card-top">
-        <span class="docket-badge">${sub.docketId}</span>
-        <span class="inbox-date">${sub.date}</span>
-        <span class="inbox-paid-badge">✅ تم السداد (75,000 د.ع)</span>
-      </div>
-      <div class="inbox-card-body">
-        <div class="inbox-row"><strong>المستشير:</strong> <span>${sub.titlePrefix} ${sub.name}</span></div>
-        <div class="inbox-row"><strong>الهاتف:</strong> <span dir="ltr">${sub.phone}</span> • <strong>السكن:</strong> <span>${sub.location}</span></div>
-        <div class="inbox-row"><strong>موضوع النزاع:</strong> <span>${sub.topic}</span></div>
-        <div class="inbox-row"><strong>الخصم:</strong> <span>${sub.opponentName || 'غير محدد'} ${sub.opponentPhone ? ' • هاتف: ' + sub.opponentPhone : ''} ${sub.opponentLocation ? ' (' + sub.opponentLocation + ')' : ''}</span></div>
-        <div class="inbox-facts"><strong>الوقائع:</strong><p>${sub.summary}</p></div>
-        ${sub.receiptImage ? `
-          <div class="inbox-receipt-thumb">
-            <strong>صورة وصل التحويل المرفق:</strong>
-            <a href="${sub.receiptImage}" target="_blank" title="اضغط لتكبير الوصل">
-              <img src="${sub.receiptImage}" alt="وصل تحويل ${sub.name}" style="max-height:120px;border-radius:4px;border:1px solid #c9cebe;margin-top:6px;display:block;">
+      // Update handoff area
+      const handoff = document.querySelector('#handoff');
+      if (handoff) {
+        handoff.hidden = false;
+        handoff.innerHTML = `
+          <div style="background:#edf7ed;border:1px solid #4caf50;border-radius:8px;padding:16px;margin-top:14px;text-align:right;">
+            <div style="font-weight:700;color:#2e7d32;font-size:15px;margin-bottom:6px;">✅ تم تسجيل طلبك وحفظ الإضبارة برقم: <code dir="ltr" style="background:#fff;padding:2px 6px;border-radius:4px;border:1px solid #c8e6c9;">${assignedDocketId}</code></div>
+            <p style="margin:0 0 12px 0;font-size:12.5px;color:#1e392a;line-height:1.7;">
+              وصل طلبك وصورة الإشعار بنجاح إلى السجل الإداري للمكتب. سنراجع التحويل لتأكيد الموعد والتواصل معك هاتفياً لمباشرة دراسة ملفك.
+            </p>
+            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="button" style="display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;text-decoration:none;padding:10px 18px;border-radius:6px;font-weight:700;font-size:13px;">
+              تأكيد الموعد عبر واتساب المكتب 💬 ←
             </a>
           </div>
-        ` : ''}
-      </div>
-      <div class="inbox-actions">
-        <a href="tel:${sub.phone}" class="inbox-btn call-btn">اتصال هاتفي 📞</a>
-        <a href="https://wa.me/${sub.phone.replace(/^0/, '964')}?text=${encodeURIComponent('أهلاً ' + sub.titlePrefix + ' ' + sub.name + '، معك المحامي سعد أميل بخصوص استشارتك المسجلة برقم ' + sub.docketId)}" target="_blank" class="inbox-btn wa-btn">فتح واتساب الموكل 💬</a>
-      </div>
-    </article>
-  `).join('');
-}
+        `;
+      }
 
-if (openInboxLink) {
-  openInboxLink.addEventListener('click', e => {
-    e.preventDefault();
-    const pin = prompt('أدخل الرمز السري لمكتب المحامي سعد أميل:');
-    if (pin === LAWYER_PIN) {
-      renderInbox();
-      inboxModal.showModal();
-    } else if (pin !== null) {
-      alert('الرمز السري غير صحيح.');
+      if (submitBtnText) submitBtnText.textContent = '✅ تم إرسال الطلب وحفظ الإضبارة بنجاح';
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+
+    } catch (err) {
+      console.error('Submission error:', err);
+      alert('ملاحظة: ' + (err.message || 'تعذر الاتصال بالخادم لحفظ الطلب. يرجى التحقق من اتصالك والمحاولة مجدداً.'));
+      finalSubmitBtn.disabled = false;
+      if (submitBtnText) {
+        submitBtnText.textContent = `إعادة محاولة إرسال الطلب (${currentPlan.formattedFee}) ←`;
+      }
     }
   });
 }
 
-if (closeInboxBtn) closeInboxBtn.addEventListener('click', () => inboxModal.close());
-if (clearInboxBtn) {
-  clearInboxBtn.addEventListener('click', () => {
-    if (confirm('هل أنت متأكد من مسح جميع المعاملات من هذا المتصفح؟')) {
-      localStorage.removeItem('saad_amil_consultations');
-      renderInbox();
+// Payment Tabs Toggle (Iraq vs Expatriates US Bank)
+(function initPaymentTabs() {
+  document.addEventListener('click', (e) => {
+    const tabIq = e.target.closest('#pay-tab-iq');
+    const tabIntl = e.target.closest('#pay-tab-intl');
+    const methodIq = document.querySelector('#pay-method-iq');
+    const methodIntl = document.querySelector('#pay-method-intl');
+    const tabIqEl = document.querySelector('#pay-tab-iq');
+    const tabIntlEl = document.querySelector('#pay-tab-intl');
+
+    if (tabIq && methodIq && methodIntl) {
+      tabIqEl.classList.add('active');
+      tabIntlEl.classList.remove('active');
+      methodIq.style.display = 'block';
+      methodIntl.style.display = 'none';
+
+      currentPlan = {
+        name: 'استشارة قانونية ودراسة ملف',
+        fee: 75000,
+        currency: 'IQD',
+        formattedFee: '75,000 د.ع',
+        paymentMethod: 'qi_super'
+      };
+
+      if (docStatusDesc) {
+        docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية والاتصال الهاتفي بالموكل فور مراجعة وتأكيد أتعاب الاستشارة المعتمدة (٧٥٬٠٠٠ د.ع).';
+      }
+      updateReceiptLock(receiptValid);
+
+    } else if (tabIntl && methodIq && methodIntl) {
+      tabIntlEl.classList.add('active');
+      tabIqEl.classList.remove('active');
+      methodIntl.style.display = 'block';
+      methodIq.style.display = 'none';
+
+      currentPlan = {
+        name: 'استشارة وتمثيل قانوني للمغتربين',
+        fee: 100,
+        currency: 'USD',
+        formattedFee: '$100 USD',
+        paymentMethod: 'usd_chase'
+      };
+
+      if (docStatusDesc) {
+        docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية والاتصال المباشر بالموكل فور مراجعة وتأكيد أتعاب الاستشارة الدولية المعتمدة ($100 USD).';
+      }
+      updateReceiptLock(receiptValid);
     }
   });
-}
+})();
 
 // Direct App Launcher for Qi / Super App
 document.addEventListener('click', (e) => {
@@ -540,8 +567,6 @@ document.addEventListener('click', event => {
   if (nav && nav.classList.contains('open') && !nav.contains(event.target) && !toggle.contains(event.target)) closeNav();
 });
 
-
-
 // Personal Status Comparator Logic
 (function(){
   const dateSelect = document.querySelector('#comp-date');
@@ -573,7 +598,7 @@ document.addEventListener('click', event => {
     },
     visitation: {
       law1959: 'حق المشاهدة مكفول للأب غير الحاضن أسبوعياً أو دورياً في أماكن مخصصة للمشاهدة، ويجوز طلب الاصطحاب والمبيت عند بلوغ سن معينة.',
-      jaafari: 'حق صلة الرحم ورعاية الأب مكفول شرعاً، وتمنع الأم من حرمان الأب أو تغييب الأطفال عنه، مع استصدار قرارات المشاهدة والاصطحاب العاجلة.',
+      jaafari: 'حق صصلة الرحم ورعاية الأب مكفول شرعاً، وتمنع الأم من حرمان الأب أو تغييب الأطفال عنه، مع استصدار قرارات المشاهدة والاصطحاب العاجلة.',
       alert: '⚠️ تنبيه للآباء: حرمانك من أطفالك مخالف للقانون؛ استصدار قرار قضائي بالمشاهدة والاصطحاب يتم بإجراءات سريعة أمام قاضي الأحوال الشخصية مع إمكانية فرض غرامات تنفيذية عند الامتناع.'
     }
   };
@@ -606,7 +631,7 @@ document.addEventListener('click', event => {
   updateComparator();
 })();
 
-// Event Delegation: Connect all topic buttons (static & dynamic: help items, insights, comparator, digital forensics, guide)
+// Event Delegation: Connect all topic buttons
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-topic]');
   if (!btn) return;
@@ -630,10 +655,7 @@ document.addEventListener('click', e => {
   document.querySelector('.portal-cta-btn, [data-plan]')?.click();
 });
 
-
-// ==========================================
 // Judicial Directory (120 Lawsuits) Live Search & Filter
-// ==========================================
 (function initJudicialDirectory() {
   const searchInput = document.querySelector('#dir-search-input');
   const searchCount = document.querySelector('#dir-search-count');
@@ -648,46 +670,36 @@ document.addEventListener('click', e => {
 
   function applyFilter() {
     const query = (searchInput.value || '').trim().toLowerCase();
-    let visibleCount = 0;
+    let visibleTotal = 0;
 
     categoryBlocks.forEach(block => {
       const blockCat = block.dataset.category;
-      const catMatches = (activeCategory === 'all' || activeCategory === blockCat);
-      let catVisibleChips = 0;
+      const matchesCat = (activeCategory === 'all' || activeCategory === blockCat);
+      let visibleInBlock = 0;
 
       const chips = block.querySelectorAll('.lawsuit-chip');
       chips.forEach(chip => {
-        const text = (chip.textContent || '').toLowerCase();
-        const matchesQuery = !query || text.includes(query);
+        const text = chip.textContent.toLowerCase();
+        const matchesQuery = (!query || text.includes(query));
 
-        if (catMatches && matchesQuery) {
-          chip.style.display = '';
-          catVisibleChips++;
-          visibleCount++;
+        if (matchesCat && matchesQuery) {
+          chip.style.display = 'inline-flex';
+          visibleInBlock++;
+          visibleTotal++;
         } else {
           chip.style.display = 'none';
         }
       });
 
-      if (catMatches && catVisibleChips > 0) {
-        block.style.display = '';
-      } else {
-        block.style.display = 'none';
-      }
+      block.style.display = (visibleInBlock > 0) ? 'block' : 'none';
     });
 
     if (searchCount) {
-      if (query) {
-        searchCount.textContent = `تم العثور على ${visibleCount} دعوى`;
-      } else if (activeCategory !== 'all') {
-        searchCount.textContent = `${visibleCount} دعوى في هذا الاختصاص`;
-      } else {
-        searchCount.textContent = '120 دعوى متاحة';
-      }
+      searchCount.textContent = `(${visibleTotal} دعوى)`;
     }
 
     if (emptyState) {
-      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      emptyState.style.display = (visibleTotal === 0) ? 'block' : 'none';
     }
   }
 
@@ -703,33 +715,7 @@ document.addEventListener('click', e => {
   });
 })();
 
-
-// Payment Tabs Toggle (Iraq vs Expatriates US Bank)
-(function initPaymentTabs() {
-  document.addEventListener('click', (e) => {
-    const tabIq = e.target.closest('#pay-tab-iq');
-    const tabIntl = e.target.closest('#pay-tab-intl');
-    const methodIq = document.querySelector('#pay-method-iq');
-    const methodIntl = document.querySelector('#pay-method-intl');
-    const tabIqEl = document.querySelector('#pay-tab-iq');
-    const tabIntlEl = document.querySelector('#pay-tab-intl');
-
-    if (tabIq && methodIq && methodIntl) {
-      tabIqEl.classList.add('active');
-      tabIntlEl.classList.remove('active');
-      methodIq.style.display = 'block';
-      methodIntl.style.display = 'none';
-    } else if (tabIntl && methodIq && methodIntl) {
-      tabIntlEl.classList.add('active');
-      tabIqEl.classList.remove('active');
-      methodIntl.style.display = 'block';
-      methodIq.style.display = 'none';
-    }
-  });
-})();
-
-
-// Forensic Evidence Hasher (Client-side SHA-256 for Evidence Chain of Custody)
+// Forensic Evidence Hasher (Client-side SHA-256 for Evidence Integrity)
 (function() {
   const triggerBtn = document.getElementById('forensic-upload-trigger');
   const fileInput = document.getElementById('forensic-file-input');
@@ -746,7 +732,7 @@ document.addEventListener('click', e => {
     const file = e.target.files[0];
     if (!file) return;
 
-    triggerBtn.textContent = 'جاري الفحص الجنائي واستخراج البصمة...';
+    triggerBtn.textContent = 'جارٍ فحص الملف وحساب البصمة الرقمية...';
     triggerBtn.disabled = true;
 
     try {
@@ -755,33 +741,34 @@ document.addEventListener('click', e => {
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-      hashValEl.textContent = hashHex;
+      if (hashValEl) hashValEl.textContent = hashHex;
       const sizeKb = (file.size / 1024).toFixed(1);
       const dateStr = new Date().toLocaleString('ar-IQ');
-      metaEl.textContent = `الملف: ${file.name} (${sizeKb} KB) • تاريخ الفحص: ${dateStr}`;
-      resultBox.style.display = 'block';
-      triggerBtn.textContent = 'اختيار ملف آخر للفحص الجنائي 🔍';
+      if (metaEl) {
+        metaEl.textContent = `الملف: ${file.name} (${sizeKb} KB) • تاريخ الفحص: ${dateStr}`;
+      }
+      if (resultBox) resultBox.style.display = 'block';
+      triggerBtn.textContent = 'اختيار ملف آخر لحساب البصمة 🔍';
       triggerBtn.disabled = false;
     } catch (err) {
       alert('تعذر استخراج البصمة للملف: ' + err.message);
-      triggerBtn.textContent = 'اختيار ملف للفحص الجنائي 🔍';
+      triggerBtn.textContent = 'اختيار ملف لحساب البصمة 🔍';
       triggerBtn.disabled = false;
     }
   });
 
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
-      const hash = hashValEl.textContent;
+      const hash = hashValEl ? hashValEl.textContent : '';
       if (hash) {
         navigator.clipboard.writeText(hash).then(() => {
           copyBtn.textContent = 'تم النسخ بنجاح ✓';
-          setTimeout(() => copyBtn.textContent = 'نسخ البصمة الجنائية', 2500);
+          setTimeout(() => copyBtn.textContent = 'نسخ البصمة الرقمية', 2500);
         });
       }
     });
   }
 })();
-
 
 // Dynamic Legal Articles Loader & Modal Handler
 function initArticlesModule() {
@@ -823,25 +810,25 @@ function initArticlesModule() {
           category: 'العقارات والتركات',
           date: '2026-11-03',
           excerpt: 'خطوات إقامة دعوى إزالة الشيوع أمام محكمة البداءة المختصة، وكيفية حماية حصة الشريك أو الوريث من البيع ببخس الثمن بالمزاد العلني.',
-          content: 'دعوى إزالة الشيوع في القانون المدني العراقي رقم 40 لسنة 1951 تُعد من أهم الدعاوى العقارية لحسم النزاعات بين الشركاء والورثة.\n\nتُقام الدعوى أمام محكمة البداءة المختصة موقعياً بمحل العقار. يتم ندب خبير قضائي لتقدير إمكانية القسمة العينية؛ فإذا تعذرت القسمة، تصدر المحكمة قراراً ببيع العقار بالمزاد العلني وتوزيع بدلات البيع على الشركاء كلٌّ بحسب حصته الشرعية أو التعاقدية.\n\nينصح المحامي سعد فراس أميل دائماً بوضع إشارة عدم التصرف في دائرة التسجيل العقاري فور قيد الدعوى لمنع تهريب الحصص أو التلاعب بالملكية.',
+          content: 'دعوى إزالة الشيوع في القانون المدني العراقي رقم 40 لسنة 1951 تُعد من أهم الدعاوى العقارية لحسم النزاعات بين الشركاء والورثة.\n\nتُقام الدعوى أمام محكمة البداءة المختصة موقعياً بمحل العقار. يتم ندب خبير قضائي لتقدير إمكانية القسمة العينية؛ فإذا تعذرت القسمة، تصدر المحكمة قراراً ببيع العقار بالمزاد العلني وتوزيع بدلات البيع على الشركاء كلٌّ بحسب حصته الشرعية أو التعاقدية.\n\nيوضح المكتب أهمية وضع إشارة عدم التصرف في دائرة التسجيل العقاري فور قيد الدعوى لمنع التصرف بالحصص أو الإضرار بحقوق الشركاء.',
           views: 184
         },
         {
           id: 'art-2',
-          title: 'درع الحماية القانونية لعقارات المغتربين العراقيين في أمريكا وأوروبا',
+          title: 'درع الحماية القانونية لعقارات المغتربين العراقيين في الخارج',
           category: 'شؤون المغتربين',
           date: '2026-11-01',
-          excerpt: 'الإجراءات الأصولية لتصديق الوكالات القنصلية وحسم صحة الصدور الإلكترونية وحماية أراضي وعقارات المهاجرين من تزوير مكاتب الدلالية.',
-          content: 'يواجه العراقيون المقيمون في الولايات المتحدة، كندا، بريطانيا، والدول الأوروبية تحديات جسيمة في إدارة أملاكهم ومتابعة تركاتهم في بغداد والمحافظات.\n\nالخطوة الأولى تبدأ من صياغة وكالة عامة أو خاصة لدى القنصلية العراقية في بلد الإقامة، تليها مطابقة صحة الصدور الإلكترونية عبر وزارة الخارجية في بغداد.\n\nيوفر مكتبنا تمثيلاً قضائياً رفيع المستوى بإشراف شخصي وتقارير مصورة موثقة لجميع مراحل الدعوى دون حاجة المغترب للسفر، مع إمكانية سداد أتعاب الاستشارة لحساب بنكي أمريكي رسمي (Zelle / ACH).',
+          excerpt: 'الإجراءات الأصولية لتصديق الوكالات القنصلية وحسم صحة الصدور الإلكترونية وحماية أملاك المهاجرين في بغداد والمحافظات.',
+          content: 'يواجه العراقيون المقيمون في الولايات المتحدة، كندا، بريطانيا، والدول الأوروبية تحديات في إدارة أملاكهم ومتابعة تركاتهم في بغداد والمحافظات.\n\nالخطوة الأولى تبدأ من تنظيم وكالة عامة أو خاصة لدى القنصلية العراقية في بلد الإقامة، تليها مطابقة صحة الصدور الإلكترونية عبر وزارة الخارجية في بغداد.\n\nيوفر مكتبنا تمثيلاً قضائياً دقيقاً ومتابعة مستمرة وتقارير دورية للموكل مع إمكانية سداد أتعاب الاستشارة لحساب بنكي أمريكي رسمي مباشر لدى JPMorgan Chase.',
           views: 329
         },
         {
           id: 'art-3',
-          title: 'إثبات الأدلة الرقمية وسلسلة الحيازة في قضايا الابتزاز الإلكتروني',
+          title: 'التدقيق الفني لسلسلة حيازة الأدلة الرقمية في قضايا الابتزاز والجرائم الإلكترونية',
           category: 'الجرائم المعلوماتية',
           date: '2026-10-29',
-          excerpt: 'كيفية توثيق بصمة التشفير الجنائية (SHA-256) للتسجيلات الصوتية ومحادثات الابتزاز لقبولها كدليل قطعي أمام قاضي التحقيق.',
-          content: 'مع تطور أدوات التزييف العميق واستنساخ الأصوات بالذكاء الاصطناعي، باتت المحاكم الجنائية ومحاكم التحقيق في العراق تتطلب تدقيقاً علمياً صارماً للأدلة الرقمية.\n\nوفقاً لقانون أصول المحاكمات الجزائية رقم 23 لسنة 1971 وقانون الإثبات العراقي رقم 107 لسنة 1979 المعدل، لا يُقبل الدليل الإلكتروني إلا إذا حوفظ على سلسلة حيازته (Chain of Custody) من لحظة استخراجه.\n\nيوفر مكتبنا بالتعاون مع خبرتنا في Gold Stone Intelligence فحصاً جنائياً محلياً للتسجيلات واستخراج بصمات التجزئة المشفرة لقطع الطريق على الخصم في ادعاء الفبركة.',
+          excerpt: 'كيفية فحص التسجيلات ومحادثات الابتزاز وحفظ سلامة الملفات الفنية لتقديمها أصولياً أمام قاضي التحقيق المختص.',
+          content: 'مع تطور أدوات التزييف الرقمي واستنساخ الأصوات، باتت المحاكم الجنائية ومحاكم التحقيق في العراق تتطلب تدقيقاً فنياً صارماً للأدلة الرقمية.\n\nوفقاً لقانون أصول المحاكمات الجزائية رقم 23 لسنة 1971 وقانون الإثبات العراقي رقم 107 لسنة 1979 المعدل، تكتسب الأدلة الإلكترونية قوتها الإجرائية عندما يتم توثيق سلامتها وعدم التلاعب بها منذ لحظة استخراجها.\n\nيوفر مكتبنا فحصاً فنياً لسلامة الملفات وحساب بصمات التجزئة الرقمية المشفرة (SHA-256) لدعم الموقف الإجرائي وإغلاق منافذ الطعن بالفبركة أمام المحكمة.',
           views: 412
         }
       ];
@@ -855,29 +842,42 @@ function initArticlesModule() {
     list.forEach(art => {
       const card = document.createElement('article');
       card.className = 'article-pub-card';
-      card.innerHTML = `
-        <div>
-          <span class="art-cat">${art.category}</span>
-          <h3>${art.title}</h3>
-          <p>${art.excerpt}</p>
-        </div>
-        <div class="article-pub-footer">
-          <span>📅 ${art.date}</span>
-          <button class="article-read-btn" data-art-id="${art.id}">قراءة التحليل الكامل ←</button>
-        </div>
-      `;
-      const btn = card.querySelector('.article-read-btn');
-      btn.addEventListener('click', () => openArticle(art));
+      
+      const divTop = document.createElement('div');
+      const catSpan = document.createElement('span');
+      catSpan.className = 'art-cat';
+      catSpan.textContent = art.category;
+      const h3 = document.createElement('h3');
+      h3.textContent = art.title;
+      const p = document.createElement('p');
+      p.textContent = art.excerpt;
+      divTop.appendChild(catSpan);
+      divTop.appendChild(h3);
+      divTop.appendChild(p);
+
+      const divFooter = document.createElement('div');
+      divFooter.className = 'article-pub-footer';
+      const dateSpan = document.createElement('span');
+      dateSpan.textContent = '📅 ' + art.date;
+      const readBtn = document.createElement('button');
+      readBtn.className = 'article-read-btn';
+      readBtn.textContent = 'قراءة التحليل الكامل ←';
+      readBtn.addEventListener('click', () => openArticle(art));
+      divFooter.appendChild(dateSpan);
+      divFooter.appendChild(readBtn);
+
+      card.appendChild(divTop);
+      card.appendChild(divFooter);
       container.appendChild(card);
     });
   }
 
   function openArticle(art) {
     if (!readerModal) return;
-    titleEl.textContent = art.title;
-    catEl.textContent = art.category;
-    metaEl.textContent = `بقلم المحامي سعد فراس أميل • تاريخ النشر: ${art.date} • قيد نقابة: 188572`;
-    contentEl.textContent = art.content;
+    if (titleEl) titleEl.textContent = art.title;
+    if (catEl) catEl.textContent = art.category;
+    if (metaEl) metaEl.textContent = `بقلم المحامي سعد فراس أميل • تاريخ النشر: ${art.date} • قيد نقابة: 188572`;
+    if (contentEl) contentEl.textContent = art.content;
     currentTopicForConsult = art.title;
     readerModal.showModal();
   }
@@ -895,7 +895,7 @@ function initArticlesModule() {
       const consultSection = document.getElementById('consult');
       if (consultSection) {
         consultSection.scrollIntoView({ behavior: 'smooth' });
-        const topicInput = document.getElementById('consult-topic') || document.querySelector('input[name="topic"]');
+        const topicInput = document.getElementById('consult-topic') || document.querySelector('input[name="topic"]') || document.querySelector('#topic');
         if (topicInput) topicInput.value = 'استشارة بخصوص: ' + currentTopicForConsult;
       }
     });
