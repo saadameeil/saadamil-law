@@ -261,14 +261,76 @@
   ]
 }
 </script>
+<style>
+/* 4 Specialized Pillars Section */
+.pillars-section { padding: 45px 0 35px; border-bottom: 1px solid var(--line); }
+.pillars-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 25px; width: 100%; box-sizing: border-box; }
+@media (max-width: 1080px) { .pillars-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
+@media (max-width: 600px) { .pillars-grid { grid-template-columns: 1fr; } }
+.pillar-card { background: var(--paper, #faf8f1); border: 1px solid var(--line, #e2dbce); border-radius: 8px; padding: 22px; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; display: flex; flex-direction: column; text-decoration: none; color: inherit; box-sizing: border-box; }
+.pillar-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(18, 60, 49, 0.08); border-color: var(--accent, #8a6b2e); }
+.pillar-icon { font-size: 28px; margin-bottom: 10px; }
+.pillar-card h3 { font: 700 18px/1.4 var(--title, "Noto Naskh Arabic", serif); color: var(--brand, #123c31); margin: 0 0 8px; }
+.pillar-card p { font-size: 12.5px; line-height: 1.8; color: var(--ink, #1c1a17); margin: 0 0 14px; flex: 1; }
+.pillar-link { font-size: 12px; font-weight: 700; color: var(--brand, #123c31); display: inline-flex; align-items: center; gap: 6px; text-decoration: underline; text-underline-offset: 4px; }
+.pillar-card:hover .pillar-link { color: var(--accent, #8a6b2e); }
+</style>
 </head>
 <body><a class="skip" href="#main">انتقل إلى المحتوى</a>
 <svg aria-hidden="true" class="icon-library" xmlns="http://www.w3.org/2000/svg"><defs><symbol id="i-arrow" viewbox="0 0 24 24"><path d="M20 12H4m6-6-6 6 6 6"></path></symbol><symbol id="i-shield" viewbox="0 0 32 32"><path d="m16 3 11 5v9c0 6-11 12-11 12S5 23 5 17V8Z"></path><path d="m11 16 3 3 7-7"></path></symbol><symbol id="i-court" viewbox="0 0 32 32"><path d="m3 11 13-7 13 7H3Zm2 16h22M8 14v9m8-9v9m8-9v9M3 29h26"></path></symbol><symbol id="i-business" viewbox="0 0 32 32"><path d="M5 11h22v17H5zM11 11V5h10v6M5 17h22M14 15v5h4v-5"></path></symbol><symbol id="i-file" viewbox="0 0 32 32"><path d="M7 3h13l5 5v21H7zM19 3v7h6M11 16h10m-10 5h7"></path></symbol><symbol id="i-pin" viewbox="0 0 24 24"><path d="M19 10c0 6-7 11-7 11S5 16 5 10a7 7 0 1 1 14 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></symbol></defs></svg>
 <div class="bar-masthead"><a aria-label="زيارة الموقع الرسمي لنقابة المحامين العراقيين" href="https://lawyers.gov.iq/" rel="noopener noreferrer" target="_blank"><img alt="شعار نقابة المحامين العراقيين" fetchpriority="high" height="420" src="iraqi-bar-logo.png" width="350"/><span>نقابة المحامين العراقيين</span></a></div>
 <div class="notice"><div class="container"><span>بغداد، العراق <strong>• المحامي سعد أميل (محامٍ ممارس | هوية: 188572)</strong> • هاتف / واتساب المباشر: <a dir="ltr" href="tel:07801222119" style="color:var(--brand);font-weight:700;text-decoration:none;">0780 122 2119</a></span><a class="notice-en" href="https://wa.me/9647801222119" rel="noopener" style="color:var(--brand);font-weight:700;text-decoration:underline;" target="_blank">مراسلة عبر واتساب ↖</a></div></div>
-<header><div class="container header-inner"><a aria-label="المحامي سعد أميل، الرئيسية" class="brand" href="#top"><span aria-hidden="true" class="brand-mark">SA</span><span><strong>سعد أميل</strong><small>للمحاماة والاستشارات القانونية</small></span></a><nav aria-label="القائمة الرئيسية" id="nav"><a href="/#diaspora">خدمات المغتربين 🌍</a><a href="/#directory">فهرس الـ 120 دعوى</a><a href="/#articles">الدراسات والمقالات ✍️</a><a href="/#help">مجالات الممارسة</a><a href="/#about">عن المحامي</a><a href="/#comparator">مقارن المدونة</a><a href="/#insights">بنك الثغرات</a><a href="/#guide">الدليل الإجرائي</a><a href="/#consult">الاستشارات</a></nav><a href="/en.html" class="button small header-cta" style="background:rgba(212,175,55,0.15);border:1px solid #d4af37;color:#d4af37;margin-right:0.5rem;text-decoration:none;font-weight:700;" title="English International Portal">English 🌐</a><a class="button small header-cta" href="/#consult">طلب استشارة <svg aria-hidden="true"><use href="#i-arrow"></use></svg></a><button aria-controls="nav" aria-expanded="false" aria-label="فتح القائمة" class="menu-toggle">القائمة <span>☰</span></button></div></header>
+<header><div class="container header-inner"><a aria-label="المحامي سعد أميل، الرئيسية" class="brand" href="#top"><span aria-hidden="true" class="brand-mark">SA</span><span><strong>سعد أميل</strong><small>للمحاماة والاستشارات القانونية</small></span></a><nav aria-label="القائمة الرئيسية" id="nav">
+<a href="real-estate.html">العقارات والشيوع</a>
+<a href="family-law.html">الأحوال الشخصية</a>
+<a href="cybercrime.html">الجرائم الإلكترونية</a>
+<a href="corporate.html">الشركات والاستثمار</a>
+<a href="/#diaspora">المغتربين 🌍</a><a href="/#diaspora">خدمات المغتربين 🌍</a><a href="/#directory">فهرس الـ 120 دعوى</a><a href="/#articles">الدراسات والمقالات ✍️</a><a href="/#help">مجالات الممارسة</a><a href="/#about">عن المحامي</a><a href="/#comparator">مقارن المدونة</a><a href="/#insights">بنك الثغرات</a><a href="/#guide">الدليل الإجرائي</a><a href="/#consult">الاستشارات</a></nav><a href="/en.html" class="button small header-cta" style="background:rgba(212,175,55,0.15);border:1px solid #d4af37;color:#d4af37;margin-right:0.5rem;text-decoration:none;font-weight:700;" title="English International Portal">English 🌐</a><a class="button small header-cta" href="/#consult">طلب استشارة <svg aria-hidden="true"><use href="#i-arrow"></use></svg></a><button aria-controls="nav" aria-expanded="false" aria-label="فتح القائمة" class="menu-toggle">القائمة <span>☰</span></button></div></header>
 <main id="main"><section class="hero container" id="top"><div class="hero-copy"><div class="hero-index"><span class="index-line"></span><span>المحامي سعد أميل</span><small lang="en">SAAD AMIL</small></div><h1>حُجّةٌ مُحكمة.<br/>ودفاعٌ <em>لا يُرتجل.</em></h1><p class="hero-description">المحامي سعد اميل — للمحاماة والاستشارات القانونية.<br/>حين يتعلق الأمر بحريتك أو سمعتك أو حقوقك، يبدأ الدفاع الحقيقي من فهم أدق التفاصيل.</p>
-<div class="hero-motto"><span>«القضايا لا تُكسب بالكلام العام.. بل بالدقة الإجرائية، وتفكيك ثغرات الخصوم، والتحرك في التوقيت الحاسم.»</span></div><p class="hero-detail">في القانون العراقي.. التأخر أو التسرع في إفادة غير مدروسة قد يكلفك خسارة الدعوى بالكامل. نضع بين يديك خبرة القضاء الجنائي والمدني وأحكام الأسرة الجعفرية والأدلة الرقمية لحماية موقفك قبل فوات المهل القضائية.</p><div class="hero-actions"><a class="button hero-main-btn" href="/#consult">اعرض موقفك القضائي ── ابدأ الاستشارة 📜 <svg aria-hidden="true"><use href="#i-arrow"></use></svg></a><a class="simple-link" href="/#help">فحص مجالات الممارسة والثغرات <span>↓</span></a></div><nav aria-label="اختصارات الهاتف" class="mobile-shortcuts"><a href="/#help">الاختصاصات</a><a href="/#about">عن المكتب</a><a href="/#consult">الاستشارات</a></nav><div class="hero-signoff"><span>سعد أميل</span><small>للمحاماة والاستشارات القانونية</small></div></div><figure class="hero-art"><img alt="تفصيل فني لمنحوتة العدالة من الرخام الأبيض" fetchpriority="high" height="1402" src="justice.webp" width="1122"/><figcaption><span>المحامي سعد أميل • محامي ممارس</span><span class="bar-id">رقم الهوية: 188572</span></figcaption><span aria-hidden="true" class="image-number">§</span></figure></section><div class="practice-ribbon"><div class="container"><span>فروع الممارسة</span><a href="/#help">الأسرة والطلاق الجعفري</a><i>✧</i><a href="/#help">الجرائم الإلكترونية والابتزاز</a><i>✧</i><a href="/#help">الجنائي والكفالات</a><i>✧</i><a href="/#help">النزاهة والموظفين</a><i>✧</i><a href="/#help">العقارات والشيوع</a><i>✧</i><a href="/#help">تحصيل الديون والتنفيذ</a><i>✧</i><a href="/#help">الشركات والتجارة</a><i>✧</i><a href="/#help">التعويضات المدنية</a><i>✧</i><a href="/#help">قضايا العمل</a></div></div>
+<div class="hero-motto"><span>«القضايا لا تُكسب بالكلام العام.. بل بالدقة الإجرائية، وتفكيك ثغرات الخصوم، والتحرك في التوقيت الحاسم.»</span></div><p class="hero-detail">في القانون العراقي.. التأخر أو التسرع في إفادة غير مدروسة قد يكلفك خسارة الدعوى بالكامل. نضع بين يديك خبرة القضاء الجنائي والمدني وأحكام الأسرة الجعفرية والأدلة الرقمية لحماية موقفك قبل فوات المهل القضائية.</p><div class="hero-actions"><a class="button hero-main-btn" href="/#consult">اعرض موقفك القضائي ── ابدأ الاستشارة 📜 <svg aria-hidden="true"><use href="#i-arrow"></use></svg></a><a class="simple-link" href="/#help">فحص مجالات الممارسة والثغرات <span>↓</span></a></div><nav aria-label="اختصارات الهاتف" class="mobile-shortcuts"><a href="real-estate.html">العقارات</a><a href="family-law.html">الأحوال</a><a href="cybercrime.html">الابتزاز</a><a href="corporate.html">الشركات</a><a href="/#consult">الاستشارات</a></nav><div class="hero-signoff"><span>سعد أميل</span><small>للمحاماة والاستشارات القانونية</small></div></div><figure class="hero-art"><img alt="تفصيل فني لمنحوتة العدالة من الرخام الأبيض" fetchpriority="high" height="1402" src="justice.webp" width="1122"/><figcaption><span>المحامي سعد أميل • محامي ممارس</span><span class="bar-id">رقم الهوية: 188572</span></figcaption><span aria-hidden="true" class="image-number">§</span></figure></section>
+
+<!-- 4 Specialized Pillars Section -->
+<section class="pillars-section container" id="pillars">
+    <div class="section-title">
+        <div>
+            <span class="eyebrow"><b>00</b> بوابة التخصصات القضائية الشاملة</span>
+            <h2>بوابات المرافعات والدفاع المتخصص<br/><em>أدلة قانونية وأسئلة شائعة موثقة بنصوص القانون العراقي</em></h2>
+        </div>
+        <p>اختر مجال النزاع للاطلاع على الدليل الإجرائي المعمق، السوابق التمييزية، والأسئلة الشائعة الأكثر تداولاً أمام المحاكم:</p>
+    </div>
+    <div class="pillars-grid">
+        <!-- Pillar 1 -->
+        <a href="real-estate.html" class="pillar-card">
+            <div class="pillar-icon">🏢</div>
+            <h3>العقارات وإزالة الشيوع والتركات</h3>
+            <p>دعاوى إزالة الشيوع بالمزاد، تمليك الدور المشكوك فيها بقرار 1198، دعاوى أجر المثل ومنع المعارضة، وحماية أملاك المغتربين في بغداد وكافة دوائر الطابو.</p>
+            <span class="pillar-link">تصفح دليل وأسئلة العقارات والشيوع ←</span>
+        </a>
+        <!-- Pillar 2 -->
+        <a href="family-law.html" class="pillar-card">
+            <div class="pillar-icon">👨‍👩‍👧</div>
+            <h3>الأحوال الشخصية وقضايا الأسرة</h3>
+            <p>التفريق للضرر والخلاف المستحكم (المادتان 40 و41)، دعاوى الحضانة والنفقة، إيقاف المطاوعة بالقرار 894، استرداد أثاث الزوجية، وحجج القسامات والوصية الواجبة.</p>
+            <span class="pillar-link">تصفح دليل وأسئلة الأحوال الشخصية ←</span>
+        </a>
+        <!-- Pillar 3 -->
+        <a href="cybercrime.html" class="pillar-card">
+            <div class="pillar-icon">🛡️</div>
+            <h3>الجرائم الإلكترونية والابتزاز الرقمي</h3>
+            <p>ملاحقة المبتزين قضائياً بسرية مطلقة برقم دعوى مشفر، تتبع الحسابات الوهمية عبر الـ IP، توثيق الأدلة الجنائية الرقمية، ومقاضاة حملات التشهير على منصات التواصل.</p>
+            <span class="pillar-link">تصفح دليل وإجراءات مكافحة الابتزاز ←</span>
+        </a>
+        <!-- Pillar 4 -->
+        <a href="corporate.html" class="pillar-card">
+            <div class="pillar-icon">⚖️</div>
+            <h3>الشركات والاستثمار والتجارة</h3>
+            <p>تأسيس الشركات المحدودة وشركة الشخص الواحد، تسجيل فروع الشركات الأجنبية، صياغة ومراجعة العقود التجارية والاستثمارية، والتحكيم التجاري لفض النزاعات.</p>
+            <span class="pillar-link">تصفح دليل وتأسيس الشركات والتحكيم ←</span>
+        </a>
+    </div>
+</section>
+
+<div class="practice-ribbon"><div class="container"><span>فروع الممارسة</span><a href="/#help">الأسرة والطلاق الجعفري</a><i>✧</i><a href="/#help">الجرائم الإلكترونية والابتزاز</a><i>✧</i><a href="/#help">الجنائي والكفالات</a><i>✧</i><a href="/#help">النزاهة والموظفين</a><i>✧</i><a href="/#help">العقارات والشيوع</a><i>✧</i><a href="/#help">تحصيل الديون والتنفيذ</a><i>✧</i><a href="/#help">الشركات والتجارة</a><i>✧</i><a href="/#help">التعويضات المدنية</a><i>✧</i><a href="/#help">قضايا العمل</a></div></div>
 <section class="help-section" id="help"><div class="container"><div class="section-title"><div><span class="eyebrow"><b>01</b> مجالات الممارسة</span><h2>حيث يتطلّب الموقف<br/><em>دفاعًا مدروسًا.</em></h2></div><p>ممارسة تركز على الدفاع الجنائي والمنازعات التجارية والجرائم الإلكترونية، مع عناية خاصة بسلامة الدليل.</p></div><div class="help-grid">
 <!-- 01: الأحوال الشخصية والأسرة -->
 <button class="help-item" data-topic="أحوال شخصية وأسرة وطلاق وفق الفقه الجعفري والقانون"><span class="practice-index">01</span><span class="service-label">الأحوال الشخصية والأسرة والمدونة الجعفرية</span><span class="service-description">دعاوى الطلاق، التفريق للضرر، الخلع، معارك الحضانة والمشاهدة والاصطحاب، النفقات وأثاث الزوجية، إبطال الأوامر الولائية، وتصفية التركات والقسامات الشرعية.</span><span class="service-link">حماية حقوق الأسرة والأطفال والتركات <svg aria-hidden="true"><use href="#i-arrow"></use></svg></span></button>
