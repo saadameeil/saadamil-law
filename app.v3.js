@@ -115,7 +115,7 @@ function showStep2() {
   if (!nameVal || !phoneVal || !locVal || !topicVal || !summaryVal) {
     if (step1Error) {
       step1Error.hidden = false;
-      step1Error.textContent = 'يرجى إكمال الحقول الأساسية (الاسم، الهاتف، منطقة السكن، موضوع القضية، والشرح الموجز) لإصدار الكتاب الرسمي.';
+      step1Error.textContent = 'يرجى إكمال الحقول الأساسية (الاسم، الهاتف، منطقة السكن، موضوع القضية، والشرح الموجز) لإكمال طلب الاستشارة.';
     }
     if (!nameVal && nameInput) nameInput.focus();
     else if (!phoneVal && phoneInput) phoneInput.focus();
@@ -384,17 +384,12 @@ if (briefForm) {
 
       const assignedDocketId = resData.docketId || generatedDocketId;
 
-      // Concise, privacy-preserving WhatsApp message
+      // Strictly minimal WhatsApp message matching Privacy Policy
       const waMessage = [
-        'طلب استشارة قانونية ودراسة ملف — مكتب المحامي سعد أميل',
-        'رقم الإضبارة: ' + assignedDocketId,
-        'المستشير: ' + titlePrefix + ' ' + name,
-        'الهاتف: ' + phone,
-        'المنطقة: ' + loc,
-        'موضوع الاستشارة: ' + topic,
-        'الخدمة والأتعاب: ' + currentPlan.name + ' (' + currentPlan.formattedFee + ')',
-        'حالة الإشعار: تم إرفاق صورة إشعار التحويل في النظام',
-        'يرجى مراجعة الطلب وتأكيد موعد جلسة الاستشارة المباشرة.'
+        'طلب استشارة قانونية — مكتب المحامي سعد أميل',
+        'رقم الطلب: ' + assignedDocketId,
+        'الاسم: ' + titlePrefix + ' ' + name,
+        'تم تسجيل الطلب وإرفاق إشعار التحويل عبر الموقع، بانتظار تأكيد موعد جلسة الاستشارة.'
       ].join('\n');
 
       const waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(waMessage);
