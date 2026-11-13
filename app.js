@@ -156,7 +156,7 @@ function showStep2() {
 
   if (docStatusDesc) {
     if (currentPlan.currency === 'USD') {
-      docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية والاتصال المباشر بالموكل فور مراجعة وتأكيد أتعاب الاستشارة الدولية المعتمدة ($100 USD).';
+      docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات الأصولية والاتصال المباشر بالموكل فور مراجعة أتعاب الاستشارة الدولية المعتمدة ($100 USD).';
     } else {
       docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية والاتصال الهاتفي بالموكل فور مراجعة وتأكيد أتعاب الاستشارة المعتمدة (٧٥٬٠٠٠ د.ع).';
     }
@@ -204,7 +204,7 @@ document.querySelectorAll('[data-plan]').forEach(button => {
     const isDiaspora = (button.dataset.plan || '').includes('مغترب') || (button.dataset.plan || '').includes('خارج');
     if (isDiaspora) {
       currentPlan = {
-        name: 'استشارة وتمثيل قانوني للمغتربين',
+        name: 'استشارة قانونية ودراسة ملف للمغتربين',
         fee: 100,
         currency: 'USD',
         formattedFee: '$100 USD',
@@ -466,7 +466,7 @@ if (briefForm) {
       methodIq.style.display = 'none';
 
       currentPlan = {
-        name: 'استشارة وتمثيل قانوني للمغتربين',
+        name: 'استشارة قانونية ودراسة ملف للمغتربين',
         fee: 100,
         currency: 'USD',
         formattedFee: '$100 USD',
@@ -474,7 +474,7 @@ if (briefForm) {
       };
 
       if (docStatusDesc) {
-        docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية والاتصال المباشر بالموكل فور مراجعة وتأكيد أتعاب الاستشارة الدولية المعتمدة ($100 USD).';
+        docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات الأصولية والاتصال المباشر بالموكل فور مراجعة أتعاب الاستشارة الدولية المعتمدة ($100 USD).';
       }
       updateReceiptLock(receiptValid);
     }
