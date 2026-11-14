@@ -29,6 +29,12 @@ function openConsultationModal(preferredPlan = 'استشارة قانونية و
     }
   }
 
+  // Pre-fill specific lawsuit/case title into summary if opened from a specific chip/service
+  const summaryInput = document.querySelector('#field-summary');
+  if (summaryInput && topic && !summaryInput.value) {
+    summaryInput.placeholder = 'بخصوص ' + topic + '... اكتب فكرة موجزة عن وقائع قضيتك والمستندات المتوفرة لديك.';
+  }
+
   resetToStep1();
   const cs = document.querySelector('#copy-status'); if (cs) cs.textContent = '';
   const ho = document.querySelector('#handoff'); if (ho) ho.hidden = true;
@@ -42,6 +48,15 @@ function mapTopicToSelectValue(topic = '', category = '') {
   const t = String(topic || '').toLowerCase().trim();
 
   // 1. Direct Category Match
+  if (cat === 'labor' || cat.includes('work') || cat.includes('employment')) {
+    return 'قضايا العمل والضمان الاجتماعي والوظيفة العامة';
+  }
+  if (cat === 'compensation' || cat.includes('damage') || cat.includes('tort')) {
+    return 'قضايا التعويضات والمسؤولية المدنية والنزاعات المالية';
+  }
+  if (cat === 'admin' || cat.includes('integrity') || cat.includes('governance')) {
+    return 'القضاء الإداري ومحكمة قضاء الموظفين والنزاهة';
+  }
   if (cat === 'cybercrime' || cat.includes('cyber') || cat.includes('tech')) {
     return 'الجرائم الإلكترونية ومكافحة الابتزاز';
   }
@@ -65,6 +80,15 @@ function mapTopicToSelectValue(topic = '', category = '') {
   }
 
   // 2. Keyword Match on Topic Text
+  if (t.includes('عمل') || t.includes('ضمان اجتماعي') || t.includes('عمال') || t.includes('فصل تعسفي') || t.includes('أجور') || t.includes('مكافأة نهاية الخدمة')) {
+    return 'قضايا العمل والضمان الاجتماعي والوظيفة العامة';
+  }
+  if (t.includes('تعويض') || t.includes('مسؤولية تقصيرية') || t.includes('ضرر') || t.includes('حادث سير') || t.includes('إتلاف')) {
+    return 'قضايا التعويضات والمسؤولية المدنية والنزاعات المالية';
+  }
+  if (t.includes('نزاهة') || t.includes('قضاء موظفين') || t.includes('محكمة إدارية') || t.includes('انضباط') || t.includes('عقوبة انضباطية')) {
+    return 'القضاء الإداري ومحكمة قضاء الموظفين والنزاهة';
+  }
   if (t.includes('إلكترون') || t.includes('ابتزاز') || t.includes('تزييف') || t.includes('رقمي') || t.includes('cyber') || t.includes('صوت') || t.includes('deepfake')) {
     return 'الجرائم الإلكترونية ومكافحة الابتزاز';
   }
@@ -74,7 +98,7 @@ function mapTopicToSelectValue(topic = '', category = '') {
   if (t.includes('عقار') || t.includes('شيوع') || t.includes('أراضي') || t.includes('طابو') || t.includes('تخلية') || t.includes('إيجار') || t.includes('مأجور') || t.includes('1198') || t.includes('ملكية')) {
     return 'قضايا العقارات وإزالة الشيوع والتركات';
   }
-  if (t.includes('شرك') || t.includes('استثمار') || t.includes('تجاري') || t.includes('صك') || t.includes('كمبيالة') || t.includes('مناقص') || t.includes('عقد') || t.includes('ضمان') || t.includes('تنفيذ') || t.includes('نزاهة')) {
+  if (t.includes('شرك') || t.includes('استثمار') || t.includes('تجاري') || t.includes('صك') || t.includes('كمبيالة') || t.includes('سفتجة') || t.includes('مناقص') || t.includes('عقد تجاري') || t.includes('تحكيم')) {
     return 'الشركات والاستثمار والعقود التجارية';
   }
   if (t.includes('جنائ') || t.includes('كفال') || t.includes('تحقيق') || t.includes('جنح') || t.includes('جنايات') || t.includes('شرطة') || t.includes('موقوف') || t.includes('حبس')) {
@@ -84,7 +108,7 @@ function mapTopicToSelectValue(topic = '', category = '') {
     return 'خدمات المغتربين والوكالات القنصلية';
   }
 
-  // 3. Absolute Fallback: Return empty string (NEVER default to real estate!)
+  // 3. Absolute Fallback: Return empty string (NEVER default to real estate or corporate!)
   return '';
 }
 
@@ -223,38 +247,50 @@ function normalizeAndValidatePhone(raw) {
     return { valid: false, error: 'يرجى إدخال رقم هاتف حقيقي للتواصل.' };
   }
 
-  // 7. Verify Iraqi Mobile Number:
-  // Local with 0: exactly 11 digits: 07[3-9]xxxxxxxx
-  if (/^07[3-9]\d{8}$/.test(cleaned)) {
-    return { valid: true, normalized: cleaned, isIraqi: true };
-  }
-  // Without leading 0: exactly 10 digits: 7[3-9]xxxxxxxx -> normalize to 07...
-  if (/^7[3-9]\d{8}$/.test(cleaned)) {
-    return { valid: true, normalized: '0' + cleaned, isIraqi: true };
-  }
-  // International with 964 (12 digits): 9647[3-9]xxxxxxxx
-  if (/^9647[3-9]\d{8}$/.test(cleaned)) {
-    return { valid: true, normalized: '+' + cleaned, isIraqi: true };
-  }
-  // International with +964 (13 chars): +9647[3-9]xxxxxxxx
-  if (/^\+9647[3-9]\d{8}$/.test(cleaned)) {
-    return { valid: true, normalized: cleaned, isIraqi: true };
-  }
-  // International with 00964 (14 chars): 009647[3-9]xxxxxxxx
-  if (/^009647[3-9]\d{8}$/.test(cleaned)) {
-    return { valid: true, normalized: '+' + cleaned.substring(2), isIraqi: true };
+  // 7. STRICT IRAQI NUMBER CHECK:
+  // If the number begins with an Iraqi prefix (+964, 00964, 964, or 07),
+  // it MUST strictly follow the Iraqi mobile structure: 10 national digits starting with 7[3-9].
+  // It MUST NEVER fall through to generic international validation!
+  const hasIraqiPrefix = /^(?:\+964|00964|964|07)/.test(cleaned);
+  if (hasIraqiPrefix) {
+    // Local format: 07[3-9]xxxxxxxx (exactly 11 digits)
+    if (/^07[3-9]\d{8}$/.test(cleaned)) {
+      return { valid: true, normalized: cleaned, isIraqi: true };
+    }
+    // Without leading zero: 7[3-9]xxxxxxxx (exactly 10 digits)
+    if (/^7[3-9]\d{8}$/.test(cleaned)) {
+      return { valid: true, normalized: '0' + cleaned, isIraqi: true };
+    }
+    // +964 format: +9647[3-9]xxxxxxxx (exactly 13 characters)
+    if (/^\+9647[3-9]\d{8}$/.test(cleaned)) {
+      return { valid: true, normalized: cleaned, isIraqi: true };
+    }
+    // 00964 format: 009647[3-9]xxxxxxxx (exactly 14 digits)
+    if (/^009647[3-9]\d{8}$/.test(cleaned)) {
+      return { valid: true, normalized: '+' + cleaned.substring(2), isIraqi: true };
+    }
+    // 964 format: 9647[3-9]xxxxxxxx (exactly 12 digits)
+    if (/^9647[3-9]\d{8}$/.test(cleaned)) {
+      return { valid: true, normalized: '+' + cleaned, isIraqi: true };
+    }
+
+    // If it started with Iraqi prefix but failed above, it is an incomplete or invalid Iraqi number!
+    return {
+      valid: false,
+      error: 'رقم الهاتف يبدأ برمز العراق (+964) لكنه غير مكتمل أو غير صحيح. يرجى إدخال 11 رقماً تبدأ بـ 07 (مثال: 07801222119 أو +9647801222119).'
+    };
   }
 
-  // 8. International Number:
-  // Must explicitly start with + or 00, followed by valid country code and total 9 to 15 digits
-  if (/^(?:\+|00)[1-9]\d{8,14}$/.test(cleaned)) {
+  // 8. General International Number (strictly non-Iraqi):
+  // Must explicitly start with + or 00, followed by a valid non-964 country code, total 9 to 15 digits
+  if (/^(?:\+|00)(?!964)[1-9]\d{8,14}$/.test(cleaned)) {
     let intlNorm = cleaned.startsWith('00') ? '+' + cleaned.substring(2) : cleaned;
     return { valid: true, normalized: intlNorm, isIraqi: false };
   }
 
   return {
     valid: false,
-    error: 'يرجى إدخال رقم هاتف صحيح: داخل العراق (11 رقماً يبدأ بـ 07، مثال: 07801222119)، أو رقم دولي يبدأ برمز الدولة (+).'
+    error: 'يرجى إدخال رقم هاتف صحيح: داخل العراق (11 رقماً يبدأ بـ 07، مثال: 07801222119)، أو رقم دولي يبدأ بمفتاح الدولة (+).'
   };
 }
 
@@ -425,53 +461,84 @@ if (copyBtn) {
   });
 }
 
-// Receipt File Upload & Preview
+// Receipt File Upload & Preview (Supports Images and PDF up to 8MB)
 if (receipt) {
   receipt.addEventListener('change', async () => {
     const file = receipt.files[0];
     clearPreview(false);
-    if (!file) return;
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      receiptStatus.textContent = 'يرجى اختيار صورة بصيغة JPG أو PNG أو WebP.';
+    if (!file) {
       updateReceiptLock(false);
       return;
     }
-    if (file.size > 8 * 1024 * 1024) {
-      receiptStatus.textContent = 'حجم الصورة أكبر من 8 ميغابايت. يرجى اختيار صورة أصغر.';
-      updateReceiptLock(false);
-      return;
-    }
-    const version = imageVersion;
-    const url = URL.createObjectURL(file);
-    const image = new Image();
-    image.src = url;
 
-    // Read base64 for secure transmission to server
-    const reader = new FileReader();
-    reader.onload = e => { receiptBase64 = e.target.result; };
-    reader.readAsDataURL(file);
+    const isPdf = (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf'));
+    const isImage = ['image/jpeg', 'image/png', 'image/webp'].includes(file.type);
+
+    if (!isPdf && !isImage) {
+      receiptStatus.textContent = 'يرجى اختيار صورة بصيغة (JPG/PNG/WebP) أو ملف PDF لإشعار التحويل.';
+      updateReceiptLock(false);
+      return;
+    }
+
+    if (file.size > 8 * 1024 * 1024) {
+      receiptStatus.textContent = 'حجم الملف أكبر من 8 ميغابايت. يرجى إرفاق إشعار أصغر حجماً.';
+      updateReceiptLock(false);
+      return;
+    }
+
+    const version = ++imageVersion;
+    updateReceiptLock(false); // Lock submit button until reading finishes completely
+    if (receiptStatus) receiptStatus.textContent = '⏳ جارٍ قراءة وتجهيز المستند...';
+
+    const pdfBox = document.querySelector('#pdf-preview-box');
+    const pdfName = document.querySelector('#pdf-name');
+    const pdfSize = document.querySelector('#pdf-size');
 
     try {
-      await image.decode();
-      if (version !== imageVersion) {
-        URL.revokeObjectURL(url);
-        return;
+      if (isPdf) {
+        if (preview) preview.style.display = 'none';
+        if (pdfBox) {
+          pdfBox.style.display = 'block';
+          if (pdfName) pdfName.textContent = file.name;
+          if (pdfSize) pdfSize.textContent = (file.size / 1024).toFixed(1) + ' كيلوبايت (مستند PDF رسمي)';
+        }
+      } else {
+        if (pdfBox) pdfBox.style.display = 'none';
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        previewUrl = URL.createObjectURL(file);
+        if (preview) {
+          preview.src = previewUrl;
+          preview.style.display = 'block';
+        }
       }
-      previewUrl = url;
-      preview.src = url;
-      previewWrap.hidden = false;
+      if (previewWrap) previewWrap.hidden = false;
+
+      // Read file safely as Base64 for submission
+      await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          if (version === imageVersion) {
+            receiptBase64 = e.target.result;
+            resolve();
+          }
+        };
+        reader.onerror = () => reject(new Error('فشلت قراءة الملف'));
+        reader.readAsDataURL(file);
+      });
+
+      if (version !== imageVersion) return;
+
       const previewBadge = previewWrap.querySelector('.receipt-success-badge');
       if (previewBadge) {
-        previewBadge.textContent = 'تم إرفاق صورة الإشعار — بانتظار التحقق والمراجعة';
+        previewBadge.textContent = '✅ تم تجهيز إشعار التحويل (' + (isPdf ? 'ملف PDF' : 'صورة') + ') — بانتظار التأكيد والمراجعة';
       }
       updateReceiptLock(true);
       if (receiptStatus) receiptStatus.textContent = '';
-    } catch {
-      URL.revokeObjectURL(url);
-      if (version === imageVersion) {
-        receiptStatus.textContent = 'تعذر فتح الصورة. يرجى اختيار صورة واضحة أخرى.';
-        updateReceiptLock(false);
-      }
+
+    } catch (err) {
+      if (version !== imageVersion) return;
+      receiptStatus.textContent = 'تعذر تجهيز الملف المرفق. يرجى اختيار ملف صالح آخر.';
+      updateReceiptLock(false);
     }
   });
 }
@@ -506,6 +573,9 @@ if (briefForm) {
 
     const deadlineInput = document.querySelector('#field-deadline');
     const deadlineVal = deadlineInput ? deadlineInput.value.trim() : '';
+    const prefContact = f.get('pref_contact') || 'واتساب مشفر أولاً';
+    const prefTime = f.get('pref_time') || 'أي وقت مناسب خلال ساعات الدوام';
+    const safeDiscreet = f.get('safe_discreet') ? 'نعم (تواصل محايد وسري)' : 'لا مانع';
 
     const payload = {
       docketId: generatedDocketId,
@@ -514,6 +584,9 @@ if (briefForm) {
       titlePrefix: titlePrefix,
       name: name,
       phone: phone,
+      prefContact: prefContact,
+      prefTime: prefTime,
+      safeDiscreet: safeDiscreet,
       deadline: deadlineVal,
       location: loc,
       topic: topic,
@@ -785,22 +858,75 @@ document.addEventListener('click', event => {
   updateComparator();
 })();
 
-// Event Delegation: Connect all topic buttons with exact category mapping
+// Event Delegation: Connect ONLY action buttons and chips, NEVER sections or headers
 document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-topic], [data-category]');
+  // Strictly target interactive clickable elements: buttons, links, chips, pillar CTAs
+  const btn = e.target.closest('button[data-topic], button[data-category], a[data-topic], .lawsuit-chip, .open-consult-modal, .pillar-card .button, .hero-cta-btn');
   if (!btn) return;
   
-  // Exclude tab navigation or filter pills that shouldn't open consultation
-  if (btn.classList.contains('dir-filter-pill') || btn.classList.contains('guide-tabs-btn') || btn.getAttribute('role') === 'tab') {
+  // Exclude tab navigation, search pills, or structural section wrappers
+  if (btn.classList.contains('dir-filter-pill') || btn.classList.contains('guide-tabs-btn') || btn.getAttribute('role') === 'tab' || btn.classList.contains('dir-category-block')) {
     return;
   }
   
-  const rawTopic = btn.dataset.topic || '';
+  const rawTopic = btn.dataset.topic || (btn.classList.contains('lawsuit-chip') ? btn.textContent.trim() : '');
   const rawCat = btn.dataset.category || '';
   const planType = (rawCat === 'diaspora' || rawTopic.includes('مغترب')) ? 'استشارة دولية للمغتربين' : 'استشارة قانونية ودراسة ملف';
   
   openConsultationModal(planType, rawTopic, rawCat);
 });
+
+// Comprehensive Arabic Normalization & Synonym Helper
+function normalizeArabicText(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/[\u064B-\u065F]/g, '') // remove tashkeel/diacritics
+    .replace(/[إأآا]/g, 'ا')          // normalize Alef variations
+    .replace(/ة/g, 'ه')               // normalize Ta Marbuta
+    .replace(/ى/g, 'ي')               // normalize Alef Maqsura
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+// Iraqi Legal Synonyms Mapping
+const legalSynonymsMap = {
+  'شيك': ['صك', 'كمبياله', 'سفتجه', 'سند سحب'],
+  'صك': ['شيك', 'كمبياله', 'سفتجه', 'سند'],
+  'ايجار': ['تخليه', 'ماجور', 'بدل ايجار', 'عقد ايجار', 'استئجار'],
+  'تخليه': ['ايجار', 'ماجور', 'غصب', 'شاغل'],
+  'شيوع': ['ازاله شيوع', 'قسمه', 'فرز', 'شركاء', 'قسمه قضائيه'],
+  'فرز': ['ازاله شيوع', 'شيوع', 'قسمه', 'طابو'],
+  'طلاق': ['تفريق', 'خلع', 'مخالعه', 'انفصال', 'نفقه', 'حضانه'],
+  'تفريق': ['طلاق', 'خلع', 'نفقه', 'حضانه', 'هجر', 'ضرر'],
+  'حضانه': ['ضم صغير', 'مشاهده', 'نفقه صغار', 'ولايه'],
+  'نفقه': ['نفقه زوجه', 'نفقه صغار', 'ماضيه', 'مستمره'],
+  'ابتزاز': ['جرائم الكترونيه', 'تهديد', 'تشهير', 'حساب وهمي', 'سب وقذف'],
+  'عمل': ['ضمان اجتماعي', 'فصل تعسفي', 'اجور عمال', 'عقد عمل', 'مكافاه']
+};
+
+function getExpandedQueryTerms(query) {
+  const normQuery = normalizeArabicText(query);
+  const words = normQuery.split(' ').filter(w => w.length > 0);
+  const allTerms = [];
+
+  words.forEach(word => {
+    allTerms.push(word);
+    // Strip leading 'ال' for root comparison
+    if (word.startsWith('ال') && word.length > 3) {
+      allTerms.push(word.substring(2));
+    }
+    // Add synonyms
+    const bareWord = word.startsWith('ال') ? word.substring(2) : word;
+    if (legalSynonymsMap[bareWord]) {
+      legalSynonymsMap[bareWord].forEach(syn => {
+        allTerms.push(syn);
+      });
+    }
+  });
+
+  return Array.from(new Set(allTerms));
+}
 
 // Judicial Directory (120 Lawsuits) Live Search & Filter
 (function initJudicialDirectory() {
@@ -816,7 +942,8 @@ document.addEventListener('click', e => {
   let activeCategory = 'all';
 
   function applyFilter() {
-    const query = (searchInput.value || '').trim().toLowerCase();
+    const rawQuery = (searchInput.value || '').trim();
+    const queryTerms = getExpandedQueryTerms(rawQuery);
     let visibleTotal = 0;
 
     categoryBlocks.forEach(block => {
@@ -826,8 +953,23 @@ document.addEventListener('click', e => {
 
       const chips = block.querySelectorAll('.lawsuit-chip');
       chips.forEach(chip => {
-        const text = chip.textContent.toLowerCase();
-        const matchesQuery = (!query || text.includes(query));
+        const chipNorm = normalizeArabicText(chip.textContent);
+        const catNorm = normalizeArabicText(blockCat || '');
+        
+        let matchesQuery = true;
+        if (queryTerms.length > 0) {
+          // If query has terms, check if at least one meaningful term or root matches chip or category
+          // Or if multiple words typed, check each user word match
+          const userWords = normalizeArabicText(rawQuery).split(' ').filter(w => w.length > 0);
+          matchesQuery = userWords.every(uWord => {
+            const strippedU = (uWord.startsWith('ال') && uWord.length > 3) ? uWord.substring(2) : uWord;
+            const matchesDirect = chipNorm.includes(uWord) || chipNorm.includes(strippedU) || catNorm.includes(uWord);
+            if (matchesDirect) return true;
+            // Check synonyms
+            const syns = legalSynonymsMap[strippedU] || legalSynonymsMap[uWord] || [];
+            return syns.some(s => chipNorm.includes(s));
+          });
+        }
 
         if (matchesCat && matchesQuery) {
           chip.style.display = 'inline-flex';

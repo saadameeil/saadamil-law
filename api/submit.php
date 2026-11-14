@@ -44,11 +44,26 @@ $allSame = (strlen($rawDigits) > 1 && count(array_unique(str_split($rawDigits)))
 $consecutiveRep = preg_match('/(.)\1{5,}/', $rawDigits);
 $dummySeq = preg_match('/^(?:012345678|123456789|987654321)/', $rawDigits);
 
-// Iraqi phone check (10 or 11 digits)
-$isIraqi = preg_match('/^(?:\+?964|00964|0)?7[3-9]\d{8}$/', $phone);
-$isIntl = preg_match('/^(?:\+|00)[1-9]\d{8,14}$/', $phone);
+// Strict Iraqi phone validation:
+$startsWithIraqi = preg_match('/^(?:\+964|00964|964|07)/', $phone);
+$isIraqiValid = false;
 
-if (mb_strlen($name) < 2 || $allSame || $consecutiveRep || $dummySeq || (!$isIraqi && !$isIntl)) {
+if ($startsWithIraqi) {
+    $isIraqiValid = (bool)preg_match('/^(?:\+964|00964|964|0)?7[3-9]\d{8}$/', $phone);
+    if (!$isIraqiValid) {
+        http_response_code(422);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'رقم الهاتف يبدأ برمز العراق (+964) لكنه غير مكتمل أو غير صحيح. يرجى إدخال 11 رقماً تبدأ بـ 07.'
+        ]);
+        exit();
+    }
+}
+
+// Strictly non-Iraqi international
+$isIntlValid = (bool)preg_match('/^(?:\+|00)(?!964)[1-9]\d{8,14}$/', $phone);
+
+if (mb_strlen($name) < 2 || $allSame || $consecutiveRep || $dummySeq || (!$isIraqiValid && !$isIntlValid)) {
     http_response_code(422);
     echo json_encode([
         'status' => 'error',

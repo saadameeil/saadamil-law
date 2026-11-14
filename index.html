@@ -1623,6 +1623,8 @@
         نتواصل معك لتأكيد موعد الجلسة خلال <strong>ساعتين</strong> من ساعات عمل المكتب الرسمية (السبت إلى الخميس: 9:00 ص – 6:00 م). تُحتسب الطلبات المقدمة خارج الدوام أو في العطلات من بداية يوم العمل التالي مباشرة.
     </p>
 </div>
+</div><!-- /pricing-transparent-card (Properly Closed) -->
+
 <div class="title-selector">
 <span class="selector-label">الصفة:</span>
 <label class="radio-chip"><input checked="" name="title_prefix" type="radio" value="السيد"/> <span>السيد / الأستاذ</span></label>
@@ -1632,9 +1634,37 @@
 <label>الاسم الكامل الثلاثي
             <input autocomplete="name" id="field-name" maxlength="100" name="name" placeholder="اكتب اسمك الكامل هنا" required=""/>
 </label>
+<!-- Safe Communication Preferences -->
+<div class="full safe-contact-card" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px 14px; margin-bottom:12px;">
+    <div style="font-weight:700; font-size:12.5px; color:#1e293b; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+        <span>🛡️</span> <span>أمان وخصوصية التواصل:</span>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; font-size:12px; margin-bottom:8px;">
+        <div>
+            <label style="font-size:11.5px; color:#475569; display:block; margin-bottom:4px; font-weight:600;">طريقة التواصل المفضلة:</label>
+            <select id="field-pref-contact" name="pref_contact" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:12px; background:#fff;">
+                <option value="واتساب مشفر أولاً (موصى به للسرية)">واتساب مشفر أولاً (موصى به لحماية الخصوصية)</option>
+                <option value="اتصال هاتفي مباشر">اتصال هاتفي مباشر</option>
+            </select>
+        </div>
+        <div>
+            <label style="font-size:11.5px; color:#475569; display:block; margin-bottom:4px; font-weight:600;">الوقت الأنسب للتواصل معك:</label>
+            <select id="field-pref-time" name="pref_time" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:12px; background:#fff;">
+                <option value="أي وقت مناسب خلال ساعات الدوام">أي وقت مناسب خلال ساعات الدوام (9 ص – 6 م)</option>
+                <option value="صباحاً (9:00 ص - 1:00 م)">صباحاً (9:00 ص – 1:00 م)</option>
+                <option value="مساءً (2:00 م - 6:00 م)">مساءً (2:00 م – 6:00 م)</option>
+            </select>
+        </div>
+    </div>
+    <label style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:#475569; cursor:pointer; margin:0;">
+        <input type="checkbox" id="field-safe-discreet" name="safe_discreet" checked style="accent-color:var(--brand); width:16px; height:16px;" />
+        <span><strong>تواصل محايد وسري:</strong> يُرجى عدم ذكر موضوع النزاع عند أول اتصال حتى أتأكد من هويتكم أولاً (موصى به لقضايا الأسرة والابتزاز).</span>
+    </label>
+</div>
+
 <label>رقم الهاتف المباشر
-            <input autocomplete="tel" dir="ltr" id="field-phone" maxlength="40" name="phone" placeholder="0780 xxx xxxx" required="" type="tel"/>
-<small class="field-hint">ليتصل بك المحامي سعد أميل شخصياً لمناقشة تفاصيل الملف.</small>
+            <input autocomplete="tel" dir="ltr" id="field-phone" maxlength="40" name="phone" placeholder="07xx xxx xxxx أو +964..." required="" type="tel"/>
+<small class="field-hint">ليتصل بك المحامي سعد أميل شخصياً وفق الطريقة والوقت المحددين أعلاه.</small>
 </label>
 <label class="full">عنوان أو منطقة السكن
             <input id="field-location" maxlength="100" name="location" placeholder="مثلاً: بغداد — الكرخ / المنصور أو المحافظة" required=""/>
@@ -1645,8 +1675,11 @@
 <option value="قضايا العقارات وإزالة الشيوع والتركات">🏢 العقارات، إزالة الشيوع، وقسمة التركات</option>
 <option value="قضايا الأحوال الشخصية والأسرة">👨‍👩‍👧 الأحوال الشخصية، الزواج، التفريق، الحضانة والنفقة</option>
 <option value="الجرائم الإلكترونية ومكافحة الابتزاز">🛡️ الجرائم الإلكترونية، مكافحة الابتزاز، والسب والقذف</option>
+<option value="قضايا العمل والضمان الاجتماعي والوظيفة العامة">💼 قضايا العمل والضمان الاجتماعي ومنازعات الخدمة المدنية</option>
 <option value="الشركات والاستثمار والعقود التجارية">⚖️ الشركات، الاستثمار، المقاولات، والتحكيم التجاري</option>
+<option value="قضايا التعويضات والمسؤولية المدنية والنزاعات المالية">💰 دعاوى التعويضات، المسؤولية التقصيرية، والنزاعات المالية</option>
 <option value="القضاء الجنائي والتحقيق والجنح">🏛️ قضايا التحقيق الجنائي، طلبات الكفالة، والجنح والجنايات</option>
+<option value="القضاء الإداري ومحكمة قضاء الموظفين والنزاهة">🏛️ القضاء الإداري، محكمة قضاء الموظفين، ودعاوى النزاهة</option>
 <option value="خدمات المغتربين والوكالات القنصلية">🌍 قضايا المغتربين والوكالات القنصلية وحماية الأملاك</option>
 <option value="استشارة قانونية عامة / لستُ متأكداً من التكييف">❓ استشارة عامة / لستُ متأكداً من التكييف القانوني لقضيتي</option>
 </select>
@@ -1793,7 +1826,7 @@
 <div class="direct-app-divider"><span>أو عبر مسح الرمز / التحويل اليدوي</span></div>
 </div><div class="payment">
 <div>
-<div class="payee-badge">المستفيد: <strong>المحامي سعد اميل</strong></div>
+<div class="payee-badge">المستفيد المسجل: <strong>المحامي سعد فراس أميل (هوية نقابة المحامين: 188572)</strong></div>
 <small>معرّف التحويل (سوبر):</small>
 <strong dir="ltr" id="super-id">SUPER-IQ-77098231</strong>
 <div class="pay-actions">
@@ -1851,14 +1884,19 @@
 <label class="full" style="font-weight:700;color:var(--brand);">
 <span>صورة إشعار أو وصل التحويل</span>
 <span class="badge-required">إلزامي لتفعيل الإرسال *</span>
-<input accept="image/jpeg,image/png,image/webp" id="receipt" required="" type="file"/>
-<span class="fine">ارفع صورة إشعار التحويل لتفعيل زر الإرسال. أما مستندات القضية (حتى 3 وثائق) فترسلها في محادثة الواتساب التالية مباشرة.</span>
+<input accept="image/jpeg,image/png,image/webp,application/pdf" id="receipt" required="" type="file"/>
+<span class="fine">ارفع صورة أو ملف PDF لإشعار التحويل (بحد أقصى 8 ميغابايت) لتفعيل زر الإرسال. أما مستندات القضية (حتى 3 وثائق) فترسلها في محادثة الواتساب التالية مباشرة.</span>
 </label>
 <p class="full error" id="receipt-status" role="alert"></p>
 <div class="full" hidden="" id="preview-wrap">
-<div class="receipt-success-badge">تم إرفاق صورة الإشعار — بانتظار التحقق والمراجعة</div>
-<img alt="معاينة إيصال التحويل" id="preview"/>
-<button id="remove-receipt" type="button">إزالة الصورة واستبدالها</button>
+<div class="receipt-success-badge">✅ تم إرفاق إشعار التحويل بنجاح — بانتظار التحقق والمراجعة</div>
+<div id="pdf-preview-box" style="display:none; background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px; padding:12px; margin:8px 0; text-align:center;">
+    <div style="font-size:28px;">📄</div>
+    <div id="pdf-name" style="font-weight:700; font-size:13px; color:#1e293b; margin-top:4px;"></div>
+    <div id="pdf-size" style="font-size:11px; color:#64748b;"></div>
+</div>
+<img alt="معاينة إيصال التحويل" id="preview" style="max-height:220px; border-radius:6px; margin:8px auto; display:none;"/>
+<button id="remove-receipt" type="button" style="display:block; margin:8px auto; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; padding:6px 14px; font-size:12px; cursor:pointer;">إزالة المرفق واستبداله</button>
 </div>
 </div>
 <!-- Submit and Back actions -->
