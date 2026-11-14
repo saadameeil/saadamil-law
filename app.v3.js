@@ -91,6 +91,43 @@ function resetToStep1() {
   }
 }
 
+
+function normalizeAndValidatePhone(raw) {
+  if (!raw) return { valid: false, error: 'يرجى إدخال رقم الهاتف للتواصل.' };
+  
+  // Convert Arabic-Indic (٠-٩) and Persian (۰-۹) digits to 0-9
+  let cleaned = String(raw).trim()
+    .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+  
+  let digits = cleaned.replace(/[\s\-\(\)\.]/g, '');
+  let rawDigitsOnly = digits.replace(/^\+/, '');
+
+  // Reject dummy repeated digits (e.g., 00000000, 11111111)
+  if (/^(\d)+$/.test(rawDigitsOnly)) {
+    return { valid: false, error: 'يرجى إدخال رقم هاتف حقيقي فعال (تم رفض الأرقام المتكررة الوهمية).' };
+  }
+
+  // Reject sequential test sequences
+  if (/^(?:012345678|123456789|987654321)/.test(rawDigitsOnly)) {
+    return { valid: false, error: 'يرجى إدخال رقم هاتف حقيقي للتواصل.' };
+  }
+
+  // Iraqi format: starts with 07, 7, +9647, or 009647 followed by 8 or 9 digits
+  const isIraqi = /^(?:\+?964|00964|0)?7[3-9]\d{7,8}$/.test(digits);
+  // International format: + or digit followed by 8 to 15 digits
+  const isIntl = /^\+?[1-9]\d{7,14}$/.test(digits);
+
+  if (!isIraqi && !isIntl) {
+    return { 
+      valid: false, 
+      error: 'يرجى التأكد من كتابة رقم هاتف صحيح (مثال داخل العراق: 07801222119 أو دولي مع رمز الدولة).' 
+    };
+  }
+
+  return { valid: true, normalized: digits };
+}
+
 function showStep2() {
   const nameInput = document.querySelector('#field-name');
   const phoneInput = document.querySelector('#field-phone');
@@ -125,14 +162,16 @@ function showStep2() {
     return;
   }
 
-  if (phoneVal.length < 8) {
+  const phoneCheck = normalizeAndValidatePhone(phoneVal);
+  if (!phoneCheck.valid) {
     if (step1Error) {
       step1Error.hidden = false;
-      step1Error.textContent = 'يرجى كتابة رقم هاتف صحيح ليتسنى للمكتب الاتصال بك هاتفياً وتحديد الموعد.';
+      step1Error.textContent = phoneCheck.error;
     }
     if (phoneInput) phoneInput.focus();
     return;
   }
+  const cleanPhone = phoneCheck.normalized;
 
   if (step1Error) step1Error.hidden = true;
 
@@ -141,7 +180,20 @@ function showStep2() {
   if (docId) docId.textContent = generatedDocketId;
   
   if (docClientInfo) {
-    docClientInfo.textContent = titlePrefix + ' ' + nameVal + ' • هاتف: ' + phoneVal + ' • سكن: ' + locVal;
+    docClientInfo.textContent = titlePrefix + ' ' + nameVal + ' • هاتف: ' + cleanPhone + ' • سكن: ' + locVal;
+  }
+
+  const deadlineInput = document.querySelector('#field-deadline');
+  const deadlineVal = deadlineInput ? deadlineInput.value.trim() : '';
+  const docDeadlineRow = document.querySelector('#doc-deadline-row');
+  const docDeadlineVal = document.querySelector('#doc-deadline-val');
+  if (docDeadlineRow && docDeadlineVal) {
+    if (deadlineVal) {
+      docDeadlineRow.style.display = 'flex';
+      docDeadlineVal.textContent = deadlineVal;
+    } else {
+      docDeadlineRow.style.display = 'none';
+    }
   }
   
   if (docOpponentInfo) {
@@ -155,11 +207,7 @@ function showStep2() {
   if (docFactsVal) docFactsVal.textContent = summaryVal;
 
   if (docStatusDesc) {
-    if (currentPlan.currency === 'USD') {
-      docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات الأصولية والاتصال المباشر بالموكل فور مراجعة أتعاب الاستشارة الدولية المعتمدة ($100 USD).';
-    } else {
-      docStatusDesc.textContent = 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية والاتصال الهاتفي بالموكل فور مراجعة وتأكيد أتعاب الاستشارة المعتمدة (٧٥٬٠٠٠ د.ع).';
-    }
+    docStatusDesc.textContent = 'راجع بياناتك قبل الإرسال. يتواصل المكتب لتأكيد الموعد بعد مراجعة الطلب وإشعار التحويل. الاستشارة مدتها 30 دقيقة، وتشمل مراجعة حتى 3 مستندات. التمثيل القضائي باتفاق مستقل.';
   }
 
   // Transition view & update lock
@@ -198,8 +246,9 @@ function clearPreview(resetInput=true){
 }
 
 // Plan buttons (Open Modal in Step 1)
-document.querySelectorAll('[data-plan]').forEach(button => {
-  button.addEventListener('click', () => {
+document.querySelectorAll('[data-plan], .open-consult-modal').forEach(button => {
+  button.addEventListener('click', (e) => {
+    if (e) e.preventDefault();
     previousFocus = button;
     const isDiaspora = (button.dataset.plan || '').includes('مغترب') || (button.dataset.plan || '').includes('خارج');
     if (isDiaspora) {
@@ -350,6 +399,9 @@ if (briefForm) {
     const oppLoc = String(f.get('opponent_location') || '').trim();
     const summary = String(f.get('summary') || '').trim();
 
+    const deadlineInput = document.querySelector('#field-deadline');
+    const deadlineVal = deadlineInput ? deadlineInput.value.trim() : '';
+
     const payload = {
       docketId: generatedDocketId,
       date: getArabicDate(),
@@ -357,6 +409,7 @@ if (briefForm) {
       titlePrefix: titlePrefix,
       name: name,
       phone: phone,
+      deadline: deadlineVal,
       location: loc,
       topic: topic,
       planName: currentPlan.name,
@@ -389,7 +442,8 @@ if (briefForm) {
         'طلب استشارة قانونية — مكتب المحامي سعد أميل',
         'رقم الطلب: ' + assignedDocketId,
         'الاسم: ' + titlePrefix + ' ' + name,
-        'تم تسجيل الطلب وإرفاق إشعار التحويل عبر الموقع، بانتظار تأكيد موعد جلسة الاستشارة.'
+        'تم تسجيل الطلب وإرفاق إشعار التحويل عبر الموقع، بانتظار التواصل لتأكيد الموعد.',
+        '(يمكن إرسال صور المستندات القضائية حتى 3 وثائق هنا لمراجعتها قبل الجلسة).'
       ].join('\n');
 
       const waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(waMessage);

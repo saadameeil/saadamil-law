@@ -29,13 +29,22 @@ if (!$data) {
 }
 
 $name = trim($data['name'] ?? '');
-$phone = trim($data['phone'] ?? '');
+$rawPhone = trim($data['phone'] ?? '');
 
-if (mb_strlen($name) < 2 || mb_strlen($phone) < 8) {
+// Convert Arabic-Indic / Persian digits to standard 0-9
+$arabic = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+$persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+$latin = ['0','1','2','3','4','5','6','7','8','9'];
+$phone = str_replace($persian, $latin, str_replace($arabic, $latin, $rawPhone));
+$phone = preg_replace('/[\s\-\(\)\.]/', '', $phone);
+$rawDigits = ltrim($phone, '+');
+
+// Reject empty, too short, or repeated dummy digits (00000000, 11111111)
+if (mb_strlen($name) < 2 || mb_strlen($phone) < 8 || preg_match('/^(\d)\1+$/', $rawDigits)) {
     http_response_code(422);
     echo json_encode([
         'status' => 'error',
-        'message' => 'يرجى إدخال الاسم الكامل ورقم هاتف صالح للتواصل.'
+        'message' => 'يرجى إدخال الاسم الكامل ورقم هاتف حقيقي وفعال للتواصل.'
     ]);
     exit();
 }
@@ -68,6 +77,7 @@ $submission = [
     'titlePrefix' => htmlspecialchars($data['titlePrefix'] ?? 'السيد'),
     'name' => htmlspecialchars($name),
     'phone' => htmlspecialchars($phone),
+    'deadline' => htmlspecialchars($data['deadline'] ?? ''),
     'location' => htmlspecialchars($data['location'] ?? 'بغداد'),
     'topic' => htmlspecialchars($data['topic'] ?? 'استشارة عامة'),
     'planName' => htmlspecialchars($data['planName'] ?? ($currency === 'USD' ? 'استشارة دولية للمغتربين' : 'استشارة قانونية ودراسة ملف')),
