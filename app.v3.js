@@ -137,12 +137,61 @@ if (dialog) {
 function resetToStep1() {
   if (step1Details && step2Payment) {
     step1Details.hidden = false;
+    step1Details.style.display = 'block';
     step2Payment.hidden = true;
+    step2Payment.style.display = 'none';
   }
   if (step1Error) {
     step1Error.hidden = true;
     step1Error.textContent = '';
   }
+  if (briefForm) {
+    briefForm.querySelectorAll('[aria-invalid="true"]').forEach(el => el.removeAttribute('aria-invalid'));
+  }
+}
+
+function startNewDraft() {
+  formState = 'editing';
+  currentDraftRequestId = generateRequestId();
+
+  // Remove previous submission success card if present
+  const existingSuccess = document.querySelector('.submission-success-card');
+  if (existingSuccess) existingSuccess.remove();
+  const handoff = document.querySelector('#handoff');
+  if (handoff) {
+    handoff.hidden = true;
+    handoff.innerHTML = '';
+  }
+
+  // Reset brief form fields
+  if (briefForm) briefForm.reset();
+
+  // Reset steps
+  resetToStep1();
+
+  // Clear preview and receipt input
+  clearPreview(true);
+
+  // Reset submit button state
+  if (finalSubmitBtn) {
+    finalSubmitBtn.disabled = true;
+    finalSubmitBtn.classList.remove('loading', 'unlocked');
+    finalSubmitBtn.classList.add('locked');
+  }
+  if (submitBtnText) {
+    submitBtnText.textContent = 'إرسال طلب الاستشارة وتأكيد التحويل ←';
+  }
+
+  // Re-enable back and remove buttons
+  const backBtn = document.querySelector('#back-to-step-1, #go-to-step-1');
+  if (backBtn) backBtn.disabled = false;
+  if (removeReceiptBtn) removeReceiptBtn.disabled = false;
+
+  // Re-enable payment switchers
+  const payTabs = document.querySelectorAll('#step-2-payment .pay-tab, #step-2-payment [data-plan], .open-consult-modal');
+  payTabs.forEach(t => t.disabled = false);
+
+  if (receiptStatus) receiptStatus.textContent = '';
 }
 
 /**
@@ -215,11 +264,8 @@ function openConsultationModal(opts = {}) {
     serviceId = opts.serviceId || '';
   }
 
-  // 1. Reset state
-  resetToStep1();
-  clearPreview(true);
-  currentDraftRequestId = generateRequestId();
-  formState = 'editing';
+  // 1. Reset state cleanly for new draft
+  startNewDraft();
 
   // 2. Set plan atomically
   setPlan(planId);
@@ -294,12 +340,49 @@ const CANONICAL_CATEGORIES = {
   'execution': 'قضايا التعويضات والمسؤولية المدنية والنزاعات المالية',
   'criminal': 'القضاء الجنائي والتحقيق والجنح',
   'military': 'القضاء الجنائي والتحقيق والجنح',
-  'cassation': 'القضاء الجنائي والتحقيق والجنح',
+  'cassation': 'استشارة قانونية عامة / لستُ متأكداً من التكييف',
   'admin': 'القضاء الإداري ومحكمة قضاء الموظفين والنزاهة',
   'administrative': 'القضاء الإداري ومحكمة قضاء الموظفين والنزاهة',
   'diaspora': 'خدمات المغتربين والوكالات القنصلية',
   'general': 'استشارة قانونية عامة / لستُ متأكداً من التكييف'
 };
+
+function reverseMapTopicToCategoryId(topicVal) {
+  if (!topicVal) return 'general';
+  const norm = normalizeArabicText(topicVal);
+  if (norm.includes('عقار') || norm.includes('شيوع') || norm.includes('تركات')) return 'real-estate';
+  if (norm.includes('اسره') || norm.includes('احوال') || norm.includes('طلاق') || norm.includes('زواج')) return 'family';
+  if (norm.includes('الكتروني') || norm.includes('ابتزاز') || norm.includes('ادله رقميه')) return 'cybercrime';
+  if (norm.includes('عمل') || norm.includes('عمال') || norm.includes('ضمان')) return 'labor';
+  if (norm.includes('شركات') || norm.includes('استثمار') || norm.includes('تجاري')) return 'corporate';
+  if (norm.includes('تعويض') || norm.includes('مسؤوليه') || norm.includes('تنفيذ') || norm.includes('ديون') || norm.includes('مالي')) return 'compensation';
+  if (norm.includes('جنائي') || norm.includes('تحقيق') || norm.includes('كفال') || norm.includes('جنح')) return 'criminal';
+  if (norm.includes('اداري') || norm.includes('موظفين') || norm.includes('نزاهه')) return 'administrative';
+  if (norm.includes('مغترب') || norm.includes('قنصلي') || norm.includes('جاليه')) return 'diaspora';
+  return 'general';
+}
+
+// Synchronize manual #topic dropdown changes with hidden #field-category & reset mismatched service
+const topicDropdownEl = document.querySelector('#topic');
+if (topicDropdownEl) {
+  topicDropdownEl.addEventListener('change', () => {
+    const selectedTopic = topicDropdownEl.value;
+    const catId = reverseMapTopicToCategoryId(selectedTopic);
+    currentCategoryId = catId;
+    const catInput = document.querySelector('#field-category');
+    if (catInput) catInput.value = catId;
+
+    currentServiceId = '';
+    currentServiceTitle = '';
+    const sIdInput = document.querySelector('#field-service-id');
+    if (sIdInput) sIdInput.value = '';
+    const sTitleInput = document.querySelector('#field-service-title');
+    if (sTitleInput) sTitleInput.value = '';
+
+    const banner = document.querySelector('#service-context-banner');
+    if (banner) banner.hidden = true;
+  });
+}
 
 function mapTopicToSelectValue(topic = '', category = '') {
   const cat = String(category || '').toLowerCase().trim();
@@ -608,8 +691,14 @@ function goToStep2() {
   if (docFeeVal) docFeeVal.textContent = currentPlan.formattedFee;
 
   // Transition Step 1 -> Step 2
-  if (step1Details) step1Details.hidden = true;
-  if (step2Payment) step2Payment.hidden = false;
+  if (step1Details) {
+    step1Details.hidden = true;
+    step1Details.style.display = 'none';
+  }
+  if (step2Payment) {
+    step2Payment.hidden = false;
+    step2Payment.style.display = 'block';
+  }
 
   // Scroll modal to top
   if (dialog) dialog.scrollTop = 0;
@@ -728,7 +817,13 @@ if (receipt) {
       }
 
       if (thisVersion !== imageVersion) return;
-      if (uploadPlanId !== currentPlan.id) return;
+      if (uploadPlanId !== currentPlan.id) {
+        clearPreview(true);
+        if (receiptStatus) {
+          receiptStatus.textContent = 'تم تبديل خطة السداد أثناء تجهيز الملف. يرجى إرفاق إشعار يطابق الخطة المختارة (' + currentPlan.formattedFee + ').';
+        }
+        return;
+      }
 
       receiptBase64 = fileData;
       if (previewWrap) previewWrap.hidden = false;
@@ -779,9 +874,13 @@ if (briefForm) {
       submitBtnText.textContent = '⏳ جارٍ قيد وتوثيق الطلب بالسجل الإداري...';
     }
 
-    const goToStep1Btn = document.querySelector('#go-to-step-1');
-    if (goToStep1Btn) goToStep1Btn.disabled = true;
+    const backToStep1Btn = document.querySelector('#back-to-step-1, #go-to-step-1');
+    if (backToStep1Btn) backToStep1Btn.disabled = true;
     if (removeReceiptBtn) removeReceiptBtn.disabled = true;
+
+    // Lock payment switchers during submission
+    const paySwitchers = document.querySelectorAll('#step-2-payment .pay-tab, #step-2-payment [data-plan]');
+    paySwitchers.forEach(t => t.disabled = true);
 
     const f = new FormData(briefForm);
     const payload = {
@@ -830,7 +929,7 @@ if (briefForm) {
       }
 
       formState = 'success';
-      const docketId = resData.docketId || 'قيد المتابعة الإدارية (سيصلك الإشعار عبر واتساب)';
+      const serverDocket = (resData && typeof resData.docketId === 'string' && resData.docketId.trim() && !resData.docketId.includes('قيد')) ? resData.docketId.trim() : null;
       const handoff = document.querySelector('#handoff');
 
       if (handoff) {
@@ -849,15 +948,22 @@ if (briefForm) {
         const docketP = document.createElement('p');
         docketP.style.cssText = 'font-size:13px; color:#166534; line-height:1.7; margin:0 0 16px 0;';
 
-        const labelSpan = document.createElement('span');
-        labelSpan.textContent = 'رقم إضبارة الاستشارة المعتمد: ';
-        docketP.appendChild(labelSpan);
+        if (serverDocket) {
+          const labelSpan = document.createElement('span');
+          labelSpan.textContent = 'رقم إضبارة الاستشارة المعتمد: ';
+          docketP.appendChild(labelSpan);
 
-        const strongEl = document.createElement('strong');
-        strongEl.dir = 'ltr';
-        strongEl.style.cssText = 'font-family:monospace; font-size:15px; color:#14532d; background:#dcfce7; padding:3px 8px; border-radius:4px;';
-        strongEl.textContent = docketId;
-        docketP.appendChild(strongEl);
+          const strongEl = document.createElement('strong');
+          strongEl.dir = 'ltr';
+          strongEl.style.cssText = 'font-family:monospace; font-size:15px; color:#14532d; background:#dcfce7; padding:3px 8px; border-radius:4px;';
+          strongEl.textContent = serverDocket;
+          docketP.appendChild(strongEl);
+        } else {
+          const statusBadge = document.createElement('div');
+          statusBadge.style.cssText = 'background:#fef3c7; color:#92400e; padding:6px 12px; border-radius:6px; font-weight:700; font-size:13px; margin:0 auto 10px; max-width:440px;';
+          statusBadge.textContent = 'حالة الطلب: تم استلام البيانات وإشعار التحويل وقيد المراجعة الإدارية لإصدار رقم الإضبارة المعتمد';
+          docketP.appendChild(statusBadge);
+        }
 
         docketP.appendChild(document.createElement('br'));
         const timeNotice = document.createElement('span');
@@ -865,14 +971,20 @@ if (briefForm) {
         docketP.appendChild(timeNotice);
         card.appendChild(docketP);
 
-        // Strict Neutral WhatsApp Message: ONLY Client Name and Docket ID
-        const waText = [
+        // Strict Neutral WhatsApp Message: ONLY Client Name and Docket ID or Status
+        const waLines = [
           'مرحباً مكتب المحامي سعد أميل،',
-          'أرغب بتأكيد حجز استشارة قانونية.',
-          'رقم الطلب: ' + docketId,
-          'الاسم: ' + payload.name,
-          'تم إرسال الطلب وإرفاق إشعار التحويل عبر الموقع، بانتظار التواصل لتأكيد الموعد.'
-        ].join('\n');
+          'أرغب بتأكيد حجز استشارة قانونية.'
+        ];
+        if (serverDocket) {
+          waLines.push('رقم الطلب: ' + serverDocket);
+        } else {
+          waLines.push('حالة الطلب: تم إرسال البيانات وإشعار التحويل عبر الموقع');
+        }
+        waLines.push('الاسم: ' + payload.name);
+        waLines.push('تم إرسال الطلب وإرفاق إشعار التحويل عبر الموقع، بانتظار التواصل لتأكيد الموعد.');
+
+        const waText = waLines.join('\n');
 
         const waLink = document.createElement('a');
         waLink.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(waText);
@@ -886,6 +998,21 @@ if (briefForm) {
         handoff.appendChild(card);
       }
 
+      if (finalSubmitBtn) {
+        finalSubmitBtn.disabled = true;
+        finalSubmitBtn.classList.remove('loading', 'unlocked');
+        finalSubmitBtn.classList.add('locked');
+      }
+      if (submitBtnText) {
+        submitBtnText.textContent = '✓ تم إرسال وتوثيق الطلب بنجاح';
+      }
+
+      const backToStep1Btn = document.querySelector('#back-to-step-1, #go-to-step-1');
+      if (backToStep1Btn) backToStep1Btn.disabled = false;
+      if (removeReceiptBtn) removeReceiptBtn.disabled = false;
+      const paySwitchers = document.querySelectorAll('#step-2-payment .pay-tab, #step-2-payment [data-plan]');
+      paySwitchers.forEach(t => t.disabled = false);
+
     } catch (err) {
       clearTimeout(timeoutId);
       if (submissionRequestId !== currentDraftRequestId) return;
@@ -895,8 +1022,11 @@ if (briefForm) {
         finalSubmitBtn.disabled = false;
         finalSubmitBtn.classList.remove('loading');
       }
-      if (goToStep1Btn) goToStep1Btn.disabled = false;
+      const backToStep1Btn = document.querySelector('#back-to-step-1, #go-to-step-1');
+      if (backToStep1Btn) backToStep1Btn.disabled = false;
       if (removeReceiptBtn) removeReceiptBtn.disabled = false;
+      const paySwitchers = document.querySelectorAll('#step-2-payment .pay-tab, #step-2-payment [data-plan]');
+      paySwitchers.forEach(t => t.disabled = false);
 
       updateReceiptLock(receiptValid);
 
@@ -944,7 +1074,7 @@ document.addEventListener('click', (e) => {
     goToStep2();
     return;
   }
-  if (e.target.closest('#go-to-step-1')) {
+  if (e.target.closest('#back-to-step-1, #go-to-step-1')) {
     e.preventDefault();
     if (formState === 'submitting') return;
     resetToStep1();
@@ -962,8 +1092,12 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('.menu-toggle')) {
     e.preventDefault();
     const nav = document.querySelector('#nav');
+    const toggleBtn = e.target.closest('.menu-toggle');
     if (nav) {
-      nav.classList.toggle('open');
+      const isOpen = nav.classList.toggle('open');
+      if (toggleBtn) {
+        toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      }
     }
     return;
   }
@@ -998,8 +1132,9 @@ document.addEventListener('click', (e) => {
 
   if (!btn) return;
 
-  // Exclude tab navigation, search pills, or structural section wrappers
+  // Exclude tab navigation, search pills, structural wrappers, or comparator button (handled locally)
   if (
+    btn.id === 'comp-book-btn' ||
     btn.classList.contains('dir-filter-pill') ||
     btn.getAttribute('role') === 'tab' ||
     btn.classList.contains('dir-category-block')
@@ -1127,6 +1262,10 @@ function initAccessibleTabs(tablistSelector) {
         targetIndex = (index + 1) % tabs.length;
       } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         targetIndex = (index - 1 + tabs.length) % tabs.length;
+      } else if (e.key === 'Home') {
+        targetIndex = 0;
+      } else if (e.key === 'End') {
+        targetIndex = tabs.length - 1;
       } else {
         return;
       }
@@ -1141,19 +1280,21 @@ function initAccessibleTabs(tablistSelector) {
 // 13. GUIDE SECTION TABS SWITCHING
 // -----------------------------------------------------------------------------
 (function initGuideTabs() {
-  const tabs = document.querySelectorAll('.guide-tab');
-  const panels = document.querySelectorAll('.guide-panel');
+  const tabs = document.querySelectorAll('.guide-tabs button[role="tab"], .guide-tab');
+  const panels = document.querySelectorAll('.guide-content [role="tabpanel"], .guide-panel');
   if (!tabs.length || !panels.length) return;
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      const targetId = tab.dataset.panel;
+      const targetId = tab.getAttribute('aria-controls') || tab.dataset.panel;
       tabs.forEach(t => {
         t.classList.remove('active');
         t.setAttribute('aria-selected', 'false');
+        t.setAttribute('tabindex', '-1');
       });
       tab.classList.add('active');
       tab.setAttribute('aria-selected', 'true');
+      tab.setAttribute('tabindex', '0');
 
       panels.forEach(p => {
         if (p.id === targetId) {
@@ -1166,10 +1307,12 @@ function initAccessibleTabs(tablistSelector) {
       });
     });
   });
-
-  initAccessibleTabs('.guide-tabs');
-  initAccessibleTabs('.pay-tabs');
 })();
+
+// Decoupled independent accessible tablist initializations
+initAccessibleTabs('.guide-tabs');
+initAccessibleTabs('.payment-tabs-bar');
+initAccessibleTabs('.pay-tabs');
 
 // -----------------------------------------------------------------------------
 // 14. 120 LAWSUITS DIRECTORY FILTERING & TOKENIZED SEARCH ENGINE
@@ -1210,13 +1353,13 @@ function initAccessibleTabs(tablistSelector) {
           matchesQuery = queryTokens.every(token => {
             if (combined.includes(token)) return true;
 
-            // Iraqi legal synonym expansions
+            // Iraqi legal synonym expansions (Domain-specific & semantically isolated)
             if ((token === 'شيك' || token === 'صك' || token === 'سفتجه' || token === 'كمبيال') &&
                 (combined.includes('صك') || combined.includes('شيك') || combined.includes('سفتجه') || combined.includes('كمبيال') || combined.includes('سند'))) {
               return true;
             }
-            if ((token === 'دكه' || token === 'دگه' || token === 'عشائر' || token === 'ارهاب') &&
-                (combined.includes('دكه') || combined.includes('دگه') || combined.includes('عشائر') || combined.includes('ارهاب') || combined.includes('405'))) {
+            if ((token === 'دكه' || token === 'دگه' || token === 'عشائر') &&
+                (combined.includes('دكه') || combined.includes('دگه') || combined.includes('عشائر') || combined.includes('405'))) {
               return true;
             }
             if ((token === 'كفال' || token === 'كفاله') &&
@@ -1224,7 +1367,7 @@ function initAccessibleTabs(tablistSelector) {
               return true;
             }
             if ((token === 'ايجار' || token === 'ماجور' || token === 'تخليه') &&
-                (combined.includes('ايجار') || combined.includes('ماجور') || combined.includes('تخليه'))) {
+                (combined.includes('ايجار') || combined.includes('ماجور') || combined.includes('تخليه') || combined.includes('اخلاء'))) {
               return true;
             }
             if ((token === 'طلاق' || token === 'تفريق' || token === 'خلع') &&
@@ -1235,15 +1378,20 @@ function initAccessibleTabs(tablistSelector) {
                 (combined.includes('حضانه') || combined.includes('محضون') || combined.includes('مشاهده') || combined.includes('اصطحاب') || combined.includes('استرداد'))) {
               return true;
             }
-            if ((token === 'تعسفي' || token === 'فصل') &&
-                (combined.includes('تعسفي') || combined.includes('فصل') || combined.includes('عقد عمل') || combined.includes('ضمان'))) {
+            // "فصل" is strictly employment/labor termination
+            if (token === 'فصل' &&
+                (combined.includes('فصل') || combined.includes('عقد عمل') || combined.includes('انهاء عقد') || combined.includes('انهاء عقود'))) {
               return true;
             }
+            if (token === 'تعسفي' && combined.includes('تعسفي')) {
+              return true;
+            }
+            // "ترفيع" is strictly civil service career progression
             if ((token === 'ترفيع' || token === 'علاوه') &&
-                (combined.includes('ترفيع') || combined.includes('علاوه') || combined.includes('انضباط') || combined.includes('موظف') || combined.includes('سحب يد'))) {
+                (combined.includes('ترفيع') || combined.includes('علاوه') || combined.includes('سنوات الخدمه') || combined.includes('درجه وظيفيه'))) {
               return true;
             }
-            if (token === 'شيوع' && (combined.includes('شيوع') || combined.includes('فرز') || combined.includes('عقار') || combined.includes('طابو'))) {
+            if (token === 'شيوع' && (combined.includes('شيوع') || combined.includes('فرز') || combined.includes('ازاله شيوع'))) {
               return true;
             }
             if (token === 'نفقه' && combined.includes('نفقه')) {
@@ -1261,6 +1409,20 @@ function initAccessibleTabs(tablistSelector) {
           chip.style.display = 'none';
         }
       });
+
+      // Priority ranking: Re-order chips inside block so exact title matches appear first
+      if (rawQuery && blockVisibleChips > 0) {
+        const sortedChips = Array.from(chips);
+        const normRaw = normalizeArabicText(rawQuery);
+        sortedChips.sort((a, b) => {
+          const aText = normalizeArabicText(a.dataset.topic || a.textContent);
+          const bText = normalizeArabicText(b.dataset.topic || b.textContent);
+          const aExact = aText.includes(normRaw) ? 1 : 0;
+          const bExact = bText.includes(normRaw) ? 1 : 0;
+          return bExact - aExact;
+        });
+        sortedChips.forEach(c => c.parentNode.appendChild(c));
+      }
 
       if (blockVisibleChips > 0) {
         block.style.display = '';
@@ -1589,6 +1751,8 @@ function handleUrlParameters() {
   resultContainer.addEventListener('click', (e) => {
     const btn = e.target.closest('#comp-book-btn');
     if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
     const issueKey = issueSelect.value || 'custody';
     const item = DB[issueKey] || DB.custody;
     openConsultationModal({
