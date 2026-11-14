@@ -1,3 +1,93 @@
+
+function openConsultationModal(preferredPlan = 'استشارة قانونية ودراسة ملف', topic = '', category = '') {
+  const isDiaspora = preferredPlan.includes('مغترب') || preferredPlan.includes('خارج') || preferredPlan.includes('USD') || category === 'diaspora';
+  if (isDiaspora) {
+    currentPlan = {
+      name: 'استشارة قانونية ودراسة ملف للمغتربين',
+      fee: 100,
+      currency: 'USD',
+      formattedFee: '$100 USD',
+      paymentMethod: 'usd_chase'
+    };
+  } else {
+    currentPlan = {
+      name: 'استشارة قانونية ودراسة ملف',
+      fee: 75000,
+      currency: 'IQD',
+      formattedFee: '75,000 د.ع',
+      paymentMethod: 'qi_super'
+    };
+  }
+
+  const topicDropdown = document.querySelector('#topic');
+  if (topicDropdown) {
+    const matchedVal = mapTopicToSelectValue(topic, category);
+    if (matchedVal) {
+      topicDropdown.value = matchedVal;
+    } else {
+      topicDropdown.selectedIndex = 0;
+    }
+  }
+
+  resetToStep1();
+  const cs = document.querySelector('#copy-status'); if (cs) cs.textContent = '';
+  const ho = document.querySelector('#handoff'); if (ho) ho.hidden = true;
+  dialog.showModal();
+  document.body.style.overflow = 'hidden';
+}
+
+
+function mapTopicToSelectValue(topic = '', category = '') {
+  const cat = String(category || '').toLowerCase().trim();
+  const t = String(topic || '').toLowerCase().trim();
+
+  // 1. Direct Category Match
+  if (cat === 'cybercrime' || cat.includes('cyber') || cat.includes('tech')) {
+    return 'الجرائم الإلكترونية ومكافحة الابتزاز';
+  }
+  if (cat === 'family' || cat.includes('personal-status')) {
+    return 'قضايا الأحوال الشخصية والأسرة';
+  }
+  if (cat === 'real-estate' || cat.includes('realestate') || cat.includes('property')) {
+    return 'قضايا العقارات وإزالة الشيوع والتركات';
+  }
+  if (cat === 'corporate' || cat.includes('commercial') || cat.includes('business') || cat.includes('company')) {
+    return 'الشركات والاستثمار والعقود التجارية';
+  }
+  if (cat === 'criminal' || cat.includes('penal')) {
+    return 'القضاء الجنائي والتحقيق والجنح';
+  }
+  if (cat === 'diaspora' || cat.includes('expat') || cat.includes('intl')) {
+    return 'خدمات المغتربين والوكالات القنصلية';
+  }
+  if (cat === 'general') {
+    return 'استشارة قانونية عامة / لستُ متأكداً من التكييف';
+  }
+
+  // 2. Keyword Match on Topic Text
+  if (t.includes('إلكترون') || t.includes('ابتزاز') || t.includes('تزييف') || t.includes('رقمي') || t.includes('cyber') || t.includes('صوت') || t.includes('deepfake')) {
+    return 'الجرائم الإلكترونية ومكافحة الابتزاز';
+  }
+  if (t.includes('أحوال') || t.includes('أسرة') || t.includes('طلاق') || t.includes('زواج') || t.includes('حضانة') || t.includes('نفقة') || t.includes('مهر') || t.includes('جعفري') || t.includes('قسام')) {
+    return 'قضايا الأحوال الشخصية والأسرة';
+  }
+  if (t.includes('عقار') || t.includes('شيوع') || t.includes('أراضي') || t.includes('طابو') || t.includes('تخلية') || t.includes('إيجار') || t.includes('مأجور') || t.includes('1198') || t.includes('ملكية')) {
+    return 'قضايا العقارات وإزالة الشيوع والتركات';
+  }
+  if (t.includes('شرك') || t.includes('استثمار') || t.includes('تجاري') || t.includes('صك') || t.includes('كمبيالة') || t.includes('مناقص') || t.includes('عقد') || t.includes('ضمان') || t.includes('تنفيذ') || t.includes('نزاهة')) {
+    return 'الشركات والاستثمار والعقود التجارية';
+  }
+  if (t.includes('جنائ') || t.includes('كفال') || t.includes('تحقيق') || t.includes('جنح') || t.includes('جنايات') || t.includes('شرطة') || t.includes('موقوف') || t.includes('حبس')) {
+    return 'القضاء الجنائي والتحقيق والجنح';
+  }
+  if (t.includes('مغترب') || t.includes('مهجر') || t.includes('قنصل') || t.includes('سفار') || t.includes('diaspora') || t.includes('خارج')) {
+    return 'خدمات المغتربين والوكالات القنصلية';
+  }
+
+  // 3. Absolute Fallback: Return empty string (NEVER default to real estate!)
+  return '';
+}
+
 'use strict';
 
 // Verified office contact and payment info
@@ -95,37 +185,77 @@ function resetToStep1() {
 function normalizeAndValidatePhone(raw) {
   if (!raw) return { valid: false, error: 'يرجى إدخال رقم الهاتف للتواصل.' };
   
-  // Convert Arabic-Indic (٠-٩) and Persian (۰-۹) digits to 0-9
-  let cleaned = String(raw).trim()
-    .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-    .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+  // 1. Convert Arabic-Indic (٠-٩) and Persian (۰-۹) digits to standard 0-9
+  const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  let str = String(raw).trim();
+  for (let i = 0; i < 10; i++) {
+    str = str.split(arabicDigits[i]).join(String(i));
+    str = str.split(persianDigits[i]).join(String(i));
+  }
   
-  let digits = cleaned.replace(/[\s\-\(\)\.]/g, '');
-  let rawDigitsOnly = digits.replace(/^\+/, '');
+  // 2. Remove spaces, dashes, dots, parentheses
+  let cleaned = str.replace(/[\s\-\(\)\.]/g, '');
+  let digitsOnly = cleaned.replace(/^\+/, '');
 
-  // Reject dummy repeated digits (e.g., 00000000, 11111111)
-  if (/^(\d)+$/.test(rawDigitsOnly)) {
-    return { valid: false, error: 'يرجى إدخال رقم هاتف حقيقي فعال (تم رفض الأرقام المتكررة الوهمية).' };
+  // 3. Reject if not containing digits
+  if (!/^\d+$/.test(digitsOnly)) {
+    return { valid: false, error: 'رقم الهاتف يجب أن يحتوي على أرقام فقط.' };
   }
 
-  // Reject sequential test sequences
-  if (/^(?:012345678|123456789|987654321)/.test(rawDigitsOnly)) {
+  // 4. Reject all-identical numbers (e.g. 11111111111, 00000000000)
+  let firstChar = digitsOnly.charAt(0);
+  let allSame = true;
+  for (let i = 1; i < digitsOnly.length; i++) {
+    if (digitsOnly.charAt(i) !== firstChar) { allSame = false; break; }
+  }
+  if (allSame) {
+    return { valid: false, error: 'يرجى إدخال رقم هاتف حقيقي وفعال (تم رفض الأرقام المتكررة الوهمية).' };
+  }
+
+  // 5. Reject numbers that have 6 or more identical consecutive digits (e.g. 0770000000)
+  if (/(.)\1{5,}/.test(digitsOnly)) {
+    return { valid: false, error: 'يرجى إدخال رقم هاتف صحيح (الرقم يحتوي على أرقام متكررة وهمية).' };
+  }
+
+  // 6. Reject sequential dummy numbers (12345678, 0123456789)
+  if (/^(?:012345678|123456789|987654321)/.test(digitsOnly)) {
     return { valid: false, error: 'يرجى إدخال رقم هاتف حقيقي للتواصل.' };
   }
 
-  // Iraqi format: starts with 07, 7, +9647, or 009647 followed by 8 or 9 digits
-  const isIraqi = /^(?:\+?964|00964|0)?7[3-9]\d{7,8}$/.test(digits);
-  // International format: + or digit followed by 8 to 15 digits
-  const isIntl = /^\+?[1-9]\d{7,14}$/.test(digits);
-
-  if (!isIraqi && !isIntl) {
-    return { 
-      valid: false, 
-      error: 'يرجى التأكد من كتابة رقم هاتف صحيح (مثال داخل العراق: 07801222119 أو دولي مع رمز الدولة).' 
-    };
+  // 7. Verify Iraqi Mobile Number:
+  // Local with 0: exactly 11 digits: 07[3-9]xxxxxxxx
+  if (/^07[3-9]\d{8}$/.test(cleaned)) {
+    return { valid: true, normalized: cleaned, isIraqi: true };
+  }
+  // Without leading 0: exactly 10 digits: 7[3-9]xxxxxxxx -> normalize to 07...
+  if (/^7[3-9]\d{8}$/.test(cleaned)) {
+    return { valid: true, normalized: '0' + cleaned, isIraqi: true };
+  }
+  // International with 964 (12 digits): 9647[3-9]xxxxxxxx
+  if (/^9647[3-9]\d{8}$/.test(cleaned)) {
+    return { valid: true, normalized: '+' + cleaned, isIraqi: true };
+  }
+  // International with +964 (13 chars): +9647[3-9]xxxxxxxx
+  if (/^\+9647[3-9]\d{8}$/.test(cleaned)) {
+    return { valid: true, normalized: cleaned, isIraqi: true };
+  }
+  // International with 00964 (14 chars): 009647[3-9]xxxxxxxx
+  if (/^009647[3-9]\d{8}$/.test(cleaned)) {
+    return { valid: true, normalized: '+' + cleaned.substring(2), isIraqi: true };
   }
 
-  return { valid: true, normalized: digits };
+  // 8. International Number:
+  // Must explicitly start with + or 00, followed by valid country code and total 9 to 15 digits
+  if (/^(?:\+|00)[1-9]\d{8,14}$/.test(cleaned)) {
+    let intlNorm = cleaned.startsWith('00') ? '+' + cleaned.substring(2) : cleaned;
+    return { valid: true, normalized: intlNorm, isIraqi: false };
+  }
+
+  return {
+    valid: false,
+    error: 'يرجى إدخال رقم هاتف صحيح: داخل العراق (11 رقماً يبدأ بـ 07، مثال: 07801222119)، أو رقم دولي يبدأ برمز الدولة (+).'
+  };
 }
 
 function showStep2() {
@@ -177,7 +307,7 @@ function showStep2() {
 
   // Populate Official Letterhead Document safely using textContent
   if (docDate) docDate.textContent = getArabicDate();
-  if (docId) docId.textContent = generatedDocketId;
+  if (docId) docId.textContent = "TEMP-" + Math.floor(1000 + Math.random() * 9000);
   
   if (docClientInfo) {
     docClientInfo.textContent = titlePrefix + ' ' + nameVal + ' • هاتف: ' + cleanPhone + ' • سكن: ' + locVal;
@@ -250,35 +380,10 @@ document.querySelectorAll('[data-plan], .open-consult-modal').forEach(button => 
   button.addEventListener('click', (e) => {
     if (e) e.preventDefault();
     previousFocus = button;
-    const isDiaspora = (button.dataset.plan || '').includes('مغترب') || (button.dataset.plan || '').includes('خارج');
-    if (isDiaspora) {
-      currentPlan = {
-        name: 'استشارة قانونية ودراسة ملف للمغتربين',
-        fee: 100,
-        currency: 'USD',
-        formattedFee: '$100 USD',
-        paymentMethod: 'usd_chase'
-      };
-    } else {
-      currentPlan = {
-        name: 'استشارة قانونية ودراسة ملف',
-        fee: 75000,
-        currency: 'IQD',
-        formattedFee: '75,000 د.ع',
-        paymentMethod: 'qi_super'
-      };
-    }
-    
-    if (selectedTopic) {
-      const topicDropdown = document.querySelector('#topic');
-      if (topicDropdown) topicDropdown.value = selectedTopic;
-    }
-    
-    resetToStep1();
-    const cs = document.querySelector('#copy-status'); if (cs) cs.textContent = '';
-    const ho = document.querySelector('#handoff'); if (ho) ho.hidden = true;
-    dialog.showModal();
-    document.body.style.overflow = 'hidden';
+    const planName = button.dataset.plan || '';
+    const topic = button.dataset.topic || '';
+    const category = button.dataset.category || '';
+    openConsultationModal(planName, topic, category);
   });
 });
 
@@ -680,28 +785,21 @@ document.addEventListener('click', event => {
   updateComparator();
 })();
 
-// Event Delegation: Connect all topic buttons
+// Event Delegation: Connect all topic buttons with exact category mapping
 document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-topic]');
+  const btn = e.target.closest('[data-topic], [data-category]');
   if (!btn) return;
-  const topic = btn.dataset.topic;
-  const topicDropdown = document.querySelector('#topic');
-  if (topicDropdown && topic) {
-    let matched = false;
-    for (let i = 0; i < topicDropdown.options.length; i++) {
-      const optText = topicDropdown.options[i].text.trim();
-      const optVal = topicDropdown.options[i].value.trim();
-      if (optText === topic || optVal === topic || optText.includes(topic) || topic.includes(optText)) {
-        topicDropdown.selectedIndex = i;
-        matched = true;
-        break;
-      }
-    }
-    if (!matched && topicDropdown.options.length > 1) {
-      topicDropdown.selectedIndex = 1;
-    }
+  
+  // Exclude tab navigation or filter pills that shouldn't open consultation
+  if (btn.classList.contains('dir-filter-pill') || btn.classList.contains('guide-tabs-btn') || btn.getAttribute('role') === 'tab') {
+    return;
   }
-  document.querySelector('.portal-cta-btn, [data-plan]')?.click();
+  
+  const rawTopic = btn.dataset.topic || '';
+  const rawCat = btn.dataset.category || '';
+  const planType = (rawCat === 'diaspora' || rawTopic.includes('مغترب')) ? 'استشارة دولية للمغتربين' : 'استشارة قانونية ودراسة ملف';
+  
+  openConsultationModal(planType, rawTopic, rawCat);
 });
 
 // Judicial Directory (120 Lawsuits) Live Search & Filter

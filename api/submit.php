@@ -39,12 +39,20 @@ $phone = str_replace($persian, $latin, str_replace($arabic, $latin, $rawPhone));
 $phone = preg_replace('/[\s\-\(\)\.]/', '', $phone);
 $rawDigits = ltrim($phone, '+');
 
-// Reject empty, too short, or repeated dummy digits (00000000, 11111111)
-if (mb_strlen($name) < 2 || mb_strlen($phone) < 8 || preg_match('/^(\d)\1+$/', $rawDigits)) {
+// Check all same digit (e.g. 11111111111, 00000000000)
+$allSame = (strlen($rawDigits) > 1 && count(array_unique(str_split($rawDigits))) === 1);
+$consecutiveRep = preg_match('/(.)\1{5,}/', $rawDigits);
+$dummySeq = preg_match('/^(?:012345678|123456789|987654321)/', $rawDigits);
+
+// Iraqi phone check (10 or 11 digits)
+$isIraqi = preg_match('/^(?:\+?964|00964|0)?7[3-9]\d{8}$/', $phone);
+$isIntl = preg_match('/^(?:\+|00)[1-9]\d{8,14}$/', $phone);
+
+if (mb_strlen($name) < 2 || $allSame || $consecutiveRep || $dummySeq || (!$isIraqi && !$isIntl)) {
     http_response_code(422);
     echo json_encode([
         'status' => 'error',
-        'message' => 'يرجى إدخال الاسم الكامل ورقم هاتف حقيقي وفعال للتواصل.'
+        'message' => 'يرجى إدخال اسم كامل ورقم هاتف حقيقي وفعال للتواصل.'
     ]);
     exit();
 }
