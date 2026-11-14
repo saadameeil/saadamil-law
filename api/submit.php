@@ -56,6 +56,8 @@ if (!empty($requestId)) {
 // 2. Client Inputs Validation
 $name = trim($data['name'] ?? '');
 $rawPhone = trim($data['phone'] ?? '');
+$location = trim($data['location'] ?? '');
+$summary = trim($data['summary'] ?? '');
 
 // Convert Arabic-Indic / Persian digits to standard 0-9
 $arabic = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
@@ -96,6 +98,37 @@ if (mb_strlen($name) < 2 || $allSame || $consecutiveRep || $dummySeq || (!$isIra
         'message' => 'يرجى إدخال اسم كامل ورقم هاتف حقيقي وفعال للتواصل.'
     ]);
     exit();
+}
+
+if (empty($location) || mb_strlen($location) < 2) {
+    http_response_code(422);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'يرجى إدخال عنوان أو منطقة السكن للمتابعة.'
+    ]);
+    exit();
+}
+
+if (empty($summary) || mb_strlen($summary) < 5) {
+    http_response_code(422);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'يرجى كتابة ملخص موجز أو السؤال القانوني الأساسي (5 أحرف على الأقل).'
+    ]);
+    exit();
+}
+
+// Check for recent duplicate submission (within 10 minutes)
+foreach ($existing as $rec) {
+    if ($rec['phone'] === $phone && $rec['summary'] === $summary && (time() - strtotime($rec['timestamp'] ?? 'now')) < 600) {
+        echo json_encode([
+            'status' => 'success',
+            'docketId' => $rec['docketId'],
+            'duplicate' => true,
+            'message' => 'تم استرجاع الطلب المسجل مسبقاً بنجاح'
+        ]);
+        exit();
+    }
 }
 
 // 3. Server Truth for Pricing & Plans (Never trust client fee!)
