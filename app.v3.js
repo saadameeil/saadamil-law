@@ -1,7 +1,7 @@
 /**
- * saadamil.com - Official Client Application Script (v3.2 Production Audit)
- * Master Client Journey, Atomic Plan Synchronization & Legal Integrity
- * Attorney Saad Firas Amil (Iraqi Bar Association ID: 188572)
+ * saadamil.com - Official Client Application Script (v3.3 Master Production Release)
+ * Master Client Journey, Atomic Plan Synchronization, Legal Integrity & Search Engine
+ * Attorney Saad Firas Amil (Iraqi Bar Association ID: 188572 - Category A)
  */
 
 'use strict';
@@ -36,6 +36,7 @@ const PLANS = {
 let currentPlan = PLANS.iraq;
 let currentServiceTitle = '';
 let currentServiceId = '';
+let currentCategoryId = '';
 let currentCleanPhone = '';
 let currentDraftRequestId = generateRequestId();
 let formState = 'editing'; // 'editing' | 'preparing_file' | 'submitting' | 'success' | 'error'
@@ -88,12 +89,16 @@ function setPlan(planId, options = {}) {
     docFeeVal.textContent = currentPlan.formattedFee;
   }
 
-  // If user changed plan while receipt was attached, invalidate receipt to require re-confirmation
+  // Update hidden plan input
+  const planInput = document.querySelector('#field-plan');
+  if (planInput) planInput.value = currentPlan.id;
+
+  // Invalidate receipt if user switched currency
   if (options.userSwitched && receiptValid) {
     clearPreview(true);
     const receiptStatus = document.querySelector('#receipt-status');
     if (receiptStatus) {
-      receiptStatus.textContent = 'تم تبديل خطة السداد؛ يرجى إرفاق إشعار التحويل المطابق للعملة الجديدة (' + currentPlan.formattedFee + ').';
+      receiptStatus.textContent = 'تم تبديل خطة السداد؛ يرجى إرفاق إشعار التحويل المطابق للخطة الجديدة (' + currentPlan.formattedFee + ').';
     }
   }
 
@@ -118,6 +123,15 @@ const receiptStatus = document.querySelector('#receipt-status');
 // Disable native HTML5 form constraint validation popping on hidden step1 fields
 if (briefForm) {
   briefForm.noValidate = true;
+}
+
+// Intercept Escape key on modal when submitting
+if (dialog) {
+  dialog.addEventListener('cancel', (e) => {
+    if (formState === 'submitting') {
+      e.preventDefault();
+    }
+  });
 }
 
 function resetToStep1() {
@@ -183,6 +197,7 @@ function openConsultationModal(opts = {}) {
 
   let planId = 'iraq';
   let category = '';
+  let categoryId = '';
   let serviceTitle = '';
   let serviceId = '';
 
@@ -190,10 +205,12 @@ function openConsultationModal(opts = {}) {
     const preferredPlan = opts;
     serviceTitle = arguments[1] || '';
     category = arguments[2] || '';
+    categoryId = category;
     planId = (category === 'diaspora' || preferredPlan.includes('مغترب') || preferredPlan.includes('USD')) ? 'international' : 'iraq';
   } else if (opts && typeof opts === 'object') {
-    planId = opts.planId || ((opts.category === 'diaspora' || opts.plan === 'international') ? 'international' : 'iraq');
-    category = opts.category || '';
+    planId = opts.planId || ((opts.categoryId === 'diaspora' || opts.category === 'diaspora' || opts.plan === 'international') ? 'international' : 'iraq');
+    categoryId = opts.categoryId || opts.category || '';
+    category = opts.category || opts.categoryId || '';
     serviceTitle = opts.serviceTitle || opts.topic || '';
     serviceId = opts.serviceId || '';
   }
@@ -210,11 +227,20 @@ function openConsultationModal(opts = {}) {
   // 3. Set service context
   currentServiceTitle = serviceTitle;
   currentServiceId = serviceId;
+  currentCategoryId = categoryId;
 
-  // 4. Update Category Select
+  // 4. Populate hidden inputs for backend tracking
+  const serviceIdInput = document.querySelector('#field-service-id');
+  if (serviceIdInput) serviceIdInput.value = currentServiceId;
+  const categoryInput = document.querySelector('#field-category');
+  if (categoryInput) categoryInput.value = currentCategoryId;
+  const planInput = document.querySelector('#field-plan');
+  if (planInput) planInput.value = currentPlan.id;
+
+  // 5. Update Category Select
   const topicDropdown = document.querySelector('#topic');
   if (topicDropdown) {
-    const matchedVal = mapTopicToSelectValue(serviceTitle, category);
+    const matchedVal = mapTopicToSelectValue(serviceTitle, currentCategoryId || category);
     if (matchedVal) {
       topicDropdown.value = matchedVal;
     } else {
@@ -222,7 +248,7 @@ function openConsultationModal(opts = {}) {
     }
   }
 
-  // 5. Update summary placeholder & initial query
+  // 6. Update summary placeholder & initial query
   const summaryInput = document.querySelector('#field-summary');
   if (summaryInput) {
     if (opts.customSummary) {
@@ -235,11 +261,11 @@ function openConsultationModal(opts = {}) {
     }
   }
 
-  // 6. Pre-fill date
+  // 7. Pre-fill date
   const docDate = document.querySelector('#doc-date');
   if (docDate) docDate.textContent = getArabicDate();
 
-  // 7. Show Modal
+  // 8. Show Modal
   if (typeof dialog.showModal === 'function') {
     dialog.showModal();
   } else {
@@ -255,84 +281,132 @@ function openConsultationModal(opts = {}) {
 }
 
 // -----------------------------------------------------------------------------
-// 4. CANONICAL CATEGORY MAPPING (Covers All 120 Lawsuits & 9 Hero Cards)
+// 4. CANONICAL CATEGORY MAPPING (Strict Category Hierarchy & Safe Word Matching)
 // -----------------------------------------------------------------------------
+const CANONICAL_CATEGORIES = {
+  'family': 'قضايا الأحوال الشخصية والأسرة',
+  'real-estate': 'قضايا العقارات وإزالة الشيوع والتركات',
+  'civil': 'قضايا العقارات وإزالة الشيوع والتركات',
+  'cybercrime': 'الجرائم الإلكترونية ومكافحة الابتزاز',
+  'labor': 'قضايا العمل والضمان الاجتماعي والوظيفة العامة',
+  'corporate': 'الشركات والاستثمار والعقود التجارية',
+  'compensation': 'قضايا التعويضات والمسؤولية المدنية والنزاعات المالية',
+  'execution': 'قضايا التعويضات والمسؤولية المدنية والنزاعات المالية',
+  'criminal': 'القضاء الجنائي والتحقيق والجنح',
+  'military': 'القضاء الجنائي والتحقيق والجنح',
+  'cassation': 'القضاء الجنائي والتحقيق والجنح',
+  'admin': 'القضاء الإداري ومحكمة قضاء الموظفين والنزاهة',
+  'administrative': 'القضاء الإداري ومحكمة قضاء الموظفين والنزاهة',
+  'diaspora': 'خدمات المغتربين والوكالات القنصلية',
+  'general': 'استشارة قانونية عامة / لستُ متأكداً من التكييف'
+};
+
 function mapTopicToSelectValue(topic = '', category = '') {
   const cat = String(category || '').toLowerCase().trim();
   const c = normalizeArabicText(category);
   const t = normalizeArabicText(topic);
 
-  // PRIORITY 1: Specific Topic Distinctive Legal Keywords (Avoid false category traps!)
+  // ---------------------------------------------------------------------------
+  // PRIORITY 1: Explicit Category Takes 100% Precedence (Zero False Traps!)
+  // ---------------------------------------------------------------------------
+  if (cat && CANONICAL_CATEGORIES[cat]) {
+    return CANONICAL_CATEGORIES[cat];
+  }
+
+  // Check Arabic category strings
+  if (c) {
+    if (c.includes('اسره') || c.includes('احوال شخصيه') || c.includes('زواج') || c.includes('طلاق')) {
+      return 'قضايا الأحوال الشخصية والأسرة';
+    }
+    if (c.includes('عقار') || c.includes('شيوع') || c.includes('تركات') || c.includes('طابو')) {
+      return 'قضايا العقارات وإزالة الشيوع والتركات';
+    }
+    if (c.includes('الكتروني') || c.includes('ابتزاز') || c.includes('ادله رقميه') || c.includes('سايبر')) {
+      return 'الجرائم الإلكترونية ومكافحة الابتزاز';
+    }
+    if (c.includes('عمل') || c.includes('عمال') || c.includes('ضمان اجتماعي')) {
+      return 'قضايا العمل والضمان الاجتماعي والوظيفة العامة';
+    }
+    if (c.includes('شركات') || c.includes('استثمار') || c.includes('تجاري') || c.includes('تحكيم')) {
+      return 'الشركات والاستثمار والعقود التجارية';
+    }
+    if (c.includes('تعويض') || c.includes('مسؤوليه') || c.includes('تنفيذ') || c.includes('ديون') || c.includes('سندات')) {
+      return 'قضايا التعويضات والمسؤولية المدنية والنزاعات المالية';
+    }
+    if (c.includes('جنائي') || c.includes('تحقيق') || c.includes('جنح') || c.includes('جنايات') || c.includes('عسكري')) {
+      return 'القضاء الجنائي والتحقيق والجنح';
+    }
+    if (c.includes('اداري') || c.includes('موظفين') || c.includes('نزاهه') || c.includes('اقامه') || c.includes('تسفير')) {
+      return 'القضاء الإداري ومحكمة قضاء الموظفين والنزاهة';
+    }
+    if (c.includes('مغترب') || c.includes('قنصلي') || c.includes('جاليه') || c.includes('دوليه')) {
+      return 'خدمات المغتربين والوكالات القنصلية';
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // PRIORITY 2: Distinctive Keyword Matching (Whole-Word Safe Fallback)
+  // ---------------------------------------------------------------------------
+  if (!t) return '';
+
+  // 1. Family / Personal Status (Checked before debts so 'الوالدين' is NEVER trapped by 'دين')
+  if (t.includes('نفقه') || t.includes('والدين') || t.includes('اقارب') || t.includes('طلاق') || t.includes('تفريق') || t.includes('زواج') || t.includes('حضانه') || t.includes('محضون') || t.includes('مشاهده') || t.includes('اصطحاب') || t.includes('مهر') || t.includes('قسام شرعي') || t.includes('حصر ارث') || t.includes('نشوز') || t.includes('خلع') || t.includes('مدونه 2025') || t.includes('نسب')) {
+    return 'قضايا الأحوال الشخصية والأسرة';
+  }
+
+  // 2. Torts, Medical Malpractice, Accidents & Debt (Safe Word Boundary Check!)
   if (t.includes('خطا طبي') || t.includes('اخطاء طبيه') || t.includes('حادث سير') || t.includes('حوادث السير') || t.includes('فعل ضار') || t.includes('توقيف كيدي') || t.includes('حبس تعسفي') || t.includes('تعويض عن') || t.includes('مطالبه بالتعويض') || t.includes('تامين')) {
     return 'قضايا التعويضات والمسؤولية المدنية والنزاعات المالية';
   }
-  if (t.includes('سندات') || t.includes('كمبيالات') || t.includes('دفاتر تجاريه') || t.includes('مطالبه بالديون') || t.includes('دين') || t.includes('حجز احتياطي') || t.includes('سفتجه')) {
+  const hasDebtWord = /(?:^|\s)(?:سندات|كمبيالات|دفاتر تجاريه|سفتجه|سند دين|شيك مرتجع|صك بدون رصيد|مطالبه بالديون|ديون|دين)(?:\s|$)/.test(t);
+  if (hasDebtWord || t.includes('حجز احتياطي')) {
     return 'قضايا التعويضات والمسؤولية المدنية والنزاعات المالية';
   }
+
+  // 3. Administrative & Employee
   if (t.includes('تسفير') || t.includes('ابعاد') || t.includes('اقامه الاجانب') || t.includes('جوازات') || t.includes('سحب اليد') || t.includes('قضاء موظفين') || t.includes('مجلس انضباط') || t.includes('نزاهه') || t.includes('ترفيع') || t.includes('علاوه') || t.includes('قرار اداري')) {
     return 'القضاء الإداري ومحكمة قضاء الموظفين والنزاهة';
   }
+
+  // 4. Labor & Employment
   if (t.includes('فصل تعسفي') || t.includes('عقد عمل') || t.includes('عقود العمل') || t.includes('ضمان اجتماعي') || t.includes('مكافاه نهايه الخدمه') || t.includes('اجور عمال') || t.includes('نزاع عمالي')) {
     return 'قضايا العمل والضمان الاجتماعي والوظيفة العامة';
   }
-  if (t.includes('شيوع') || t.includes('عقار') || t.includes('منع معارضه') || t.includes('تثبيت ملكيه') || t.includes('1198') || t.includes('ابطال تسجيل عقاري') || t.includes('طابو') || t.includes('اخلاء ماجور') || t.includes('تخليه') || t.includes('بدلات ايجار') || t.includes('شفعه') || t.includes('حيازه') || t.includes('اراضي زراعيه') || t.includes('لزامه')) {
+
+  // 5. Real Estate & Shuyuu
+  if (t.includes('شيوع') || t.includes('عقار') || t.includes('منع معارضه') || t.includes('تثبيت ملكيه') || t.includes('1198') || t.includes('ابطال تسجيل عقاري') || t.includes('طابو') || t.includes('اخلاء ماجور') || t.includes('تخليه') || t.includes('بدلات ايجار') || t.includes('شفعه') || t.includes('حيازه') || t.includes('اراضي زراعيه') || t.includes('لزامه') || t.includes('اجر المثل')) {
     return 'قضايا العقارات وإزالة الشيوع والتركات';
   }
+
+  // 6. Cybercrime
   if (t.includes('ابتزاز') || t.includes('الكتروني') || t.includes('تزييف') || t.includes('ديب فيك') || t.includes('تسجيل صوتي') || t.includes('دليل رقمي') || t.includes('سب وقذف الكتروني') || t.includes('اختراق')) {
     return 'الجرائم الإلكترونية ومكافحة الابتزاز';
   }
-  if (t.includes('طلاق') || t.includes('تفريق') || t.includes('زواج') || t.includes('حضانه') || t.includes('نفقه') || t.includes('مهر') || t.includes('قسام شرعي') || t.includes('حصر ارث') || t.includes('مشاهده') || t.includes('نشوز') || t.includes('خلع') || t.includes('مدونه 2025')) {
-    return 'قضايا الأحوال الشخصية والأسرة';
-  }
+
+  // 7. Corporate
   if (t.includes('تصفيه شركات') || t.includes('تاسيس شركات') || t.includes('عقد تجاري') || t.includes('علامه فارقه') || t.includes('تحكيم تجاري') || t.includes('مقاولات') || t.includes('استثمار')) {
     return 'الشركات والاستثمار والعقود التجارية';
   }
+
+  // 8. Criminal
   if (t.includes('قتل') || t.includes('كفاله') || t.includes('مخدرات') || t.includes('دكه') || t.includes('دگه') || t.includes('رشوه') || t.includes('تزوير') || t.includes('قوى الامن') || t.includes('محكمه عسكريه') || t.includes('تحقيق جنائي') || t.includes('جنح') || t.includes('جنايات')) {
     return 'القضاء الجنائي والتحقيق والجنح';
   }
-  if (t.includes('وكاله قنصليه') || t.includes('صحه صدور') || t.includes('مغتربين') || t.includes('الجاليه') || t.includes('خارج العراق')) {
+
+  // 9. Expat (Only if not family child custody travel dispute!)
+  if (t.includes('وكاله قنصليه') || t.includes('صحه صدور') || t.includes('مغتربين') || t.includes('الجاليه') || (t.includes('خارج العراق') && !t.includes('محضون') && !t.includes('حضانه'))) {
     return 'خدمات المغتربين والوكالات القنصلية';
   }
 
-  // PRIORITY 2: Direct Category Key Matching (English & Arabic)
-  if (cat === 'labor' || cat.includes('work') || cat.includes('employment') || c.includes('عمل') || c.includes('عمال') || c.includes('ضمان')) {
-    return 'قضايا العمل والضمان الاجتماعي والوظيفة العامة';
-  }
-  if (cat === 'compensation' || cat.includes('damage') || cat.includes('tort') || cat === 'execution' || c.includes('تعويض') || c.includes('مسؤوليه') || c.includes('تنفيذ')) {
-    return 'قضايا التعويضات والمسؤولية المدنية والنزاعات المالية';
-  }
-  if (cat === 'admin' || cat === 'administrative' || cat.includes('integrity') || cat === 'residency' || c.includes('اداري') || c.includes('موظفين') || c.includes('نزاهه') || c.includes('اقامه')) {
-    return 'القضاء الإداري ومحكمة قضاء الموظفين والنزاهة';
-  }
-  if (cat === 'military' || cat === 'criminal' || cat.includes('penal') || c.includes('جنائي') || c.includes('تحقيق') || c.includes('جنح') || c.includes('جنايات')) {
-    return 'القضاء الجنائي والتحقيق والجنح';
-  }
-  if (cat === 'cybercrime' || cat.includes('cyber') || cat.includes('tech') || c.includes('الكتروني') || c.includes('ابتزاز') || c.includes('ادله رقميه')) {
-    return 'الجرائم الإلكترونية ومكافحة الابتزاز';
-  }
-  if (cat === 'family' || cat.includes('personal-status') || c.includes('اسره') || c.includes('احوال شخصيه')) {
-    return 'قضايا الأحوال الشخصية والأسرة';
-  }
-  if (cat === 'real-estate' || cat.includes('property') || c.includes('عقار') || c.includes('شيوع') || c.includes('تركات')) {
-    return 'قضايا العقارات وإزالة الشيوع والتركات';
-  }
-  if (cat === 'corporate' || cat.includes('commercial') || cat.includes('company') || c.includes('شركات') || c.includes('استثمار') || c.includes('تجاري')) {
-    return 'الشركات والاستثمار والعقود التجارية';
-  }
-  if (cat === 'diaspora' || cat.includes('expat') || cat.includes('intl') || c.includes('مغترب') || c.includes('قنصلي') || c.includes('جاليه')) {
-    return 'خدمات المغتربين والوكالات القنصلية';
-  }
-
-  if (t.includes('استشاره عامه') || t.includes('لست متاكد') || cat === 'general' || c.includes('عامه')) {
+  if (t.includes('استشاره عامه') || t.includes('لست متاكد') || cat === 'general') {
     return 'استشارة قانونية عامة / لستُ متأكداً من التكييف';
   }
 
-  // PRIORITY 3: Fallback (Must return empty string so unselected dropdown stays on placeholder)
   return '';
 }
 
 // -----------------------------------------------------------------------------
-// 5. COMPREHENSIVE ARABIC NORMALIZATION & LEGAL SYNONYMS
+// 5. COMPREHENSIVE ARABIC NORMALIZATION & TOKENIZATION
 // -----------------------------------------------------------------------------
 function normalizeArabicText(str) {
   if (!str) return '';
@@ -344,31 +418,40 @@ function normalizeArabicText(str) {
     .replace(/گ/g, 'ك')
     .replace(/چ/g, 'ج')
     .replace(/پ/g, 'ب')
-    .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    .replace(/[٠-٩]/g, d => '0123456789'['٠١٢٣٤٥٦٧٨٩'.indexOf(d)])
     .toLowerCase()
     .trim();
 }
 
-// -----------------------------------------------------------------------------
-// 6. PHONE NUMBER NORMALIZATION & STRICT VALIDATION
-// -----------------------------------------------------------------------------
-function normalizeAndValidatePhone(raw) {
-  if (!raw) return { valid: false, error: 'يرجى إدخال رقم الهاتف للتواصل.' };
+/**
+ * Extracts normalized stem words, automatically stripping leading 'ال' for robust matching
+ */
+function tokenizeArabicQuery(text) {
+  if (!text) return [];
+  const normalized = normalizeArabicText(text);
+  const rawWords = normalized.split(/[\s,،؛.\-_/()]+/).filter(w => w.length >= 2);
+  return rawWords.map(w => {
+    // Strip leading definite article if word length >= 4
+    if (w.startsWith('ال') && w.length >= 4) {
+      return w.substring(2);
+    }
+    return w;
+  });
+}
 
-  const arabicIndic = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-  const persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-  let cleaned = String(raw).trim();
-
-  for (let i = 0; i < 10; i++) {
-    cleaned = cleaned.replace(new RegExp(arabicIndic[i], 'g'), String(i));
-    cleaned = cleaned.replace(new RegExp(persian[i], 'g'), String(i));
+// -----------------------------------------------------------------------------
+// 6. PHONE VALIDATION & DIGIT NORMALIZATION
+// -----------------------------------------------------------------------------
+function normalizeAndValidatePhone(input) {
+  if (!input) {
+    return { valid: false, error: 'يرجى إدخال رقم الهاتف للتواصل.' };
   }
 
-  cleaned = cleaned.replace(/[\s\-\(\)\.]/g, '');
+  let cleaned = normalizeArabicText(input).replace(/[\s\-\(\)\.]/g, '');
   const digitsOnly = cleaned.replace(/\D/g, '');
 
-  if (digitsOnly.length < 9) {
-    return { valid: false, error: 'رقم الهاتف ناقص. يرجى كتابة رقم كامل فعال للتواصل.' };
+  if (digitsOnly.length < 8) {
+    return { valid: false, error: 'رقم الهاتف قصير جداً وغير مكتمل.' };
   }
 
   // Reject dummy patterns (e.g. 000000, 111111)
@@ -482,54 +565,54 @@ function goToStep2() {
   const docFeeVal = document.querySelector('#doc-fee-val');
 
   if (docDate) docDate.textContent = getArabicDate();
-  if (docId) docId.textContent = 'TEMP-' + Math.floor(1000 + Math.random() * 9000);
-  if (docCatVal) docCatVal.textContent = topicVal;
-  if (docFeeVal) docFeeVal.textContent = currentPlan.formattedFee;
+  if (docId) docId.textContent = currentDraftRequestId;
+  if (docCatVal) docCatVal.textContent = currentPlan.name;
 
-  if (currentServiceTitle) {
-    if (docServiceRow) docServiceRow.style.display = 'block';
-    if (docServiceVal) docServiceVal.textContent = currentServiceTitle;
-  } else {
-    if (docServiceRow) docServiceRow.style.display = 'none';
+  if (docServiceRow && docServiceVal) {
+    if (currentServiceTitle) {
+      docServiceRow.style.display = 'table-row';
+      docServiceVal.textContent = currentServiceTitle;
+    } else {
+      docServiceRow.style.display = 'none';
+    }
   }
 
   if (docClientInfo) {
-    docClientInfo.textContent = `${titlePrefix} ${nameVal} — هاتف: ${currentCleanPhone} (${locVal})`;
+    docClientInfo.textContent = `${titlePrefix} ${nameVal} (${currentCleanPhone}) — ${locVal}`;
   }
 
-  const oppName = oppNameInput ? oppNameInput.value.trim() : '';
-  const oppPhone = oppPhoneInput ? oppPhoneInput.value.trim() : '';
-  const oppLoc = oppLocInput ? oppLocInput.value.trim() : '';
   if (docOpponentInfo) {
-    if (oppName || oppPhone || oppLoc) {
-      docOpponentInfo.textContent = `${oppName || 'مجهول الاسم'} ${oppPhone ? '— هاتف: ' + oppPhone : ''} ${oppLoc ? '(' + oppLoc + ')' : ''}`;
+    const oppName = oppNameInput ? oppNameInput.value.trim() : '';
+    const oppPhone = oppPhoneInput ? oppPhoneInput.value.trim() : '';
+    const oppLoc = oppLocInput ? oppLocInput.value.trim() : '';
+    if (oppName) {
+      docOpponentInfo.textContent = `${oppName} ${oppPhone ? '(' + oppPhone + ')' : ''} ${oppLoc ? '— ' + oppLoc : ''}`;
     } else {
-      docOpponentInfo.textContent = 'لم تُحدد بيانات الخصم (اختياري / استشارة غير نزاعية)';
+      docOpponentInfo.textContent = 'لم يُحدد (أو غير قابل للتطبيق في هذا النوع من الاستشارات)';
     }
   }
 
   if (docTopicVal) docTopicVal.textContent = topicVal;
 
   const deadlineVal = deadlineInput ? deadlineInput.value.trim() : '';
-  if (deadlineVal) {
-    if (docDeadlineRow) docDeadlineRow.style.display = 'block';
-    if (docDeadlineVal) docDeadlineVal.textContent = deadlineVal;
-  } else {
-    if (docDeadlineRow) docDeadlineRow.style.display = 'none';
+  if (docDeadlineRow && docDeadlineVal) {
+    if (deadlineVal) {
+      docDeadlineRow.style.display = 'table-row';
+      docDeadlineVal.textContent = deadlineVal;
+    } else {
+      docDeadlineRow.style.display = 'none';
+    }
   }
 
-  if (docFactsVal) {
-    docFactsVal.textContent = summaryVal;
-  }
+  if (docFactsVal) docFactsVal.textContent = summaryVal;
+  if (docFeeVal) docFeeVal.textContent = currentPlan.formattedFee;
 
-  // Switch steps
-  if (step1Details && step2Payment) {
-    step1Details.hidden = true;
-    step2Payment.hidden = false;
-    step2Payment.scrollIntoView({ behavior: 'smooth' });
-    const docPaper = document.querySelector('#official-doc');
-    if (docPaper) docPaper.focus();
-  }
+  // Transition Step 1 -> Step 2
+  if (step1Details) step1Details.hidden = true;
+  if (step2Payment) step2Payment.hidden = false;
+
+  // Scroll modal to top
+  if (dialog) dialog.scrollTop = 0;
 }
 
 function showStep1Error(msg, focusEl) {
@@ -537,14 +620,13 @@ function showStep1Error(msg, focusEl) {
     step1Error.hidden = false;
     step1Error.textContent = msg;
   }
-  if (focusEl) {
-    focusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (focusEl && typeof focusEl.focus === 'function') {
     focusEl.focus();
   }
 }
 
 // -----------------------------------------------------------------------------
-// 8. FILE INTEGRITY VERIFICATION (Image & PDF Magic Bytes Check)
+// 8. FILE INTEGRITY VERIFICATION (Strict Image Decode & PDF Magic Bytes)
 // -----------------------------------------------------------------------------
 if (receipt) {
   receipt.addEventListener('change', async () => {
@@ -622,17 +704,23 @@ if (receipt) {
           if (pdfSize) pdfSize.textContent = (file.size / 1024).toFixed(1) + ' كيلوبايت (ملف PDF)';
         }
       } else {
-        // Image Decode Verification
+        // Strict Image Decode Verification (Rejects corrupted images & fake JPGs)
         if (pdfBox) pdfBox.style.display = 'none';
         if (previewUrl) URL.revokeObjectURL(previewUrl);
         previewUrl = URL.createObjectURL(file);
         const img = new Image();
         img.src = previewUrl;
+
         try {
           await img.decode();
         } catch (decodeErr) {
-          console.warn('Image decode warning, fallback to base64 preview:', decodeErr);
+          throw new Error('تعذر فك ومعالجة الصورة المرفقة. الملف تالف أو ليس صورة صالحة.');
         }
+
+        if (!img.naturalWidth || !img.naturalHeight) {
+          throw new Error('الصورة المرفقة تالفة أو غير صالحة للعرض.');
+        }
+
         if (preview) {
           preview.src = previewUrl;
           preview.style.display = 'block';
@@ -653,7 +741,7 @@ if (receipt) {
 
     } catch (err) {
       if (thisVersion !== imageVersion) return;
-      if (receiptStatus) receiptStatus.textContent = err.message || 'تعذر تجهيز الملف المرفق. يرجى اختيار ملف صالح آخر.';
+      if (receiptStatus) receiptStatus.textContent = err.message || 'تعذر فك وتجهيز الملف المرفق. يرجى اختيار ملف صالح.';
       clearPreview(true);
     }
   });
@@ -671,7 +759,7 @@ if (briefForm) {
   briefForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (formState === 'submitting') return;
+    if (formState === 'submitting' || formState === 'success') return;
 
     if (!receiptValid || !receiptBase64) {
       if (receiptStatus) {
@@ -681,6 +769,8 @@ if (briefForm) {
     }
 
     formState = 'submitting';
+    const submissionRequestId = currentDraftRequestId;
+
     if (finalSubmitBtn) {
       finalSubmitBtn.disabled = true;
       finalSubmitBtn.classList.add('loading');
@@ -689,9 +779,13 @@ if (briefForm) {
       submitBtnText.textContent = '⏳ جارٍ قيد وتوثيق الطلب بالسجل الإداري...';
     }
 
+    const goToStep1Btn = document.querySelector('#go-to-step-1');
+    if (goToStep1Btn) goToStep1Btn.disabled = true;
+    if (removeReceiptBtn) removeReceiptBtn.disabled = true;
+
     const f = new FormData(briefForm);
     const payload = {
-      requestId: currentDraftRequestId,
+      requestId: submissionRequestId,
       date: new Date().toISOString(),
       titlePrefix: f.get('title_prefix') || 'السيد',
       name: f.get('name') || '',
@@ -702,9 +796,9 @@ if (briefForm) {
       deadline: f.get('deadline') || '',
       location: f.get('location') || '',
       topic: f.get('topic') || '',
-      category: f.get('category') || '',
+      category: currentCategoryId || f.get('category') || '',
       serviceTitle: currentServiceTitle,
-      serviceId: currentServiceId,
+      serviceId: currentServiceId || f.get('service_id') || '',
       planId: currentPlan.id,
       opponentName: f.get('opponent_name') || '',
       opponentPhone: f.get('opponent_phone') || '',
@@ -728,12 +822,15 @@ if (briefForm) {
       const resData = await response.json();
       clearTimeout(timeoutId);
 
+      // Verify request id matches current attempt
+      if (submissionRequestId !== currentDraftRequestId) return;
+
       if (!response.ok || resData.status !== 'success') {
         throw new Error(resData.message || 'تعذر تسجيل الطلب في السجل الإداري للمكتب. يرجى إعادة المحاولة.');
       }
 
       formState = 'success';
-      const docketId = resData.docketId || ('IQ-SA-' + Math.floor(1000 + Math.random() * 9000));
+      const docketId = resData.docketId || 'قيد المتابعة الإدارية (سيصلك الإشعار عبر واتساب)';
       const handoff = document.querySelector('#handoff');
 
       if (handoff) {
@@ -751,8 +848,21 @@ if (briefForm) {
 
         const docketP = document.createElement('p');
         docketP.style.cssText = 'font-size:13px; color:#166534; line-height:1.7; margin:0 0 16px 0;';
-        docketP.innerHTML = 'رقم إضبارة الاستشارة المعتمد: <strong dir="ltr" style="font-family:monospace; font-size:15px; color:#14532d; background:#dcfce7; padding:3px 8px; border-radius:4px;">' + docketId + '</strong><br>' +
-          'تم استلام إشعار السداد ووقائع الطلب. يتواصل المكتب معك خلال <strong>ساعتين</strong> من ساعات العمل الرسمية لتأكيد الموعد.';
+
+        const labelSpan = document.createElement('span');
+        labelSpan.textContent = 'رقم إضبارة الاستشارة المعتمد: ';
+        docketP.appendChild(labelSpan);
+
+        const strongEl = document.createElement('strong');
+        strongEl.dir = 'ltr';
+        strongEl.style.cssText = 'font-family:monospace; font-size:15px; color:#14532d; background:#dcfce7; padding:3px 8px; border-radius:4px;';
+        strongEl.textContent = docketId;
+        docketP.appendChild(strongEl);
+
+        docketP.appendChild(document.createElement('br'));
+        const timeNotice = document.createElement('span');
+        timeNotice.innerHTML = 'تم استلام إشعار السداد ووقائع الطلب. يتواصل المكتب معك خلال <strong>ساعتين</strong> من ساعات العمل الرسمية لتأكيد الموعد.';
+        docketP.appendChild(timeNotice);
         card.appendChild(docketP);
 
         // Strict Neutral WhatsApp Message: ONLY Client Name and Docket ID
@@ -769,24 +879,26 @@ if (briefForm) {
         waLink.target = '_blank';
         waLink.rel = 'noopener noreferrer';
         waLink.className = 'button';
-        waLink.style.cssText = 'display:inline-flex; align-items:center; gap:6px; background:#25d366; color:#fff; text-decoration:none; padding:10px 18px; border-radius:6px; font-weight:700; font-size:13px;';
-        waLink.textContent = 'تأكيد الموعد عبر واتساب المكتب 💬 ←';
+        waLink.style.cssText = 'background:#25d366; color:#fff; display:inline-block; font-weight:700; padding:12px 24px; border-radius:6px; text-decoration:none; margin-top:8px;';
+        waLink.textContent = '💬 تأكيد الموعد عبر واتساب المكتب المباشر ←';
         card.appendChild(waLink);
 
         handoff.appendChild(card);
-        handoff.scrollIntoView({ behavior: 'smooth' });
       }
-
-      if (submitBtnText) submitBtnText.textContent = '✅ تم إرسال وتأكيد الطلب بنجاح';
 
     } catch (err) {
       clearTimeout(timeoutId);
-      formState = 'error';
+      if (submissionRequestId !== currentDraftRequestId) return;
+
+      formState = 'editing';
       if (finalSubmitBtn) {
         finalSubmitBtn.disabled = false;
         finalSubmitBtn.classList.remove('loading');
       }
-      updateReceiptLock(true);
+      if (goToStep1Btn) goToStep1Btn.disabled = false;
+      if (removeReceiptBtn) removeReceiptBtn.disabled = false;
+
+      updateReceiptLock(receiptValid);
 
       const isAbort = (err.name === 'AbortError');
       const errorMsg = isAbort
@@ -816,73 +928,60 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 2. Navigation & Stepper buttons
+  // 2. Modal Close Button
+  if (e.target.closest('#close-modal')) {
+    e.preventDefault();
+    if (formState === 'submitting') return;
+    if (dialog) dialog.close();
+    document.body.style.overflow = '';
+    if (previousFocus) previousFocus.focus();
+    return;
+  }
+
+  // 3. Step Navigation Buttons
   if (e.target.closest('#go-to-step-2')) {
     e.preventDefault();
     goToStep2();
     return;
   }
-  if (e.target.closest('#back-to-step-1')) {
+  if (e.target.closest('#go-to-step-1')) {
     e.preventDefault();
+    if (formState === 'submitting') return;
     resetToStep1();
     return;
   }
-  if (e.target.closest('#close-modal')) {
-    if (formState === 'submitting') return; // Do not close while network in flight!
-    dialog.close();
-    return;
-  }
 
-  // 3. Print docket button
+  // 4. Print Docket Button
   if (e.target.closest('#print-doc-btn')) {
     e.preventDefault();
     window.print();
     return;
   }
 
-  // 4. Super ID Copy Button
-  if (e.target.closest('#copy-id')) {
+  // 5. Mobile Menu Toggle
+  if (e.target.closest('.menu-toggle')) {
     e.preventDefault();
-    const copyBtn = e.target.closest('#copy-id');
-    copyTextToClipboard(SUPER_ID, copyBtn, 'تم النسخ ✅');
+    const nav = document.querySelector('#nav');
+    if (nav) {
+      nav.classList.toggle('open');
+    }
     return;
   }
 
-  // 5. General Bank / Hash Copy Buttons with [data-copy]
-  const copyDataBtn = e.target.closest('[data-copy]');
-  if (copyDataBtn) {
-    e.preventDefault();
-    copyTextToClipboard(copyDataBtn.dataset.copy, copyDataBtn, 'تم النسخ ✅');
-    return;
-  }
-
-  // 6. Empty search consult button
+  // 6. Empty Search State Button -> Opens consult with pre-filled search term
   if (e.target.closest('#dir-empty-consult-btn')) {
     e.preventDefault();
     const searchInput = document.querySelector('#dir-search-input');
     const q = searchInput ? searchInput.value.trim() : '';
     openConsultationModal({
       planId: 'iraq',
-      category: 'general',
-      serviceTitle: q ? ('استشارة عامة في: ' + q) : 'استشارة قانونية عامة',
+      serviceTitle: q ? ('بحث: ' + q) : 'استشارة قانونية في مسألة قضائية',
       customSummary: q ? ('الموضوع المطلوب بحثه: ' + q) : ''
     });
     return;
   }
 
-  // 7. Comparator Consult Button
-  if (e.target.closest('#comp-book-btn')) {
-    e.preventDefault();
-    const compBtn = e.target.closest('#comp-book-btn');
-    openConsultationModal({
-      planId: 'iraq',
-      category: 'family',
-      serviceTitle: compBtn.dataset.topic || 'استشارة أحوال شخصية'
-    });
-    return;
-  }
-
-  // 8. General Consultation Opening Buttons (Action Buttons Only!)
+  // 7. General Consultation Opening Buttons (Action Buttons Only!)
   const btn = e.target.closest([
     'button[data-topic]',
     'a[data-topic]',
@@ -909,8 +1008,9 @@ document.addEventListener('click', (e) => {
   }
 
   e.preventDefault();
-  const rawTopic = btn.dataset.topic || (btn.classList.contains('lawsuit-chip') ? btn.textContent.trim() : '');
-  const rawCat = btn.dataset.category || '';
+  const rawTopic = btn.dataset.topic || (btn.querySelector('.chip-name') ? btn.querySelector('.chip-name').textContent.trim() : btn.textContent.trim());
+  const rawCat = btn.dataset.categoryId || btn.dataset.category || '';
+  const serviceId = btn.dataset.serviceId || '';
 
   // Diaspora primary button is general expat consult -> sets diaspora category without forcing real estate
   let explicitPlan = 'iraq';
@@ -922,182 +1022,164 @@ document.addEventListener('click', (e) => {
 
   openConsultationModal({
     planId: explicitPlan,
+    categoryId: rawCat,
     category: rawCat,
     serviceTitle: rawTopic,
-    serviceId: btn.dataset.serviceId || ''
+    serviceId: serviceId
   });
 });
 
-// Modal close on backdrop click
+// Close modal when clicking outside modal body
 if (dialog) {
-  dialog.addEventListener('click', e => {
-    if (formState === 'submitting') return; // Do not close while submitting
-    const r = dialog.getBoundingClientRect();
-    if (e.target === dialog && (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)) {
+  dialog.addEventListener('click', (e) => {
+    if (formState === 'submitting') return;
+    if (e.target === dialog) {
       dialog.close();
+      document.body.style.overflow = '';
+      if (previousFocus) previousFocus.focus();
     }
-  });
-
-  dialog.addEventListener('close', () => {
-    document.body.style.overflow = '';
-    clearPreview(true);
-    resetToStep1();
-    if (previousFocus) previousFocus.focus();
   });
 }
 
 // -----------------------------------------------------------------------------
-// 11. COPY CLIPBOARD HELPER
+// 11. COPY TEXT UTILITY (Bank Super ID & Forensic Hash Buttons)
 // -----------------------------------------------------------------------------
-function copyTextToClipboard(text, btn, successLabel = 'تم النسخ ✅') {
+function copyTextToClipboard(text, btnElement, successMsg = 'تم النسخ بنجاح ✅') {
   if (!text) return;
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => {
-      showCopySuccess(btn, successLabel);
-    }).catch(() => fallbackCopy(text, btn, successLabel));
+  const originalText = btnElement ? btnElement.textContent : '';
+
+  function showSuccess() {
+    if (btnElement) {
+      btnElement.textContent = successMsg;
+      btnElement.classList.add('copied');
+      setTimeout(() => {
+        btnElement.textContent = originalText;
+        btnElement.classList.remove('copied');
+      }, 2500);
+    }
+  }
+
+  if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+    navigator.clipboard.writeText(text).then(showSuccess).catch(() => {
+      fallbackCopy(text, showSuccess);
+    });
   } else {
-    fallbackCopy(text, btn, successLabel);
+    fallbackCopy(text, showSuccess);
   }
 }
 
-function fallbackCopy(text, btn, successLabel) {
+function fallbackCopy(text, cb) {
   const ta = document.createElement('textarea');
   ta.value = text;
   ta.style.position = 'fixed';
-  ta.style.opacity = '0';
+  ta.style.left = '-9999px';
   document.body.appendChild(ta);
+  ta.focus();
   ta.select();
   try {
     document.execCommand('copy');
-    showCopySuccess(btn, successLabel);
-  } catch (e) {}
+    if (cb) cb();
+  } catch (err) {}
   document.body.removeChild(ta);
 }
 
-function showCopySuccess(btn, successLabel) {
-  if (!btn) return;
-  const orig = btn.textContent;
-  btn.textContent = successLabel;
-  btn.style.color = '#15803d';
-  setTimeout(() => {
-    btn.textContent = orig;
-    btn.style.color = '';
-  }, 2200);
+// Wire Copy Buttons
+const copyIdBtn = document.querySelector('#copy-id');
+if (copyIdBtn) {
+  copyIdBtn.addEventListener('click', () => {
+    copyTextToClipboard(SUPER_ID, copyIdBtn, 'تم نسخ المعرّف ✅');
+  });
+}
+
+const copyChaseAccBtn = document.querySelector('#copy-chase-acc');
+if (copyChaseAccBtn) {
+  copyChaseAccBtn.addEventListener('click', () => {
+    copyTextToClipboard('2839104829', copyChaseAccBtn, 'تم نسخ رقم الحساب ✅');
+  });
+}
+
+const copyChaseRoutBtn = document.querySelector('#copy-chase-rout');
+if (copyChaseRoutBtn) {
+  copyChaseRoutBtn.addEventListener('click', () => {
+    copyTextToClipboard('021000021', copyChaseRoutBtn, 'تم نسخ Routing Number ✅');
+  });
+}
+
+const copyChaseSwiftBtn = document.querySelector('#copy-chase-swift');
+if (copyChaseSwiftBtn) {
+  copyChaseSwiftBtn.addEventListener('click', () => {
+    copyTextToClipboard('CHASUS33', copyChaseSwiftBtn, 'تم نسخ SWIFT/BIC ✅');
+  });
 }
 
 // -----------------------------------------------------------------------------
-// 12. GUIDE SECTION ACCESSIBLE TABS CONTROLLER
+// 12. TAB PANELS ACCESSIBILITY (Keyboard Arrows & Proper ARIA)
+// -----------------------------------------------------------------------------
+function initAccessibleTabs(tablistSelector) {
+  const tablist = document.querySelector(tablistSelector);
+  if (!tablist) return;
+
+  const tabs = tablist.querySelectorAll('[role="tab"]');
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('keydown', (e) => {
+      let targetIndex = index;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        targetIndex = (index + 1) % tabs.length;
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        targetIndex = (index - 1 + tabs.length) % tabs.length;
+      } else {
+        return;
+      }
+      e.preventDefault();
+      tabs[targetIndex].focus();
+      tabs[targetIndex].click();
+    });
+  });
+}
+
+// -----------------------------------------------------------------------------
+// 13. GUIDE SECTION TABS SWITCHING
 // -----------------------------------------------------------------------------
 (function initGuideTabs() {
-  const tabsList = document.querySelector('.guide-tabs');
-  if (!tabsList) return;
+  const tabs = document.querySelectorAll('.guide-tab');
+  const panels = document.querySelectorAll('.guide-panel');
+  if (!tabs.length || !panels.length) return;
 
-  const tabs = tabsList.querySelectorAll('button[role="tab"]');
-  const panels = document.querySelectorAll('.guide-content [role="tabpanel"]');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetId = tab.dataset.panel;
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
 
-  tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => selectTab(tab));
-
-    tab.addEventListener('keydown', (e) => {
-      let targetIndex = null;
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-        targetIndex = (index + 1) % tabs.length;
-      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-        targetIndex = (index - 1 + tabs.length) % tabs.length;
-      } else if (e.key === 'Home') {
-        targetIndex = 0;
-      } else if (e.key === 'End') {
-        targetIndex = tabs.length - 1;
-      }
-
-      if (targetIndex !== null) {
-        e.preventDefault();
-        tabs[targetIndex].focus();
-        selectTab(tabs[targetIndex]);
-      }
+      panels.forEach(p => {
+        if (p.id === targetId) {
+          p.classList.add('active');
+          p.hidden = false;
+        } else {
+          p.classList.remove('active');
+          p.hidden = true;
+        }
+      });
     });
   });
 
-  function selectTab(selectedTab) {
-    tabs.forEach(t => {
-      t.setAttribute('aria-selected', 'false');
-      t.tabIndex = -1;
-    });
-    selectedTab.setAttribute('aria-selected', 'true');
-    selectedTab.tabIndex = 0;
-
-    const targetPanelId = selectedTab.getAttribute('aria-controls');
-    panels.forEach(p => {
-      if (p.id === targetPanelId) {
-        p.hidden = false;
-        p.style.display = 'block';
-      } else {
-        p.hidden = true;
-        p.style.display = 'none';
-      }
-    });
-  }
+  initAccessibleTabs('.guide-tabs');
+  initAccessibleTabs('.pay-tabs');
 })();
 
 // -----------------------------------------------------------------------------
-// 13. PAYMENT TABS KEYBOARD ARIA ACCESSIBILITY (Left / Right Arrows)
-// -----------------------------------------------------------------------------
-(function initPaymentTabsAria() {
-  const payTabIq = document.querySelector('#pay-tab-iq');
-  const payTabIntl = document.querySelector('#pay-tab-intl');
-  if (!payTabIq || !payTabIntl) return;
-
-  const tabs = [payTabIq, payTabIntl];
-  tabs.forEach((tab, idx) => {
-    tab.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        const otherIdx = (idx === 0) ? 1 : 0;
-        tabs[otherIdx].focus();
-        tabs[otherIdx].click();
-      }
-    });
-  });
-})();
-
-// -----------------------------------------------------------------------------
-// 14. MOBILE NAVIGATION TOGGLE
-// -----------------------------------------------------------------------------
-(function initMobileMenu() {
-  const menuToggle = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('#nav');
-  if (!menuToggle || !nav) return;
-
-  menuToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isOpen = nav.classList.toggle('open');
-    menuToggle.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!nav.contains(e.target) && !menuToggle.contains(e.target) && nav.classList.contains('open')) {
-      nav.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-    }
-  });
-})();
-
-// -----------------------------------------------------------------------------
-// 15. 120 LAWSUITS DIRECTORY FILTERING & SYNONYM SEARCH
+// 14. 120 LAWSUITS DIRECTORY FILTERING & TOKENIZED SEARCH ENGINE
 // -----------------------------------------------------------------------------
 (function initDirectory() {
   const searchInput = document.querySelector('#dir-search-input');
   const filterPills = document.querySelectorAll('.dir-filter-pill');
   const catBlocks = document.querySelectorAll('.dir-category-block');
   const emptyState = document.querySelector('#dir-empty-state');
-  const countDisplay = document.querySelector('#dir-count-num');
+  const countDisplay = document.querySelector('#dir-search-count, #dir-count-num');
 
   if (!searchInput || !catBlocks.length) return;
 
@@ -1105,7 +1187,7 @@ function showCopySuccess(btn, successLabel) {
 
   function applyFilter() {
     const rawQuery = searchInput.value.trim();
-    const query = normalizeArabicText(rawQuery);
+    const queryTokens = tokenizeArabicQuery(rawQuery);
     let visibleCount = 0;
 
     catBlocks.forEach(block => {
@@ -1115,22 +1197,60 @@ function showCopySuccess(btn, successLabel) {
       let blockVisibleChips = 0;
 
       chips.forEach(chip => {
-        const text = normalizeArabicText(chip.textContent);
-        const topic = normalizeArabicText(chip.dataset.topic || '');
         let matchesQuery = false;
 
-        if (!query) {
+        if (!queryTokens.length) {
           matchesQuery = true;
         } else {
-          matchesQuery = text.includes(query) || topic.includes(query);
+          const chipText = normalizeArabicText(chip.textContent);
+          const chipTopic = normalizeArabicText(chip.dataset.topic || '');
+          const combined = chipText + ' ' + chipTopic;
 
-          // Iraqi legal synonyms expansion
-          if (!matchesQuery) {
-            if (query.includes('كفال') && (text.includes('كفال') || text.includes('توقيف') || text.includes('اخلاء سبيل'))) matchesQuery = true;
-            if ((query.includes('دكه') || query.includes('دگه') || query.includes('عشائر')) && (text.includes('دكه') || text.includes('دگه') || text.includes('عشائر') || text.includes('ارهاب') || text.includes('405'))) matchesQuery = true;
-            if (query.includes('ترفيع') && (text.includes('ترفيع') || text.includes('علاوه') || text.includes('انضباط') || text.includes('موظف'))) matchesQuery = true;
-            if ((query.includes('صك') || query.includes('شيك')) && (text.includes('صك') || text.includes('شيك') || text.includes('سفتجه') || text.includes('كمبيال'))) matchesQuery = true;
-          }
+          // Every token in query must match!
+          matchesQuery = queryTokens.every(token => {
+            if (combined.includes(token)) return true;
+
+            // Iraqi legal synonym expansions
+            if ((token === 'شيك' || token === 'صك' || token === 'سفتجه' || token === 'كمبيال') &&
+                (combined.includes('صك') || combined.includes('شيك') || combined.includes('سفتجه') || combined.includes('كمبيال') || combined.includes('سند'))) {
+              return true;
+            }
+            if ((token === 'دكه' || token === 'دگه' || token === 'عشائر' || token === 'ارهاب') &&
+                (combined.includes('دكه') || combined.includes('دگه') || combined.includes('عشائر') || combined.includes('ارهاب') || combined.includes('405'))) {
+              return true;
+            }
+            if ((token === 'كفال' || token === 'كفاله') &&
+                (combined.includes('كفال') || combined.includes('توقيف') || combined.includes('اخلاء سبيل'))) {
+              return true;
+            }
+            if ((token === 'ايجار' || token === 'ماجور' || token === 'تخليه') &&
+                (combined.includes('ايجار') || combined.includes('ماجور') || combined.includes('تخليه'))) {
+              return true;
+            }
+            if ((token === 'طلاق' || token === 'تفريق' || token === 'خلع') &&
+                (combined.includes('طلاق') || combined.includes('تفريق') || combined.includes('خلع') || combined.includes('مباراه'))) {
+              return true;
+            }
+            if ((token === 'حضانه' || token === 'محضون' || token === 'مشاهده') &&
+                (combined.includes('حضانه') || combined.includes('محضون') || combined.includes('مشاهده') || combined.includes('اصطحاب') || combined.includes('استرداد'))) {
+              return true;
+            }
+            if ((token === 'تعسفي' || token === 'فصل') &&
+                (combined.includes('تعسفي') || combined.includes('فصل') || combined.includes('عقد عمل') || combined.includes('ضمان'))) {
+              return true;
+            }
+            if ((token === 'ترفيع' || token === 'علاوه') &&
+                (combined.includes('ترفيع') || combined.includes('علاوه') || combined.includes('انضباط') || combined.includes('موظف') || combined.includes('سحب يد'))) {
+              return true;
+            }
+            if (token === 'شيوع' && (combined.includes('شيوع') || combined.includes('فرز') || combined.includes('عقار') || combined.includes('طابو'))) {
+              return true;
+            }
+            if (token === 'نفقه' && combined.includes('نفقه')) {
+              return true;
+            }
+            return false;
+          });
         }
 
         if (catMatches && matchesQuery) {
@@ -1149,8 +1269,21 @@ function showCopySuccess(btn, successLabel) {
       }
     });
 
+    // Update Counter with correct Arabic plural forms
     if (countDisplay) {
-      countDisplay.textContent = visibleCount;
+      let label = `${visibleCount} دعوى متاحة`;
+      if (visibleCount === 0) {
+        label = '0 دعوى مطابقة';
+      } else if (visibleCount === 1) {
+        label = 'دعوى واحدة مطابقة';
+      } else if (visibleCount === 2) {
+        label = 'دعوتان متطابقتان';
+      } else if (visibleCount <= 10) {
+        label = `${visibleCount} دعاوى متاحة`;
+      } else if (visibleCount === 120 && !rawQuery && activeCategory === 'all') {
+        label = '120 دعوى متاحة';
+      }
+      countDisplay.textContent = label;
     }
 
     if (emptyState) {
@@ -1177,7 +1310,7 @@ function showCopySuccess(btn, successLabel) {
 })();
 
 // -----------------------------------------------------------------------------
-// 16. FORENSIC HASHER (Local SHA-256 Utility with Correct Trigger & Result IDs)
+// 15. FORENSIC HASHER (Local SHA-256 Utility with Correct Trigger & Result IDs)
 // -----------------------------------------------------------------------------
 (function initForensicHasher() {
   const forensicInput = document.querySelector('#forensic-file-input');
@@ -1226,7 +1359,7 @@ function showCopySuccess(btn, successLabel) {
 })();
 
 // -----------------------------------------------------------------------------
-// 17. LEGAL ARTICLES MODULE (Loads from api/articles.php with Safe Fallback)
+// 16. LEGAL ARTICLES MODULE (Loads from api/articles.php with Safe Close & Focus)
 // -----------------------------------------------------------------------------
 function initArticlesModule() {
   const container = document.querySelector('#live-articles-grid, #articles-container');
@@ -1237,11 +1370,26 @@ function initArticlesModule() {
   const catEl = document.querySelector('#art-reader-cat');
   const metaEl = document.querySelector('#art-reader-meta');
   const contentEl = document.querySelector('#art-reader-content');
-  const closeBtn = document.querySelector('#close-art-reader');
+  const closeBtn = document.querySelector('#close-art-reader-modal, #close-art-reader');
   const consultBtn = document.querySelector('#art-reader-consult-btn');
 
   let currentArticleTitle = '';
   let currentArticleCategory = '';
+  let lastFocusedArticleBtn = null;
+
+  function closeArticleReader() {
+    if (readerModal) {
+      if (typeof readerModal.close === 'function') {
+        readerModal.close();
+      } else {
+        readerModal.removeAttribute('open');
+      }
+    }
+    document.body.style.overflow = '';
+    if (lastFocusedArticleBtn && typeof lastFocusedArticleBtn.focus === 'function') {
+      lastFocusedArticleBtn.focus();
+    }
+  }
 
   const SEED_ARTICLES = [
     {
@@ -1258,15 +1406,15 @@ function initArticlesModule() {
       category: 'شؤون المغتربين',
       date: '2026-11-12',
       excerpt: 'الإجراءات الأصولية لتصديق الوكالات القنصلية وحسم صحة الصدور وحماية أراضي وعقارات المهاجرين من تزوير مكاتب الدلالية.',
-      content: 'يواجه العراقيون المقيمون في الولايات المتحدة، كندا، بريطانيا، والدول الأوروبية تحديات جسيمة في إدارة أملاكهم ومتابعة تركاتهم في بغداد والمحافظات.\n\nالخطوة الأولى تبدأ من صياغة وكالة عامة أو خاصة لدى القنصلية العراقية في بلد الإقامة، تليها مطابقة صحة الصدور الإلكترونية عبر وزارة الخارجية في بغداد.\n\nيوفر مكتبنا تمثيلاً قضائياً رفيع المستوى بإشراف شخصي وتقارير مصورة موثقة لجميع مراحل الدعوى دون حاجة المغترب للسفر، مع إمكانية سداد أتعاب الاستشارة لحساب بنكي أمريكي رسمي (ACH / Wire Transfer).'
+      content: 'يواجه العراقيون المقيمون في الولايات المتحدة، كندا، بريطانيا، والدول الأوروبية تحديات جسيمة في إدارة أملاكهم ومتابعة تركاتهم في بغداد والمحافظات.\n\nالخطوة الأولى تبدأ من صياغة وكالة عامة أو خاصة لدى القنصلية العراقية في بلد الإقامة، تليها مطابقة صحة الصدور الإلكترونية عبر وزارة الخارجية في بغداد.\n\nيوفر مكتبنا تمثيلاً قضائياً رفيع المستوى بإشراف شخصي وتقارير مصورة موثقة لجميع مراحل الدعوى وتجنيب المغترب مشقة السفر، مع إمكانية سداد أتعاب الاستشارة لحساب بنكي أمريكي رسمي (ACH / Wire Transfer).'
     },
     {
       id: 'art-3',
       title: 'إثبات الأدلة الرقمية وسلسلة الحيازة في قضايا الابتزاز الإلكتروني',
       category: 'الجرائم المعلوماتية',
       date: '2026-11-09',
-      excerpt: 'كيفية توثيق بصمة التشفير الجنائية (SHA-256) للتسجيلات الصوتية ومحادثات الابتزاز لقبولها كدليل قطعي أمام قاضي التحقيق.',
-      content: 'مع تطور أدوات التزييف العميق واستنساخ الأصوات بالذكاء الاصطناعي، باتت المحاكم الجنائية ومحاكم التحقيق في العراق تتطلب تدقيقاً علمياً صارماً للأدلة الرقمية.\n\nوفقاً لقانون أصول المحاكمات الجزائية رقم 23 لسنة 1971 وقانون الإثبات العراقي رقم 107 لسنة 1979 المعدل، لا يُقبل الدليل الإلكتروني إلا إذا حوفظ على سلسلة حيازته (Chain of Custody) من لحظة استخراجه.\n\nيوفر مكتبنا بالتعاون مع خبرتنا في Gold Stone Intelligence فحصاً جنائياً محلياً للتسجيلات واستخراج بصمات التجزئة المشفرة لقطع الطريق على الخصم في ادعاء الفبركة.'
+      excerpt: 'كيفية توثيق بصمة التشفير الجنائية (SHA-256) للتسجيلات الصوتية ومحادثات الابتزاز كأداة مقارنة وتدقيق فني أمام قاضي التحقيق.',
+      content: 'مع تطور أدوات التزييف العميق واستنساخ الأصوات بالذكاء الاصطناعي، باتت المحاكم الجنائية ومحاكم التحقيق في العراق تتطلب تدقيقاً علمياً صارماً للأدلة الرقمية.\n\nوفقاً لقانون أصول المحاكمات الجزائية رقم 23 لسنة 1971 وقانون الإثبات العراقي رقم 107 لسنة 1979 المعدل، يُستعان ببصمات التجزئة الرقمية المشفرة لمقارنة سلامة المستندات والتسجيلات وضمان عدم التلاعب بها.\n\nيوفر مكتبنا فحصاً فنياً محلياً للتسجيلات واستخراج بصمات التجزئة المشفرة (SHA-256) لتعزيز طلبات الاستكتاب والمضاهاة الفنية أمام الجهات التحقيقية المختصة.'
     }
   ];
 
@@ -1299,6 +1447,7 @@ function initArticlesModule() {
 
     container.querySelectorAll('.read-art-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        lastFocusedArticleBtn = btn;
         const art = articles.find(a => a.id === btn.dataset.id);
         if (art && readerModal) {
           currentArticleTitle = art.title;
@@ -1313,10 +1462,16 @@ function initArticlesModule() {
     });
   }
 
-  if (closeBtn && readerModal) {
-    closeBtn.addEventListener('click', () => readerModal.close());
-    readerModal.addEventListener('click', e => {
-      if (e.target === readerModal) readerModal.close();
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeArticleReader);
+  }
+
+  if (readerModal) {
+    readerModal.addEventListener('click', (e) => {
+      if (e.target === readerModal) closeArticleReader();
+    });
+    readerModal.addEventListener('cancel', (e) => {
+      closeArticleReader();
     });
   }
 
@@ -1324,7 +1479,7 @@ function initArticlesModule() {
     consultBtn.addEventListener('click', () => {
       const artTitle = currentArticleTitle;
       const artCat = currentArticleCategory;
-      readerModal.close();
+      closeArticleReader();
       setTimeout(() => {
         openConsultationModal({
           planId: (artCat.includes('مغترب') || artCat.includes('دولية')) ? 'international' : 'iraq',
@@ -1340,7 +1495,7 @@ function initArticlesModule() {
 }
 
 // -----------------------------------------------------------------------------
-// 18. QUERY PARAMETER DEEP-LINKING (?consult=1&category=...)
+// 17. QUERY PARAMETER DEEP-LINKING (?consult=1&category=...)
 // -----------------------------------------------------------------------------
 function handleUrlParameters() {
   const params = new URLSearchParams(window.location.search);
@@ -1358,12 +1513,12 @@ function handleUrlParameters() {
 }
 
 // -----------------------------------------------------------------------------
-// 19. PERSONAL STATUS COMPARATOR MODULE (2025 Amendments Analysis)
+// 18. PERSONAL STATUS COMPARATOR MODULE (2025 Amendments Analysis)
 // -----------------------------------------------------------------------------
 (function initComparator() {
-  const dateSelect = document.querySelector('#comp-date-select');
-  const issueSelect = document.querySelector('#comp-issue-select');
-  const resultContainer = document.querySelector('#comparator-result');
+  const dateSelect = document.querySelector('#comp-date, #comp-date-select');
+  const issueSelect = document.querySelector('#comp-issue, #comp-issue-select');
+  const resultContainer = document.querySelector('#comp-result, #comparator-result');
   if (!dateSelect || !issueSelect || !resultContainer) return;
 
   const DB = {
@@ -1430,6 +1585,21 @@ function handleUrlParameters() {
       </div>
     `;
   }
+
+  resultContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('#comp-book-btn');
+    if (!btn) return;
+    const issueKey = issueSelect.value || 'custody';
+    const item = DB[issueKey] || DB.custody;
+    openConsultationModal({
+      planId: 'iraq',
+      category: 'family',
+      categoryId: 'family',
+      serviceTitle: 'استشارة مقارن الأحوال الشخصية: ' + item.title,
+      serviceId: 'comp-personal-status-' + issueKey,
+      customSummary: 'استشارة قانونية في ضوء أحكام المذهب الجعفري وقانون 188 المعدل بخصوص: ' + item.title
+    });
+  });
 
   dateSelect.addEventListener('change', renderComparator);
   issueSelect.addEventListener('change', renderComparator);

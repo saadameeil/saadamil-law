@@ -3755,7 +3755,7 @@
       msg += `👈 يرجى التفضل بإرسال صورة وصل التحويل (الإشعار) هنا مباشرة في هذه المحادثة لاعتماد وتفعيل الإضبارة فوراً.\n\n`;
       msg += `2️⃣ في حال لم يتم السداد حتى الآن، يرجى إتمام التحويل لتفعيل الملف:\n`;
       if (isIntl) {
-        msg += `🌐 للمغتربين والعملاء الدوليين (Zelle / ACH / Wire):\n`;
+        msg += `🌐 للمغتربين والعملاء الدوليين (US Bank Wire / ACH):\n`;
         msg += `رابط تفاصيل الحساب والسداد الدولي:\nhttps://saadamil.com/en.html\n`;
       } else {
         msg += `💳 الدفع عبر كي كارد / تطبيق سوبر (Qi Card):\n`;
@@ -3938,7 +3938,7 @@
             <div class="row"><div class="label">الموكل / المستشير:</div><div class="val">${d.titlePrefix || 'السيد'} ${d.name} (${d.phone}) - ${d.location || 'بغداد'}</div></div>
             <div class="row"><div class="label">نوع الدعوى:</div><div class="val"><strong>${d.topic}</strong></div></div>
             ${d.opponentName ? `<div class="row"><div class="label">الخصم / المدعى عليه:</div><div class="val">${d.opponentName} ${d.opponentPhone ? '(' + d.opponentPhone + ')' : ''}</div></div>` : ''}
-            <div class="row"><div class="label">حالة الرسم القضائي:</div><div class="val">مسدد أصولياً (${d.paymentMethod === 'intl_bank' ? 'حساب بنكي أمريكي Zelle' : 'Super ID 75,000 د.ع'})</div></div>
+            <div class="row"><div class="label">حالة الرسم القضائي:</div><div class="val">مسدد أصولياً (${d.paymentMethod === 'intl_bank' ? 'حساب بنكي أمريكي $100' : 'Super ID 75,000 د.ع'})</div></div>
           </div>
 
           <h3>وقائع القضية والموجز القانوني:</h3>
