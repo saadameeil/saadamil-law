@@ -205,19 +205,38 @@ if (strlen($bin) > 8.5 * 1024 * 1024) {
 // Check magic bytes & format integrity
 $ext = '';
 if (strpos($bin, '%PDF-') === 0) {
-    if (strlen($bin) < 128) {
+    $binLen = strlen($bin);
+    if ($binLen < 128) {
         http_response_code(422);
         echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق صغير جداً أو غير مكتمل. يرجى إرفاق إشعار تحويل صالح.']);
         exit();
     }
-    $tail = substr($bin, -2048);
-    $hasEof = (strpos($tail, '%%EOF') !== false);
-    $hasObjects = (bool)preg_match('/\d+\s+\d+\s+obj|stream/i', $bin);
-    $hasCatalogOrXref = (bool)preg_match('/(?:\/Root|\/Pages|\/Catalog|startxref|xref|\/XRef|trailer)/i', $bin);
-
-    if (!$hasEof || !$hasObjects || !$hasCatalogOrXref) {
+    $tail = substr($bin, -4096);
+    // 1. Must have startxref <offset> %%EOF
+    if (!preg_match('/startxref[\s\r\n]+(\d+)[\s\r\n]+%%EOF/i', $tail, $m)) {
         http_response_code(422);
-        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق غير مكتمل أو تالف (غياب البنية الأساسية للمستند).']);
+        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق غير مكتمل أو تالف (غياب علامة الفهرسة startxref أو نهاية المستند).']);
+        exit();
+    }
+    $xrefOffset = (int)$m[1];
+    if ($xrefOffset <= 0 || $xrefOffset >= $binLen) {
+        http_response_code(422);
+        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق تالف (مؤشر جدول الفهرسة startxref غير صالح).']);
+        exit();
+    }
+    // 2. Validate xref table or stream pointer around the offset
+    $windowStart = max(0, $xrefOffset - 32);
+    $windowLen = min(128, $binLen - $windowStart);
+    $xrefWindow = substr($bin, $windowStart, $windowLen);
+    if (!preg_match('/\bxref\b|(?:\d+\s+\d+\s+obj)/i', $xrefWindow)) {
+        http_response_code(422);
+        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق تالف (تعذر التحقق من موضع جدول الفهرسة المكتبي).']);
+        exit();
+    }
+    // 3. Must have pages tree or page definitions
+    if (!preg_match('/(?:\/Type\s*\/Page\b|\/Type\s*\/Pages\b|\/Pages\b)/i', $bin)) {
+        http_response_code(422);
+        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق غير صالح (لا يحتوي على صفحات أو شجرة صفحات معتمدة).']);
         exit();
     }
     $ext = 'pdf';

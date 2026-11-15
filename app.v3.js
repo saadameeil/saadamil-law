@@ -709,8 +709,13 @@ function normalizeArabicText(str) {
     .trim();
 }
 
+const CONVERSATIONAL_STOPWORDS = new Set([
+  'عندي', 'لدي', 'اريد', 'مشكل', 'مشكله', 'مشكلتي', 'بخصوص', 'صار', 'صارت', 'اكو', 'شلون', 'شنو', 'اريدها', 'اريده', 'دعواي', 'قضيتي'
+]);
+
 /**
  * Extracts normalized stem words, automatically stripping leading 'ال' for robust matching
+ * Filters out conversational prefixes/fillers when substantive query tokens exist
  */
 function tokenizeArabicQuery(text) {
   if (!text) return [];
@@ -719,7 +724,7 @@ function tokenizeArabicQuery(text) {
     .replace(/[«»""“”‘’'`?!؟*.,;:؛،/\\()\[\]{}—–\-_+<>@#$%^&~|…]+/gu, ' ');
   const normalized = normalizeArabicText(preprocessed);
   const rawWords = normalized.split(/\s+/).filter(w => w.length >= 2);
-  return rawWords.map(w => {
+  const tokens = rawWords.map(w => {
     let word = w;
     // Strip leading definite article if word length >= 4
     if (word.startsWith('ال') && word.length >= 4) {
@@ -731,6 +736,9 @@ function tokenizeArabicQuery(text) {
     }
     return word;
   });
+
+  const substantiveTokens = tokens.filter(t => !CONVERSATIONAL_STOPWORDS.has(t));
+  return substantiveTokens.length > 0 ? substantiveTokens : tokens;
 }
 
 // -----------------------------------------------------------------------------
@@ -1005,7 +1013,7 @@ if (receipt) {
         let decodedStr = '';
         try {
           if (typeof atob === 'function') {
-            decodedStr = atob(base64Part.slice(0, 16384)) + (base64Part.length > 16384 ? atob(base64Part.slice(-8192)) : '');
+            decodedStr = atob(base64Part);
           } else if (typeof Buffer !== 'undefined') {
             decodedStr = Buffer.from(base64Part, 'base64').toString('binary');
           }
@@ -1013,13 +1021,32 @@ if (receipt) {
           decodedStr = '';
         }
 
-        const hasPdfHeader = decodedStr.startsWith('%PDF-');
-        const hasPdfTailEof = decodedStr.includes('%%EOF');
-        const hasPdfObjects = /\d+\s+\d+\s+obj|stream/i.test(decodedStr);
-        const hasPdfCatalogOrXref = /(?:\/Root|\/Pages|\/Catalog|startxref|xref|\/XRef|trailer)/i.test(decodedStr);
+        if (!decodedStr.startsWith('%PDF-')) {
+          throw new Error('الملف المرفق لا يطابق بنية مستندات PDF الصالحة.');
+        }
 
-        if (!hasPdfHeader || !hasPdfTailEof || !hasPdfObjects || !hasPdfCatalogOrXref) {
-          throw new Error('ملف PDF المرفق غير مكتمل أو تالف (غياب البنية الأساسية للمستند).');
+        // 1. Mandatory startxref <offset> %%EOF in trailer area
+        const startXrefMatch = decodedStr.match(/startxref[\s\r\n]+(\d+)[\s\r\n]+%%EOF/i);
+        if (!startXrefMatch) {
+          throw new Error('ملف PDF المرفق غير مكتمل أو تالف (غياب علامة الفهرسة startxref أو نهاية المستند).');
+        }
+
+        const xrefOffset = parseInt(startXrefMatch[1], 10);
+        if (isNaN(xrefOffset) || xrefOffset <= 0 || xrefOffset >= file.size) {
+          throw new Error('ملف PDF المرفق تالف (مؤشر جدول الفهرسة startxref غير صالح).');
+        }
+
+        // 2. Validate xref table/stream pointer target around offset
+        const windowStart = Math.max(0, xrefOffset - 32);
+        const windowSlice = decodedStr.slice(windowStart, Math.min(decodedStr.length, windowStart + 128));
+        if (!/\bxref\b|(?:\d+\s+\d+\s+obj)/i.test(windowSlice)) {
+          throw new Error('ملف PDF المرفق تالف (تعذر التحقق من موضع جدول الفهرسة المكتبي).');
+        }
+
+        // 3. Document must have page tree / page definitions
+        const hasPages = /(?:\/Type\s*\/Page\b|\/Type\s*\/Pages\b|\/Pages\b)/i.test(decodedStr);
+        if (!hasPages) {
+          throw new Error('ملف PDF المرفق غير صالح (لا يحتوي على صفحات أو شجرة صفحات معتمدة).');
         }
 
         if (preview) preview.style.display = 'none';
@@ -1086,6 +1113,42 @@ if (removeReceiptBtn) {
 // -----------------------------------------------------------------------------
 // 9. SUBMISSION STATE MACHINE & IDEMPOTENT HANDOFF (Safe Timeout & Neutral WA)
 // -----------------------------------------------------------------------------
+const VETTED_BUSINESS_PATTERNS = [
+  /رقم الهاتف/u,
+  /يرجى إدخال اسم/u,
+  /عنوان أو منطقة السكن/u,
+  /ملخص/u,
+  /إرفاق (?:إشعار|صورة|ملف)/u,
+  /إشعار أو وصل التحويل/u,
+  /تنسيق ترميز الملف/u,
+  /الملف المرفق فارغ أو تالف/u,
+  /حجم الملف/u,
+  /ملف PDF المرفق/u,
+  /بنية الملف المرفق لا تطابق/u,
+  /استغرقت الاستجابة وقتاً أطول/u,
+  /تعذر تسجيل الطلب في السجل الإداري/u
+];
+
+function sanitizeServerError(rawMsg) {
+  if (typeof rawMsg !== 'string' || !rawMsg.trim()) {
+    return 'تعذر تسجيل الطلب في السجل الإداري للمكتب حالياً بسبب ضغط مؤقت في الاتصال. بياناتك وإشعار التحويل محفوظة؛ يرجى النقر لإعادة المحاولة أو التواصل المباشر عبر واتساب المكتب.';
+  }
+  const clean = rawMsg.trim();
+
+  // Reject technical leak indicators, code symbols, or leaked English identifiers
+  if (/[_\[\]{}\$\\/]|undefined|array key|stack|trace|sql|pdo|database|syntax|table|column|query|connect|exception|fatal|server error|php|warning|notice|internal|failed to fetch|networkerror/i.test(clean)) {
+    return 'تعذر تسجيل الطلب في السجل الإداري للمكتب حالياً بسبب ضغط مؤقت في الاتصال. بياناتك وإشعار التحويل محفوظة؛ يرجى النقر لإعادة المحاولة أو التواصل المباشر عبر واتساب المكتب.';
+  }
+
+  // Whitelist check: Must match at least one approved vetted business pattern
+  const isApproved = VETTED_BUSINESS_PATTERNS.some(re => re.test(clean));
+  if (!isApproved) {
+    return 'تعذر تسجيل الطلب في السجل الإداري للمكتب حالياً بسبب ضغط مؤقت في الاتصال. بياناتك وإشعار التحويل محفوظة؛ يرجى النقر لإعادة المحاولة أو التواصل المباشر عبر واتساب المكتب.';
+  }
+
+  return clean;
+}
+
 if (briefForm) {
   briefForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -1166,13 +1229,10 @@ if (briefForm) {
       if (submissionRequestId !== currentDraftRequestId) return;
 
       if (!response.ok || !resData || typeof resData !== 'object' || resData.status !== 'success') {
-        const rawMsg = (resData && typeof resData === 'object' && resData.message)
+        const rawMsg = (resData && typeof resData === 'object' && typeof resData.message === 'string')
           ? resData.message
           : '';
-        const hasTechnicalLeak = /sql|pdo|database|syntax|table|column|query|connect|exception|fatal|server error|php|warning|notice|internal/i.test(rawMsg);
-        const errorMsg = (!rawMsg || hasTechnicalLeak)
-          ? 'تعذر تسجيل الطلب في السجل الإداري للمكتب حالياً بسبب ضغط مؤقت في الاتصال. بياناتك وإشعار التحويل محفوظة؛ يرجى النقر لإعادة المحاولة أو التواصل المباشر عبر واتساب المكتب.'
-          : rawMsg;
+        const errorMsg = sanitizeServerError(rawMsg);
         throw new Error(errorMsg);
       }
 
@@ -1279,14 +1339,9 @@ if (briefForm) {
       updateReceiptLock(receiptValid);
 
       const isAbort = (err.name === 'AbortError');
-      const rawMsg = err.message || '';
-      const hasTechnicalLeak = /sql|pdo|database|syntax|table|column|query|connect|exception|fatal|server error|php|warning|notice|internal|failed to fetch|networkerror/i.test(rawMsg);
-
-      let friendlyError = 'تعذر تسجيل الطلب في السجل الإداري للمكتب حالياً بسبب ضغط مؤقت في الاتصال. بياناتك وإشعار التحويل محفوظة؛ يرجى النقر لإعادة المحاولة أو التواصل المباشر عبر واتساب المكتب.';
+      let friendlyError = sanitizeServerError(err.message || '');
       if (isAbort) {
         friendlyError = 'استغرقت الاستجابة وقتاً أطول من المعتاد (25 ثانية). بياناتك وإشعار التحويل محفوظة؛ يرجى النقر مرة أخرى لإعادة الإرسال أو مراسلة المكتب عبر واتساب.';
-      } else if (rawMsg && !hasTechnicalLeak) {
-        friendlyError = rawMsg;
       }
 
       if (receiptStatus) {
