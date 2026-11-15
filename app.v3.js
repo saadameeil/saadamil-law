@@ -125,12 +125,17 @@ if (briefForm) {
   briefForm.noValidate = true;
 }
 
-// Intercept Escape key on modal when submitting
+// Intercept Escape key on modal when submitting, and restore scroll on any close
+let savedOverflow = '';
 if (dialog) {
   dialog.addEventListener('cancel', (e) => {
     if (formState === 'submitting') {
       e.preventDefault();
     }
+  });
+  dialog.addEventListener('close', () => {
+    document.body.style.overflow = savedOverflow || '';
+    if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
   });
 }
 
@@ -150,6 +155,15 @@ function resetToStep1() {
   }
 }
 
+function hasActiveDraft() {
+  if (formState === 'success') return false;
+  const nameVal = document.querySelector('#field-name')?.value?.trim();
+  const phoneVal = document.querySelector('#field-phone')?.value?.trim();
+  const summaryVal = document.querySelector('#field-summary')?.value?.trim();
+  const hasFile = receipt && receipt.files && receipt.files.length > 0;
+  return Boolean(nameVal || phoneVal || summaryVal || hasFile);
+}
+
 function startNewDraft() {
   formState = 'editing';
   currentDraftRequestId = generateRequestId();
@@ -165,6 +179,15 @@ function startNewDraft() {
 
   // Reset brief form fields
   if (briefForm) briefForm.reset();
+
+  // Clear current service / category
+  currentServiceTitle = '';
+  currentServiceId = '';
+  currentCategoryId = '';
+  const sIdInput = document.querySelector('#field-service-id');
+  if (sIdInput) sIdInput.value = '';
+  const cInput = document.querySelector('#field-category');
+  if (cInput) cInput.value = '';
 
   // Reset steps
   resetToStep1();
@@ -264,16 +287,27 @@ function openConsultationModal(opts = {}) {
     serviceId = opts.serviceId || '';
   }
 
-  // 1. Reset state cleanly for new draft
-  startNewDraft();
+  const hasDraft = hasActiveDraft();
 
-  // 2. Set plan atomically
-  setPlan(planId);
+  // 1. Reset state cleanly only if previously submitted or no active draft
+  if (formState === 'success' || !hasDraft) {
+    startNewDraft();
+  } else {
+    // Ensure modal opens on Step 1 with preserved draft inputs
+    resetToStep1();
+  }
+
+  // 2. Set plan atomically (if no active draft or explicitly requested)
+  if (!hasDraft || opts.forcePlan || opts.planId) {
+    setPlan(planId);
+  }
 
   // 3. Set service context
-  currentServiceTitle = serviceTitle;
-  currentServiceId = serviceId;
-  currentCategoryId = categoryId;
+  if (serviceTitle || !currentServiceTitle) {
+    currentServiceTitle = serviceTitle;
+    currentServiceId = serviceId;
+    currentCategoryId = categoryId;
+  }
 
   // 4. Populate hidden inputs for backend tracking
   const serviceIdInput = document.querySelector('#field-service-id');
@@ -285,11 +319,11 @@ function openConsultationModal(opts = {}) {
 
   // 5. Update Category Select
   const topicDropdown = document.querySelector('#topic');
-  if (topicDropdown) {
+  if (topicDropdown && (serviceTitle || !hasDraft || !topicDropdown.value)) {
     const matchedVal = mapTopicToSelectValue(serviceTitle, currentCategoryId || category);
     if (matchedVal) {
       topicDropdown.value = matchedVal;
-    } else {
+    } else if (!hasDraft) {
       topicDropdown.selectedIndex = 0;
     }
   }
@@ -312,6 +346,7 @@ function openConsultationModal(opts = {}) {
   if (docDate) docDate.textContent = getArabicDate();
 
   // 8. Show Modal
+  savedOverflow = document.body.style.overflow;
   if (typeof dialog.showModal === 'function') {
     dialog.showModal();
   } else {
@@ -514,11 +549,16 @@ function tokenizeArabicQuery(text) {
   const normalized = normalizeArabicText(text);
   const rawWords = normalized.split(/[\s,،؛.\-_/()]+/).filter(w => w.length >= 2);
   return rawWords.map(w => {
+    let word = w;
     // Strip leading definite article if word length >= 4
-    if (w.startsWith('ال') && w.length >= 4) {
-      return w.substring(2);
+    if (word.startsWith('ال') && word.length >= 4) {
+      word = word.substring(2);
     }
-    return w;
+    // Strip trailing taa-marbuta / haa if word length >= 4 (e.g. كفاله -> كفال)
+    if (word.endsWith('ه') && word.length >= 4) {
+      word = word.substring(0, word.length - 1);
+    }
+    return word;
   });
 }
 
@@ -1063,8 +1103,14 @@ document.addEventListener('click', (e) => {
     e.preventDefault();
     if (formState === 'submitting') return;
     if (dialog) dialog.close();
-    document.body.style.overflow = '';
-    if (previousFocus) previousFocus.focus();
+    return;
+  }
+
+  // 2b. Start New Draft Button
+  if (e.target.closest('#btn-start-new-draft')) {
+    e.preventDefault();
+    if (formState === 'submitting') return;
+    startNewDraft();
     return;
   }
 
@@ -1170,8 +1216,6 @@ if (dialog) {
     if (formState === 'submitting') return;
     if (e.target === dialog) {
       dialog.close();
-      document.body.style.overflow = '';
-      if (previousFocus) previousFocus.focus();
     }
   });
 }
@@ -1362,9 +1406,12 @@ initAccessibleTabs('.pay-tabs');
                 (combined.includes('دكه') || combined.includes('دگه') || combined.includes('عشائر') || combined.includes('405'))) {
               return true;
             }
-            if ((token === 'كفال' || token === 'كفاله') &&
-                (combined.includes('كفال') || combined.includes('توقيف') || combined.includes('اخلاء سبيل'))) {
-              return true;
+            if (token === 'كفال' || token === 'كفاله') {
+              // Exclude banking check stopping
+              if (combined.includes('صرف') || combined.includes('صك')) return false;
+              if (combined.includes('كفال') || combined.includes('اخلاء سبيل') || combined.includes('افراج') || combined.includes('سراح') || (combined.includes('توقيف') && !combined.includes('صرف'))) {
+                return true;
+              }
             }
             if ((token === 'ايجار' || token === 'ماجور' || token === 'تخليه') &&
                 (combined.includes('ايجار') || combined.includes('ماجور') || combined.includes('تخليه') || combined.includes('اخلاء'))) {
@@ -1410,13 +1457,19 @@ initAccessibleTabs('.pay-tabs');
         }
       });
 
-      // Priority ranking: Re-order chips inside block so exact title matches appear first
+      // Priority ranking: Re-order chips inside block so direct keyword matches appear first
       if (rawQuery && blockVisibleChips > 0) {
         const sortedChips = Array.from(chips);
         const normRaw = normalizeArabicText(rawQuery);
         sortedChips.sort((a, b) => {
           const aText = normalizeArabicText(a.dataset.topic || a.textContent);
           const bText = normalizeArabicText(b.dataset.topic || b.textContent);
+
+          // Direct token inclusion priority (literal word in title > indirect synonym expansion)
+          const aDirect = queryTokens.length && queryTokens.every(t => aText.includes(t)) ? 2 : (queryTokens.some(t => aText.includes(t)) ? 1 : 0);
+          const bDirect = queryTokens.length && queryTokens.every(t => bText.includes(t)) ? 2 : (queryTokens.some(t => bText.includes(t)) ? 1 : 0);
+          if (bDirect !== aDirect) return bDirect - aDirect;
+
           const aExact = aText.includes(normRaw) ? 1 : 0;
           const bExact = bText.includes(normRaw) ? 1 : 0;
           return bExact - aExact;
