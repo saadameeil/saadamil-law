@@ -447,10 +447,14 @@ function openConsultationModal(opts = {}) {
   }
 
   // Determine if this is a general/resume opening
-  const isGenericOpen = (!serviceId && (!serviceTitle || serviceTitle === 'احجز استشارة' || serviceTitle === 'طلب استشارة' || serviceTitle === 'افتح ملف استشارتك') && !categoryId);
+  const isResumeAction = Boolean(opts.isResume || opts.action === 'resume-consultation');
+  const isGenericOpen = Boolean(
+    isResumeAction ||
+    (!serviceId && (!serviceTitle || normalizeArabicText(serviceTitle).includes('احجز استشار') || normalizeArabicText(serviceTitle).includes('طلب استشار') || normalizeArabicText(serviceTitle).includes('افتح ملف استشارتك')) && !categoryId)
+  );
 
   const effectiveCurrentTitle = currentServiceTitle || document.querySelector('#topic')?.value || '';
-  const hasDifferentService = (hasDraft && serviceTitle && effectiveCurrentTitle && normalizeArabicText(serviceTitle) !== normalizeArabicText(effectiveCurrentTitle));
+  const hasDifferentService = (!isGenericOpen && hasDraft && serviceTitle && effectiveCurrentTitle && normalizeArabicText(serviceTitle) !== normalizeArabicText(effectiveCurrentTitle));
 
   if (hasDifferentService) {
     // Show conflict prompt and FREEZE draft - do not touch existing inputs or summary!
@@ -934,6 +938,271 @@ function showStep1Error(msg, focusEl) {
 }
 
 // -----------------------------------------------------------------------------
+// 7.5. STANDALONE PDF STRUCTURAL PARSER & DEFLATE ENGINE (ISO 32000-1 Compliant)
+// -----------------------------------------------------------------------------
+function inflateRaw(data, bufsize) {
+  let bitBuf = 0, bitLen = 0, pos = 0;
+  function getBit() {
+    if (bitLen === 0) {
+      if (pos >= data.length) return 0;
+      bitBuf = data[pos++];
+      bitLen = 8;
+    }
+    const bit = bitBuf & 1;
+    bitBuf >>= 1;
+    bitLen--;
+    return bit;
+  }
+  function getBits(n) {
+    let res = 0;
+    for (let i = 0; i < n; i++) res |= (getBit() << i);
+    return res;
+  }
+
+  function buildTree(lengths) {
+    const maxLen = Math.max(...lengths);
+    const bl_count = new Uint32Array(maxLen + 1);
+    for (let l of lengths) if (l > 0) bl_count[l]++;
+    const next_code = new Uint32Array(maxLen + 1);
+    let code = 0;
+    for (let bits = 1; bits <= maxLen; bits++) {
+      code = (code + bl_count[bits - 1]) << 1;
+      next_code[bits] = code;
+    }
+    const tree = {};
+    for (let i = 0; i < lengths.length; i++) {
+      const len = lengths[i];
+      if (len !== 0) {
+        let c = next_code[len]++;
+        let rev = 0;
+        for (let j = 0; j < len; j++) rev = (rev << 1) | ((c >> j) & 1);
+        tree[`${len}:${rev}`] = i;
+      }
+    }
+    return { tree, maxLen };
+  }
+
+  function decodeSymbol(h) {
+    let code = 0;
+    for (let len = 1; len <= h.maxLen; len++) {
+      code |= (getBit() << (len - 1));
+      const key = `${len}:${code}`;
+      if (key in h.tree) return h.tree[key];
+    }
+    throw new Error('Invalid Huffman symbol');
+  }
+
+  const fixedLitLengths = new Uint8Array(288);
+  for (let i = 0; i <= 143; i++) fixedLitLengths[i] = 8;
+  for (let i = 144; i <= 255; i++) fixedLitLengths[i] = 9;
+  for (let i = 256; i <= 279; i++) fixedLitLengths[i] = 7;
+  for (let i = 280; i <= 287; i++) fixedLitLengths[i] = 8;
+  const fixedLitTree = buildTree(fixedLitLengths);
+
+  const fixedDistLengths = new Uint8Array(30);
+  fixedDistLengths.fill(5);
+  const fixedDistTree = buildTree(fixedDistLengths);
+
+  const lengthBases = [3,4,5,6,7,8,9,10,11,13,15,17,19,23,27,31,35,43,51,59,67,83,99,115,131,163,195,227,258];
+  const lengthExtraBits = [0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0];
+  const distBases = [1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,257,385,513,769,1025,1537,2049,3073,4097,6145,8193,12289,16385,24577];
+  const distExtraBits = [0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13];
+  const codeOrder = [16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15];
+
+  let out = new Uint8Array(bufsize || 65536);
+  let outPos = 0;
+  function ensureCapacity(needed) {
+    if (outPos + needed > out.length) {
+      const next = new Uint8Array(Math.max(out.length * 2, outPos + needed));
+      next.set(out);
+      out = next;
+    }
+  }
+
+  let bfinal = 0;
+  while (!bfinal) {
+    bfinal = getBit();
+    const btype = getBits(2);
+    if (btype === 0) {
+      bitBuf = 0; bitLen = 0;
+      const len = data[pos] | (data[pos + 1] << 8);
+      pos += 4;
+      ensureCapacity(len);
+      out.set(data.subarray(pos, pos + len), outPos);
+      pos += len;
+      outPos += len;
+    } else if (btype === 1 || btype === 2) {
+      let litTree, distTree;
+      if (btype === 1) {
+        litTree = fixedLitTree;
+        distTree = fixedDistTree;
+      } else {
+        const hlit = getBits(5) + 257;
+        const hdist = getBits(5) + 1;
+        const hclen = getBits(4) + 4;
+        const codeLengths = new Uint8Array(19);
+        for (let i = 0; i < hclen; i++) codeLengths[codeOrder[i]] = getBits(3);
+        const codeTree = buildTree(codeLengths);
+        const litLengths = new Uint8Array(hlit + hdist);
+        let i = 0;
+        while (i < hlit + hdist) {
+          const sym = decodeSymbol(codeTree);
+          if (sym < 16) {
+            litLengths[i++] = sym;
+          } else if (sym === 16) {
+            let repeat = getBits(2) + 3;
+            const prev = litLengths[i - 1];
+            while (repeat--) litLengths[i++] = prev;
+          } else if (sym === 17) {
+            let repeat = getBits(3) + 3;
+            while (repeat--) litLengths[i++] = 0;
+          } else if (sym === 18) {
+            let repeat = getBits(7) + 11;
+            while (repeat--) litLengths[i++] = 0;
+          }
+        }
+        litTree = buildTree(litLengths.subarray(0, hlit));
+        distTree = buildTree(litLengths.subarray(hlit));
+      }
+
+      while (true) {
+        const sym = decodeSymbol(litTree);
+        if (sym < 256) {
+          ensureCapacity(1);
+          out[outPos++] = sym;
+        } else if (sym === 256) {
+          break;
+        } else {
+          const lenIdx = sym - 257;
+          const matchLen = lengthBases[lenIdx] + getBits(lengthExtraBits[lenIdx]);
+          const distSym = decodeSymbol(distTree);
+          const matchDist = distBases[distSym] + getBits(distExtraBits[distSym]);
+          ensureCapacity(matchLen);
+          for (let m = 0; m < matchLen; m++) {
+            out[outPos] = out[outPos - matchDist];
+            outPos++;
+          }
+        }
+      }
+    } else {
+      throw new Error('Unsupported block type ' + btype);
+    }
+  }
+  return out.subarray(0, outPos);
+}
+
+function zlibDecompress(bytes) {
+  if (bytes[0] === 0x78) {
+    return inflateRaw(bytes.subarray(2, bytes.length - 4));
+  }
+  return inflateRaw(bytes);
+}
+
+function parseAndValidatePdf(binaryStr, fileSize) {
+  if (fileSize < 128) {
+    throw new Error('ملف PDF المرفق صغير جداً أو غير مكتمل.');
+  }
+
+  // 1. Header check
+  const headerIdx = binaryStr.indexOf('%PDF-');
+  if (headerIdx === -1 || headerIdx > 1024) {
+    throw new Error('الملف المرفق لا يطابق بنية مستندات PDF الصالحة.');
+  }
+
+  // 2. Locate startxref in tail
+  const tail = binaryStr.slice(-4096);
+  const startXrefMatch = tail.match(/startxref[\s\r\n]+(\d+)[\s\r\n]+%%EOF/i);
+  if (!startXrefMatch) {
+    throw new Error('ملف PDF المرفق غير مكتمل أو تالف (غياب علامة الفهرسة startxref أو نهاية المستند).');
+  }
+
+  const xrefOffset = parseInt(startXrefMatch[1], 10);
+  if (isNaN(xrefOffset) || xrefOffset <= 0 || xrefOffset >= fileSize) {
+    throw new Error('ملف PDF المرفق تالف (مؤشر جدول الفهرسة startxref غير صالح).');
+  }
+
+  // 3. Inspect xref table or XRef stream
+  const targetSlice = binaryStr.slice(Math.max(0, xrefOffset - 16), Math.min(binaryStr.length, xrefOffset + 256));
+  const isXrefTable = /\bxref[\s\r\n]+\d+[\s\r\n]+\d+/i.test(targetSlice);
+  const isXrefStream = /\b\d+\s+\d+\s+obj[\s\S]{0,128}\/Type\s*\/XRef\b/i.test(targetSlice);
+
+  if (!isXrefTable && !isXrefStream) {
+    throw new Error('ملف PDF المرفق تالف (جدول الفهرسة startxref غير صالح أو تالف).');
+  }
+
+  // 4. Check for Document Catalog (/Root) and Encryption
+  let trailerSection = '';
+  if (isXrefTable) {
+    const trailerIdx = binaryStr.indexOf('trailer', xrefOffset);
+    if (trailerIdx === -1) {
+      throw new Error('ملف PDF المرفق تالف (غياب قاموس المقطورة trailer في جدول الفهرسة).');
+    }
+    trailerSection = binaryStr.slice(trailerIdx, trailerIdx + 1024);
+  } else {
+    trailerSection = targetSlice;
+  }
+
+  if (/\/Encrypt\b/i.test(trailerSection)) {
+    throw new Error('ملف PDF المرفق مشفر أو محمي بكلمة مرور. يرجى إرفاق إشعار تحويل غير مشفر.');
+  }
+
+  if (!/\/Root\s+\d+\s+\d+\s+R/i.test(trailerSection) && !/\/Root\b/i.test(trailerSection)) {
+    throw new Error('ملف PDF المرفق تالف (غياب مرجع الفهرس الرئيسي /Root للمستند).');
+  }
+
+  // 5. Verify Pages (/Type /Page or /Pages)
+  let hasPages = /(?:\/Type\s*\/Page\b|\/Type\s*\/Pages\b|\/Pages\s+\d+\s+\d+\s+R)/i.test(binaryStr);
+
+  if (!hasPages) {
+    // Search and decompress Object Streams (/ObjStm)
+    let p = 0;
+    while (!hasPages && p < binaryStr.length) {
+      const streamIdx = binaryStr.indexOf('stream', p);
+      if (streamIdx === -1) break;
+      const dictEnd = binaryStr.lastIndexOf('>>', streamIdx);
+      if (dictEnd !== -1 && dictEnd < streamIdx) {
+        const dictStart = binaryStr.lastIndexOf('<<', dictEnd);
+        if (dictStart !== -1) {
+          const dict = binaryStr.slice(dictStart, dictEnd + 2);
+          if (/\/Type\s*\/ObjStm\b/i.test(dict) || /\/Filter\s*\/FlateDecode\b/i.test(dict)) {
+            let dataStart = streamIdx + 6;
+            if (binaryStr[dataStart] === '\r' && binaryStr[dataStart + 1] === '\n') dataStart += 2;
+            else if (binaryStr[dataStart] === '\n' || binaryStr[dataStart] === '\r') dataStart += 1;
+            const endStreamIdx = binaryStr.indexOf('endstream', dataStart);
+            if (endStreamIdx !== -1) {
+              let dataEnd = endStreamIdx;
+              if (binaryStr[dataEnd - 1] === '\n') dataEnd--;
+              if (binaryStr[dataEnd - 1] === '\r') dataEnd--;
+              const rawStream = binaryStr.slice(dataStart, dataEnd);
+              try {
+                const streamBytes = new Uint8Array(rawStream.length);
+                for (let b = 0; b < rawStream.length; b++) streamBytes[b] = rawStream.charCodeAt(b);
+                const decompressed = zlibDecompress(streamBytes);
+                let decompText = '';
+                for (let d = 0; d < decompressed.length; d++) decompText += String.fromCharCode(decompressed[d]);
+                if (/(?:\/Type\s*\/Page\b|\/Type\s*\/Pages\b|\/Pages\b)/i.test(decompText)) {
+                  hasPages = true;
+                  break;
+                }
+              } catch(decErr) {
+                // Ignore corrupt stream and continue
+              }
+            }
+          }
+        }
+      }
+      p = streamIdx + 6;
+    }
+  }
+
+  if (!hasPages) {
+    throw new Error('ملف PDF المرفق غير صالح (لا يحتوي على صفحات أو شجرة صفحات معتمدة).');
+  }
+
+  return { valid: true };
+}
+
+// -----------------------------------------------------------------------------
 // 8. FILE INTEGRITY VERIFICATION (Strict Image Decode & PDF Magic Bytes)
 // -----------------------------------------------------------------------------
 if (receipt) {
@@ -1006,10 +1275,6 @@ if (receipt) {
           throw new Error('الملف المرفق لا يطابق بنية مستندات PDF الصالحة.');
         }
 
-        if (file.size < 128) {
-          throw new Error('ملف PDF المرفق صغير جداً أو غير مكتمل.');
-        }
-
         let decodedStr = '';
         try {
           if (typeof atob === 'function') {
@@ -1021,33 +1286,8 @@ if (receipt) {
           decodedStr = '';
         }
 
-        if (!decodedStr.startsWith('%PDF-')) {
-          throw new Error('الملف المرفق لا يطابق بنية مستندات PDF الصالحة.');
-        }
-
-        // 1. Mandatory startxref <offset> %%EOF in trailer area
-        const startXrefMatch = decodedStr.match(/startxref[\s\r\n]+(\d+)[\s\r\n]+%%EOF/i);
-        if (!startXrefMatch) {
-          throw new Error('ملف PDF المرفق غير مكتمل أو تالف (غياب علامة الفهرسة startxref أو نهاية المستند).');
-        }
-
-        const xrefOffset = parseInt(startXrefMatch[1], 10);
-        if (isNaN(xrefOffset) || xrefOffset <= 0 || xrefOffset >= file.size) {
-          throw new Error('ملف PDF المرفق تالف (مؤشر جدول الفهرسة startxref غير صالح).');
-        }
-
-        // 2. Validate xref table/stream pointer target around offset
-        const windowStart = Math.max(0, xrefOffset - 32);
-        const windowSlice = decodedStr.slice(windowStart, Math.min(decodedStr.length, windowStart + 128));
-        if (!/\bxref\b|(?:\d+\s+\d+\s+obj)/i.test(windowSlice)) {
-          throw new Error('ملف PDF المرفق تالف (تعذر التحقق من موضع جدول الفهرسة المكتبي).');
-        }
-
-        // 3. Document must have page tree / page definitions
-        const hasPages = /(?:\/Type\s*\/Page\b|\/Type\s*\/Pages\b|\/Pages\b)/i.test(decodedStr);
-        if (!hasPages) {
-          throw new Error('ملف PDF المرفق غير صالح (لا يحتوي على صفحات أو شجرة صفحات معتمدة).');
-        }
+        // Run full ISO 32000-1 Structural PDF Parser & Object Stream Decompressor
+        parseAndValidatePdf(decodedStr, file.size);
 
         if (preview) preview.style.display = 'none';
         if (pdfBox) {
@@ -1458,6 +1698,13 @@ document.addEventListener('click', (e) => {
   }
 
   e.preventDefault();
+  const isResume = Boolean(
+    btn.dataset.action === 'resume-consultation' ||
+    btn.classList.contains('header-cta') ||
+    btn.classList.contains('hero-main-btn') ||
+    btn.classList.contains('mobile-consult')
+  );
+
   const rawTopic = btn.dataset.topic || (btn.querySelector('.chip-name') ? btn.querySelector('.chip-name').textContent.trim() : btn.textContent.trim());
   const rawCat = btn.dataset.categoryId || btn.dataset.category || '';
   const serviceId = btn.dataset.serviceId || '';
@@ -1471,11 +1718,12 @@ document.addEventListener('click', (e) => {
   }
 
   openConsultationModal({
+    isResume: isResume,
     planId: explicitPlan,
-    categoryId: rawCat,
-    category: rawCat,
-    serviceTitle: rawTopic,
-    serviceId: serviceId
+    categoryId: isResume ? '' : rawCat,
+    category: isResume ? '' : rawCat,
+    serviceTitle: isResume ? '' : rawTopic,
+    serviceId: isResume ? '' : serviceId
   });
 });
 

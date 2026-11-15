@@ -225,16 +225,81 @@ if (strpos($bin, '%PDF-') === 0) {
         exit();
     }
     // 2. Validate xref table or stream pointer around the offset
-    $windowStart = max(0, $xrefOffset - 32);
-    $windowLen = min(128, $binLen - $windowStart);
-    $xrefWindow = substr($bin, $windowStart, $windowLen);
-    if (!preg_match('/\bxref\b|(?:\d+\s+\d+\s+obj)/i', $xrefWindow)) {
+    $targetSlice = substr($bin, max(0, $xrefOffset - 16), 256);
+    $isXrefTable = (bool)preg_match('/\bxref[\s\r\n]+\d+[\s\r\n]+\d+/i', $targetSlice);
+    $isXrefStream = (bool)preg_match('/\b\d+\s+\d+\s+obj[\s\S]{0,128}\/Type\s*\/XRef\b/i', $targetSlice);
+    if (!$isXrefTable && !$isXrefStream) {
         http_response_code(422);
-        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق تالف (تعذر التحقق من موضع جدول الفهرسة المكتبي).']);
+        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق تالف (جدول الفهرسة startxref غير صالح أو تالف).']);
         exit();
     }
-    // 3. Must have pages tree or page definitions
-    if (!preg_match('/(?:\/Type\s*\/Page\b|\/Type\s*\/Pages\b|\/Pages\b)/i', $bin)) {
+
+    // 3. Inspect trailer dictionary / XRef dictionary for /Root and /Encrypt
+    $trailerSection = '';
+    if ($isXrefTable) {
+        $trailerPos = strpos($bin, 'trailer', $xrefOffset);
+        if ($trailerPos === false) {
+            http_response_code(422);
+            echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق تالف (غياب قاموس المقطورة trailer في جدول الفهرسة).']);
+            exit();
+        }
+        $trailerSection = substr($bin, $trailerPos, 1024);
+    } else {
+        $trailerSection = $targetSlice;
+    }
+
+    if (preg_match('/\/Encrypt\b/i', $trailerSection)) {
+        http_response_code(422);
+        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق مشفر أو محمي بكلمة مرور. يرجى إرفاق إشعار تحويل غير مشفر.']);
+        exit();
+    }
+
+    if (!preg_match('/\/Root\s+\d+\s+\d+\s+R/i', $trailerSection) && !preg_match('/\/Root\b/i', $trailerSection)) {
+        http_response_code(422);
+        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق تالف (غياب مرجع الفهرس الرئيسي /Root للمستند).']);
+        exit();
+    }
+
+    // 4. Verify Pages (/Type /Page or /Pages)
+    $hasPages = (bool)preg_match('/(?:\/Type\s*\/Page\b|\/Type\s*\/Pages\b|\/Pages\s+\d+\s+\d+\s+R)/i', $bin);
+    if (!$hasPages) {
+        // Decompress Object Streams (/ObjStm) or compressed FlateDecode streams
+        $p = 0;
+        while (!$hasPages && $p < $binLen) {
+            $streamPos = strpos($bin, 'stream', $p);
+            if ($streamPos === false) break;
+            $dictEnd = strrpos(substr($bin, 0, $streamPos), '>>');
+            if ($dictEnd !== false && $dictEnd < $streamPos) {
+                $dictStart = strrpos(substr($bin, 0, $dictEnd), '<<');
+                if ($dictStart !== false) {
+                    $dict = substr($bin, $dictStart, $dictEnd - $dictStart + 2);
+                    if (stripos($dict, '/ObjStm') !== false || stripos($dict, 'FlateDecode') !== false) {
+                        $dataStart = $streamPos + 6;
+                        if (substr($bin, $dataStart, 2) === "\r\n") $dataStart += 2;
+                        elseif ($bin[$dataStart] === "\n" || $bin[$dataStart] === "\r") $dataStart += 1;
+                        $endStreamPos = strpos($bin, 'endstream', $dataStart);
+                        if ($endStreamPos !== false) {
+                            $dataEnd = $endStreamPos;
+                            if ($bin[$dataEnd - 1] === "\n") $dataEnd--;
+                            if ($bin[$dataEnd - 1] === "\r") $dataEnd--;
+                            $rawStream = substr($bin, $dataStart, $dataEnd - $dataStart);
+                            $decomp = @gzuncompress($rawStream);
+                            if ($decomp === false) {
+                                $decomp = @zlib_decode($rawStream);
+                            }
+                            if ($decomp !== false && preg_match('/(?:\/Type\s*\/Page\b|\/Type\s*\/Pages\b|\/Pages\b)/i', $decomp)) {
+                                $hasPages = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            $p = $streamPos + 6;
+        }
+    }
+
+    if (!$hasPages) {
         http_response_code(422);
         echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق غير صالح (لا يحتوي على صفحات أو شجرة صفحات معتمدة).']);
         exit();
