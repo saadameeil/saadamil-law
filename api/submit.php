@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', '0');
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
@@ -56,7 +58,20 @@ if (!empty($requestId)) {
 // 2. Client Inputs Validation
 function strip_invisible_chars($str) {
     if (!is_string($str)) return '';
-    return trim(preg_replace('/[\x{200B}-\x{200D}\x{FEFF}\x{00A0}\x{200E}\x{200F}\x{202A}-\x{202E}]/u', '', $str));
+    return trim(preg_replace('/[\x{200B}-\x{200F}\x{202A}-\x{202E}\x{2060}-\x{206F}\x{FEFF}]/u', '', $str));
+}
+
+function count_readable_chars($str) {
+    if (!is_string($str)) return 0;
+    $cleaned = preg_replace('/[\x{200B}-\x{200F}\x{202A}-\x{202E}\x{2060}-\x{206F}\x{FEFF}\x{0640}\x{064B}-\x{065F}\x{0670}\s\x{00A0}]/u', '', $str);
+    preg_match_all('/[\p{L}\p{N}]/u', $cleaned, $matches);
+    return count($matches[0] ?? []);
+}
+
+function has_genuine_letters($str) {
+    if (!is_string($str)) return false;
+    $cleaned = preg_replace('/[\x{200B}-\x{200F}\x{202A}-\x{202E}\x{2060}-\x{206F}\x{FEFF}\x{0640}\x{064B}-\x{065F}\x{0670}]/u', '', $str);
+    return (bool)preg_match('/\p{L}/u', $cleaned);
 }
 
 $name = strip_invisible_chars($data['name'] ?? '');
@@ -96,7 +111,7 @@ if ($startsWithIraqi) {
 // Non-Iraqi international
 $isIntlValid = (bool)preg_match('/^(?:\+|00)(?!964)[1-9]\d{8,14}$/', $phone);
 
-if (mb_strlen($name) < 2 || !preg_match('/\p{L}/u', $name) || $allSame || $consecutiveRep || $dummySeq || (!$isIraqiValid && !$isIntlValid)) {
+if (count_readable_chars($name) < 2 || !has_genuine_letters($name) || $allSame || $consecutiveRep || $dummySeq || (!$isIraqiValid && !$isIntlValid)) {
     http_response_code(422);
     echo json_encode([
         'status' => 'error',
@@ -105,7 +120,7 @@ if (mb_strlen($name) < 2 || !preg_match('/\p{L}/u', $name) || $allSame || $conse
     exit();
 }
 
-if (empty($location) || mb_strlen($location) < 2 || !preg_match('/[\p{L}\p{N}]/u', $location)) {
+if (empty($location) || count_readable_chars($location) < 2 || !has_genuine_letters($location)) {
     http_response_code(422);
     echo json_encode([
         'status' => 'error',
@@ -114,7 +129,7 @@ if (empty($location) || mb_strlen($location) < 2 || !preg_match('/[\p{L}\p{N}]/u
     exit();
 }
 
-if (empty($summary) || mb_strlen($summary) < 10 || !preg_match('/\p{L}/u', $summary)) {
+if (empty($summary) || count_readable_chars($summary) < 10 || !has_genuine_letters($summary)) {
     http_response_code(422);
     echo json_encode([
         'status' => 'error',
@@ -195,8 +210,12 @@ if (strpos($bin, '%PDF-') === 0) {
         echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق صغير جداً أو غير مكتمل. يرجى إرفاق إشعار تحويل صالح.']);
         exit();
     }
-    $hasPdfMarkers = (strpos($bin, '%%EOF') !== false || strpos($bin, 'startxref') !== false || strpos($bin, '/Root') !== false || strpos($bin, '/Pages') !== false || strpos($bin, 'trailer') !== false);
-    if (!$hasPdfMarkers) {
+    $tail = substr($bin, -2048);
+    $hasEof = (strpos($tail, '%%EOF') !== false);
+    $hasObjects = (bool)preg_match('/\d+\s+\d+\s+obj|stream/i', $bin);
+    $hasCatalogOrXref = (bool)preg_match('/(?:\/Root|\/Pages|\/Catalog|startxref|xref|\/XRef|trailer)/i', $bin);
+
+    if (!$hasEof || !$hasObjects || !$hasCatalogOrXref) {
         http_response_code(422);
         echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق غير مكتمل أو تالف (غياب البنية الأساسية للمستند).']);
         exit();
@@ -258,7 +277,15 @@ array_unshift($existing, $record);
 if (count($existing) > 500) {
     $existing = array_slice($existing, 0, 500);
 }
-file_put_contents($dataFile, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+$res = @file_put_contents($dataFile, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+if ($res === false) {
+    http_response_code(500);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'تعذر تسجيل الطلب في السجل الإداري للمكتب حالياً بسبب ضغط مؤقت في الاتصال. بياناتك وإشعار التحويل محفوظة؛ يرجى النقر لإعادة المحاولة أو التواصل المباشر عبر واتساب المكتب.'
+    ]);
+    exit();
+}
 
 echo json_encode([
     'status' => 'success',

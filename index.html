@@ -53,7 +53,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&amp;family=Noto+Naskh+Arabic:wght@400;500;600;700&amp;family=Cormorant+Garamond:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet"/>
 <link href="favicon.svg" rel="icon" type="image/svg+xml"/>
-<script defer="" src="app.v3.js?v=3.4"></script>
+<script defer="" src="app.v3.js?v=3.5"></script>
 
 <script type="application/ld+json">
 {
@@ -522,17 +522,17 @@
 <span class="dir-search-count" id="dir-search-count" aria-live="polite">120 دعوى متاحة</span>
 </div>
 <div class="dir-pills-bar">
-<button class="dir-filter-pill active" data-filter="all">كافة الاختصاصات (120 دعوى)</button>
-<button class="dir-filter-pill" data-filter="family">محاكم الأحوال الشخصية والأسرة والتركات (29)</button>
-<button class="dir-filter-pill" data-filter="criminal">محاكم التحقيق والجنح والجنايات (32)</button>
-<button class="dir-filter-pill" data-filter="civil">محاكم البداءة والعقارات والدعاوى المدنية (21)</button>
-<button class="dir-filter-pill" data-filter="corporate">الشركات، التجارة، والملكية الفكرية (7)</button>
-<button class="dir-filter-pill" data-filter="labor">محاكم العمل والضمان الاجتماعي (5)</button>
-<button class="dir-filter-pill" data-filter="residency">الإقامة وشؤون العمالة الأجنبية والحدود (4)</button>
-<button class="dir-filter-pill" data-filter="administrative">محكمة القضاء الإداري وقضاء الموظفين ومجلس الدولة (6)</button>
-<button class="dir-filter-pill" data-filter="execution">دوائر التنفيذ والإجراءات التنفيذية الصارمة (7)</button>
-<button class="dir-filter-pill" data-filter="military">القضاء العسكري ومحاكم قوى الأمن الداخلي (3)</button>
-<button class="dir-filter-pill" data-filter="cassation">محاكم الطعون العليا والدستورية والتمييز (6)</button>
+<button class="dir-filter-pill active" data-filter="all" aria-pressed="true">كافة الاختصاصات (120 دعوى)</button>
+<button class="dir-filter-pill" data-filter="family" aria-pressed="false">محاكم الأحوال الشخصية والأسرة والتركات (29)</button>
+<button class="dir-filter-pill" data-filter="criminal" aria-pressed="false">محاكم التحقيق والجنح والجنايات (32)</button>
+<button class="dir-filter-pill" data-filter="civil" aria-pressed="false">محاكم البداءة والعقارات والدعاوى المدنية (21)</button>
+<button class="dir-filter-pill" data-filter="corporate" aria-pressed="false">الشركات، التجارة، والملكية الفكرية (7)</button>
+<button class="dir-filter-pill" data-filter="labor" aria-pressed="false">محاكم العمل والضمان الاجتماعي (5)</button>
+<button class="dir-filter-pill" data-filter="residency" aria-pressed="false">الإقامة وشؤون العمالة الأجنبية والحدود (4)</button>
+<button class="dir-filter-pill" data-filter="administrative" aria-pressed="false">محكمة القضاء الإداري وقضاء الموظفين ومجلس الدولة (6)</button>
+<button class="dir-filter-pill" data-filter="execution" aria-pressed="false">دوائر التنفيذ والإجراءات التنفيذية الصارمة (7)</button>
+<button class="dir-filter-pill" data-filter="military" aria-pressed="false">القضاء العسكري ومحاكم قوى الأمن الداخلي (3)</button>
+<button class="dir-filter-pill" data-filter="cassation" aria-pressed="false">محاكم الطعون العليا والدستورية والتمييز (6)</button>
 </div>
 </div>
 <!-- Directory Content Blocks -->
@@ -1450,7 +1450,7 @@
         </div>
         <div>
           <strong style="color:var(--brand); display:block; margin-bottom:4px;">🕒 التواصل وساعات العمل:</strong>
-          <span>تأكيد الاستلام والتنسيق خلال <strong>ساعتين من ساعات العمل</strong> (السبت – الخميس: 9:00 ص – 6:00 م). وطلبات خارج الدوام والعطل تُباشر في أول ساعة عمل تالية.</span>
+          <span>نبدأ معالجة طلبك خلال <strong>ساعتَي عمل</strong>، ونتواصل فقط بالطريقة وخلال الفترة الآمنة التي اخترتها؛ وإذا اخترت فترة لاحقة يكون التواصل خلالها. (السبت إلى الخميس: 9:00 ص – 6:00 م بتوقيت بغداد، والطلبات خارج الدوام والعطل تُباشر في أول ساعة عمل تالية).</span>
         </div>
       </div>
       <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #d5ded0; font-size: 11.5px; color: #5a4b22; line-height: 1.6;">
@@ -1629,7 +1629,7 @@
         <span>⏰</span> <span>نطاق الجلسة وموعد التواصل:</span>
     </div>
     <p style="margin:0;">
-        جلسة 30 دقيقة مباشرة منفصلة عن وقت الدراسة المسبقة، تشمل فحص حتى 3 مستندات (10 صفحات كحد أقصى)، مع خلاصة مكتوبة خلال 24 ساعة. نتواصل لتأكيد الاستلام والتنسيق خلال <strong>ساعتين</strong> من ساعات العمل الرسمية (السبت – الخميس: 9:00 ص – 6:00 م). وطلبات خارج الدوام تُباشر في أول ساعة عمل تالية. التمثيل القضائي واللوائح باتفاق مستقل.
+        جلسة 30 دقيقة مباشرة منفصلة عن وقت الدراسة المسبقة، تشمل فحص حتى 3 مستندات (10 صفحات كحد أقصى)، مع خلاصة مكتوبة خلال 24 ساعة. نبدأ معالجة طلبك خلال <strong>ساعتَي عمل</strong>، ونتواصل فقط بالطريقة وخلال الفترة الآمنة التي اخترتها؛ وإذا اخترت فترة لاحقة يكون التواصل خلالها (السبت إلى الخميس: 9:00 ص – 6:00 م بتوقيت بغداد، والطلبات خارج الدوام والعطل تُباشر في أول ساعة عمل تالية). التمثيل القضائي واللوائح باتفاق مستقل.
     </p>
 </div>
 </div><!-- /pricing-transparent-card (Properly Closed) -->
@@ -1721,7 +1721,7 @@
 </div>
 <label class="full">هل لديك موعد جلسة قريبة أو تبلغت بإنذار/مهلة محددة؟ <span class="badge-opt">اختياري</span>
     <input id="field-deadline" maxlength="150" name="deadline" placeholder="مثلاً: موعد جلسة مرافعة يوم 25 من هذا الشهر، أو تبليغ بإنذار عدلي..."/>
-    <small class="field-hint">يساعد المحامي في ترتيب أولوية الموعد والاتصال إذا كانت لديك مهلة قانونية عاجلة.</small>
+    <small class="field-hint">يساعد المحامي في ترتيب أولوية الموعد والاتصال إذا كانت لديك مهلة قانونية عاجلة (تنعقد الجلسات عادةً خلال 24–48 ساعة؛ وللحالات الطارئة جداً كجلسات الغد يُرجى التواصل عبر واتساب لتأكيد التوافر قبل الدفع).</small>
 </label>
 <p class="error-msg" hidden="" id="step-1-error" role="alert" aria-live="assertive"></p>
 <div style="font-size:11.5px; color:var(--muted); text-align:center; margin:14px 0 10px; line-height:1.6;">
@@ -1805,10 +1805,10 @@
 <strong>مراجعة طلب الاستشارة قبل الإرسال</strong>
 </div>
 <p class="status-desc" style="font-size:12.5px; line-height:1.8; color:var(--ink); margin:6px 0;">
-  راجع بياناتك قبل الإرسال. يتواصل المكتب معك لتأكيد قيد الطلب وتحديد موعد الجلسة المباشرة المتاح حسب جدول المواعيد بعد مراجعة إشعار التحويل. الاستشارة مدتها 30 دقيقة، وتشمل فحص حتى 3 مستندات. التمثيل القضائي واللوائح باتفاق مستقل.
+  راجع بياناتك قبل الإرسال. يتواصل المكتب معك لتأكيد قيد الطلب وتحديد موعد الجلسة المباشرة المتاح حسب جدول المواعيد بعد مراجعة إشعار التحويل. تنعقد الجلسات عادةً خلال 24 إلى 48 ساعة من تأكيد التحويل وبدء دراسة الملف. إذا كانت لديك جلسة محكمة غداً أو مهلة حتمية طارئة، يُرجى مراسلة واتساب المكتب مباشرة بعد الإرسال لمنح طلبك أولوية المعالجة الفورية وفق التوافر الفعلي.
 </p>
 <div class="sla-mini-notice" style="background:rgba(18,60,49,0.06); border-radius:6px; padding:8px 12px; margin-top:8px; font-size:11.5px; color:var(--brand); line-height:1.6;">
-  ⏰ <strong>موعد التواصل:</strong> نبدأ معالجة الطلب خلال ساعتَي عمل، ونتواصل فقط بالوسيلة وخلال الفترة الآمنة التي اخترتها. إذا اخترت فترة لاحقة، يكون التواصل خلالها. (السبت إلى الخميس: 9:00 ص – 6:00 م، وتُباشر طلبات خارج الدوام والعطل في أول ساعة عمل تالية).
+  ⏰ <strong>موعد التواصل:</strong> نبدأ معالجة طلبك خلال ساعتَي عمل، ونتواصل فقط بالطريقة وخلال الفترة الآمنة التي اخترتها؛ وإذا اخترت فترة لاحقة يكون التواصل خلالها. (السبت إلى الخميس: 9:00 ص – 6:00 م بتوقيت بغداد، والطلبات خارج الدوام والعطل تُباشر في أول ساعة عمل تالية).
 </div>
 </div>
 <div class="docket-toolbar">
@@ -1819,6 +1819,9 @@
 <!-- Action Card for Payment and WhatsApp Submission -->
 <div class="letter-action-card">
 <div class="payment-callout">
+<div class="refund-policy-notice" style="background:#fef2f2; border:1px solid #fecaca; border-radius:6px; padding:10px 14px; margin-bottom:12px; font-size:11.5px; color:#991b1b; line-height:1.7;">
+  ⚖️ <strong>تنبيه مالي وقانوني قبل التحويل:</strong> أتعاب الاستشارة تُخصص لدراسة وقائع القضية وتدقيق مستنداتها مسبقاً قبل انعقاد الجلسة. تصبح الأتعاب غير قابلة للاسترداد بمجرد إشعارك ببدء دراسة الملف فعلياً من قبل المحامي، مع احتفاظك بكامل حقك في انعقاد الجلسة المباشرة (30 دقيقة) واستلام الخلاصة القانونية المكتوبة، أو حفظ الرصيد لسنة كاملة بموجب <a href="privacy.html" target="_blank" style="color:#b91c1c; text-decoration:underline; font-weight:700;">سياسة الخصوصية والاسترداد</a>.
+</div>
 <div class="payment-tabs-bar" role="tablist" aria-label="خيارات السداد المعتمدة">
 <button type="button" class="pay-tab active" id="pay-tab-iq" role="tab" aria-selected="true" aria-controls="pay-method-iq">داخل العراق (سوبر / كي كارد — 75 ألف د.ع)</button>
 <button type="button" class="pay-tab" id="pay-tab-intl" role="tab" aria-selected="false" aria-controls="pay-method-intl">الجالية في الخارج (تحويل بنكي أمريكي — $100 USD) 🌍</button>
