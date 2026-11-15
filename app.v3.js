@@ -46,6 +46,13 @@ let imageVersion = 0;
 let previewUrl = '';
 let previousFocus = null;
 
+function stripInvisibleChars(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/[\u200B-\u200D\uFEFF\u00A0\u200E\u200F\u202A-\u202E]/gu, '')
+    .trim();
+}
+
 function generateRequestId() {
   return 'REQ-' + Date.now() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
 }
@@ -61,6 +68,7 @@ function getArabicDate() {
 // -----------------------------------------------------------------------------
 function setPlan(planId, options = {}) {
   const targetId = (planId === 'international' || planId === 'usd') ? 'international' : 'iraq';
+  const previousPlanId = currentPlan ? currentPlan.id : null;
   currentPlan = PLANS[targetId];
 
   const tabIqEl = document.querySelector('#pay-tab-iq');
@@ -93,12 +101,14 @@ function setPlan(planId, options = {}) {
   const planInput = document.querySelector('#field-plan');
   if (planInput) planInput.value = currentPlan.id;
 
-  // Invalidate receipt if user switched currency
-  if (options.userSwitched && receiptValid) {
-    clearPreview(true);
-    const receiptStatus = document.querySelector('#receipt-status');
-    if (receiptStatus) {
-      receiptStatus.textContent = 'تم تبديل خطة السداد؛ يرجى إرفاق إشعار التحويل المطابق للخطة الجديدة (' + currentPlan.formattedFee + ').';
+  // Invalidate receipt whenever currency/plan changes
+  if (previousPlanId && previousPlanId !== targetId) {
+    if (receiptValid || receiptBase64 || (receipt && receipt.files && receipt.files.length > 0)) {
+      clearPreview(true);
+      const receiptStatus = document.querySelector('#receipt-status');
+      if (receiptStatus) {
+        receiptStatus.textContent = 'تم تبديل خطة السداد؛ يرجى إرفاق إشعار التحويل المطابق للخطة الجديدة (' + currentPlan.formattedFee + ').';
+      }
     }
   }
 
@@ -157,16 +167,22 @@ function resetToStep1() {
 
 function hasActiveDraft() {
   if (formState === 'success') return false;
-  const nameVal = document.querySelector('#field-name')?.value?.trim();
-  const phoneVal = document.querySelector('#field-phone')?.value?.trim();
-  const summaryVal = document.querySelector('#field-summary')?.value?.trim();
+  const nameVal = stripInvisibleChars(document.querySelector('#field-name')?.value || '');
+  const phoneVal = stripInvisibleChars(document.querySelector('#field-phone')?.value || '');
+  const locVal = stripInvisibleChars(document.querySelector('#field-location')?.value || '');
+  const summaryVal = stripInvisibleChars(document.querySelector('#field-summary')?.value || '');
+  const deadlineVal = stripInvisibleChars(document.querySelector('#field-deadline')?.value || '');
+  const oppNameVal = stripInvisibleChars(document.querySelector('#field-opponent-name')?.value || '');
+  const oppPhoneVal = stripInvisibleChars(document.querySelector('#field-opponent-phone')?.value || '');
+  const oppLocVal = stripInvisibleChars(document.querySelector('#field-opponent-loc')?.value || '');
   const hasFile = receipt && receipt.files && receipt.files.length > 0;
-  return Boolean(nameVal || phoneVal || summaryVal || hasFile);
+  return Boolean(nameVal || phoneVal || locVal || summaryVal || deadlineVal || oppNameVal || oppPhoneVal || oppLocVal || hasFile || receiptValid || receiptBase64);
 }
 
 function startNewDraft() {
   formState = 'editing';
   currentDraftRequestId = generateRequestId();
+  hideDraftConflictBanner();
 
   // Remove previous submission success card if present
   const existingSuccess = document.querySelector('.submission-success-card');
@@ -263,6 +279,95 @@ function updateReceiptLock(isValid) {
   }
 }
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+}
+
+function showDraftConflictBanner(newService, oldService, onNewDraftChosen) {
+  let banner = document.querySelector('#draft-conflict-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'draft-conflict-banner';
+    banner.style.cssText = 'background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:12px 14px; margin-bottom:16px;';
+    const formHeading = document.querySelector('#step-1-details .form-heading');
+    if (formHeading && formHeading.parentNode) {
+      formHeading.parentNode.insertBefore(banner, formHeading.nextSibling);
+    } else if (step1Details && typeof step1Details.insertBefore === 'function') {
+      step1Details.insertBefore(banner, step1Details.firstChild);
+    } else if (step1Details && typeof step1Details.appendChild === 'function') {
+      step1Details.appendChild(banner);
+    }
+  }
+  banner.hidden = false;
+  banner.style.display = 'block';
+  banner.innerHTML = `
+    <div style="font-weight:700; color:#92400e; font-size:13px; margin-bottom:4px;">
+      ⚠️ أنت تنقر الآن على خدمة: <strong>${escapeHtml(newService)}</strong>
+    </div>
+    <p style="font-size:12px; color:#78350f; line-height:1.6; margin:0 0 10px 0;">
+      لديك مسودة سابقة محفوظة لقضية: <strong>${escapeHtml(oldService)}</strong>. هل ترغب في بدء طلب جديد لهذه الخدمة، أم استكمال المسودة السابقة؟
+    </p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button type="button" id="btn-conflict-new-request" class="button" style="background:#d97706; color:#fff; font-size:12px; padding:6px 12px; border-radius:4px; border:none; cursor:pointer; font-weight:700;">
+        بدء طلب جديد لهذه الخدمة ↺
+      </button>
+      <button type="button" id="btn-conflict-keep-draft" class="button" style="background:#f3f4f6; color:#374151; font-size:12px; padding:6px 12px; border-radius:4px; border:1px solid #d1d5db; cursor:pointer;">
+        استكمال المسودة السابقة
+      </button>
+    </div>
+  `;
+  const newBtn = banner.querySelector ? banner.querySelector('#btn-conflict-new-request') : null;
+  if (newBtn) {
+    newBtn.onclick = () => {
+      hideDraftConflictBanner();
+      if (typeof onNewDraftChosen === 'function') onNewDraftChosen();
+    };
+  }
+  const keepBtn = banner.querySelector ? banner.querySelector('#btn-conflict-keep-draft') : null;
+  if (keepBtn) {
+    keepBtn.onclick = () => {
+      hideDraftConflictBanner();
+    };
+  }
+}
+
+function hideDraftConflictBanner() {
+  const banner = document.querySelector('#draft-conflict-banner');
+  if (banner) {
+    banner.hidden = true;
+    banner.style.display = 'none';
+  }
+}
+
+function applyServiceContext(serviceTitle, serviceId, categoryId, planId, customSummary) {
+  currentServiceTitle = serviceTitle;
+  currentServiceId = serviceId;
+  currentCategoryId = categoryId;
+  setPlan(planId);
+
+  const serviceIdInput = document.querySelector('#field-service-id');
+  if (serviceIdInput) serviceIdInput.value = currentServiceId;
+  const categoryInput = document.querySelector('#field-category');
+  if (categoryInput) categoryInput.value = currentCategoryId;
+  const planInput = document.querySelector('#field-plan');
+  if (planInput) planInput.value = currentPlan.id;
+
+  const topicDropdown = document.querySelector('#topic');
+  if (topicDropdown) {
+    const matchedVal = mapTopicToSelectValue(serviceTitle, categoryId);
+    if (matchedVal) topicDropdown.value = matchedVal;
+  }
+
+  const summaryInput = document.querySelector('#field-summary');
+  if (summaryInput) {
+    if (customSummary && !summaryInput.value.trim()) summaryInput.value = customSummary;
+    if (currentServiceTitle) {
+      summaryInput.placeholder = 'بخصوص ' + currentServiceTitle + '... اكتب فكرة موجزة عما تطلبه أو وقائع قضيتك.';
+    }
+  }
+}
+
 function openConsultationModal(opts = {}) {
   if (!dialog) return;
   previousFocus = document.activeElement;
@@ -297,16 +402,29 @@ function openConsultationModal(opts = {}) {
     resetToStep1();
   }
 
-  // 2. Set plan atomically (if no active draft or explicitly requested)
-  if (!hasDraft || opts.forcePlan || opts.planId) {
-    setPlan(planId);
-  }
+  // Determine if this is a general/resume opening
+  const isGenericOpen = (!serviceId && (!serviceTitle || serviceTitle === 'احجز استشارة' || serviceTitle === 'طلب استشارة' || serviceTitle === 'افتح ملف استشارتك') && !categoryId);
 
-  // 3. Set service context
-  if (serviceTitle || !currentServiceTitle) {
-    currentServiceTitle = serviceTitle;
-    currentServiceId = serviceId;
-    currentCategoryId = categoryId;
+  if (hasDraft && isGenericOpen) {
+    // Resuming active draft: preserve existing plan, service, category, inputs, receipt intact!
+    hideDraftConflictBanner();
+  } else {
+    // Applying service / plan:
+    // If user has an active draft with a DIFFERENT specific service, show draft conflict prompt
+    const hasDifferentService = (hasDraft && serviceTitle && currentServiceTitle && normalizeArabicText(serviceTitle) !== normalizeArabicText(currentServiceTitle));
+
+    if (hasDifferentService) {
+      showDraftConflictBanner(serviceTitle, currentServiceTitle, () => {
+        startNewDraft();
+        applyServiceContext(serviceTitle, serviceId, categoryId, planId, opts.customSummary);
+      });
+    } else {
+      hideDraftConflictBanner();
+      setPlan(planId);
+      currentServiceTitle = serviceTitle;
+      currentServiceId = serviceId;
+      currentCategoryId = categoryId;
+    }
   }
 
   // 4. Populate hidden inputs for backend tracking
@@ -319,19 +437,21 @@ function openConsultationModal(opts = {}) {
 
   // 5. Update Category Select
   const topicDropdown = document.querySelector('#topic');
-  if (topicDropdown && (serviceTitle || !hasDraft || !topicDropdown.value)) {
-    const matchedVal = mapTopicToSelectValue(serviceTitle, currentCategoryId || category);
-    if (matchedVal) {
-      topicDropdown.value = matchedVal;
-    } else if (!hasDraft) {
-      topicDropdown.selectedIndex = 0;
+  if (topicDropdown) {
+    if (!hasDraft || (!isGenericOpen && currentServiceTitle)) {
+      const matchedVal = mapTopicToSelectValue(currentServiceTitle, currentCategoryId || category);
+      if (matchedVal) {
+        topicDropdown.value = matchedVal;
+      } else if (!hasDraft) {
+        topicDropdown.selectedIndex = 0;
+      }
     }
   }
 
-  // 6. Update summary placeholder & initial query
+  // 6. Update summary placeholder & initial query (NEVER overwrite existing user facts!)
   const summaryInput = document.querySelector('#field-summary');
   if (summaryInput) {
-    if (opts.customSummary) {
+    if (opts.customSummary && !summaryInput.value.trim()) {
       summaryInput.value = opts.customSummary;
     }
     if (currentServiceTitle) {
@@ -529,7 +649,8 @@ function mapTopicToSelectValue(topic = '', category = '') {
 function normalizeArabicText(str) {
   if (!str) return '';
   return String(str)
-    .replace(/[\u064B-\u065F\u0670]/g, '') // Remove tashkeel/diacritics
+    .replace(/[\u064B-\u065F\u0670\u0640]/g, '') // Remove tashkeel/diacritics & tatweel
+    .replace(/[\u200B-\u200D\uFEFF\u00A0\u200E\u200F\u202A-\u202E]/gu, '') // Remove invisible & directional marks
     .replace(/[أإآء]/g, 'ا')
     .replace(/ة/g, 'ه')
     .replace(/[ىي]/g, 'ي')
@@ -537,6 +658,7 @@ function normalizeArabicText(str) {
     .replace(/چ/g, 'ج')
     .replace(/پ/g, 'ب')
     .replace(/[٠-٩]/g, d => '0123456789'['٠١٢٣٤٥٦٧٨٩'.indexOf(d)])
+    .replace(/[۰-۹]/g, d => '0123456789'['۰۱۲۳۴۵۶۷۸۹'.indexOf(d)])
     .toLowerCase()
     .trim();
 }
@@ -546,8 +668,9 @@ function normalizeArabicText(str) {
  */
 function tokenizeArabicQuery(text) {
   if (!text) return [];
-  const normalized = normalizeArabicText(text);
-  const rawWords = normalized.split(/[\s,،؛.\-_/()]+/).filter(w => w.length >= 2);
+  const normalized = normalizeArabicText(text)
+    .replace(/[؟?!*.,;:؛،/\\()\[\]{}"'\-_—–+<>@#$%^&~`|]/g, ' ');
+  const rawWords = normalized.split(/\s+/).filter(w => w.length >= 2);
   return rawWords.map(w => {
     let word = w;
     // Strip leading definite article if word length >= 4
@@ -634,16 +757,16 @@ function goToStep2() {
   const oppLocInput = document.querySelector('#field-opponent-loc');
   const titleRadio = document.querySelector('input[name="title_prefix"]:checked');
 
-  const nameVal = nameInput ? nameInput.value.trim() : '';
-  const phoneVal = phoneInput ? phoneInput.value.trim() : '';
-  const locVal = locInput ? locInput.value.trim() : '';
-  const topicVal = topicInput ? topicInput.value.trim() : '';
-  const summaryVal = summaryInput ? summaryInput.value.trim() : '';
+  const nameVal = stripInvisibleChars(nameInput ? nameInput.value : '');
+  const phoneVal = stripInvisibleChars(phoneInput ? phoneInput.value : '');
+  const locVal = stripInvisibleChars(locInput ? locInput.value : '');
+  const topicVal = stripInvisibleChars(topicInput ? topicInput.value : '');
+  const summaryVal = stripInvisibleChars(summaryInput ? summaryInput.value : '');
   const titlePrefix = titleRadio ? titleRadio.value : 'السيد';
 
   // Strict Validation: Name, Phone, Location, Topic, and Summary are ALL Mandatory
-  if (!nameVal || nameVal.length < 2) {
-    showStep1Error('يرجى كتابة الاسم الكامل (الثنائي أو الثلاثي على الأقل) للمتابعة.', nameInput);
+  if (!nameVal || nameVal.length < 2 || !/\p{L}/u.test(nameVal)) {
+    showStep1Error('يرجى كتابة الاسم الكامل بالحروف للمتابعة (الاسم الثنائي أو الثلاثي على الأقل).', nameInput);
     return;
   }
   if (!phoneVal) {
@@ -658,7 +781,7 @@ function goToStep2() {
   currentCleanPhone = phoneCheck.normalized;
   if (phoneInput) phoneInput.value = currentCleanPhone;
 
-  if (!locVal) {
+  if (!locVal || locVal.length < 2 || !/[\p{L}\p{N}]/u.test(locVal)) {
     showStep1Error('يرجى إدخال عنوان أو منطقة السكن (المحافظة والمنطقة، أو بلد الإقامة للمغتربين).', locInput);
     return;
   }
@@ -666,8 +789,8 @@ function goToStep2() {
     showStep1Error('يرجى اختيار مجال الاستشارة أو النزاع القضائي من القائمة.', topicInput);
     return;
   }
-  if (!summaryVal || summaryVal.length < 5) {
-    showStep1Error('يرجى كتابة ملخص موجز أو السؤال القانوني الأساسي (5 أحرف على الأقل) لمباشرة دراسة المسألة.', summaryInput);
+  if (!summaryVal || summaryVal.length < 10 || !/\p{L}/u.test(summaryVal)) {
+    showStep1Error('يرجى كتابة ملخص موجز أو السؤال القانوني الأساسي (10 أحرف مقروءة على الأقل تتضمن حروفاً) لمباشرة دراسة المسألة.', summaryInput);
     return;
   }
 
@@ -770,8 +893,8 @@ if (receipt) {
       return;
     }
 
-    if (file.size === 0) {
-      if (receiptStatus) receiptStatus.textContent = 'الملف المرفق فارغ (حجمه صفر بايت). يرجى اختيار إشعار تحويل صالح.';
+    if (!file.size || file.size < 128) {
+      if (receiptStatus) receiptStatus.textContent = 'حجم الملف المرفق صغير جداً أو غير مكتمل (أقل من 128 بايت). يرجى اختيار إشعار تحويل صالح.';
       clearPreview(true);
       return;
     }
@@ -826,6 +949,23 @@ if (receipt) {
         if (!base64Part.startsWith('JVBERi0')) { // JVBERi0 is base64 for %PDF-
           throw new Error('الملف المرفق لا يطابق بنية مستندات PDF الصالحة.');
         }
+
+        let decodedStr = '';
+        try {
+          if (typeof atob === 'function') {
+            decodedStr = atob(base64Part.slice(0, 8192)) + (base64Part.length > 8192 ? atob(base64Part.slice(-4096)) : '');
+          } else if (typeof Buffer !== 'undefined') {
+            decodedStr = Buffer.from(base64Part, 'base64').toString('binary');
+          }
+        } catch (decErr) {
+          decodedStr = '';
+        }
+
+        const hasPdfStructure = decodedStr.includes('%%EOF') || decodedStr.includes('startxref') || decodedStr.includes('/Root') || decodedStr.includes('/Pages') || decodedStr.includes('trailer');
+        if (!hasPdfStructure) {
+          throw new Error('ملف PDF المرفق غير مكتمل أو تالف (غياب البنية الأساسية للمستند).');
+        }
+
         if (preview) preview.style.display = 'none';
         if (pdfBox) {
           pdfBox.style.display = 'block';
@@ -958,14 +1098,22 @@ if (briefForm) {
         signal: controller.signal
       });
 
-      const resData = await response.json();
+      let resData = null;
+      try {
+        resData = await response.json();
+      } catch (jsonErr) {
+        resData = null;
+      }
       clearTimeout(timeoutId);
 
       // Verify request id matches current attempt
       if (submissionRequestId !== currentDraftRequestId) return;
 
-      if (!response.ok || resData.status !== 'success') {
-        throw new Error(resData.message || 'تعذر تسجيل الطلب في السجل الإداري للمكتب. يرجى إعادة المحاولة.');
+      if (!response.ok || !resData || typeof resData !== 'object' || resData.status !== 'success') {
+        const errorMsg = (resData && typeof resData === 'object' && resData.message)
+          ? resData.message
+          : 'تعذر تسجيل الطلب في السجل الإداري للمكتب حالياً. يرجى إعادة المحاولة أو التواصل المباشر عبر الواتساب.';
+        throw new Error(errorMsg);
       }
 
       formState = 'success';

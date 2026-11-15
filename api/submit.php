@@ -54,10 +54,15 @@ if (!empty($requestId)) {
 }
 
 // 2. Client Inputs Validation
-$name = trim($data['name'] ?? '');
-$rawPhone = trim($data['phone'] ?? '');
-$location = trim($data['location'] ?? '');
-$summary = trim($data['summary'] ?? '');
+function strip_invisible_chars($str) {
+    if (!is_string($str)) return '';
+    return trim(preg_replace('/[\x{200B}-\x{200D}\x{FEFF}\x{00A0}\x{200E}\x{200F}\x{202A}-\x{202E}]/u', '', $str));
+}
+
+$name = strip_invisible_chars($data['name'] ?? '');
+$rawPhone = strip_invisible_chars($data['phone'] ?? '');
+$location = strip_invisible_chars($data['location'] ?? '');
+$summary = strip_invisible_chars($data['summary'] ?? '');
 
 // Convert Arabic-Indic / Persian digits to standard 0-9
 $arabic = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
@@ -91,16 +96,16 @@ if ($startsWithIraqi) {
 // Non-Iraqi international
 $isIntlValid = (bool)preg_match('/^(?:\+|00)(?!964)[1-9]\d{8,14}$/', $phone);
 
-if (mb_strlen($name) < 2 || $allSame || $consecutiveRep || $dummySeq || (!$isIraqiValid && !$isIntlValid)) {
+if (mb_strlen($name) < 2 || !preg_match('/\p{L}/u', $name) || $allSame || $consecutiveRep || $dummySeq || (!$isIraqiValid && !$isIntlValid)) {
     http_response_code(422);
     echo json_encode([
         'status' => 'error',
-        'message' => 'يرجى إدخال اسم كامل ورقم هاتف حقيقي وفعال للتواصل.'
+        'message' => 'يرجى إدخال اسم حقيقي كامل يتضمن حروفاً مقروءة ورقم هاتف فعال للتواصل.'
     ]);
     exit();
 }
 
-if (empty($location) || mb_strlen($location) < 2) {
+if (empty($location) || mb_strlen($location) < 2 || !preg_match('/[\p{L}\p{N}]/u', $location)) {
     http_response_code(422);
     echo json_encode([
         'status' => 'error',
@@ -109,11 +114,11 @@ if (empty($location) || mb_strlen($location) < 2) {
     exit();
 }
 
-if (empty($summary) || mb_strlen($summary) < 5) {
+if (empty($summary) || mb_strlen($summary) < 10 || !preg_match('/\p{L}/u', $summary)) {
     http_response_code(422);
     echo json_encode([
         'status' => 'error',
-        'message' => 'يرجى كتابة ملخص موجز أو السؤال القانوني الأساسي (5 أحرف على الأقل).'
+        'message' => 'يرجى كتابة ملخص موجز أو السؤال القانوني الأساسي (10 أحرف مقروءة على الأقل تتضمن حروفاً).'
     ]);
     exit();
 }
@@ -182,9 +187,20 @@ if (strlen($bin) > 8.5 * 1024 * 1024) {
     exit();
 }
 
-// Check magic bytes
+// Check magic bytes & format integrity
 $ext = '';
 if (strpos($bin, '%PDF-') === 0) {
+    if (strlen($bin) < 128) {
+        http_response_code(422);
+        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق صغير جداً أو غير مكتمل. يرجى إرفاق إشعار تحويل صالح.']);
+        exit();
+    }
+    $hasPdfMarkers = (strpos($bin, '%%EOF') !== false || strpos($bin, 'startxref') !== false || strpos($bin, '/Root') !== false || strpos($bin, '/Pages') !== false || strpos($bin, 'trailer') !== false);
+    if (!$hasPdfMarkers) {
+        http_response_code(422);
+        echo json_encode(['status' => 'error', 'message' => 'ملف PDF المرفق غير مكتمل أو تالف (غياب البنية الأساسية للمستند).']);
+        exit();
+    }
     $ext = 'pdf';
 } elseif (substr($bin, 0, 3) === "\xFF\xD8\xFF") {
     $ext = 'jpg';
