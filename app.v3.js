@@ -449,11 +449,12 @@ function openConsultationModal(opts = {}) {
   // Determine if this is a general/resume opening
   const isGenericOpen = (!serviceId && (!serviceTitle || serviceTitle === 'احجز استشارة' || serviceTitle === 'طلب استشارة' || serviceTitle === 'افتح ملف استشارتك') && !categoryId);
 
-  const hasDifferentService = (hasDraft && serviceTitle && currentServiceTitle && normalizeArabicText(serviceTitle) !== normalizeArabicText(currentServiceTitle));
+  const effectiveCurrentTitle = currentServiceTitle || document.querySelector('#topic')?.value || '';
+  const hasDifferentService = (hasDraft && serviceTitle && effectiveCurrentTitle && normalizeArabicText(serviceTitle) !== normalizeArabicText(effectiveCurrentTitle));
 
   if (hasDifferentService) {
     // Show conflict prompt and FREEZE draft - do not touch existing inputs or summary!
-    showDraftConflictBanner(serviceTitle, currentServiceTitle, () => {
+    showDraftConflictBanner(serviceTitle, effectiveCurrentTitle, () => {
       startNewDraft();
       applyServiceContext(serviceTitle, serviceId, categoryId, planId, opts.customSummary);
     });
@@ -572,7 +573,7 @@ if (topicDropdownEl) {
     if (catInput) catInput.value = catId;
 
     currentServiceId = '';
-    currentServiceTitle = '';
+    currentServiceTitle = selectedTopic;
     const sIdInput = document.querySelector('#field-service-id');
     if (sIdInput) sIdInput.value = '';
     const sTitleInput = document.querySelector('#field-service-title');
