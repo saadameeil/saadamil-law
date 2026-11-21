@@ -1,7 +1,42 @@
 User-agent: *
 Disallow: /admin.html
-Disallow: /api/
 Disallow: /data/
+Allow: /api/verify-attorney
+Allow: /api/verify-attorney.php
+Allow: /api/articles.php
+Allow: /openapi.json
+Allow: /.well-known/ai-plugin.json
+Allow: /llms.txt
+Allow: /llms-full.txt
+Disallow: /api/
+Allow: /
+
+# Dedicated AI Crawlers & LLM Agents
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
 Allow: /
 
 Sitemap: https://saadamil.com/sitemap.xml

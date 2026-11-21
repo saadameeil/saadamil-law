@@ -1,5 +1,23 @@
-# Disable browser & server cache for dynamic updates
+# Rewrite rules: Canonical redirects & Blocking test.php
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # API endpoints rewrite
+    RewriteRule ^api/verify-attorney/?$ /api/verify-attorney.php [L,QSA]
+    # Permanent Redirect faq.html -> questions.html
+    RewriteRule ^faq\.html$ /questions.html [R=301,L]
+    # Block diagnostic files
+    RewriteRule ^test\.php$ - [F,L]
+</IfModule>
+
+# Security Headers Enforcement
 <IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header unset X-Powered-By
+
     <FilesMatch "\.(html|php)$">
         Header set Cache-Control "no-cache, no-store, must-revalidate"
         Header set Pragma "no-cache"

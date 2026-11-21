@@ -74,6 +74,11 @@
         "addressRegion": "Baghdad Governorate",
         "addressCountry": "IQ"
       },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 33.3152,
+        "longitude": 44.3661
+      },
       "areaServed": [
         {
           "@type": "City",
@@ -89,14 +94,37 @@
         }
       ],
       "founder": {
-        "@type": "Person",
+        "@type": ["Person", "Attorney"],
+        "@id": "https://saadamil.com/#person",
         "name": "المحامي سعد فراس أميل",
-        "alternateName": "Saad Firas Amil",
-        "jobTitle": "محامٍ ومستشار قانوني — مؤسس ورئيس Gold Stone Intelligence LLC",
+        "alternateName": [
+          "Saad Firas Amil",
+          "سعد أميل",
+          "Attorney Saad Amil"
+        ],
+        "jobTitle": "محامٍ ومستشار قانوني — مقيد بنقابة المحامين العراقيين",
         "identifier": "188572",
+        "url": "https://saadamil.com/",
+        "sameAs": [
+          "https://www.wikidata.org/wiki/Q141989381",
+          "https://github.com/saadameeil",
+          "https://github.com/saadameeil/saadamil-law",
+          "https://iraqbar.org"
+        ],
+        "hasCredential": {
+          "@type": "EducationalOccupationalCredential",
+          "name": "إجازة ممارسة المحاماة والاستشارات القانونية",
+          "credentialCategory": "محامٍ ممارس (نقابة المحامين العراقيين)",
+          "recognizedBy": {
+            "@type": "Organization",
+            "name": "نقابة المحامين العراقيين (Iraqi Bar Association)",
+            "url": "https://iraqbar.org"
+          }
+        },
         "memberOf": {
           "@type": "Organization",
-          "name": "نقابة المحامين العراقيين (Iraqi Bar Association)"
+          "name": "نقابة المحامين العراقيين (Iraqi Bar Association)",
+          "url": "https://iraqbar.org"
         }
       },
       "openingHoursSpecification": [
@@ -149,7 +177,11 @@
         ]
       },
       "sameAs": [
-        "https://saadamil.com/en.html"
+        "https://www.wikidata.org/wiki/Q141989381",
+        "https://github.com/saadameeil",
+        "https://github.com/saadameeil/saadamil-law",
+        "https://saadamil.com/en.html",
+        "https://iraqbar.org"
       ]
     },
     {
@@ -206,7 +238,7 @@
 <a href="cybercrime.html">الجرائم الإلكترونية</a>
 <a href="corporate.html">الشركات والاستثمار</a>
 <a href="/#diaspora">المغتربين 🌍</a>
-<a href="faq.html" style="color:var(--accent);font-weight:700;">الموسوعة القضائية (130 سؤال) ⚖️</a>
+<a href="questions.html" style="color:var(--accent);font-weight:700;">الموسوعة القضائية (313 مسألة) ⚖️</a>
 <a href="/#about">عن المحامي</a>
 <a href="/en.html" style="color:var(--accent);font-weight:700;">English 🌐</a>
 </nav><button class="button small header-cta open-consult-modal" type="button" data-action="resume-consultation" data-plan="استشارة قانونية عامة">احجز استشارة 📜</button><button aria-controls="nav" aria-expanded="false" aria-label="فتح القائمة" class="menu-toggle">القائمة <span>☰</span></button></div></header>
@@ -316,7 +348,7 @@
 </div>
 </div>
 </section>
-<section class="about container" id="about"><div class="about-label"><span class="eyebrow"><b>02</b> عن المكتب</span><div class="nameplate"><span aria-hidden="true" class="quote-mark">“</span><span>الدفاع ليس<br/>ردّ فعل.<br/><em>إنّه استعداد.</em></span><small>المنهج المهني الذي يقود العمل</small></div></div><div class="about-copy"><h2>قضيتك تُقرأ<br/><em>بعينٍ على كل تفصيل.</em></h2><p>تبدأ دراسة كل قضية بفهم الوقائع ومراجعة مستنداتها، ثم تقييم الخيارات القانونية وبيان آثارها. يحرص المكتب على وضوح التواصل وتحديد نطاق العمل والأتعاب قبل بدء التكليف.</p><p>يحمل سعد أميل صفة <strong>محامٍ ممارس في نقابة المحامين العراقيين (رقم الهوية: 188572 — الصلاحية أ)</strong>، تمنحه حق الترافع والتمثيل القانوني والطعن التمييزي في قضايا الأحوال الشخصية والجنح ومحاكم البداءة وقضايا التحقيق في عموم العراق. وهو مؤسس ورئيس <bdi>Gold Stone Intelligence LLC</bdi>، المتخصصة في الأدلة الجنائية الرقمية والتحقق من أصالة الوسائط.</p><div class="about-points"><span><b>01</b> تفكيك ثغرات الخصم</span><span><b>02</b> تحصين الموقف الإجرائي</span><span><b>03</b> التحرك الحاسم أمام القضاء</span></div></div></section>
+<section class="about container" id="about"><span id="credentials" style="display:none;" aria-hidden="true"></span><div class="about-label"><span class="eyebrow"><b>02</b> عن المكتب</span><div class="nameplate"><span aria-hidden="true" class="quote-mark">“</span><span>الدفاع ليس<br/>ردّ فعل.<br/><em>إنّه استعداد.</em></span><small>المنهج المهني الذي يقود العمل</small></div></div><div class="about-copy"><h2>قضيتك تُقرأ<br/><em>بعينٍ على كل تفصيل.</em></h2><p>تبدأ دراسة كل قضية بفهم الوقائع ومراجعة مستنداتها، ثم تقييم الخيارات القانونية وبيان آثارها. يحرص المكتب على وضوح التواصل وتحديد نطاق العمل والأتعاب قبل بدء التكليف.</p><p>يحمل سعد أميل صفة <strong>محامٍ ممارس في نقابة المحامين العراقيين (رقم الهوية: 188572 — الصلاحية أ)</strong>، تمنحه حق الترافع والتمثيل القانوني والطعن التمييزي في قضايا الأحوال الشخصية والجنح ومحاكم البداءة وقضايا التحقيق في عموم العراق. وهو مؤسس ورئيس <bdi>Gold Stone Intelligence LLC</bdi>، المتخصصة في الأدلة الجنائية الرقمية والتحقق من أصالة الوسائط.</p><div class="about-points"><span><b>01</b> تفكيك ثغرات الخصم</span><span><b>02</b> تحصين الموقف الإجرائي</span><span><b>03</b> التحرك الحاسم أمام القضاء</span></div></div></section>
 <section class="digital" id="digital"><div class="container digital-inner"><div class="digital-heading"><span class="eyebrow"><b>03</b> الخبرة الرقمية</span><h2>في العصر الرقمي،<br/><em>الحقيقة تحتاج فحصًا.</em></h2><div class="forensic-label"><span>Gold Stone Intelligence</span><small>Digital forensics &amp; media authentication</small></div></div><div class="digital-copy"><p>عندما تتصل القضية بصورة أو تسجيل أو مادة رقمية، يصبح التحقق من أصالتها ومسار تداولها عنصرًا أساسيًا في دراستها. تمتد خبرة المكتب من خلال <bdi>Gold Stone Intelligence LLC</bdi> المسجلة في الولايات المتحدة.</p><div class="digital-topics"><span>التزييف العميق</span><span>استنساخ الصوت</span><span>سلسلة حيازة الدليل</span></div><button class="button small digital-cta-btn" data-topic="فحص دليل رقمي أو تسجيل صوتي جنائي">طلب فحص دليل رقمي أو تسجيل صوتي 📜 ←</button>
 <div class="forensic-hasher-box" style="margin-top: 1.5rem; background: rgba(255,255,255,0.03); border: 1px dashed rgba(212,175,55,0.4); border-radius: 12px; padding: 1.25rem; text-align: center;">
 <div style="font-weight: 700; color: #d4af37; margin-bottom: 0.4rem; font-size: 0.95rem;">🔒 أداة التحقق من البصمة الرقمية (SHA-256 Hasher)</div>
