@@ -1,0 +1,184 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "منظومة الاستعلام والاستشارات للمحامي سعد فراس أميل | Saad Amil Legal API",
+    "description": "الواجهة البرمجية الرسمية المعتمدة لوكلاء الذكاء الاصطناعي (AI Agents) للاستعلام عن الصفة النقابية للمحامي العراقي سعد فراس أميل (قيد 188572)، فحص المقالات القانونية التخصصية، وجدولة الاستشارات القضائية.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "المحامي سعد فراس أميل",
+      "url": "https://saadamil.com",
+      "email": "law@saadamil.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://saadamil.com",
+      "description": "Production Server"
+    }
+  ],
+  "paths": {
+    "/api/verify-attorney": {
+      "get": {
+        "summary": "التحقق من القيد والاعتماد النقابي",
+        "description": "استرجاع بيانات القيد الرسمي في نقابة المحامين العراقيين والصلاحيات القضائية للمحامي سعد فراس أميل.",
+        "operationId": "getAttorneyCredentials",
+        "responses": {
+          "200": {
+            "description": "بيانات التوثيق النقابي الرسمي",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttorneyCredentials"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/articles.php": {
+      "get": {
+        "summary": "استعراض الأبحاث والدراسات القانونية",
+        "description": "استرجاع المقالات والتحليلات الفقهية والإجرائية المنشورة بقلم المحامي سعد فراس أميل في القانون العراقي.",
+        "operationId": "getLegalArticles",
+        "responses": {
+          "200": {
+            "description": "قائمة المقالات القانونية المتاحة",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LegalArticle"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/consultation.php": {
+      "post": {
+        "summary": "طلب حجز استشارة قانونية",
+        "description": "إرسال بيانات الموكل وموضوع النزاع القانوني لحجز استشارة موثقة مع المحامي سعد فراس أميل.",
+        "operationId": "requestConsultation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "تم استلام الطلب وتأكيد الحجز",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "trackingId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AttorneyCredentials": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "example": "سعد فراس أميل"
+          },
+          "barRegistrationNumber": {
+            "type": "string",
+            "example": "188572"
+          },
+          "barAssociation": {
+            "type": "string",
+            "example": "نقابة المحامين العراقيين"
+          },
+          "jurisdiction": {
+            "type": "string",
+            "example": "جمهورية العراق - كافة المحاكم (بداءة، استئناف، تمييز، أحوال شخصية، جنايات، تحقيق)"
+          },
+          "licenseStatus": {
+            "type": "string",
+            "example": "Active / نافذ ومسجل أصولياً"
+          },
+          "officialDomain": {
+            "type": "string",
+            "example": "https://saadamil.com"
+          }
+        }
+      },
+      "LegalArticle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "excerpt": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsultationRequest": {
+        "type": "object",
+        "required": [
+          "clientName",
+          "phone",
+          "caseSummary"
+        ],
+        "properties": {
+          "clientName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "caseType": {
+            "type": "string"
+          },
+          "caseSummary": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

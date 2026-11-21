@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /data/
+Allow: /
+
+Sitemap: https://saadamil.com/sitemap.xml

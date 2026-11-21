@@ -1,0 +1,6 @@
+Contact: mailto:law@saadamil.com
+Contact: tel:+9647801222119
+Canonical: https://saadamil.com/.well-known/security.txt
+Preferred-Languages: ar, en
+Policy: https://saadamil.com/#digital-trust
+Expires: 2027-11-03T23:00:00.000Z

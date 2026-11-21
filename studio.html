@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>استوديو الوثائق والعرائض القضائية A4 — المحامي سعد فراس أميل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --primary-light: #ccfbf1;
+      --accent: #d97706;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --paper-shadow: 0 20px 40px -15px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #0b1120;
+      color: var(--slate-100);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* شريط الرأس العلوي */
+    header {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #0f766e, #14b8a6);
+      color: white;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* أزرار اختيار نوع الوثيقة */
+    .doc-type-tabs {
+      display: flex;
+      background: rgba(30, 41, 59, 0.8);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 4px;
+    }
+
+    .doc-tab {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .doc-tab:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .doc-tab.active {
+      background: #0f766e;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.4);
+    }
+
+    /* أزرار الإجراءات السريعة في الرأس */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0f766e, #0d9488);
+      color: white;
+      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #115e59, #0f766e);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
+      color: #fff;
+    }
+
+    .btn-whatsapp {
+      background: #15803d;
+      color: white;
+    }
+
+    .btn-whatsapp:hover {
+      background: #166534;
+    }
+
+    /* بيئة العمل المقسمة (Split Studio) */
+    .studio-container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 65px);
+      overflow: hidden;
+    }
+
+    /* اللوحة اليسرى: التحكم والمحرر */
+    .editor-pane {
+      width: 440px;
+      min-width: 380px;
+      max-width: 520px;
+      background: #0f172a;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 20px;
+      gap: 18px;
+    }
+
+    /* صندوق رادار ميزانية الصفحة A4 */
+    .page-budget-card {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid rgba(20, 184, 166, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .budget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .budget-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .budget-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .budget-badge.warning {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border-color: rgba(251, 191, 36, 0.3);
+    }
+
+    .budget-badge.danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border-color: rgba(248, 113, 113, 0.3);
+    }
+
+    .budget-track {
+      height: 8px;
+      background: #334155;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .budget-fill {
+      height: 100%;
+      width: 75%;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      border-radius: 4px;
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+
+    .budget-desc {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    /* حقول الإدخال */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      font-family: inherit;
+      font-size: 13px;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 9px 12px;
+      border-radius: 8px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: #14b8a6;
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* اللوحة اليمنى: عارض الورقة الحية A4 */
+    .preview-pane {
+      flex: 1;
+      background: #030712;
+      overflow: auto;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .preview-toolbar {
+      position: sticky;
+      top: 0;
+      margin-bottom: 20px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    .preview-zoom {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+    .zoom-btn {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    /* ورقة A4 الحقيقية بالمليمتر */
+    .a4-page {
+      width: 210mm;
+      min-height: 297mm;
+      max-height: 297mm;
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: var(--paper-shadow);
+      padding: 16mm 18mm 16mm 18mm;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transform-origin: top center;
+      transition: transform 0.2s ease;
+      font-family: 'Amiri', 'Cairo', serif;
+    }
+
+    /* الإطار القضائي للورقة */
+    .page-border {
+      position: absolute;
+      top: 8mm;
+      bottom: 8mm;
+      right: 8mm;
+      left: 8mm;
+      border: 1.5pt solid #0f172a;
+      pointer-events: none;
+    }
+
+    .page-inner-border {
+      position: absolute;
+      top: 9.5mm;
+      bottom: 9.5mm;
+      right: 9.5mm;
+      left: 9.5mm;
+      border: 0.5pt solid #64748b;
+      pointer-events: none;
+    }
+
+    /* محتويات الورقة القضائية */
+    .court-header {
+      text-align: center;
+      border-bottom: 1.5pt solid #0f172a;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .court-header h1 {
+      font-size: 16pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .court-header h2 {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .court-address {
+      text-align: right;
+      font-size: 14pt;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    .parties-box {
+      background: #f8fafc;
+      border: 1pt solid #cbd5e1;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      font-size: 11pt;
+      line-height: 1.6;
+    }
+
+    .parties-box strong {
+      color: #0f172a;
+    }
+
+    .subject-title {
+      text-align: center;
+      background: #f1f5f9;
+      border: 1pt solid #334155;
+      padding: 6px 14px;
+      font-size: 13pt;
+      font-weight: 700;
+      margin: 10px auto 12px auto;
+      display: inline-block;
+      width: 100%;
+      border-radius: 3px;
+    }
+
+    .salutation {
+      font-size: 11pt;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .content-body {
+      font-size: 11.5pt;
+      line-height: 1.65;
+      text-align: justify;
+      flex-grow: 1;
+    }
+
+    .content-body ol, .content-body ul {
+      padding-right: 20px;
+      margin: 6px 0;
+    }
+
+    .content-body li {
+      margin-bottom: 4px;
+    }
+
+    .legal-grounds-box {
+      margin-top: 8px;
+      font-size: 11pt;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .requests-box {
+      margin-top: 10px;
+      background: #f0fdfa;
+      border: 1pt solid #0f766e;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 11pt;
+      line-height: 1.55;
+    }
+
+    .requests-title {
+      font-weight: 700;
+      color: #0f766e;
+      margin-bottom: 4px;
+    }
+
+    /* التذييل والتوقيع */
+    .petition-footer {
+      margin-top: auto;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 11pt;
+    }
+
+    .signature-area {
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .signature-box {
+      margin-top: 6px;
+      border-bottom: 1pt dotted #94a3b8;
+      width: 140px;
+      height: 25px;
+    }
+
+    /* تنسيق الطباعة الصارم لورقة A4 واحدة */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      header, .editor-pane, .preview-toolbar {
+        display: none !important;
+      }
+
+      .studio-container {
+        display: block !important;
+        height: auto !important;
+      }
+
+      .preview-pane {
+        padding: 0 !important;
+        background: #ffffff !important;
+        overflow: visible !important;
+      }
+
+      .a4-page {
+        box-shadow: none !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- شريط الرأس العلوي الفخم -->
+  <header>
+    <div class="brand-section">
+      <div class="brand-badge">PRO A4</div>
+      <div>
+        <div class="brand-title">استوديو الوثائق والعرائض القضائية A4</div>
+        <div class="brand-subtitle">المحامي سعد فراس أميل — هوية نقابة المحامين 188572</div>
+      </div>
+    </div>
+
+    <!-- أزرار نوع الوثيقة -->
+    <div class="doc-type-tabs">
+      <button class="doc-tab active" onclick="switchDocType('petition')">
+        🏛️ عريضة قضائية
+      </button>
+      <button class="doc-tab" onclick="switchDocType('settlement')">
+        🤝 عقد صلح وتسوية
+      </button>
+      <button class="doc-tab" onclick="switchDocType('notice')">
+        ⚖️ إنذار عدلي
+      </button>
+      <button class="doc-tab" onclick="switchDocType('pleading')">
+        📜 لائحة جوابية
+      </button>
+    </div>
+
+    <!-- الإجراءات السريعة -->
+    <div class="header-actions">
+      <button class="btn btn-whatsapp" onclick="copyForWhatsApp()">
+        📱 نسخ للواتساب
+      </button>
+      <button class="btn btn-secondary" onclick="exportTypstPDF()">
+        📄 حفظ PDF لسطح المكتب
+      </button>
+      <button class="btn btn-primary" onclick="window.print()">
+        🖨️ طباعة A4 فورية
+      </button>
+    </div>
+  </header>
+
+  <!-- بيئة العمل المقسمة -->
+  <div class="studio-container">
+
+    <!-- اللوحة اليسرى: التحكم والمحرر -->
+    <div class="editor-pane">
+
+      <!-- رادار ميزانية الصفحة الحية -->
+      <div class="page-budget-card">
+        <div class="budget-header">
+          <div class="budget-title">
+            <span>📏 رادار قياس ورقة A4</span>
+          </div>
+          <span class="budget-badge" id="budgetBadge">84% | صفحة واحدة تماماً</span>
+        </div>
+        <div class="budget-track">
+          <div class="budget-fill" id="budgetFill" style="width: 84%;"></div>
+        </div>
+        <div class="budget-desc" id="budgetDesc">
+          الورقة مضبوطة بنسبة 100% دون أي عبور لصفحة ثانية (Zero Page Overflow).
+        </div>
+      </div>
+
+      <!-- اختيار قوالب سريعة من قضايا المكتب -->
+      <div class="form-group">
+        <label class="form-label">📂 تحميل نموذج سريع من قضايا المكتب:</label>
+        <select class="form-select" id="quickPreset" onchange="loadPreset(this.value)">
+          <option value="">-- اختر ملفاً أو نموذجاً جاهزاً --</option>
+          <option value="omar_furniture">قضية عمر الجبوري (استئخار دعوى أثاث الزوجية)</option>
+          <option value="settlement_contract">عقد صلح وتسوية وتعهد مشروط (أحمد صباح مطر)</option>
+          <option value="eviction_notice">إنذار عدلي كاتب عدل (إخلاء مأجور لانتهاء المدة)</option>
+          <option value="plea_lack_jurisdiction">لائحة جوابية ودفع بعدم الاختصاص الولائي</option>
+        </select>
+      </div>
+
+      <!-- حقول النموذج -->
+      <div class="form-group">
+        <label class="form-label" id="lblCourt">المحكمة أو الجهة القضائية:</label>
+        <input type="text" class="form-input" id="inpCourt" value="قاضي محكمة الأحوال الشخصية في الدورة المحترم" oninput="updateLivePreview()">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" id="lblPlaintiff">الطرف الأول (المدعي/الموكل):</label>
+          <input type="text" class="form-input" id="inpPlaintiff" value="أحمد عبد الله حسن" oninput="updateLivePreview()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">عنوانه:</label>
+          <input type="text" class="form-input" id="inpPlaintiffAddr" value="بغداد - الكرخ" oninput="updateLivePreview()">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" id="lblDefendant">الطرف الثاني (الخصم):</label>
+          <input type="text" class="form-input" id="inpDefendant" value="سعاد محمود خليل" oninput="updateLivePreview()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">عنوانه:</label>
+          <input type="text" class="form-input" id="inpDefendantAddr" value="بغداد - الرصافة" oninput="updateLivePreview()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">الموضوع:</label>
+        <input type="text" class="form-input" id="inpSubject" value="لائحة جوابية ودفع باستئخار دعوى الأثاث الزوجية" oninput="updateLivePreview()">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">الوقائع والأسباب (مسلسلة):</label>
+        <textarea class="form-textarea" id="inpFacts" rows="5" oninput="updateLivePreview()">1. أقامت المدعية الدعوى المرقمة (5977/ش/2026) للمطالبة بأعيان وأثاث الزوجية بمبلغ كيدي قدره (28,360,000) دينار.
+2. إن المدعية ووالدتها أقدمتا على ارتكاب أفعال جرمية قيد التحقيق القضائي في محكمة تحقيق الدورة.
+3. إن أعيان الأثاث الشرعي موجودة عيناً بدار الزوجية المهيأة للشاغلة ولم يتم منعها منها.
+4. إن الفصل في النزاع المدني يتوقف كلياً على نتيجة الشكوى الجزائية وفق قضاء محكمة التمييز الاتحادية.</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">الأسانيد القانونية وقرارات التمييز:</label>
+        <input type="text" class="form-input" id="inpLegalGrounds" value="المادة (83/فقرة 1) من قانون المرافعات المدنية رقم 83 لسنة 1969، وقرار محكمة التمييز الاتحادية رقم 141 لسنة 2026." oninput="updateLivePreview()">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">الطلبات الختامية / البنود الأصولية:</label>
+        <textarea class="form-textarea" id="inpRequests" rows="3" oninput="updateLivePreview()">1. استئخار نظر الدعوى الحالية (5977/ش/2026) حتماً لحين حسم الشكوى الجزائية المنظورة تحقيقاً.
+2. مفاتحة محكمة تحقيق الدورة لإيداع صورة رسمية من الأوراق التحقيقية.
+3. واحتياطاً الحكم برد الدعوى وتحميل المدعية كافة الرسوم والمصاريف وأتعاب المحاماة.</textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">التاريخ:</label>
+          <input type="text" class="form-input" id="inpDate" value="2026 / 11 / 20" oninput="updateLivePreview()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">صفة الوكيل:</label>
+          <input type="text" class="form-input" id="inpLawyerTitle" value="وكيل المدعى عليه المحامي سعد فراس أميل" oninput="updateLivePreview()">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- اللوحة اليمنى: ورقة A4 الحية التفاعلية -->
+    <div class="preview-pane">
+
+      <!-- شريط تكبير وتصغير المعاينة -->
+      <div class="preview-toolbar">
+        <div class="preview-zoom">
+          <span>تكبير المعاينة:</span>
+          <button class="zoom-btn" onclick="adjustZoom(-0.05)">-</button>
+          <span id="zoomLevel">85%</span>
+          <button class="zoom-btn" onclick="adjustZoom(0.05)">+</button>
+          <button class="zoom-btn" style="width: auto; padding: 0 8px; border-radius: 12px; font-size: 11px;" onclick="resetZoom()">ملاءمة</button>
+        </div>
+      </div>
+
+      <!-- الورقة المطبوعة A4 الحقيقية -->
+      <div class="a4-page" id="a4Page">
+        <!-- الإطار المزدوج الرسمي -->
+        <div class="page-border"></div>
+        <div class="page-inner-border"></div>
+
+        <!-- الترويسة القضائية الرسمية -->
+        <div class="court-header">
+          <h1>جمهورية العراق</h1>
+          <h2>مجلس القضاء الأعلى</h2>
+        </div>
+
+        <!-- الجهة القضائية -->
+        <div class="court-address" id="viewCourt">
+          إلى / قاضي محكمة الأحوال الشخصية في الدورة المحترم
+        </div>
+
+        <!-- جدول الخصوم -->
+        <div class="parties-box" id="viewParties">
+          <div><strong id="viewLblPlaintiff">المدعى عليه:</strong> <span id="viewPlaintiff">أحمد عبد الله حسن</span> | <strong>السكن:</strong> <span id="viewPlaintiffAddr">بغداد - الكرخ</span></div>
+          <div><strong>وكيله:</strong> المحامي سعد فراس أميل | <strong>الهوية:</strong> 188572 (الصلاحية ب)</div>
+          <div><strong id="viewLblDefendant">المدعية:</strong> <span id="viewDefendant">سعاد محمود خليل</span> | <strong>السكن:</strong> <span id="viewDefendantAddr">بغداد - الرصافة</span></div>
+        </div>
+
+        <!-- الموضوع -->
+        <div class="subject-title" id="viewSubject">
+          م / لائحة جوابية ودفع باستئخار دعوى الأثاث الزوجية
+        </div>
+
+        <!-- التحية -->
+        <div class="salutation">
+          تحية طيبة واحتراماً:
+        </div>
+
+        <!-- الوقائع -->
+        <div class="content-body" id="viewFacts">
+          <!-- تملأ ديناميكياً -->
+        </div>
+
+        <!-- الأسانيد القانونية -->
+        <div class="legal-grounds-box" id="viewGroundsBox">
+          الأسانيد القانونية: <span id="viewLegalGrounds"></span>
+        </div>
+
+        <!-- الطلبات الختامية -->
+        <div class="requests-box" id="viewRequestsBox">
+          <div class="requests-title" id="viewRequestsTitle">الطلبات الأصولية الختامية:</div>
+          <div id="viewRequests"></div>
+        </div>
+
+        <!-- التذييل والتوقيع -->
+        <div class="petition-footer">
+          <div>
+            <strong>تاريخ التقديم:</strong> <span id="viewDate">2026 / 11 / 20</span>
+          </div>
+          <div class="signature-area">
+            <div id="viewLawyerTitle">وكيل المدعى عليه</div>
+            <div style="font-weight: 700; font-size: 12pt; margin-top: 2px;">المحامي سعد فراس أميل</div>
+            <div style="font-size: 9pt; color: #475569;">هوية نقابة المحامين العراقيين: 188572</div>
+            <div class="signature-box"></div>
+            <div style="font-size: 8pt; color: #94a3b8; margin-top: 2px;">(التوقيع والختم الرسمي)</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    let currentZoom = 0.85;
+    let currentDocType = 'petition';
+
+    // القوالب الجاهزة لقضايا المكتب
+    const PRESETS = {
+      omar_furniture: {
+        type: 'petition',
+        court: 'قاضي محكمة الأحوال الشخصية في الدورة المحترم',
+        plaintiff: 'أحمد عبد الله حسن',
+        plaintiffAddr: 'بغداد - الكرخ',
+        defendant: 'سعاد محمود خليل',
+        defendantAddr: 'بغداد - الرصافة',
+        subject: 'لائحة جوابية ودفع باستئخار دعوى الأثاث الزوجية',
+        facts: `1. أقامت المدعية الدعوى المرقمة (5977/ش/2026) للمطالبة بأعيان وأثاث الزوجية بمبلغ كيدي قدره (28,360,000) دينار.
+2. إن المدعية ووالدتها أقدمتا على ارتكاب أفعال جرمية قيد التحقيق القضائي في محكمة تحقيق الدورة.
+3. إن أعيان الأثاث الشرعي موجودة عيناً بدار الزوجية المهيأة للشاغلة ولم يتم منعها منها.
+4. إن الفصل في النزاع المدني يتوقف كلياً على نتيجة الشكوى الجزائية وفق قضاء محكمة التمييز الاتحادية.`,
+        grounds: 'المادة (83/فقرة 1) من قانون المرافعات المدنية رقم 83 لسنة 1969، وقرار محكمة التمييز الاتحادية رقم 141 لسنة 2026.',
+        requests: `1. استئخار نظر الدعوى الحالية (5977/ش/2026) حتماً لحين حسم الشكوى الجزائية المنظورة تحقيقاً.
+2. مفاتحة محكمة تحقيق الدورة لإيداع صورة رسمية من الأوراق التحقيقية.
+3. واحتياطاً الحكم برد الدعوى وتحميل المدعية كافة الرسوم والمصاريف وأتعاب المحاماة.`,
+        date: '2026 / 11 / 20',
+        lawyerTitle: 'وكيل المدعى عليه'
+      },
+      settlement_contract: {
+        type: 'settlement',
+        court: 'عقد صلح وتسوية ومخالصة نهائية وتعهد مشروط بعدم التعرض',
+        plaintiff: 'أحمد صباح مطر (أبو فهد)',
+        plaintiffAddr: 'بغداد - البوعيثة (الطرف الأول / المتعهد)',
+        defendant: 'زيد عبد الأمير (أبو تحسين)',
+        defendantAddr: 'بغداد - الدورة (الطرف الثاني / المُخالَص)',
+        subject: 'عقد صلح وتسوية ومخالصة نهائية ملزمة للطرفين',
+        facts: `1. التقى الطرفان بكامل الأهلية المعتبرة قانوناً لحسم الخصومة والنزاع بينهما ودياً وقطع دابر أي ادعاء مستقبلي.
+2. يقر الطرف الأول بسداد مبلغ التسوية المتفق عليه كاملاً وقدره (10,000,000) عشرة ملايين دينار عراقي عداً ونقداً في مجلس العقد.
+3. يقر الطرف الثاني باستلام المبلغ وتعد هذه الورقة مخالصة نهائية وإبراءً تاماً وشاملاً لا رجعة فيه من أي حق مدني أو جزائي.
+4. يتعهد الطرفان بعدم التعرض أو الملاحقة القضائية، وتعتبر هذه الاتفاقية سارية بمواجهة الخلف العام والخاص.`,
+        grounds: 'المواد (705 إلى 716) من القانون المدني العراقي رقم 40 لسنة 1951.',
+        requests: `1. إثبات المصالحة واعتبار هذا العقد حجة رسمية قاطعة بين الطرفين.
+2. إسقاط كافة الشكاوى والدعاوى المقامة وإيداع صورة العقد لدى المراجع القضائية والتنفيذية المختصة.`,
+        date: '2026 / 11 / 20',
+        lawyerTitle: 'المحامي المشرف على الصلح والتسوية'
+      },
+      eviction_notice: {
+        type: 'notice',
+        court: 'السيد كاتب عدل بغداد / الكرخ المحترم',
+        plaintiff: 'الحاج مهدي صالح حسن',
+        plaintiffAddr: 'بغداد - المنصور (المنذِر)',
+        defendant: 'قتيبة نوري جاسم',
+        defendantAddr: 'بغداد - الحارثية - شارع الكندي (المنذَر إليه)',
+        subject: 'إنذار عدلي بإخلاء مأجور تجاري وتسليمه خالياً من الشواغل',
+        facts: `1. سبق وأن استأجرتم من موكلي المحل التجاري المرقم (12/4) بموجب عقد الإيجار المبرم بين الطرفين المنتهي مدته.
+2. وحيث إن المدة العقدية قد انتهت أصولياً، وموكلي بحاجة ماسة لاستعادة ملكه وإخلائه قانوناً.
+3. نلفت عنايتكم بأن عدم الإخلاء يوجب عليكم التعويض عن غصب المأجور وأجر المثل المترتب عن فترة التأخير.`,
+        grounds: 'المواد (731 مدني) وقانون إيجار العقار رقم 87 لسنة 1979 المعدل.',
+        requests: `1. إخلاء العقار المأجور وتسليمه لموكلي خالياً من الشواغل خلال مهلة (7 أيام) من تاريخ تبلغكم بهذا الإنذار.
+2. وبخلافه سنتخذ الإجراءات القضائية المستعجلة وإقامة دعوى التخلية وأجر المثل مع كافة الرسوم والمصاريف وأتعاب المحاماة.`,
+        date: '2026 / 11 / 20',
+        lawyerTitle: 'وكيل المنذِر'
+      },
+      plea_lack_jurisdiction: {
+        type: 'pleading',
+        court: 'قاضي محكمة بداءة الكرخ الموقرة',
+        plaintiff: 'زيد علي حسين',
+        plaintiffAddr: 'بغداد - المنصور - م 605',
+        defendant: 'شركة المقاولات العامة للتجهيز',
+        defendantAddr: 'بغداد - الكرادة - بدلالة ممثلها القانوني',
+        subject: 'لائحة بدفع شكلي بالرد لانعدام الاختصاص النوعي والولائي',
+        facts: `1. أقام المدعي دعواه للمطالبة بمستحقات ناشئة عن عقد إداري عام مبرم مع جهة قطاع عام.
+2. وحيث إن العقود الإدارية ينعقد الاختصاص بنظر منازعاتها لمحكمة القضاء الإداري حصراً عملاً بالمبادئ التمييزية المستقرة.
+3. إن الدفع بعدم الاختصاص الولائي من النظام العام ويوجب على المحكمة التصدي له ورده من تلقاء نفسها عملاً بالمادة (14 مرافعات).`,
+        grounds: 'المواد (14 و 73 و 74 مرافعات مدنية رقم 83 لسنة 1969) وقرار الهيئة الموسعة رقم 200 لسنة 2026.',
+        requests: `1. الحكم برد الدعوى شكلاً لعدم اختصاص المحكمة ولائياً ونوعياً بنظرها.
+2. وإلزام الخصم بكافة الرسوم والمصاريف وأتعاب المحاماة.`,
+        date: '2026 / 11 / 20',
+        lawyerTitle: 'وكيل المدعى عليه'
+      }
+    };
+
+    function loadPreset(key) {
+      if (!key || !PRESETS[key]) return;
+      const data = PRESETS[key];
+      switchDocType(data.type);
+      document.getElementById('inpCourt').value = data.court;
+      document.getElementById('inpPlaintiff').value = data.plaintiff;
+      document.getElementById('inpPlaintiffAddr').value = data.plaintiffAddr;
+      document.getElementById('inpDefendant').value = data.defendant;
+      document.getElementById('inpDefendantAddr').value = data.defendantAddr;
+      document.getElementById('inpSubject').value = data.subject;
+      document.getElementById('inpFacts').value = data.facts;
+      document.getElementById('inpLegalGrounds').value = data.grounds;
+      document.getElementById('inpRequests').value = data.requests;
+      document.getElementById('inpDate').value = data.date;
+      document.getElementById('inpLawyerTitle').value = data.lawyerTitle;
+      updateLivePreview();
+    }
+
+    function switchDocType(type) {
+      currentDocType = type;
+      document.querySelectorAll('.doc-tab').forEach(tab => tab.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.doc-tab')).find(b => b.getAttribute('onclick').includes(type));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const lblCourt = document.getElementById('lblCourt');
+      const lblPlaintiff = document.getElementById('lblPlaintiff');
+      const lblDefendant = document.getElementById('lblDefendant');
+
+      if (type === 'settlement') {
+        lblCourt.innerText = 'عنوان وثيقة الصلح:';
+        lblPlaintiff.innerText = 'الطرف الأول (المُتعهِد):';
+        lblDefendant.innerText = 'الطرف الثاني (المُخالَص):';
+      } else if (type === 'notice') {
+        lblCourt.innerText = 'جهة الإنذار (دائرة الكاتب العدل):';
+        lblPlaintiff.innerText = 'المنذِر (الموكل):';
+        lblDefendant.innerText = 'المنذَر إليه (الخصم):';
+      } else {
+        lblCourt.innerText = 'المحكمة أو الجهة القضائية:';
+        lblPlaintiff.innerText = 'المدعي / المشتكي:';
+        lblDefendant.innerText = 'المدعى عليه / المشكو منه:';
+      }
+      updateLivePreview();
+    }
+
+    function updateLivePreview() {
+      const court = document.getElementById('inpCourt').value;
+      const plaintiff = document.getElementById('inpPlaintiff').value;
+      const plaintiffAddr = document.getElementById('inpPlaintiffAddr').value;
+      const defendant = document.getElementById('inpDefendant').value;
+      const defendantAddr = document.getElementById('inpDefendantAddr').value;
+      const subject = document.getElementById('inpSubject').value;
+      const facts = document.getElementById('inpFacts').value;
+      const grounds = document.getElementById('inpLegalGrounds').value;
+      const requests = document.getElementById('inpRequests').value;
+      const date = document.getElementById('inpDate').value;
+      const lawyerTitle = document.getElementById('inpLawyerTitle').value;
+
+      document.getElementById('viewCourt').innerText = court.startsWith('إلى') ? court : `إلى / ${court}`;
+      document.getElementById('viewPlaintiff').innerText = plaintiff;
+      document.getElementById('viewPlaintiffAddr').innerText = plaintiffAddr;
+      document.getElementById('viewDefendant').innerText = defendant;
+      document.getElementById('viewDefendantAddr').innerText = defendantAddr;
+      document.getElementById('viewSubject').innerText = subject.startsWith('م /') ? subject : `م / ${subject}`;
+      document.getElementById('viewLegalGrounds').innerText = grounds;
+      document.getElementById('viewDate').innerText = date;
+      document.getElementById('viewLawyerTitle').innerText = lawyerTitle;
+
+      // تحديث الوقائع المسلسلة
+      const factsContainer = document.getElementById('viewFacts');
+      factsContainer.innerHTML = '';
+      const factsLines = facts.split('\n').filter(l => l.trim().length > 0);
+      const ol = document.createElement('ol');
+      factsLines.forEach(line => {
+        const li = document.createElement('li');
+        li.innerText = line.replace(/^\d+[\.\-]\s*/, '');
+        ol.appendChild(li);
+      });
+      factsContainer.appendChild(ol);
+
+      // تحديث الطلبات
+      const reqContainer = document.getElementById('viewRequests');
+      reqContainer.innerHTML = '';
+      const reqLines = requests.split('\n').filter(l => l.trim().length > 0);
+      const reqOl = document.createElement('ol');
+      reqLines.forEach(line => {
+        const li = document.createElement('li');
+        li.innerText = line.replace(/^\d+[\.\-]\s*/, '');
+        reqOl.appendChild(li);
+      });
+      reqContainer.appendChild(reqOl);
+
+      // حساب رادار ميزانية الصفحة A4
+      calculatePageBudget();
+    }
+
+    function calculatePageBudget() {
+      const page = document.getElementById('a4Page');
+      const scrollH = page.scrollHeight;
+      const clientH = page.clientHeight;
+      const ratio = Math.round((scrollH / clientH) * 100);
+
+      const fill = document.getElementById('budgetFill');
+      const badge = document.getElementById('budgetBadge');
+      const desc = document.getElementById('budgetDesc');
+
+      fill.style.width = Math.min(ratio, 100) + '%';
+
+      if (ratio <= 92) {
+        fill.style.background = 'linear-gradient(90deg, #10b981, #06b6d4)';
+        badge.className = 'budget-badge';
+        badge.innerText = `${ratio}% | صفحة واحدة تماماً`;
+        desc.innerText = 'الورقة مضبوطة بنسبة 100% دون أي عبور لصفحة ثانية (Zero Page Overflow).';
+      } else if (ratio <= 100) {
+        fill.style.background = 'linear-gradient(90deg, #f59e0b, #d97706)';
+        badge.className = 'budget-badge warning';
+        badge.innerText = `${ratio}% | الورقة ممتلئة بالكامل`;
+        desc.innerText = 'الورقة ممتلئة على حافة الصفحة الواحدة، يُنصح بعدم إضافة أسطر جديدة.';
+      } else {
+        fill.style.background = 'linear-gradient(90deg, #ef4444, #dc2626)';
+        badge.className = 'budget-badge danger';
+        badge.innerText = `${ratio}% | تنبيه: تجاوز الصفحة`;
+        desc.innerText = '⚠️ انتبه: النص طويل وسيعبر للصفحة الثانية! اختصر سطراً أو سطوراً ليعود صفحة واحدة.';
+      }
+    }
+
+    function adjustZoom(delta) {
+      currentZoom = Math.max(0.4, Math.min(1.5, currentZoom + delta));
+      document.getElementById('a4Page').style.transform = `scale(${currentZoom})`;
+      document.getElementById('zoomLevel').innerText = Math.round(currentZoom * 100) + '%';
+    }
+
+    function resetZoom() {
+      currentZoom = 0.85;
+      document.getElementById('a4Page').style.transform = `scale(${currentZoom})`;
+      document.getElementById('zoomLevel').innerText = '85%';
+    }
+
+    function copyForWhatsApp() {
+      const court = document.getElementById('inpCourt').value;
+      const plaintiff = document.getElementById('inpPlaintiff').value;
+      const defendant = document.getElementById('inpDefendant').value;
+      const subject = document.getElementById('inpSubject').value;
+      const facts = document.getElementById('inpFacts').value;
+      const grounds = document.getElementById('inpLegalGrounds').value;
+      const requests = document.getElementById('inpRequests').value;
+      const date = document.getElementById('inpDate').value;
+      const lawyer = document.getElementById('inpLawyerTitle').value;
+
+      const text = `⚖️ *جمهورية العراق | مجلس القضاء الأعلى*
+🏛️ *إلى / ${court}*
+
+*الطرف الأول:* ${plaintiff}
+*الطرف الثاني:* ${defendant}
+*الموضوع:* ${subject}
+
+*تحية طيبة واحتراماً:*
+${facts}
+
+*الأسانيد القانونية:*
+${grounds}
+
+*الطلبات الأصولية الختامية:*
+${requests}
+
+*تاريخ التقديم:* ${date}
+*${lawyer}:* المحامي سعد فراس أميل (هوية 188572)
+━━━━━━━━━━━━━━━━━━━━━━
+🖨️ _مجهزة للطباعة A4 الفورية من استديو المحامي سعد فراس أميل_`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert('✅ تم نسخ نص العريضة بتنسيق الواتساب بنجاح!\nجاهز للإرسال فوراً لكشك الاستنساخ أمام المحكمة.');
+      });
+    }
+
+    async function exportTypstPDF() {
+      const payload = {
+        court: document.getElementById('inpCourt').value,
+        plaintiff: document.getElementById('inpPlaintiff').value,
+        plaintiff_address: document.getElementById('inpPlaintiffAddr').value,
+        defendant: document.getElementById('inpDefendant').value,
+        defendant_address: document.getElementById('inpDefendantAddr').value,
+        subject: document.getElementById('inpSubject').value,
+        facts: document.getElementById('inpFacts').value,
+        legal_grounds: document.getElementById('inpLegalGrounds').value,
+        requests: document.getElementById('inpRequests').value,
+        date: document.getElementById('inpDate').value,
+        lawyer: document.getElementById('inpLawyerTitle').value
+      };
+
+      try {
+        const response = await fetch('http://127.0.0.1:8765/api/export-typst', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (response.ok) {
+          const res = await response.json();
+          alert(`✅ تم توليد وتصدير ملف الـ PDF بنجاح عبر محرك Typst!\nالملف محفوظ مباشرة على سطح مكتبك:\n${res.filename}\n\n(عدد الصفحات: ${res.pages} — بدون أي تجاوز للصفحة الثانية)`);
+          return;
+        }
+      } catch (err) {
+        // إذا لم يكن السيرفر المحلي قيد التشغيل، فتح الطباعة المباشرة لـ PDF
+      }
+      window.print();
+    }
+
+    // تشغيل مبدئي
+    window.addEventListener('DOMContentLoaded', () => {
+      resetZoom();
+      updateLivePreview();
+    });
+  </script>
+</body>
+</html>

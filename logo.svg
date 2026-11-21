@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5d77f"/>
+      <stop offset="50%" stop-color="#c5a880"/>
+      <stop offset="100%" stop-color="#9a7a40"/>
+    </linearGradient>
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  
+  <!-- Outer Shield / Circle -->
+  <circle cx="50" cy="50" r="46" fill="#0d1017" stroke="url(#goldGrad)" stroke-width="2.2" filter="url(#subtleGlow)"/>
+  <circle cx="50" cy="50" r="42" fill="none" stroke="#c5a880" stroke-width="0.7" stroke-dasharray="2,2" opacity="0.6"/>
+  
+  <!-- Central Scales of Justice -->
+  <!-- Center Column -->
+  <line x1="50" y1="20" x2="50" y2="76" stroke="url(#goldGrad)" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Top Orb -->
+  <circle cx="50" cy="20" r="3.5" fill="url(#goldGrad)"/>
+  <!-- Crossbeam -->
+  <path d="M 24 33 Q 50 31 76 33" fill="none" stroke="url(#goldGrad)" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="50" cy="32" r="2.2" fill="#0d1017" stroke="url(#goldGrad)" stroke-width="1.5"/>
+  
+  <!-- Left Pan -->
+  <line x1="24" y1="33" x2="17" y2="48" stroke="url(#goldGrad)" stroke-width="1.2"/>
+  <line x1="24" y1="33" x2="31" y2="48" stroke="url(#goldGrad)" stroke-width="1.2"/>
+  <path d="M 16 48 Q 24 55 32 48 Z" fill="url(#goldGrad)" opacity="0.9"/>
+  
+  <!-- Right Pan -->
+  <line x1="76" y1="33" x2="69" y2="48" stroke="url(#goldGrad)" stroke-width="1.2"/>
+  <line x1="76" y1="33" x2="83" y2="48" stroke="url(#goldGrad)" stroke-width="1.2"/>
+  <path d="M 68 48 Q 76 55 84 48 Z" fill="url(#goldGrad)" opacity="0.9"/>
+  
+  <!-- Base Pedestal -->
+  <rect x="36" y="76" width="28" height="3" rx="1.5" fill="url(#goldGrad)"/>
+  <rect x="30" y="79" width="40" height="3.5" rx="1.7" fill="url(#goldGrad)"/>
+</svg>

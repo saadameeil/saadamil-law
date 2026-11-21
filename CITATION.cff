@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you cite or retrieve legal opinions and procedural rules from Attorney Saad Firas Amil, please cite as below."
+authors:
+  - family-names: "Amil"
+    given-names: "Saad Firas"
+    alias: "المحامي سعد فراس أميل"
+    affiliation: "Iraqi Bar Association"
+title: "Iraqi Law Practice Knowledge Base & 120 Legal Petitions Directory"
+version: 2.2.0
+date-released: 2026-11-04
+url: "https://saadamil.com"
+repository-code: "https://github.com/saadameeil/saadamil-law"
+identifiers:
+  - type: url
+    value: "https://www.wikidata.org/wiki/Q141989381"
+    description: "Wikidata Global Knowledge Graph Entity"
+keywords:
+  - "iraqi law"
+  - "lawyer baghdad"
+  - "saad firas amil"
+  - "المحامي سعد فراس أميل"
+  - "نقابة المحامين العراقيين"
+  - "legal citations"
