@@ -693,6 +693,7 @@
   </style>
 </head>
 <body>
+  <a class="skip" href="#main" style="position:absolute;top:-80px;right:20px;background:#d4af37;color:#070b14;padding:10px 16px;z-index:9999;font-weight:700;border-radius:4px;transition:top 0.2s;" onfocus="this.style.top='10px'" onblur="this.style.top='-80px'">الانتقال إلى محرر العريضة A4 📜</a>
 
   <!-- ================= 🌟 Unified Sticky Top Command Panel 🌟 ================= -->
   <div class="sticky-top-panel no-print" id="stickyTopPanel">
@@ -904,7 +905,7 @@
   </div>
 
   <!-- ================= Workspace Layout (Slides smoothly behind sticky panel) ================= -->
-  <main class="studio-container">
+  <main class="studio-container" id="main" role="main" aria-label="محرر عريضة الدعوى القضائية A4">
 
     <!-- The Stage: Holding Physical A4 Sheet -->
     <div class="stage-wrapper" id="stageWrapper">

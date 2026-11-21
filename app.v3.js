@@ -925,6 +925,13 @@ function goToStep2() {
 
   // Scroll modal to top
   if (dialog) dialog.scrollTop = 0;
+
+  // Move focus to Step 2 heading for screen reader navigation
+  const step2Title = document.querySelector('#step-2-payment h2, #step-2-payment h3, #official-doc');
+  if (step2Title) {
+    step2Title.setAttribute('tabindex', '-1');
+    step2Title.focus();
+  }
 }
 
 function showStep1Error(msg, focusEl) {
@@ -933,6 +940,8 @@ function showStep1Error(msg, focusEl) {
     step1Error.textContent = msg;
   }
   if (focusEl && typeof focusEl.focus === 'function') {
+    focusEl.setAttribute('aria-invalid', 'true');
+    focusEl.setAttribute('aria-describedby', 'step-1-error');
     focusEl.focus();
   }
 }
@@ -2173,11 +2182,11 @@ function initArticlesModule() {
     container.innerHTML = articles.map(art => `
       <article class="article-card" style="background:#fff; border:1px solid #d5ded0; border-radius:8px; padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
         <div>
-          <span style="display:inline-block; font-size:11px; font-weight:700; color:var(--brand); background:rgba(18,60,49,0.08); padding:3px 8px; border-radius:4px; margin-bottom:8px;">${art.category}</span>
-          <h3 style="font-size:16px; margin:0 0 10px 0; color:var(--brand); line-height:1.5;">${art.title}</h3>
-          <p style="font-size:13px; color:#475569; line-height:1.7; margin:0 0 16px 0;">${art.excerpt}</p>
+          <span style="display:inline-block; font-size:11px; font-weight:700; color:var(--brand); background:rgba(18,60,49,0.08); padding:3px 8px; border-radius:4px; margin-bottom:8px;">${escapeHtml(art.category)}</span>
+          <h3 style="font-size:16px; margin:0 0 10px 0; color:var(--brand); line-height:1.5;">${escapeHtml(art.title)}</h3>
+          <p style="font-size:13px; color:#475569; line-height:1.7; margin:0 0 16px 0;">${escapeHtml(art.excerpt)}</p>
         </div>
-        <button type="button" class="button small read-art-btn" data-id="${art.id}" style="align-self:flex-start;">قراءة الدراسة القانونية ←</button>
+        <button type="button" class="button small read-art-btn" data-id="${escapeHtml(art.id)}" style="align-self:flex-start;">قراءة الدراسة القانونية ←</button>
       </article>
     `).join('');
 

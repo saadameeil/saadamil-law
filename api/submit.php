@@ -24,14 +24,30 @@ if (!$data || !is_array($data)) {
 // 1. Idempotency Check by Request ID
 $dataDir = __DIR__ . '/../data';
 $receiptsDir = $dataDir . '/receipts';
+$htaccessContent = "<IfModule mod_authz_core.c>\n    Require all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\n    Order Deny,Allow\n    Deny from all\n</IfModule>\n";
 if (!is_dir($dataDir)) {
     mkdir($dataDir, 0755, true);
-    file_put_contents($dataDir . '/.htaccess', "Order Deny,Allow\nDeny from all\n");
+    file_put_contents($dataDir . '/.htaccess', $htaccessContent);
 }
 if (!is_dir($receiptsDir)) {
     mkdir($receiptsDir, 0755, true);
-    file_put_contents($receiptsDir . '/.htaccess', "Order Deny,Allow\nDeny from all\n");
+    file_put_contents($receiptsDir . '/.htaccess', $htaccessContent);
 }
+
+// IP-based Rate Limiting (Anti-Spam & DoS Protection)
+$clientIp = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+$rateFile = $dataDir . '/rate_limit.json';
+$rateData = file_exists($rateFile) ? json_decode(file_get_contents($rateFile), true) ?: [] : [];
+$now = time();
+$ipHistory = array_filter($rateData[$clientIp] ?? [], function($t) use ($now) { return ($now - $t) < 3600; });
+if (count($ipHistory) >= 15) {
+    http_response_code(429);
+    echo json_encode(['status' => 'error', 'message' => 'تم تجاوز الحد الأقصى للمحاولات المسموح بها في الساعة. يرجى الانتظار أو التواصل عبر واتساب المكتب المباشر.']);
+    exit();
+}
+$ipHistory[] = $now;
+$rateData[$clientIp] = $ipHistory;
+@file_put_contents($rateFile, json_encode($rateData, JSON_UNESCAPED_UNICODE), LOCK_EX);
 
 $dataFile = $dataDir . '/consultations.json';
 $existing = [];
@@ -358,10 +374,15 @@ $record = [
 ];
 
 array_unshift($existing, $record);
-if (count($existing) > 500) {
-    $existing = array_slice($existing, 0, 500);
+if (count($existing) > 1000) {
+    $overflow = array_slice($existing, 1000);
+    $existing = array_slice($existing, 0, 1000);
+    $archiveFile = $dataDir . '/consultations_archive_' . date('Y') . '.json';
+    $archiveData = file_exists($archiveFile) ? json_decode(file_get_contents($archiveFile), true) ?: [] : [];
+    $archiveData = array_merge($archiveData, $overflow);
+    @file_put_contents($archiveFile, json_encode($archiveData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
 }
-$res = @file_put_contents($dataFile, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+$res = @file_put_contents($dataFile, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
 if ($res === false) {
     http_response_code(500);
     echo json_encode([
