@@ -1,67 +1,22 @@
-name: 'Instant AI & Search Indexing (IndexNow)'
-
+name: Notify published sitemap pages through IndexNow
 on:
   push:
-    branches:
-      - main
-      - master
-  schedule:
-    # Daily indexing refresh for LLM crawlers (Perplexity, Bing, OpenAI Search, Yandex)
-    - cron: '0 6 * * *'
+    branches: [master, main]
+    paths:
+      - "*.html"
+      - "articles/*.html"
+      - "sitemap.xml"
   workflow_dispatch:
-
+permissions:
+  contents: read
 jobs:
   indexnow:
+    if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip indexnow]')
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Ping IndexNow Global Gateway
-        run: |
-          curl -s -i -X POST "https://api.indexnow.org/indexnow" \
-            -H "Content-Type: application/json; charset=utf-8" \
-            -d '{
-              "host": "saadamil.com",
-              "key": "09dfa077df5143ac933663f07e06aa0f",
-              "keyLocation": "https://saadamil.com/09dfa077df5143ac933663f07e06aa0f.txt",
-              "urlList": [
-                "https://saadamil.com/",
-                "https://saadamil.com/en.html",
-                "https://saadamil.com/questions.html",
-                "https://saadamil.com/questions-en.html",
-                "https://saadamil.com/real-estate.html",
-                "https://saadamil.com/family-law.html",
-                "https://saadamil.com/corporate.html",
-                "https://saadamil.com/cybercrime.html",
-                "https://saadamil.com/petition.html",
-                "https://saadamil.com/articles/art-1.html",
-                "https://saadamil.com/articles/art-2.html",
-                "https://saadamil.com/articles/art-3.html",
-                "https://saadamil.com/feed.xml",
-                "https://saadamil.com/openapi.json",
-                "https://saadamil.com/.well-known/ai-plugin.json",
-                "https://saadamil.com/llms.txt",
-                "https://saadamil.com/llms-full.txt",
-                "https://saadamil.com/sitemap.xml"
-              ]
-            }'
-
-      - name: Ping Microsoft Bing IndexNow Directly
-        run: |
-          curl -s -i -X POST "https://www.bing.com/indexnow" \
-            -H "Content-Type: application/json; charset=utf-8" \
-            -d '{
-              "host": "saadamil.com",
-              "key": "09dfa077df5143ac933663f07e06aa0f",
-              "keyLocation": "https://saadamil.com/09dfa077df5143ac933663f07e06aa0f.txt",
-              "urlList": [
-                "https://saadamil.com/",
-                "https://saadamil.com/en.html",
-                "https://saadamil.com/questions.html",
-                "https://saadamil.com/real-estate.html",
-                "https://saadamil.com/family-law.html",
-                "https://saadamil.com/corporate.html",
-                "https://saadamil.com/cybercrime.html",
-                "https://saadamil.com/feed.xml",
-                "https://saadamil.com/openapi.json",
-                "https://saadamil.com/llms.txt"
-              ]
-            }'
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Notify changed public pages after checking the live sitemap
+        run: python3 .github/scripts/indexnow.py
