@@ -1,0 +1,10 @@
+/* Existing public contact details, shared by both languages. */
+.service-contact{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:22px 0 8px}
+.service-contact .button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;max-width:100%;padding:10px 16px;white-space:normal;text-align:center;line-height:1.7}
+.service-contact .contact-phone{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+.service-contact .contact-whatsapp{background:#183d32;color:#fff;border:1px solid #183d32}
+.service-contact .contact-phone{background:#fff;color:#183d32;border:1px solid #b9c9c0}
+.service-contact a:focus-visible,.service-links a:focus-visible{outline:3px solid #b58b41;outline-offset:4px}
+.service-links{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.service-links a{display:block;line-height:1.8;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:540px){.service-contact{align-items:stretch}.service-contact .button{width:100%;box-sizing:border-box}}
