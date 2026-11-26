@@ -1,7 +1,7 @@
 /**
  * saadamil.com - Official Client Application Script (v3.3 Master Production Release)
  * Master Client Journey, Atomic Plan Synchronization, Legal Integrity & Search Engine
- * Attorney Saad Firas Amil (Iraqi Bar Association ID: 188572 - Category A)
+ * Attorney Saad Firas Amil (Iraqi Bar Association ID: 188572 - Category C)
  */
 
 'use strict';
@@ -16,20 +16,18 @@ const PLANS = {
   iraq: {
     id: 'iraq',
     name: 'استشارة قانونية ودراسة ملف',
-    fee: 75000,
     currency: 'IQD',
-    formattedFee: '75,000 د.ع',
+    formattedFee: 'تُحدَّد بالاتفاق قبل السداد',
     paymentMethod: 'qi_super',
-    statusDesc: 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية وتأكيد الموعد فور مراجعة وتأكيد أتعاب الاستشارة المعتمدة (75,000 د.ع).'
+    statusDesc: 'تُباشر دراسة الملف وتدقيق المستندات والخيارات القانونية وتأكيد الموعد بعد الاتفاق على الأتعاب ومراجعة وتأكيد السداد.'
   },
   international: {
     id: 'international',
     name: 'استشارة قانونية ودراسة ملف للمغتربين والشركات بالخارج',
-    fee: 100,
     currency: 'USD',
-    formattedFee: '$100 USD',
+    formattedFee: 'تُحدَّد بالاتفاق قبل السداد',
     paymentMethod: 'usd_chase',
-    statusDesc: 'تُباشر دراسة الملف وتدقيق المستندات والخيارات الأصولية وتأكيد الموعد فور مراجعة أتعاب الاستشارة الدولية المعتمدة ($100 USD).'
+    statusDesc: 'تُباشر دراسة الملف وتدقيق المستندات والخيارات الأصولية وتأكيد الموعد بعد الاتفاق على الأتعاب ومراجعة وتأكيد السداد.'
   }
 };
 
@@ -311,14 +309,14 @@ function updateReceiptLock(isValid) {
     finalSubmitBtn.classList.remove('locked');
     finalSubmitBtn.classList.add('unlocked');
     if (submitBtnText) {
-      submitBtnText.textContent = `إرسال طلب الاستشارة للمراجعة والتدقيق (${currentPlan.formattedFee}) ←`;
+      submitBtnText.textContent = `إرسال طلب الاستشارة للمراجعة والتدقيق ←`;
     }
   } else {
     finalSubmitBtn.disabled = true;
     finalSubmitBtn.classList.remove('unlocked');
     finalSubmitBtn.classList.add('locked');
     if (submitBtnText) {
-      submitBtnText.textContent = `🔒 يرجى إرفاق إشعار التحويل لتفعيل الإرسال (${currentPlan.formattedFee})`;
+      submitBtnText.textContent = `🔒 يرجى إرفاق إشعار التحويل بعد الاتفاق على الأتعاب لتفعيل الإرسال`;
     }
   }
 }
@@ -925,13 +923,6 @@ function goToStep2() {
 
   // Scroll modal to top
   if (dialog) dialog.scrollTop = 0;
-
-  // Move focus to Step 2 heading for screen reader navigation
-  const step2Title = document.querySelector('#step-2-payment h2, #step-2-payment h3, #official-doc');
-  if (step2Title) {
-    step2Title.setAttribute('tabindex', '-1');
-    step2Title.focus();
-  }
 }
 
 function showStep1Error(msg, focusEl) {
@@ -940,8 +931,6 @@ function showStep1Error(msg, focusEl) {
     step1Error.textContent = msg;
   }
   if (focusEl && typeof focusEl.focus === 'function') {
-    focusEl.setAttribute('aria-invalid', 'true');
-    focusEl.setAttribute('aria-describedby', 'step-1-error');
     focusEl.focus();
   }
 }
@@ -2136,6 +2125,13 @@ function initArticlesModule() {
     }
   }
 
+  // Verified existing public article pages; unknown/new CMS IDs retain modal-only behavior.
+  const ARTICLE_PAGE_URLS = Object.freeze({
+    'art-1': 'articles/art-1.html',
+    'art-2': 'articles/art-2.html',
+    'art-3': 'articles/art-3.html'
+  });
+
   const SEED_ARTICLES = [
     {
       id: 'art-1',
@@ -2182,18 +2178,25 @@ function initArticlesModule() {
     container.innerHTML = articles.map(art => `
       <article class="article-card" style="background:#fff; border:1px solid #d5ded0; border-radius:8px; padding:20px; display:flex; flex-direction:column; justify-content:space-between;">
         <div>
-          <span style="display:inline-block; font-size:11px; font-weight:700; color:var(--brand); background:rgba(18,60,49,0.08); padding:3px 8px; border-radius:4px; margin-bottom:8px;">${escapeHtml(art.category)}</span>
-          <h3 style="font-size:16px; margin:0 0 10px 0; color:var(--brand); line-height:1.5;">${escapeHtml(art.title)}</h3>
-          <p style="font-size:13px; color:#475569; line-height:1.7; margin:0 0 16px 0;">${escapeHtml(art.excerpt)}</p>
+          <span style="display:inline-block; font-size:11px; font-weight:700; color:var(--brand); background:rgba(18,60,49,0.08); padding:3px 8px; border-radius:4px; margin-bottom:8px;">${art.category}</span>
+          <h3 style="font-size:16px; margin:0 0 10px 0; color:var(--brand); line-height:1.5;">${art.title}</h3>
+          <p style="font-size:13px; color:#475569; line-height:1.7; margin:0 0 16px 0;">${art.excerpt}</p>
         </div>
-        <button type="button" class="button small read-art-btn" data-id="${escapeHtml(art.id)}" style="align-self:flex-start;">قراءة الدراسة القانونية ←</button>
+        ${ARTICLE_PAGE_URLS[art.id]
+          ? `<a href="${ARTICLE_PAGE_URLS[art.id]}" class="button small read-art-btn" data-id="${art.id}" style="align-self:flex-start;">قراءة الدراسة القانونية ←</a>`
+          : `<button type="button" class="button small read-art-btn" data-id="${art.id}" style="align-self:flex-start;">قراءة الدراسة القانونية ←</button>`}
       </article>
     `).join('');
 
     container.querySelectorAll('.read-art-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        lastFocusedArticleBtn = btn;
+      btn.addEventListener('click', (event) => {
         const art = articles.find(a => a.id === btn.dataset.id);
+        // Keep ordinary reading in the existing modal; modified clicks retain real link navigation.
+        if (btn.tagName === 'A') {
+          if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0 || !art || !readerModal) return;
+          event.preventDefault();
+        }
+        lastFocusedArticleBtn = btn;
         if (art && readerModal) {
           currentArticleTitle = art.title;
           currentArticleCategory = art.category;

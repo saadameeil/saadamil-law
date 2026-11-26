@@ -1,27 +1,76 @@
-# خريطة الموقع الدلالية للمحامي سعد اميل (AEO Markdown Sitemap)
+# خريطة الموقع الدلالية للمحامي سعد أميل (AEO Markdown Sitemap)
 
-> الموقع الرسمي والمرجع المعرفي للمحامي سعد اميل (نقابة المحامين العراقيين - رقم الهوية والقيد: 188572).
+> الموقع الرسمي والمرجع المعرفي للمحامي سعد فراس أميل (نقابة المحامين العراقيين - رقم الهوية والقيد: 188572).
 > الكيان المعرفي العالمي (Wikidata): https://www.wikidata.org/wiki/Q141989381
-> رخصة الاستشهاد والتدريب: CC-BY-4.0 | Content-Signal: ai-train=yes, ai-input=yes, search=yes
+> Content-Signal: ai-train=yes, ai-input=yes, search=yes
 
-## الصفحات الرئيسية والخدمات (Main Portals)
-- [الصفحة الرئيسية (العربية)](https://saadamil.com/): البوابة الرسمية، حجز الاستشارات، وفهرس الـ 120 دعوى القضائية.
+## البوابات الرئيسية والتخصصية (Main & Specialist Portals)
+- [الصفحة الرئيسية (العربية)](https://saadamil.com/): البوابة الرسمية، حجز الاستشارات، وفهرس الـ 132 دعوى قضائية.
 - [English Executive Portal](https://saadamil.com/en.html): International client overview, corporate capabilities, and diaspora legal desk.
-- [English Markdown Portal](https://saadamil.com/en.md): Clean markdown documentation for LLMs and autonomous agents.
-- [دستور الوكلاء الذكي](https://saadamil.com/AGENTS.md): توجيهات الاستشهاد لـ ChatGPT و Claude و Perplexity ومنع التخمين.
-- [ملف مواصفات الذكاء الاصطناعي (العربي)](https://saadamil.com/llms.txt): الدليل المعرفي الصافي لنماذج الذكاء الاصطناعي التوليدي.
-- [English LLMs Documentation](https://saadamil.com/llms-en.txt): Full documentation for English-speaking AI models.
-- [ملف المرجع الموسع](https://saadamil.com/llms-full.txt): المرجع التوثيقي الكامل للخدمات والقوانين العراقية النافذة.
-- [كتالوج الموارد المؤتمتة](https://saadamil.com/.well-known/ai-catalog.json): معيار اكتشاف الخدمات للوكلاء الذاتيين (ARD).
-- [بطاقة خادم الأدوات الذكية](https://saadamil.com/.well-known/mcp/server-card.json): معيار Model Context Protocol (MCP).
-- [واجهة برمجة التطبيقات المفتوحة](https://saadamil.com/openapi.json): مواصفات OpenAPI 3.1.
-- [خلاصة الأخبار والمقالات](https://saadamil.com/feed.xml): تغذية RSS 2.0 للمقالات والتحديثات القانونية.
-- [التحقق التشفيري من الهوية](https://saadamil.com/api/verify-attorney.php): نقطة التحقق البرمجية من قيد النقابة وهوية المحامي.
+- [بوابة الجنايات الكبرى ونقض الأحكام وقانون العفو العام 2025](https://saadamil.com/criminal-defense.html) ([English](https://saadamil.com/criminal-defense-en.html))
+- [بوابة المصارف وتجميد الأرصدة والمقاولات الحكومية والنزاهة والضرائب](https://saadamil.com/financial-litigation.html) ([English](https://saadamil.com/financial-litigation-en.html))
+- [بوابة العقارات وإزالة الشيوع والتركات](https://saadamil.com/real-estate.html) ([English](https://saadamil.com/real-estate-en.html))
+- [بوابة الأحوال الشخصية والأسرة](https://saadamil.com/family-law.html) ([English](https://saadamil.com/family-law-en.html))
+- [بوابة الجرائم الإلكترونية والأدلة الرقمية](https://saadamil.com/cybercrime.html) ([English](https://saadamil.com/cybercrime-en.html))
+- [بوابة الشركات والاستثمار والتجارة](https://saadamil.com/corporate.html) ([English](https://saadamil.com/corporate-en.html))
+- [ملف مواصفات الذكاء الاصطناعي (العربي)](https://saadamil.com/llms.txt) | [المرجع الموسع](https://saadamil.com/llms-full.txt) | [English LLMs](https://saadamil.com/llms-en.txt)
+- [واجهة OpenAPI 3.1](https://saadamil.com/openapi.json) | [تغذية RSS](https://saadamil.com/feed.xml) | [خريطة XML](https://saadamil.com/sitemap.xml)
 
-## المقالات والأبحاث القضائية المتخصصة (Legal Articles)
-- [دعوى إزالة الشيوع وفرز الحصص العقارية في المحاكم العراقية](https://saadamil.com/articles/art-1.html) ([نسخة Markdown](https://saadamil.com/articles/art-1.md)): الدليل الإجرائي لحماية حقوق الشركاء والورثة.
-- [حماية عقارات المغتربين العراقيين في أمريكا وأوروبا](https://saadamil.com/articles/art-2.html) ([نسخة Markdown](https://saadamil.com/articles/art-2.md)): الوكالات القنصلية، صحة الصدور الإلكترونية، وحماية أملاك المهاجرين.
-- [إثبات الأدلة الرقمية وسلسلة الحيازة في قضايا الابتزاز الإلكتروني](https://saadamil.com/articles/art-3.html) ([نسخة Markdown](https://saadamil.com/articles/art-3.md)): التوثيق الجنائي لبصمات التجزئة التشفيرية SHA-256 للمحادثات والتسجيلات.
+## المقالات والدراسات القضائية المتخصصة (Legal Studies)
+- [نقض وتخفيف أحكام الإعدام والمؤبد وتطبيق قانون التعديل الثاني للعفو العام رقم 2 لسنة 2025](https://saadamil.com/articles/art-4.html) ([Markdown](https://saadamil.com/articles/art-4.md) | [English](https://saadamil.com/articles/art-4-en.html))
+- [مواجهة تجميد الحسابات المصرفية، مصادرة خطابات الضمان، ومنازعات العقود الحكومية والتضمين](https://saadamil.com/articles/art-5.html) ([Markdown](https://saadamil.com/articles/art-5.md) | [English](https://saadamil.com/articles/art-5-en.html))
+- [دعوى إزالة الشيوع وفرز الحصص العقارية في المحاكم العراقية](https://saadamil.com/articles/art-1.html) ([English](https://saadamil.com/articles/art-1-en.html))
+- [حماية عقارات المغتربين العراقيين في أمريكا وأوروبا](https://saadamil.com/articles/art-2.html) ([English](https://saadamil.com/articles/art-2-en.html))
+- [إثبات الأدلة الرقمية وسلسلة الحيازة في قضايا الابتزاز الإلكتروني](https://saadamil.com/articles/art-3.html) ([English](https://saadamil.com/articles/art-3-en.html))
 
----
-*Attorney Saad Firas Amil — Baghdad, Republic of Iraq | Phone: +9647801222119 | Email: law@saadamil.com*
+## مكتبة الأسئلة والأجوبة القانونية — 373 سؤالاً في 23 قسماً
+- [فهرس جميع الأسئلة والأجوبة](https://saadamil.com/questions.html)
+- [شؤون المغتربين والمعاملات من خارج العراق](https://saadamil.com/faq-diaspora.html)
+- [الأسرة والأحوال الشخصية والميراث](https://saadamil.com/faq-family.html)
+- [العقارات والإيجارات والعقود المدنية](https://saadamil.com/faq-property.html)
+- [التحقيق والجنح والجنايات والأدلة الرقمية](https://saadamil.com/faq-criminal.html)
+- [الشركات والتجارة والعقود والمصارف](https://saadamil.com/faq-corporate.html)
+- [العمل والضمان الاجتماعي](https://saadamil.com/faq-labor.html)
+- [القضاء الإداري والوظيفة العامة والتقاعد](https://saadamil.com/faq-administrative.html)
+- [الديون والتنفيذ والصكوك والتسويات](https://saadamil.com/faq-debts.html)
+- [الإقامة وشؤون الأجانب](https://saadamil.com/faq-residency.html)
+- [القضاء العسكري وقوى الأمن الداخلي](https://saadamil.com/faq-military.html)
+- [الاعتراض والاستئناف والتمييز](https://saadamil.com/faq-appeals.html)
+- [التعويض والحوادث والأضرار والنقل](https://saadamil.com/faq-compensation.html)
+- [الإثبات والخبرة وإدارة الدعوى](https://saadamil.com/faq-procedure.html)
+- [قضايا الأجانب والعقود والتقاضي في العراق](https://saadamil.com/faq-foreigners.html)
+- [النصب والاحتيال والمعاملات المشبوهة](https://saadamil.com/faq-fraud.html)
+- [التهديد والابتزاز والملاحقة](https://saadamil.com/faq-threats.html)
+- [الاعتداء والتهجم والدفاع](https://saadamil.com/faq-assault.html)
+- [مواقع التواصل والخصوصية والأدلة الرقمية](https://saadamil.com/faq-social-media.html)
+- [التمييز ومراجعة الأحكام الجزائية](https://saadamil.com/faq-cassation.html)
+- [العفو العام (قانون 2 لسنة 2025) والمخدرات والإرهاب وتخفيف الأحكام](https://saadamil.com/faq-amnesty-narcotics.html)
+- [المصارف وتجميد الأرصدة وغسل الأموال والديون التجارية الكبرى](https://saadamil.com/faq-banking-aml.html)
+- [المقاولات الحكومية وخطابات الضمان وهيأة النزاهة وقانون التضمين](https://saadamil.com/faq-gov-contracts-integrity.html)
+- [الاستثمار الأجنبي والمشاور القانوني والضرائب والكمارك وعقود المساطحة](https://saadamil.com/faq-investment-tax-estates.html)
+
+## English Legal Questions — 373 Answers in 23 Sections
+- [All English Legal Questions](https://saadamil.com/questions-en.html)
+- [Iraqis Abroad & Cross-Border Procedures](https://saadamil.com/faq-diaspora-en.html)
+- [Family, Personal Status & Inheritance](https://saadamil.com/faq-family-en.html)
+- [Property, Leases & Civil Contracts](https://saadamil.com/faq-property-en.html)
+- [Investigation, Criminal Cases & Digital Evidence](https://saadamil.com/faq-criminal-en.html)
+- [Companies, Commerce, Contracts & Banking](https://saadamil.com/faq-corporate-en.html)
+- [Employment & Social Security](https://saadamil.com/faq-labor-en.html)
+- [Administrative Law, Public Employment & Pensions](https://saadamil.com/faq-administrative-en.html)
+- [Debts, Enforcement, Cheques & Settlements](https://saadamil.com/faq-debts-en.html)
+- [Residence & Foreign Nationals](https://saadamil.com/faq-residency-en.html)
+- [Military & Internal Security Forces Justice](https://saadamil.com/faq-military-en.html)
+- [Objections, Appeals & Cassation](https://saadamil.com/faq-appeals-en.html)
+- [Compensation, Accidents, Damage & Transport](https://saadamil.com/faq-compensation-en.html)
+- [Evidence, Experts & Case Management](https://saadamil.com/faq-procedure-en.html)
+- [Foreign Nationals, Contracts & Iraqi Litigation](https://saadamil.com/faq-foreigners-en.html)
+- [Fraud, Scams & Suspicious Transactions](https://saadamil.com/faq-fraud-en.html)
+- [Threats, Blackmail & Stalking](https://saadamil.com/faq-threats-en.html)
+- [Assault, Confrontation & Defence](https://saadamil.com/faq-assault-en.html)
+- [Social Media, Privacy & Digital Evidence](https://saadamil.com/faq-social-media-en.html)
+- [Cassation & Criminal Judgment Review](https://saadamil.com/faq-cassation-en.html)
+- [General Amnesty (Law 2/2025), Narcotics, Terrorism & Sentence Reduction](https://saadamil.com/faq-amnesty-narcotics-en.html)
+- [Banking, Frozen Accounts, AML & Major Commercial Debts](https://saadamil.com/faq-banking-aml-en.html)
+- [Government Contracting, Bank Guarantees, Integrity & Indemnification Law](https://saadamil.com/faq-gov-contracts-integrity-en.html)
+- [Foreign Investment, Corporate Counsel, Tax, Customs & Musataha Estates](https://saadamil.com/faq-investment-tax-estates-en.html)

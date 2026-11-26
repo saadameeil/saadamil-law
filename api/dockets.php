@@ -1,36 +1,9 @@
 <?php
+require_once __DIR__ . '/admin-auth-core.php';
+$method = $_SERVER['REQUEST_METHOD'] ?? '';
+sa_require_admin($method === 'POST');
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: https://saadamil.com');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-$PIN_HASH = '3bef8740e9f1f898b5a6052267f01bd369b18ac47f3397d22371e56dc2060eff';
-$PASS_HASH = '7bd19400e5ec6d9e82647a02bba85873c30e2520b53ed31a695e4b4767f66364';
-
-// Check Auth
-$authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-$pinParam = $_GET['pin'] ?? $_POST['pin'] ?? '';
-
-$isAuthorized = false;
-if (hash('sha256', $pinParam) === $PIN_HASH || hash('sha256', $pinParam) === $PASS_HASH) {
-    $isAuthorized = true;
-} elseif (preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
-    $token = trim($matches[1]);
-    if (hash('sha256', $token) === $PIN_HASH || hash('sha256', $token) === $PASS_HASH) {
-        $isAuthorized = true;
-    }
-}
-
-if (!$isAuthorized) {
-    http_response_code(401);
-    echo json_encode(['status' => 'unauthorized', 'message' => 'رمز الدخول غير صحيح']);
-    exit();
-}
+if (!in_array($method, ['GET', 'POST'], true)) { header('Allow: GET, POST'); sa_error(405, 'method_not_allowed'); }
 
 $dataFile = __DIR__ . '/../data/consultations.json';
 $existing = [];
@@ -59,13 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'update_status') {
         $docketId = $input['docketId'] ?? '';
         $newStatus = $input['status'] ?? '';
+        if (!is_string($newStatus) || !in_array($newStatus, ['', 'جديدة', 'قيد التواصل', 'تم التوكيل', 'قيد المرافعة', 'منتهية'], true)) sa_error(400, 'invalid_status');
         $notes = $input['notes'] ?? null;
 
         $updated = false;
         foreach ($existing as &$sub) {
             if ($sub['docketId'] === $docketId) {
                 if ($newStatus) $sub['status'] = $newStatus;
-                if ($notes !== null) $sub['notes'] = $notes;
+                if ($notes !== null) $sub['notes'] = htmlspecialchars((string)$notes, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
                 $updated = true;
                 break;
             }
