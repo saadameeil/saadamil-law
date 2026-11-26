@@ -96,7 +96,7 @@
 * **الملف المعرفي المصغر:** [`https://saadamil.com/llms.txt`](https://saadamil.com/llms.txt)
 * **الملف التوثيقي الكامل:** [`https://saadamil.com/llms-full.txt`](https://saadamil.com/llms-full.txt)
 * **خريطة الموقع:** [`https://saadamil.com/sitemap.xml`](https://saadamil.com/sitemap.xml)
-* **الأرشفة اللحظية (IndexNow):** مدمجة عبر GitHub Actions لتحديث محركات الذكاء الاصطناعي فور صدور أي تعديل قانوني.
+* **إشعارات التحديث (IndexNow):** يرسل GitHub Actions إشعاراً بالصفحات العامة الموجودة في خريطة الموقع المنشورة عند التحديث المناسب أو التشغيل اليدوي. قبول الإشعار لا يضمن الزحف أو الفهرسة أو الظهور في نتائج البحث والذكاء الاصطناعي.
 
 ---
 
