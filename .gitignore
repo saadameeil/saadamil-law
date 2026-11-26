@@ -21,3 +21,12 @@ cases_ledger*
 *.key
 *.pem
 *.secret
+
+# Production-only runtime state: preserve on the server, never commit.
+/data/*
+!/data/.htaccess
+/owner-private/
+/admin-auth-config.php
+/admin-login.txt
+/github-live-sync-*/
+/tooling/reports/

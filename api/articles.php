@@ -1,16 +1,10 @@
 <?php
+$method = $_SERVER['REQUEST_METHOD'] ?? '';
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: https://saadamil.com');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-$PIN_HASH = '3bef8740e9f1f898b5a6052267f01bd369b18ac47f3397d22371e56dc2060eff';
-$PASS_HASH = '7bd19400e5ec6d9e82647a02bba85873c30e2520b53ed31a695e4b4767f66364';
+if ($method === 'OPTIONS') { header('Access-Control-Allow-Origin: *'); header('Access-Control-Allow-Methods: GET, HEAD, OPTIONS'); http_response_code(200); exit; }
+if (!in_array($method, ['GET', 'HEAD', 'POST'], true)) { http_response_code(405); header('Allow: GET, HEAD, POST, OPTIONS'); exit; }
+if ($method === 'POST') { require_once __DIR__ . '/admin-auth-core.php'; sa_require_admin(true); }
+else { header('Access-Control-Allow-Origin: *'); }
 
 $dataDir = __DIR__ . '/../data';
 if (!is_dir($dataDir)) {
@@ -69,17 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rawInput = file_get_contents('php://input');
     $input = json_decode($rawInput, true) ?: $_POST;
-
-    // Check Auth
-    $pin = $input['pin'] ?? $_GET['pin'] ?? '';
-    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-    if (preg_match('/Bearer\s+(.*)$/i', $authHeader, $m)) $pin = trim($m[1]);
-
-    if (hash('sha256', $pin) !== $PIN_HASH && hash('sha256', $pin) !== $PASS_HASH) {
-        http_response_code(401);
-        echo json_encode(['status' => 'unauthorized', 'message' => 'غير مصرح']);
-        exit();
-    }
 
     $action = $input['action'] ?? 'publish';
 

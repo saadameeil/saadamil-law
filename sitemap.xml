@@ -1,237 +1,521 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://saadamil.com/</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/en.html"/>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/" />
   </url>
   <url>
     <loc>https://saadamil.com/en.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/en.html"/>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/" />
   </url>
   <url>
-    <loc>https://saadamil.com/questions.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/questions.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/questions-en.html"/>
+    <loc>https://saadamil.com/criminal-defense.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/criminal-defense.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/criminal-defense-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/criminal-defense.html" />
   </url>
   <url>
-    <loc>https://saadamil.com/questions-en.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/questions.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/questions-en.html"/>
+    <loc>https://saadamil.com/criminal-defense-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/criminal-defense.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/criminal-defense-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/criminal-defense.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/financial-litigation.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/financial-litigation.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/financial-litigation-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/financial-litigation.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/financial-litigation-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/financial-litigation.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/financial-litigation-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/financial-litigation.html" />
   </url>
   <url>
     <loc>https://saadamil.com/real-estate.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/real-estate.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/real-estate-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/real-estate.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/real-estate-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/real-estate.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/real-estate-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/real-estate.html" />
   </url>
   <url>
     <loc>https://saadamil.com/family-law.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/family-law.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/family-law-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/family-law.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/family-law-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/family-law.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/family-law-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/family-law.html" />
   </url>
   <url>
     <loc>https://saadamil.com/cybercrime.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/cybercrime.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/cybercrime-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/cybercrime.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/cybercrime-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/cybercrime.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/cybercrime-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/cybercrime.html" />
   </url>
   <url>
     <loc>https://saadamil.com/corporate.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/corporate.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/corporate-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/corporate.html" />
   </url>
   <url>
-    <loc>https://saadamil.com/petition.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <!-- Legal Knowledge Base - 313 Questions & Answers by Category -->
-  <url>
-    <loc>https://saadamil.com/faq-diaspora.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-family.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-property.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-criminal.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-corporate.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-procedure.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-debts.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-compensation.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-labor.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-appeals.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-cassation.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-social-media.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-threats.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-assault.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-fraud.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/faq-fraud.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-fraud-en.html"/>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-fraud-en.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/faq-fraud.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-fraud-en.html"/>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-foreigners.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/faq-foreigners.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-foreigners-en.html"/>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-foreigners-en.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/faq-foreigners.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-foreigners-en.html"/>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-residency.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/faq-residency.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-residency-en.html"/>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-residency-en.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="ar-iq" href="https://saadamil.com/faq-residency.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-residency-en.html"/>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-administrative.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/faq-military.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Legal Articles & Studies -->
-  <url>
-    <loc>https://saadamil.com/articles/art-1.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/articles/art-2.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://saadamil.com/articles/art-3.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://saadamil.com/corporate-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/corporate.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/corporate-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/corporate.html" />
   </url>
   <url>
     <loc>https://saadamil.com/privacy.html</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/privacy-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/privacy.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/privacy-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/privacy-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/privacy.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-1.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-1.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-1-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-1.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-1-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-1.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-1-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-1.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-2.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-2.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-2-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-2.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-2-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-2.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-2-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-2.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-3.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-3.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-3-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-3.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-3-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-3.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-3-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-3.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-4.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-4.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-4-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-4.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-4-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-4.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-4-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-4.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-5.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-5.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-5-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-5.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/articles/art-5-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/articles/art-5.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/articles/art-5-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/articles/art-5.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/questions.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/questions.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/questions-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/questions.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/questions-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/questions.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/questions-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/questions.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-diaspora.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-diaspora.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-diaspora-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-diaspora.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-diaspora-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-diaspora.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-diaspora-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-diaspora.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-family.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-family.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-family-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-family.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-family-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-family.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-family-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-family.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-property.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-property.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-property-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-property.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-property-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-property.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-property-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-property.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-criminal.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-criminal.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-criminal-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-criminal.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-criminal-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-criminal.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-criminal-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-criminal.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-corporate.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-corporate.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-corporate-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-corporate.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-corporate-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-corporate.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-corporate-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-corporate.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-labor.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-labor.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-labor-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-labor.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-labor-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-labor.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-labor-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-labor.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-administrative.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-administrative.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-administrative-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-administrative.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-administrative-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-administrative.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-administrative-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-administrative.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-debts.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-debts.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-debts-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-debts.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-debts-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-debts.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-debts-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-debts.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-residency.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-residency.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-residency-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-residency.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-residency-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-residency.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-residency-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-residency.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-military.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-military.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-military-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-military.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-military-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-military.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-military-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-military.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-appeals.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-appeals.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-appeals-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-appeals.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-appeals-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-appeals.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-appeals-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-appeals.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-compensation.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-compensation.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-compensation-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-compensation.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-compensation-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-compensation.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-compensation-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-compensation.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-procedure.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-procedure.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-procedure-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-procedure.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-procedure-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-procedure.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-procedure-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-procedure.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-foreigners.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-foreigners.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-foreigners-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-foreigners.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-foreigners-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-foreigners.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-foreigners-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-foreigners.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-fraud.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-fraud.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-fraud-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-fraud.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-fraud-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-fraud.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-fraud-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-fraud.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-threats.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-threats.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-threats-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-threats.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-threats-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-threats.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-threats-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-threats.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-assault.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-assault.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-assault-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-assault.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-assault-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-assault.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-assault-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-assault.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-social-media.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-social-media.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-social-media-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-social-media.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-social-media-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-social-media.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-social-media-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-social-media.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-cassation.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-cassation.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-cassation-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-cassation.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-cassation-en.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-cassation.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-cassation-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-cassation.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-amnesty-narcotics.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-amnesty-narcotics.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-amnesty-narcotics-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-amnesty-narcotics.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-amnesty-narcotics-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-amnesty-narcotics.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-amnesty-narcotics-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-amnesty-narcotics.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-banking-aml.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-banking-aml.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-banking-aml-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-banking-aml.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-banking-aml-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-banking-aml.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-banking-aml-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-banking-aml.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-gov-contracts-integrity.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-gov-contracts-integrity.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-gov-contracts-integrity-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-gov-contracts-integrity.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-gov-contracts-integrity-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-gov-contracts-integrity.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-gov-contracts-integrity-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-gov-contracts-integrity.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-investment-tax-estates.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-investment-tax-estates.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-investment-tax-estates-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-investment-tax-estates.html" />
+  </url>
+  <url>
+    <loc>https://saadamil.com/faq-investment-tax-estates-en.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-IQ" href="https://saadamil.com/faq-investment-tax-estates.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://saadamil.com/faq-investment-tax-estates-en.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://saadamil.com/faq-investment-tax-estates.html" />
   </url>
 </urlset>
