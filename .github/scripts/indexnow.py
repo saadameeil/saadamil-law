@@ -23,6 +23,30 @@ def sitemap_urls(raw):
             raise ValueError("Only canonical public HTML URLs are allowed")
     return urls
 
+
+def changed_paths(event):
+    """Actions push payloads omit added/modified arrays: compare the actual SHAs."""
+    commits = event.get("commits", [])
+    if commits and all("added" in c and "modified" in c for c in commits):
+        return {p for c in commits for p in c["added"] + c["modified"]}
+    before, after = event.get("before", ""), event.get("after", "")
+    if not all(re.fullmatch(r"[a-f0-9]{40}", sha) for sha in (before, after)):
+        raise ValueError("Missing validated before/after SHAs")
+    if before == "0" * 40:
+        return {"sitemap.xml"}
+    req = Request(
+        "https://api.github.com/repos/saadameeil/saadamil-law/compare/" + before + "..." + after,
+        headers={"User-Agent": "SaadAmilIndexNow/1.0", "Accept": "application/vnd.github+json"})
+    with urlopen(req, timeout=30) as response:
+        comparison = json.load(response)
+    files = comparison.get("files")
+    if not isinstance(files, list):
+        raise ValueError("GitHub comparison did not return changed files")
+    # Compare returns at most 300 files. A bounded sitemap notification avoids truncation.
+    if len(files) >= 300:
+        return {"sitemap.xml"}
+    return {f["filename"] for f in files if f.get("status") != "removed"}
+
 def main():
     event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
     if "[skip indexnow]" in event.get("head_commit", {}).get("message", ""):
@@ -30,7 +54,7 @@ def main():
         return
     urls = sitemap_urls(Path("sitemap.xml").read_bytes())
     if os.environ.get("GITHUB_EVENT_NAME") == "push":
-        changed = {p for c in event.get("commits", []) for p in c.get("added", []) + c.get("modified", [])}
+        changed = changed_paths(event)
         if "sitemap.xml" not in changed:
             urls = [u for u in urls if (urlsplit(u).path.lstrip("/") or "index.html") in changed]
         if not urls:
